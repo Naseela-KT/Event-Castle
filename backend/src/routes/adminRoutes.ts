@@ -4,6 +4,7 @@ const router = express.Router();
 
 
 router.post('/login' , AdminController.Adminlogin);
+router.post('/logout' , AdminController.Adminlogout);
 
 
 export default router;

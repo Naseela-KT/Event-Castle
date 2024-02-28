@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
-import generateAdminToken from "../utils/generateAdminToken";
+import jwt from 'jsonwebtoken'
 import { findAdminByEmail } from "../repositories/adminRepository";
 import { Response } from "express";
 
-export const login=async(res: Response,email:string,password:string):Promise<string>=>{
+export const login=async(res: Response,email:string,password:string):Promise<object>=>{
     try {
         console.log(email)
         const existingAdmin=await findAdminByEmail(email);
@@ -11,13 +11,12 @@ export const login=async(res: Response,email:string,password:string):Promise<str
             throw new Error('Admin not exist');  
         }
         const passwordMatch=await bcrypt.compare(password,existingAdmin.password);
-
         if(!passwordMatch){
             throw new Error('Incorrect password...')
         }
 
-        await generateAdminToken(res, existingAdmin._id);
-        return "Login successful...";
+        const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!);
+        return {message:"Login successfull",token:token};
     } catch (error) {
         throw error
     }
