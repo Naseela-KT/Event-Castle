@@ -15,6 +15,9 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "globals": {
+        "process": true
+      },
     "rules": {
         
     }
