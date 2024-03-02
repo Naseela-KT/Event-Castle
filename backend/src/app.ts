@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.config';
 import adminRoutes from "../src/routes/adminRoutes"
 import userRoutes from "./routes/userRoutes"
+import vendorRoutes from "./routes/vendorRoutes"
 
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 app.use('/api/admin' , adminRoutes);
 app.use('/api/user' , userRoutes);
+app.use('/api/vendor',vendorRoutes)
 
 
 const PORT = process.env.PORT;
