@@ -17,8 +17,9 @@ export const  UserController = {
       async UserLogin(req:Request , res: Response): Promise <void> {
         try {
             const {email,password} = req.body;
-            const loginresponse = await login(email,password);
-            res.status(201).json(loginresponse);
+            const { token, userData, message } = await login(email, password);
+            res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+            res.status(200).json({token, userData, message });
         } catch (error) {
             console.log(error);
             res.status(500).json({message:"Server Error"})
@@ -29,7 +30,7 @@ export const  UserController = {
      
       async UserLogout(req:Request , res: Response): Promise <void> {
         try {
-          // localStorage.removeItem('jwtToken');
+          res.clearCookie('jwtToken');
           res.status(200).json({ message: 'User logged out successfully' });
         } catch (error) {
             console.log(error);

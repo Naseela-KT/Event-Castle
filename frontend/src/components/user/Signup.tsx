@@ -8,10 +8,21 @@ import {
   Input,
     Button,
 } from "@material-tailwind/react";
-import {Link} from 'react-router-dom'
-
+import {Link,useNavigate} from 'react-router-dom'
+import { useEffect} from 'react';
+import {  useSelector } from 'react-redux';
+import UserRootState from '../../redux/rootstate/UserState';
 
 const UserSignupForm=()=> {
+  const user = useSelector((state : UserRootState) => state.user.userdata);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(user) {
+      navigate('/');
+    }
+  }, []) 
+
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined}  shadow={false}>
       <CardHeader

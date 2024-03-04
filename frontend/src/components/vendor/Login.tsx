@@ -8,8 +8,12 @@ import {
   Input,
     Button,
 } from "@material-tailwind/react";
-import { useState,ChangeEvent ,FormEvent} from 'react';
-import {Link} from 'react-router-dom'
+import { useState,ChangeEvent ,FormEvent,useEffect} from 'react';
+import {Link,useNavigate} from 'react-router-dom'
+import {axiosInstanceVendor} from '../../api/axiosinstance';
+import {  useSelector,useDispatch } from 'react-redux';
+import { setVendorInfo } from "../../redux/slices/VendorSlice";
+import VendorRootState from '../../redux/rootstate/VendorState';
 
 
 interface FormValues {
@@ -31,9 +35,30 @@ const VendorLoginForm=()=> {
     setFormValues({...formValues,[name]:value})
   }
 
+  const vendor = useSelector((state : VendorRootState) => state.vendor.vendordata);
+
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
+
+  useEffect(() => {
+    if(vendor) {
+      navigate('/vendor');
+    }
+  }, []) 
+
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
+    axiosInstanceVendor.post("/login", formValues)
+    .then((response) => {
+      console.log(response);
+      dispatch(setVendorInfo(response.data.vendorData))
+      navigate("/vendor")
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
+
   }
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined} shadow={false}>
@@ -99,6 +124,7 @@ const VendorLoginForm=()=> {
     </Card>
   );
 }
+
 
 
 export default VendorLoginForm;

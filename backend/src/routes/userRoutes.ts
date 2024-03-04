@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/signup', UserController.UserSignup );
 router.post('/login', UserController.UserLogin );
-router.post('/logout' , UserController.UserLogout)
+router.get('/logout' , UserController.UserLogout)
 
 
 

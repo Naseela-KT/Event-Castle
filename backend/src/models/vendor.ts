@@ -14,8 +14,9 @@ export interface Vendor {
     isVerified:boolean;
     verificationRequest:boolean;
     totalBooking:number;
-    vendor_type:Schema.Types.ObjectId;
+    vendorType:Schema.Types.ObjectId;
     isActive:boolean;
+    
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -33,7 +34,7 @@ const VendorSchema: Schema = new Schema({
     isVerified:{type:Boolean},
     verificationRequest:{type:Boolean},
     totalBooking:{type:Number},
-    Vendor_type:{type:Schema.Types.ObjectId,required:true},
+    vendorType:{type:Schema.Types.ObjectId},
     isActive:{type:Boolean}
 
 });

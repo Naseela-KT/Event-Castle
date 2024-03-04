@@ -26,7 +26,7 @@ import AdminLogin from './components/admin/Login.tsx'
 import VendorsList from './pages/admin/VendorsList.tsx';
 import VendorTypes from './pages/admin/VendorTypes.tsx';
 import UsersList from './pages/admin/UsersList.tsx';
-
+import VendorHome from './pages/vendor/VendorHome.tsx';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -55,7 +55,7 @@ const router = createBrowserRouter(
 
 
     <Route path="/vendor" element={<VendorApp/>}>
-      <Route index={true} path="/vendor" element={<HomePage />} />
+      <Route index={true} path="/vendor" element={<VendorHome />} />
       <Route path="/vendor/login" element={<VendorLoginForm />} />
       <Route path="/vendor/signup" element={<VendorSignupForm />} />
       <Route path="/vendor/verify" element={<VerifyEmail />} />

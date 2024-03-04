@@ -8,9 +8,11 @@ export interface AdminData{
 }
 export interface AdminState{
     admindata : AdminData | null;
+    isAdminSignedIn: boolean;
 }
 const initialState : AdminState ={
     admindata:null,
+    isAdminSignedIn:false
 }
 
 const adminSlice =createSlice({
@@ -20,12 +22,12 @@ const adminSlice =createSlice({
 
         setAdminInfo:(state,action)=>{
             state.admindata =action.payload
-            
+            state.isAdminSignedIn=true
         },
        
         logout:(state)=>{
             state.admindata=null;
-            
+            state.isAdminSignedIn=false;
         }
 
 
@@ -33,6 +35,8 @@ const adminSlice =createSlice({
 })
 
 export const {setAdminInfo,logout} = adminSlice.actions;
+
+
 export default adminSlice.reducer;
 
 

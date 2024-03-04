@@ -2,6 +2,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createVendor , findvendorByEmail } from '../repositories/vendorRepository';
 
+
+interface LoginResponse {
+  token: string;
+  vendorData: object; 
+  message: string;
+}
+
 export const signup = async (email:string ,password:string, name:string , phone:number, city:string): Promise<string> => {
     try {
       const existingVendor = await findvendorByEmail(email);
@@ -29,7 +36,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
 
 
 
-  export const login = async (email:string , password : string): Promise<string> =>{
+  export const login = async (email:string , password : string): Promise<LoginResponse> =>{
     try {
         const existingVendor = await findvendorByEmail(email);
         if (!existingVendor) {
@@ -42,9 +49,11 @@ export const signup = async (email:string ,password:string, name:string , phone:
         throw new Error('Incorrect password..');
         }
 
+        const vendorData = await findvendorByEmail(email);
+
         // If the password matches, generate and return a JWT token
-        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!);
-        return token;
+        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        return {token,vendorData:existingVendor,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;

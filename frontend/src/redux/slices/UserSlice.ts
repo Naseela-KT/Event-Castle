@@ -9,10 +9,12 @@ export interface UserData{
 
 export interface UserState{
     userdata : UserData | null;
+    isUserSignedIn: boolean;
 }
 
 const initialState :UserState ={
     userdata:null,
+    isUserSignedIn:false
 }
 
  const userSlice =createSlice({
@@ -21,9 +23,11 @@ const initialState :UserState ={
     reducers:{
     setUserInfo :(state,action)=>{
         state.userdata = action.payload;
+        state.isUserSignedIn=true
     },
     logout:(state)=>{
         state.userdata = null;
+        state.isUserSignedIn=false;
     }
 
     }

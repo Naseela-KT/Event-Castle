@@ -1,17 +1,17 @@
 // App.tsx
 
 import React from 'react';
-import AllNavbar from './components/Navbar';
+import UserNavbar from './components/user/Navbar';
 import { Outlet } from 'react-router-dom';
 import Layout from './components/Layout';
 
 const App: React.FC = () => {
-  const role = 'user'; // Replace this with your actual logic to get the user's role
+  const role = 'user'; 
 
   return (
     <>
       <Layout role={role}>
-        <AllNavbar />
+        <UserNavbar />
         <Outlet />
       </Layout>
     </>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import {
   Navbar,
   Typography,
@@ -9,10 +9,18 @@ import {
   IconButton,
   MobileNav,
 } from "@material-tailwind/react";
+import { useSelector,useDispatch } from 'react-redux';
+import AdminState  from '../../redux/rootstate/AdminState';
+import {axiosInstanceAdmin} from '../../api/axiosinstance';
+import { logout } from "../../redux/slices/AdminSlice";
 
 
 const AdminNavbar=()=> {
   const [openNav, setOpenNav] = React.useState(false);
+  const isAdminSignedIn = useSelector((state: AdminState) => state.admin.isAdminSignedIn);
+
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -20,6 +28,19 @@ const AdminNavbar=()=> {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axiosInstanceAdmin.get("/logout")
+      .then(() => {
+        dispatch(logout()); // Assuming you want to clear admin info on logout
+        navigate("/admin/login");
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  };
+  
 
  
   return (
@@ -35,11 +56,17 @@ const AdminNavbar=()=> {
        
        
         <div className="flex items-center gap-x-1">
+      {isAdminSignedIn?
+        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
+          <span>Logout</span>
+        </Button>
+      :
       <Link to="/admin/login">
-        <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
-          <span>Log In</span>
+        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+          <span>Login</span>
         </Button>
       </Link>
+      }
     </div>
         <IconButton
                   variant="text"

@@ -11,10 +11,12 @@ export interface VendorData{
     mobile:number;
 }
 export interface VendorState{
-    tutordata : VendorData | null;
+    isVendorSignedIn: boolean;
+    vendordata : VendorData | null;
 }
 const initialState : VendorState ={
-    tutordata:null,
+    vendordata:null,
+    isVendorSignedIn:false
 }
 
 const vendorSlice =createSlice({
@@ -22,18 +24,20 @@ const vendorSlice =createSlice({
     initialState,
     reducers:{
 
-        setTutorInfo:(state,action)=>{
-            state.tutordata =action.payload            
+        setVendorInfo:(state,action)=>{
+            state.vendordata =action.payload  
+            state.isVendorSignedIn=true          
         },       
         logout:(state)=>{
-            state.tutordata=null;            
+            state.vendordata=null;   
+            state.isVendorSignedIn=false         
         }
 
 
     }
 })
 
-export const {setTutorInfo,logout} = vendorSlice.actions
+export const {setVendorInfo,logout} = vendorSlice.actions
 export default vendorSlice.reducer;
 
 

@@ -1,7 +1,8 @@
 import { AdminState } from "../slices/AdminSlice";
 
 interface AdminRootState {
-    admin : AdminState
+    admin : AdminState;
+  
 }
 
 export default AdminRootState

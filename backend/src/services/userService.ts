@@ -2,7 +2,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createUser , findUserByEmail } from '../repositories/userRepository';
 
-
+interface LoginResponse {
+  token: string;
+  userData: object; 
+  message: string;
+}
 
 
 export const signup = async (email:string ,password:string, name:string , phone:number): Promise<object> => {
@@ -26,7 +30,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
   
 
 
-  export const login = async (email:string , password : string): Promise<object> =>{
+  export const login = async (email:string , password : string): Promise<LoginResponse> =>{
     try {
         const existingUser = await findUserByEmail(email);
         if (!existingUser) {
@@ -38,13 +42,8 @@ export const signup = async (email:string ,password:string, name:string , phone:
         if (!passwordMatch) {
         throw new Error('Incorrect password..');
         }
-
-
-        const userData=await findUserByEmail(email);
-
-        // If the password matches, generate and return a JWT token
-        const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!);
-        return {token,userData,message:"Successfully logged in.."};
+        const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        return {token,userData:existingUser,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;

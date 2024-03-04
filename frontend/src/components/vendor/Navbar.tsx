@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import {
   Navbar,
   Typography,
@@ -10,9 +10,17 @@ import {
   Input,
   MobileNav,
 } from "@material-tailwind/react";
+import { useSelector,useDispatch } from 'react-redux';
+import VendorState  from '../../redux/rootstate/VendorState';
+import {axiosInstanceVendor} from '../../api/axiosinstance';
+import { logout } from "../../redux/slices/VendorSlice";
 
-const AllNavbar=()=> {
+const VendorNavbar=()=> {
   const [openNav, setOpenNav] = React.useState(false);
+  const isVendorSignedIn = useSelector((state: VendorState) => state.vendor.isVendorSignedIn);
+
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -20,6 +28,21 @@ const AllNavbar=()=> {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axiosInstanceVendor.get("/logout")
+      .then(() => {
+        dispatch(logout());
+        navigate("/vendor/login");
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  };
+
+ 
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -116,16 +139,20 @@ const AllNavbar=()=> {
           </Button>
         </div>
         <div className="flex items-center gap-x-1">
-      <Link to="/login">
+          {isVendorSignedIn?<Button variant="gradient"  size="sm" className="hidden lg:inline-block" placeholder={undefined}
+          onClick={handleLogout}>
+          <span>Logout</span>
+        </Button>:  <><Link to="/vendor/login">
         <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
           <span>Log In</span>
         </Button>
       </Link>
-      <Link to="/signup">
+      <Link to="/vendor/signup">
         <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
           <span>Sign up</span>
         </Button>
-      </Link>
+      </Link></>}
+      
     </div>
         <IconButton
                   variant="text"
@@ -182,4 +209,4 @@ const AllNavbar=()=> {
     </Navbar>
   );
 }
- export default AllNavbar
+ export default VendorNavbar

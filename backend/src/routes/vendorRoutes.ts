@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/signup' , VendorController.vendorSignup);
 router.post('/login' , VendorController.VendorLogin)
-router.post('/logout' , VendorController.VendorLogout)
+router.get('/logout' , VendorController.VendorLogout)
 
 
 
