@@ -1,0 +1,66 @@
+import React from "react";
+import {
+  Card,
+  List,
+  ListItem,
+  ListItemPrefix
+} from "@material-tailwind/react";
+import {
+
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+} from "@heroicons/react/24/solid";
+
+ 
+const Sidebar=() =>{
+  const [open, setOpen] = React.useState(0);
+ 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleOpen = (value: React.SetStateAction<number>) => {
+    setOpen(open === value ? 0 : value);
+  };
+ 
+  return (
+    <Card className="h-[calc(100vh-2rem)] w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
+      <List  placeholder={undefined} color="white">
+        
+        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
+          <ListItemPrefix  placeholder={undefined}>
+            <InboxIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Dashboard
+        </ListItem>
+        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
+          <ListItemPrefix  placeholder={undefined} color="white">
+            <UserCircleIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Users
+        </ListItem>
+        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
+          <ListItemPrefix  placeholder={undefined}>
+            <Cog6ToothIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Vendors
+        </ListItem>
+        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
+          <ListItemPrefix  placeholder={undefined}>
+            <PowerIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Wallet
+        </ListItem>
+        <hr className="my-2 border-blue-gray-50" />
+        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
+          <ListItemPrefix  placeholder={undefined}>
+            <PowerIcon className="h-5 w-5" />
+          </ListItemPrefix>
+          Logout
+        </ListItem>
+      </List>
+    </Card>
+  );
+}
+
+
+export default Sidebar

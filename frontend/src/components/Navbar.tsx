@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Link } from 'react-router-dom';
 import {
   Navbar,
   Typography,
@@ -25,8 +26,7 @@ const AllNavbar=()=> {
       <Typography
               as="li"
               variant="small"
-              color="blue-gray"
-              className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}      >
+              className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined} color="white"     >
         <svg
           width="16"
           height="15"
@@ -47,8 +47,7 @@ const AllNavbar=()=> {
       <Typography
               as="li"
               variant="small"
-              color="blue-gray"
-              className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}      >
+              className="flex items-center gap-x-2 p-1 font-medium"  color="white" placeholder={undefined}    >
         <svg
           width="16"
           height="17"
@@ -63,11 +62,11 @@ const AllNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex items-center" >
           Vendors
         </a>
       </Typography>
-      <Typography as="li" variant="small" color="blue-gray" className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}>
+      <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}>
         <svg
           width="14"
           height="15"
@@ -89,12 +88,12 @@ const AllNavbar=()=> {
   );
 
   return (
-    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6" placeholder={undefined}>
+    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark" placeholder={undefined} style={{ borderRadius: 0,border:0 }} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
                   as="a"
                   href="#"
-                  className="mr-4 cursor-pointer py-1.5 font-medium"  placeholder={undefined}        >
+                  className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
           Event Castle
          
         </Typography>
@@ -111,22 +110,23 @@ const AllNavbar=()=> {
                           }} crossOrigin={undefined}          />
           <Button
                           size="sm"
-                          color="white"
+                          color="black"
                           className="!absolute right-1 top-1 rounded"  placeholder={undefined}          >
             Search
           </Button>
         </div>
         <div className="flex items-center gap-x-1">
-          <Button variant="text" size="sm" className="hidden lg:inline-block"  placeholder={undefined}>
-            <span>Log In</span>
-          </Button>
-          <Button
-                      variant="gradient"
-                      size="sm"
-                      className="hidden lg:inline-block"  placeholder={undefined}          >
-            <span>Sign up</span>
-          </Button>
-        </div>
+      <Link to="/login">
+        <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+          <span>Log In</span>
+        </Button>
+      </Link>
+      <Link to="/signup">
+        <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+          <span>Sign up</span>
+        </Button>
+      </Link>
+    </div>
         <IconButton
                   variant="text"
                   className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
