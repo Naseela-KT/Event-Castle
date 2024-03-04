@@ -10,6 +10,7 @@ import {
   MobileNav,
 } from "@material-tailwind/react";
 
+
 const AdminNavbar=()=> {
   const [openNav, setOpenNav] = React.useState(false);
 

@@ -9,8 +9,13 @@ import {
   Input,
     Button,
 } from "@material-tailwind/react";
-import { useState,ChangeEvent ,FormEvent} from 'react';
-import {Link} from 'react-router-dom'
+import { useState,ChangeEvent ,FormEvent,useEffect} from 'react';
+import {Link,useNavigate} from 'react-router-dom'
+import {axiosInstance} from '../../api/axiosinstance';
+import {  useSelector,useDispatch } from 'react-redux';
+import { setUserInfo } from "../../redux/slices/UserSlice";
+import UserRootState from '../../redux/rootstate/UserState';
+
 
 interface FormValues {
   email: string;
@@ -31,9 +36,30 @@ const UserLoginForm=()=> {
     setFormValues({...formValues,[name]:value})
   }
 
+  
+  const user = useSelector((state : UserRootState) => state.user.userdata);
+
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
+
+  useEffect(() => {
+    if(user) {
+      navigate('/');
+    }
+  }, []) 
+
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
+    axiosInstance.post("/login", formValues)
+    .then((response) => {
+      console.log(response);
+      dispatch(setUserInfo(response.data.userData))
+      navigate("/")
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
   }
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined} shadow={false}>

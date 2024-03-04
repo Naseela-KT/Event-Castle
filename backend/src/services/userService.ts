@@ -26,7 +26,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
   
 
 
-  export const login = async (email:string , password : string): Promise<string> =>{
+  export const login = async (email:string , password : string): Promise<object> =>{
     try {
         const existingUser = await findUserByEmail(email);
         if (!existingUser) {
@@ -39,9 +39,12 @@ export const signup = async (email:string ,password:string, name:string , phone:
         throw new Error('Incorrect password..');
         }
 
+
+        const userData=await findUserByEmail(email);
+
         // If the password matches, generate and return a JWT token
         const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!);
-        return token;
+        return {token,userData,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;

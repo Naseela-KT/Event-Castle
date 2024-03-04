@@ -8,6 +8,9 @@ import {
   Route,
   RouterProvider
 } from "react-router-dom";
+import { Provider } from 'react-redux';
+import {store,persistor} from './redux/store.ts'
+import { PersistGate } from 'redux-persist/integration/react';
 import HomePage from './pages/HomePage.tsx'
 import UserLoginForm from './components/user/Login.tsx';
 import UserSignupForm from './components/user/Signup.tsx'
@@ -20,6 +23,9 @@ import VendorApp from './pages/vendor/VendorApp.tsx'
 import AdminApp from './pages/admin/AdminApp.tsx'
 import Dashboard from './pages/admin/Dahboard.tsx';
 import AdminLogin from './components/admin/Login.tsx'
+import VendorsList from './pages/admin/VendorsList.tsx';
+import VendorTypes from './pages/admin/VendorTypes.tsx';
+import UsersList from './pages/admin/UsersList.tsx';
 
 
 
@@ -42,6 +48,9 @@ const router = createBrowserRouter(
     <Route path="/admin" element={<AdminApp/>}>
       <Route index={true} path="/admin" element={<Dashboard />} />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/vendors" element={<VendorsList />} />
+      <Route path="/admin/vendor-types" element={<VendorTypes />} />
+      <Route path="/admin/users" element={<UsersList />} />
     </Route>
 
 
@@ -58,7 +67,11 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
+  <Provider store={store}>
+     <PersistGate persistor={persistor}>
   <React.StrictMode>
    <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
+  </PersistGate>
+  </Provider>
 )

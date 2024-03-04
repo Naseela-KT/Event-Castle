@@ -21,12 +21,17 @@ const ForgotPassword=()=> {
         </Typography>
       </CardHeader>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
-        <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+      <div className="flex items-center">
+  <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
+  <Button variant="gradient"  placeholder={undefined} size="md">
+          OTP
+        </Button>
+</div>
         <Input label="Enter OTP" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
       
       </CardBody>
       <CardFooter className="pt-0"  placeholder={undefined}>
-        <Button variant="gradient" fullWidth  placeholder={undefined}>
+        <Button variant="gradient" fullWidth  placeholder={undefined} >
           Verify OTP
         </Button>
        

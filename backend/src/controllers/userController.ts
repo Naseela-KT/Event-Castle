@@ -17,8 +17,8 @@ export const  UserController = {
       async UserLogin(req:Request , res: Response): Promise <void> {
         try {
             const {email,password} = req.body;
-            const token = await login(email,password);
-            res.status(201).json({message:"user logged in successfully..."});
+            const loginresponse = await login(email,password);
+            res.status(201).json(loginresponse);
         } catch (error) {
             console.log(error);
             res.status(500).json({message:"Server Error"})

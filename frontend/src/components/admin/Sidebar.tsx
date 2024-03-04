@@ -12,7 +12,7 @@ import {
   InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
-
+import { Link } from "react-router-dom";
  
 const Sidebar=() =>{
   const [open, setOpen] = React.useState(0);
@@ -25,31 +25,44 @@ const Sidebar=() =>{
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
       <List  placeholder={undefined} color="white">
-        
+      <Link to="/admin">
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined}>
             <InboxIcon className="h-5 w-5" />
           </ListItemPrefix>
           Dashboard
         </ListItem>
+        </Link>
+        <Link to="/admin/users">
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined} color="white">
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
+          
           Users
         </ListItem>
+        </Link>
+        <Link to="/admin/vendors">
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined}>
             <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Vendors
+          
+            Vendors
+          
+          
         </ListItem>
+        </Link>
+        <Link to="/admin/wallet">
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined}>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Wallet
+        
+            Wallet
+         
         </ListItem>
+        </Link>
         <hr className="my-2 border-blue-gray-50" />
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined}>
