@@ -6,8 +6,9 @@ const router = express.Router();
 
 
 router.post('/signup', UserController.UserSignup );
+router.post('/verifyOtp' ,UserController.verifyOtp);
 router.post('/login', UserController.UserLogin );
-router.get('/logout' , UserController.UserLogout)
+router.get('/logout' , UserController.UserLogout);
 
 
 

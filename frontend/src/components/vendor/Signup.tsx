@@ -7,6 +7,8 @@ import {
   Typography,
   Input,
     Button,
+    Select,
+    Option
 } from "@material-tailwind/react";
 import {Link} from 'react-router-dom'
 
@@ -25,7 +27,17 @@ const VendorSignupForm=()=> {
       </CardHeader>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
         <Input label="Name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
-        <Input label="Vendor Type" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
+        <Select
+          label="Vendor Type"
+          size="md"
+
+          color="pink"
+          className="bg-white bg-opacity-50"  placeholder={undefined}        >
+          
+          <Option value="option1">Option 1</Option>
+          <Option value="option2">Option 2</Option>
+        
+        </Select>
         <Input label="City" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
         <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>

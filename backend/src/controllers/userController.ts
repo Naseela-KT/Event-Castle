@@ -1,18 +1,79 @@
 import { Request , Response } from "express";
-import { signup , login, getUsers } from "../services/userService";
+import { signup , login, getUsers,toggleUserBlock } from "../services/userService";
+import nodemailer from 'nodemailer';
 
 export const  UserController = {
 
-    async UserSignup(req: Request, res: Response): Promise<void> {
+  async UserSignup(req: Request, res: Response): Promise<void> {
+    try {
+      const { email , password , name , phone } = req.body;
+      const otpCode: string = Math.floor(1000 + Math.random() * 9000).toString();
+      const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+              user: process.env.USER_NAME,
+              pass: process.env.USER_PASSWORD,
+          },
+      });
+
+      const mailOptions = {
+          from: process.env.USER_NAME,
+          to: email,
+          subject: "Verification Code",
+          text: `Your OTP code is: ${otpCode}`,
+      };
+
+      const info = await transporter.sendMail(mailOptions);
+      console.log("Email sent: " + info.response);
+
+   
+      (req.session as any).userData = {
+        signupData: {
+          email: email,
+          password: password,
+          name: name,
+          phone: phone,
+          otpCode: otpCode,
+        },
+      };
+
+      // console.log(req.session.userData)
+      res.status(200).json({ message:"OTP send to email for verification.." , "email":email });
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  },
+
+
+
+      
+      async verifyOtp(req:Request , res: Response):Promise<void>{
         try {
-          const { email , password , name , phone } = req.body;
-          const user = await signup(email , password , name , phone);
-          res.status(201).json(user);
+          const otp = req.body.otp;
+          const userData = (req.session as any).userData.signupData; 
+          console.log("session stored userdata :", userData)
+          const email = userData.email;
+          const password = userData.password;
+          const name = userData.name;
+          const phone = userData.phone;
+          const otpCode = userData.otpCode
+          if(otp === otpCode){
+          const user = await signup(email , password , name , phone );
+          res.status(201).json({ "user created" : user });
+          }else{
+            res.status(400).json({ error:"Invalid otp !!"});
+          }
+
         } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: 'Server Error' });
-        }
-      },
+          console.log(error);
+          res.status(500).json({message:"Server Error"})
+        }},
+
 
       async UserLogin(req:Request , res: Response): Promise <void> {
         try {
@@ -47,5 +108,20 @@ export const  UserController = {
           console.log(error);
           res.status(500).json({ message: "server error..." });
         }
-      } 
+      } ,
+
+      async Toggleblock(req:Request , res: Response):Promise<void>{
+        try {
+          const userId: string | undefined = req.query.userId as string | undefined;
+          if (!userId) {
+              throw new Error('User ID is missing or invalid.');
+          } 
+          
+          await toggleUserBlock(userId);
+          res.status(200).json({ message: "User block status toggled successfully." });
+      } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Server Error" });
+      }
+      }
 };
