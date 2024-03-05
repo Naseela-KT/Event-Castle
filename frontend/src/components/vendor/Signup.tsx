@@ -10,10 +10,83 @@ import {
     Select,
     Option
 } from "@material-tailwind/react";
-import {Link} from 'react-router-dom'
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {Link, useNavigate} from 'react-router-dom'
+import { axiosInstanceVendor } from "../../api/axiosinstance";
+import { toast } from "react-toastify";
 
+interface VendorType {
+  _id: string;
+  type:string;
+  status:boolean;
+}
+
+interface FormValues {
+  name:string;
+  vendor_type:string;
+  email: string;
+  password: string;
+  city:string;
+  phone:number;
+}
+
+const initialValues: FormValues = {
+  name:'',
+  vendor_type:'',
+  email: '',
+  password: '',
+  city:'',
+  phone:0
+};
 
 const VendorSignupForm=()=> {
+  const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
+
+  const navigate = useNavigate();
+
+  const [formValues,setFormValues]=useState<FormValues>(initialValues);
+
+  useEffect(() => {
+    axiosInstanceVendor.get("/vendor-types")
+      .then((response) => {
+        console.log(response)
+        setvendorTypes(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []); 
+
+
+  const handleChange=(
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
+  ) => {
+    if (typeof e === "string") {
+      setFormValues({ ...formValues, vendor_type: e });
+    } else {
+      const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
+      setFormValues({ ...formValues, [name]: value });
+    }
+  }
+
+
+  const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    console.log(formValues)
+    axiosInstanceVendor.post("/signup", formValues)
+    .then((response) => {
+      if(response.data){
+        console.log(response.data)
+        toast.warn(response.data.message);
+        navigate("/vendor/verify")
+      }
+      
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
+  }
+
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined}  shadow={false}>
       <CardHeader
@@ -25,28 +98,31 @@ const VendorSignupForm=()=> {
           Vendor - Sign Up
         </Typography>
       </CardHeader>
+      <form onSubmit={handleSubmit}>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
-        <Input label="Name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
+        <Input label="Name" value={formValues.name} onChange={handleChange} name="name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
         <Select
           label="Vendor Type"
           size="md"
-
+          value={formValues.vendor_type} onChange={()=>handleChange} name="vendor_type"
           color="pink"
           className="bg-white bg-opacity-50"  placeholder={undefined}        >
-          
-          <Option value="option1">Option 1</Option>
-          <Option value="option2">Option 2</Option>
-        
+          {vendorTypes.map((val,index)=>(
+            <Option value={val._id} key={index}>{val.type}</Option>
+          ))}
         </Select>
-        <Input label="City" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
-        <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Mobile" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-      </CardBody>
-      <CardFooter className="pt-0"  placeholder={undefined}>
-        <Button variant="gradient" fullWidth  placeholder={undefined}>
+        <Input label="City" value={formValues.city} onChange={handleChange} name="city" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
+        <Input label="Email" value={formValues.email} onChange={handleChange} name="email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Password" size="md" value={formValues.password} onChange={handleChange} name="password" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Mobile" value={formValues.phone} onChange={handleChange} name="phone" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Button variant="gradient" fullWidth  placeholder={undefined} type="submit">
           Sign Up
         </Button>
+      </CardBody>
+      
+      </form>
+      <CardFooter className="pt-0"  placeholder={undefined}>
+        
         <Typography variant="small" className="mt-6 flex justify-center" color="white" placeholder={undefined}>
           Already have an account?
           <Link to="/vendor/login">

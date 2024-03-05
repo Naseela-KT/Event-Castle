@@ -8,6 +8,7 @@ import vendorRoutes from "./routes/vendorRoutes"
 import cors from 'cors';
 import session from 'express-session';
 import cookieParser from "cookie-parser"
+import { notFound,errorHandler } from './middlewares/errorMiddleware';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(notFound)
+app.use(errorHandler)
 
 app.use(
     session({

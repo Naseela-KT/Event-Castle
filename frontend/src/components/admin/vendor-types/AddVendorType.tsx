@@ -105,7 +105,7 @@ export default function AddVendorType() {
               }}
               value={formValues.status}
               name="status"
-              onChange={handleChange}
+              onChange={()=>handleChange}
             >
               <Option value="Active">Active</Option>
               <Option value="Non-Active">Non-Active</Option>
