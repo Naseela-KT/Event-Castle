@@ -44,6 +44,7 @@ const AdminNavbar=()=> {
 
  
   return (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100 }}>
     <Navbar className="px-4 lg:px-8 lg:py-2" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
@@ -117,6 +118,7 @@ const AdminNavbar=()=> {
       </MobileNav >
      
     </Navbar>
+    </div>
   );
 }
  export default AdminNavbar

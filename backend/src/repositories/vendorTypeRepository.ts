@@ -18,3 +18,12 @@ export const createVendorType = async (vendorData : Partial<VendorTypeDocument>)
   };
 
 
+  export const findVerndorTypes = async (): Promise<VendorTypeDocument[] | null> => {
+    try {
+      return await VendorType.find();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+

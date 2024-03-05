@@ -6,10 +6,6 @@ import {
   ListItemPrefix
 } from "@material-tailwind/react";
 import {
-
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
@@ -23,6 +19,7 @@ const Sidebar=() =>{
   };
  
   return (
+    <div style={{ position: 'fixed', top: 50, left: 0, height: '100%', zIndex: 100 }}>
     <Card className="h-[calc(100vh-2rem)] fixed-sidebar w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
       <List  placeholder={undefined}>
       <Link to="/admin">
@@ -72,6 +69,7 @@ const Sidebar=() =>{
         </ListItem>
       </List>
     </Card>
+    </div>
   );
 }
 

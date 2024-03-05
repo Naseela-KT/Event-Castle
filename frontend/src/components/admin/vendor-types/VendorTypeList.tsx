@@ -1,8 +1,30 @@
 import {
   Button
 } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
+import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+
+interface VendorType {
+  _id: string;
+  type:string;
+  status:boolean
+}
    
 const VendorTypeList=()=> {
+
+  const [vendorType, setVendorType] = useState<VendorType[]>([]);
+
+  useEffect(() => {
+    axiosInstanceAdmin.get("/vendor-types")
+      .then((response) => {
+        console.log(response)
+        setVendorType(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []); 
+
     return (
         <div className="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border">
@@ -64,22 +86,27 @@ const VendorTypeList=()=> {
               </tr>
             </thead>
             <tbody>
-              <tr >
+              {vendorType.map((type,index)=>(
+                <tr key={index}>
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="flex gap-3">
 
                     <p className="block text-center font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900">
-                      Spotify
+                      {type.type}
                     </p>
                   </div>
                 </td>
         
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="w-max">
-                    <div
+                    {type.status?<div
                       className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
-                      <span className="">Active</span>
-                    </div>
+                      <span className="">ACTIVE</span>
+                    </div>:<div
+                      className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-red-900 uppercase rounded-md select-none whitespace-nowrap bg-red-500/20">
+                      <span className="">Non-ACTIVE</span>
+                    </div>}
+                    
                   </div>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
@@ -89,6 +116,8 @@ const VendorTypeList=()=> {
                   </div>
                 </td>
               </tr>
+              ))}
+              
             </tbody>
           </table>
         </div>

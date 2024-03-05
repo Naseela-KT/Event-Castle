@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { addType } from "../services/vendorTypeService";
+import { addType, getTypes } from "../services/vendorTypeService";
 
 
 export const VendorTypeController = {
@@ -15,5 +15,15 @@ export const VendorTypeController = {
           res.status(500).json({ message: 'Server Error' });
         }
       },
+
+      async getVendorTypes(req:Request,res:Response):Promise<void>{
+        try{
+          const vendorTypes=await getTypes();
+          res.status(200).json(vendorTypes)
+        }catch(error){
+          console.error(error);
+          res.status(500).json({ message: 'Server Error' });
+        }
+      }
 
 }

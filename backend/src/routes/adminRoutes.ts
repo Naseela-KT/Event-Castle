@@ -9,6 +9,7 @@ router.post('/login' , AdminController.Adminlogin);
 router.get('/logout' , AdminController.Adminlogout);
 router.get('/users' , UserController.allUsers);
 router.post('/add-type' , VendorTypeController.addVendorType);
+router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 
 export default router;
 
