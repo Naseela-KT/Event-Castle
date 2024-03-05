@@ -8,9 +8,9 @@ const router = express.Router();
 
 router.post('/login' , AdminController.Adminlogin);
 router.get('/logout' , AdminController.Adminlogout);
-router.get('/users' ,protectAdmin, UserController.allUsers);
-router.post('/add-type' ,protectAdmin, VendorTypeController.addVendorType);
-router.get('/vendor-types' , protectAdmin,VendorTypeController.getVendorTypes);
+router.get('/users' , UserController.allUsers);
+router.post('/add-type' , VendorTypeController.addVendorType);
+router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
 router.patch('/block-unblock' , UserController.Toggleblock)
 
 export default router;

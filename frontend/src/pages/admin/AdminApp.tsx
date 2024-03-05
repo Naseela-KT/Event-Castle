@@ -20,8 +20,7 @@ const AdminApp: React.FC = () => {
         {/* AdminNavbar and Sidebar will be fixed inside the Layout */}
         <AdminNavbar />
         {isAdminSignedIn && <Sidebar />}
-        
-        <div style={{ marginLeft: isAdminSignedIn ? '250px' : '0', transition: 'margin 0.3s' }}>
+        <div style={{ marginLeft: isAdminSignedIn ? '250px' : '35%', transition: 'margin 0.3s',marginTop:'10%' }}>
           <Outlet />
         </div>
       </Layout>

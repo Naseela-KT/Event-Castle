@@ -15,7 +15,7 @@ import {axiosInstance} from '../../api/axiosinstance';
 import {  useSelector,useDispatch } from 'react-redux';
 import { setUserInfo } from "../../redux/slices/UserSlice";
 import UserRootState from '../../redux/rootstate/UserState';
-
+import { validate } from "../../validations/loginVal";
 
 interface FormValues {
   email: string;
@@ -30,6 +30,7 @@ const initialValues: FormValues = {
 const UserLoginForm=()=> {
 
   const [formValues,setFormValues]=useState<FormValues>(initialValues);
+  const [formErrors,setFormErrors]=useState({email:"",password:""})
 
   const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
     const {name,value}=e.target
@@ -51,18 +52,23 @@ const UserLoginForm=()=> {
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
-    axiosInstance.post("/login", formValues)
-    .then((response) => {
-      console.log(response);
-      dispatch(setUserInfo(response.data.userData))
-      navigate("/")
-    })
-    .catch((error) => {
-      console.log('here', error);
-    });
+    const errors=validate(formValues)
+    setFormErrors({ ...formErrors, ...errors });
+    if(Object.values(errors).length===0){
+      axiosInstance.post("/login", formValues)
+      .then((response) => {
+        console.log(response);
+        dispatch(setUserInfo(response.data.userData))
+        navigate("/")
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+    }
+    
   }
   return (
-    <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined} shadow={false}>
+    <Card className="w-96 mt-50 bg-dark"  placeholder={undefined} shadow={false}>
       <CardHeader
         floated={false}
         shadow={false}
@@ -77,8 +83,10 @@ const UserLoginForm=()=> {
      
         <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.email}
           onChange={handleChange} name="email"/>
+           <p style={{color:'red', fontSize: '12px',marginTop:"-10px"}}>{formErrors.email}</p>
         <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.password}
           onChange={handleChange} name="password"/>
+           <p style={{color:'red', fontSize: '12px',marginTop:"-10px"}}>{formErrors.password}</p>
         <div className="ml-2.5">
           <Link to="/forgot-password">
         <Typography variant="small" color="white"  placeholder={undefined} className='text-left'>

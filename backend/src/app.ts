@@ -19,8 +19,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(notFound)
-app.use(errorHandler)
+
 
 app.use(
     session({
@@ -35,6 +34,9 @@ app.use(
 app.use('/api/admin' , adminRoutes);
 app.use('/api/user' , userRoutes);
 app.use('/api/vendor',vendorRoutes)
+
+app.use(notFound)
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT;

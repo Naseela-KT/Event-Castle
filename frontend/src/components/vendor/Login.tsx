@@ -14,6 +14,7 @@ import {axiosInstanceVendor} from '../../api/axiosinstance';
 import {  useSelector,useDispatch } from 'react-redux';
 import { setVendorInfo } from "../../redux/slices/VendorSlice";
 import VendorRootState from '../../redux/rootstate/VendorState';
+import { validate } from "../../validations/loginVal";
 
 
 interface FormValues {
@@ -29,6 +30,7 @@ const initialValues: FormValues = {
 const VendorLoginForm=()=> {
 
   const [formValues,setFormValues]=useState<FormValues>(initialValues);
+  const [formErrors,setFormErrors]=useState({email:"",password:""})
 
   const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
     const {name,value}=e.target
@@ -49,6 +51,9 @@ const VendorLoginForm=()=> {
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
+    const errors=validate(formValues)
+    setFormErrors({ ...formErrors, ...errors });
+    if(Object.values(errors).length===0){
     axiosInstanceVendor.post("/login", formValues)
     .then((response) => {
       console.log(response);
@@ -58,6 +63,7 @@ const VendorLoginForm=()=> {
     .catch((error) => {
       console.log('here', error);
     });
+  }
 
   }
   return (
@@ -76,8 +82,10 @@ const VendorLoginForm=()=> {
      
         <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.email}
           onChange={handleChange} name="email"/>
+          <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.email}</p>
         <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.password}
           onChange={handleChange} name="password"/>
+          <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.password}</p>
         <div className="ml-2.5">
           <Link to="/vendor/forgot-password">
         <Typography variant="small" color="white"  placeholder={undefined} className='text-left'>
