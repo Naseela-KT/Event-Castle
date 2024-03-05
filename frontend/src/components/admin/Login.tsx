@@ -8,7 +8,7 @@ import {
     Button,
 } from "@material-tailwind/react";
 import { useState,ChangeEvent ,FormEvent,useEffect} from 'react';
-import {Link,useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {axiosInstanceAdmin} from '../../api/axiosinstance';
 import {  useSelector,useDispatch } from 'react-redux';
 import { setAdminInfo } from "../../redux/slices/AdminSlice";
@@ -35,7 +35,7 @@ const AdminLogin=()=> {
   }
 
 
-  const admin = useSelector((state : AdminRootState) => state.admin.admindata);
+  const admin = useSelector((state : AdminRootState) => state.admin.isAdminSignedIn);
 
   const navigate = useNavigate();
   const dispatch= useDispatch();
@@ -78,11 +78,8 @@ const AdminLogin=()=> {
         <Input label="Password" size="md" crossOrigin={undefined} color="black" className="bg-white bg-opacity-50" value={formValues.password}
           onChange={handleChange} name="password"/>
         <Button   fullWidth  placeholder={undefined} type='submit' className="bg-gray-700">
-            <Link to="admin/login">
             Login
-          </Link>
         </Button>
-     
       </CardBody>
       </form>
     </Card>

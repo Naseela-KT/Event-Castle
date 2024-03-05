@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findAdminByEmail } from "../repositories/adminRepository";
+import { findAdminByEmail} from "../repositories/adminRepository";
 
 interface LoginResponse {
     token: string;
@@ -26,3 +26,6 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     throw error;
   }
 };
+
+
+

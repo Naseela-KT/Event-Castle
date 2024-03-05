@@ -24,4 +24,6 @@ export const AdminController = {
       res.status(500).json({ message: "server error..." });
     }
   },
+
+  
 };

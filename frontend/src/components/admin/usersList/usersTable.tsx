@@ -1,7 +1,32 @@
 import {
   Button
 } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
+import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  isActive: boolean;
+}
+
 const UsersTable=()=> {
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    axiosInstanceAdmin.get("/users")
+      .then((response) => {
+        console.log(response)
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []); 
+
     return (
         <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border">
@@ -69,18 +94,19 @@ const UsersTable=()=> {
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {users.length > 0 && users.map((user) => (
+              <tr key={user._id}>
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="flex items-center gap-3">
                     <img src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
                       alt="John Michael" className="relative inline-block h-9 w-9 !rounded-full object-cover object-center" />
                     <div className="flex flex-col">
                       <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                        John Michael
+                        {user.name}
                       </p>
                       <p
                         className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70">
-                        john@creative-tim.com
+                        {user.email}
                       </p>
                     </div>
                   </div>
@@ -88,7 +114,7 @@ const UsersTable=()=> {
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="flex flex-col">
                     <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                      9074279784
+                    {user.phone}
                     </p>
                   </div>
                 </td>
@@ -100,59 +126,21 @@ const UsersTable=()=> {
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="w-max">
-                    <div
+                    {user.isActive?<div
                       className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
-                      <span className="">online</span>
-                    </div>
+                      <span className="">Active</span>
+                    </div>:<div
+                      className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-red-900 uppercase rounded-md select-none whitespace-nowrap bg-red-500/20">
+                      <span className="">Blocked</span>
+                    </div>}
                   </div>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
-                <Button  placeholder={undefined} size="sm">Block</Button>
+                  {user.isActive?<Button  placeholder={undefined} size="sm">Block</Button>:<Button  placeholder={undefined} size="sm">Unblock</Button>}
+  
                 </td>
-              </tr>
-              <tr>
-                <td className="p-4 border-b border-blue-gray-50">
-                  <div className="flex items-center gap-3">
-                    <img src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
-                      alt="John Michael" className="relative inline-block h-9 w-9 !rounded-full object-cover object-center" />
-                    <div className="flex flex-col">
-                      <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                        John Michael
-                      </p>
-                      <p
-                        className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70">
-                        john@creative-tim.com
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td className="p-4 border-b border-blue-gray-50">
-                  <div className="flex flex-col">
-                    <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                      9074279784
-                    </p>
-                  </div>
-                </td>
-               
-                <td className="p-4 border-b border-blue-gray-50">
-                  <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    23/04/18
-                  </p>
-                </td>
-                <td className="p-4 border-b border-blue-gray-50">
-                  <div className="w-max">
-                    <div
-                      className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
-                      <span className="">online</span>
-                    </div>
-                  </div>
-                </td>
-            
-                <td className="p-4 border-b border-blue-gray-50">
-                <Button  placeholder={undefined} size="sm">Block</Button>
-                </td>
-             
-              </tr>
+              </tr>))}
+              
             </tbody>
           </table>
         </div>

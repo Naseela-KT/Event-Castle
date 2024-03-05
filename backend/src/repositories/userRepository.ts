@@ -1,5 +1,5 @@
 import User , {UserDocument} from "../models/user";
-
+import { Document } from 'mongoose';
 
 export const createUser = async (userData: Partial<UserDocument>): Promise<UserDocument> => {
     try {
@@ -16,4 +16,11 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       throw error;
     }
   };
-  
+
+  export const findAllUsers = async (): Promise<Document[] | null> => {
+    try {
+      return await User.find({}).exec();
+    } catch (error) {
+      throw error;
+    }
+  }; 

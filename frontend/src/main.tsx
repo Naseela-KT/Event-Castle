@@ -6,7 +6,8 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
+  RouterProvider,
+  
 } from "react-router-dom";
 import { Provider } from 'react-redux';
 import {store,persistor} from './redux/store.ts'

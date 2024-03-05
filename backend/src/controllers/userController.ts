@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login } from "../services/userService";
+import { signup , login, getUsers } from "../services/userService";
 
 export const  UserController = {
 
@@ -37,5 +37,15 @@ export const  UserController = {
             res.status(500).json({message:"Server Error"})
             
         }
-      }
+      },
+
+      async allUsers(req: Request, res: Response): Promise<void>{
+        try{
+          const users = await getUsers();
+          res.status(200).json(users);
+        }catch(error){
+          console.log(error);
+          res.status(500).json({ message: "server error..." });
+        }
+      } 
 };

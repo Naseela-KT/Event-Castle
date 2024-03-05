@@ -44,7 +44,7 @@ const AdminNavbar=()=> {
 
  
   return (
-    <Navbar className="px-4  lg:px-8 lg:py-2" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} >
+    <Navbar className="px-4 lg:px-8 lg:py-2" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
                   as="a"

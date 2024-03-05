@@ -14,6 +14,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import UserState  from '../../redux/rootstate/UserState';
 import {axiosInstance} from '../../api/axiosinstance';
 import { logout } from "../../redux/slices/UserSlice";
+import '../../../public/imgs/event_castle.png'
 
 const UserNavbar=()=> {
   const [openNav, setOpenNav] = React.useState(false);
@@ -117,9 +118,10 @@ const UserNavbar=()=> {
                   as="a"
                   href="#"
                   className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
-          Event Castle
+          <img src="../../../public/imgs/event_castle.png" alt="" />
          
         </Typography>
+        
         <div className="hidden lg:block">{navList}</div>
        
         <div className="relative flex w-full gap-2 md:w-max">

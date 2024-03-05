@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser , findUserByEmail } from '../repositories/userRepository';
+import { createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
 
 interface LoginResponse {
   token: string;
@@ -48,4 +48,13 @@ export const signup = async (email:string ,password:string, name:string , phone:
       } catch (error) {
         throw error;
       }
+}
+
+export const getUsers=async()=>{
+  try {
+    const users=await findAllUsers();
+    return users;
+  } catch (error) {
+    throw error;
+  }
 }
