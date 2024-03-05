@@ -10,6 +10,7 @@ router.get('/logout' , AdminController.Adminlogout);
 router.get('/users' , UserController.allUsers);
 router.post('/add-type' , VendorTypeController.addVendorType);
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
+router.patch('/block-unblock' , UserController.Toggleblock)
 
 export default router;
 

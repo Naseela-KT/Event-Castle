@@ -1,8 +1,10 @@
 import {
   Button
 } from "@material-tailwind/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
 
 interface User {
   _id: string;
@@ -15,6 +17,7 @@ interface User {
 const UsersTable=()=> {
 
   const [users, setUsers] = useState<User[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosInstanceAdmin.get("/users")
@@ -25,7 +28,20 @@ const UsersTable=()=> {
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, []); 
+  }, [users]); 
+
+
+  const handleBlock=(userId:string)=>{
+    axiosInstanceAdmin.patch(`/block-unblock?userId=${userId}`)
+      .then((response) => {
+        console.log(response)
+        toast.success(response.data.message)
+        navigate("/admin/users");
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }
 
     return (
         <div className="relative flex flex-col h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
@@ -136,7 +152,7 @@ const UsersTable=()=> {
                   </div>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
-                  {user.isActive?<Button  placeholder={undefined} size="sm">Block</Button>:<Button  placeholder={undefined} size="sm">Unblock</Button>}
+                  {user.isActive?<Button  placeholder={undefined} size="sm" onClick={()=>handleBlock(user._id)}>Block</Button>:<Button  placeholder={undefined} onClick={()=>handleBlock(user._id)} size="sm">Unblock</Button>}
   
                 </td>
               </tr>))}

@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes"
 import vendorRoutes from "./routes/vendorRoutes"
 import cors from 'cors';
 import session from 'express-session';
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(
       cookie: { secure: false }
     })
   );
-
+  app.use(cookieParser());
 
 app.use('/api/admin' , adminRoutes);
 app.use('/api/user' , userRoutes);

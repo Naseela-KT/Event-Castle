@@ -1,4 +1,3 @@
-'use client';
 import {
   Card,
   CardHeader,
@@ -9,19 +8,59 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {Link,useNavigate} from 'react-router-dom'
-import { useEffect} from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {  useSelector } from 'react-redux';
 import UserRootState from '../../redux/rootstate/UserState';
+import { axiosInstance } from "../../api/axiosinstance";
+import {toast} from "react-toastify"
+
+interface FormValues {
+  email: string;
+  password: string;
+  name:string;
+  phone:number;
+}
+
+const initialValues: FormValues = {
+  email: '',
+  password: '',
+  name:'',
+  phone:0
+};
 
 const UserSignupForm=()=> {
   const user = useSelector((state : UserRootState) => state.user.userdata);
   const navigate = useNavigate();
+
+  const [formValues,setFormValues]=useState<FormValues>(initialValues);
+
+  const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
+    const {name,value}=e.target
+    setFormValues({...formValues,[name]:value})
+  }
+
   
   useEffect(() => {
     if(user) {
       navigate('/');
     }
   }, []) 
+
+  const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    console.log(formValues)
+    axiosInstance.post("/signup", formValues)
+    .then((response) => {
+      if(response.data.email){
+        toast.warn(response.data.message);
+        navigate("/verify")
+      }
+      
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
+  }
 
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined}  shadow={false}>
@@ -34,16 +73,20 @@ const UserSignupForm=()=> {
           User - Sign Up
         </Typography>
       </CardHeader>
+      <form onSubmit={handleSubmit}>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
-        <Input label="Name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
-        <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Name" value={formValues.name} onChange={handleChange} name="name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
+        <Input label="Email" value={formValues.email} onChange={handleChange} name="email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Phone" value={formValues.phone} onChange={handleChange} name="phone" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Password" value={formValues.password} onChange={handleChange} name="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Confirm Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-      </CardBody>
-      <CardFooter className="pt-0"  placeholder={undefined}>
-        <Button variant="gradient" fullWidth  placeholder={undefined}>
+        <Button variant="gradient" fullWidth  placeholder={undefined} type="submit">
           Sign Up
         </Button>
+      </CardBody>
+      </form>
+      <CardFooter className="pt-0"  placeholder={undefined}>
+        
         <Typography variant="small" className="mt-6 flex justify-center" color="white" placeholder={undefined}>
           Already have an account?
           <Link to="/login">

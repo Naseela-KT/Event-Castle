@@ -6,6 +6,8 @@ import Layout from "../../components/Layout";
 import Sidebar from "../../components/admin/Sidebar";
 import { useSelector } from 'react-redux';
 import AdminState  from '../../redux/rootstate/AdminState';
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const AdminApp: React.FC = () => {
   const role = 'admin';
@@ -14,6 +16,7 @@ const AdminApp: React.FC = () => {
   return (
     <>
       <Layout role={role}>
+        <ToastContainer/>
         {/* AdminNavbar and Sidebar will be fixed inside the Layout */}
         <AdminNavbar />
         {isAdminSignedIn && <Sidebar />}
