@@ -28,6 +28,7 @@ import VendorsList from './pages/admin/VendorsList.tsx';
 import VendorTypes from './pages/admin/VendorTypes.tsx';
 import UsersList from './pages/admin/UsersList.tsx';
 import VendorHome from './pages/vendor/VendorHome.tsx';
+import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -47,11 +48,14 @@ const router = createBrowserRouter(
     </Route>
 
     <Route path="/admin" element={<AdminApp/>}>
-      <Route index={true} path="/admin" element={<Dashboard />} />
-      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route index={true} path="/admin" element={<AdminLogin />} />
+      {/* Admin Private Routes */}
+      <Route path="" element={<AdminPrivateRoute/>}>
+      <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/vendors" element={<VendorsList />} />
       <Route path="/admin/vendor-types" element={<VendorTypes />} />
       <Route path="/admin/users" element={<UsersList />} />
+      </Route>
     </Route>
 
 

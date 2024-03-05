@@ -43,7 +43,7 @@ const AdminLogin=()=> {
 
   useEffect(() => {
     if(admin) {
-      navigate('/admin');
+      navigate('/admin/dashboard');
     }
   }, []) 
 
@@ -55,7 +55,7 @@ const AdminLogin=()=> {
     axiosInstanceAdmin.post("/login", formValues)
     .then((response) => {
       dispatch(setAdminInfo(response.data.adminData))
-      navigate("/admin")
+      navigate("/admin/dashboard")
     })
     .catch((error) => {
       console.log('here', error);

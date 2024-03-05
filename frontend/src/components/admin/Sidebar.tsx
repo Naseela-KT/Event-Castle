@@ -22,7 +22,7 @@ const Sidebar=() =>{
     <div style={{ position: 'fixed', top: 50, left: 0, height: '100%', zIndex: 100 }}>
     <Card className="h-[calc(100vh-2rem)] fixed-sidebar w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
       <List  placeholder={undefined}>
-      <Link to="/admin">
+      <Link to="/admin/dashboard">
         <ListItem  placeholder={undefined} style={{ color: 'white' }}>
           <ListItemPrefix  placeholder={undefined}>
           <i className="fa-solid fa-table-columns" color="white"></i>
