@@ -29,20 +29,23 @@ import VendorTypes from './pages/admin/VendorTypes.tsx';
 import UsersList from './pages/admin/UsersList.tsx';
 import VendorHome from './pages/vendor/VendorHome.tsx';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
+import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
+import VendorPrivateRoute from './components/vendor/VendorPrivateRoute.tsx';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
   createRoutesFromElements(<>
     <Route path="/" element={<App/>}>
-      <Route index={true} path="/" element={<HomePage />} />
+    <Route index={true}  path="/" element={<HomePage />} />
       <Route path="/login" element={<UserLoginForm />} />
       <Route path="/signup" element={<UserSignupForm />} />
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      {/* Private Route */}
-      <Route path="" >
+      {/* User Private Routes */}
+      <Route path="" element={<UserPrivateRoute/>}>
+      
       <Route path="/profile" />
       </Route>
     </Route>
@@ -66,6 +69,8 @@ const router = createBrowserRouter(
       <Route path="/vendor/verify" element={<VerifyEmail />} />
       <Route path="/vendor/forgot-password" element={<ForgotPassword />} />
       <Route path="/vendor/reset-password" element={<ResetPassword />} />
+      {/* Admin Private Routes */}
+      <Route path="" element={<VendorPrivateRoute/>}></Route>
     </Route>
     </>
   )

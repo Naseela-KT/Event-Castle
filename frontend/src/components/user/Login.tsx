@@ -68,7 +68,7 @@ const UserLoginForm=()=> {
     
   }
   return (
-    <Card className="w-96 mt-50 bg-dark"  placeholder={undefined} shadow={false}>
+    <Card className="w-96 mt-50 bg-dark m-auto"  placeholder={undefined} shadow={false}>
       <CardHeader
         floated={false}
         shadow={false}
