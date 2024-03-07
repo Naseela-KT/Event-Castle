@@ -2,17 +2,31 @@ import { Request , Response } from "express";
 import { signup , login, getUsers,toggleUserBlock } from "../services/userService";
 import nodemailer from 'nodemailer';
 
+import { Session } from 'express-session';
+
+interface UserSession {
+  email: string;
+  password: string;
+  name: string;
+  phone: number;
+  otpCode: string;
+}
+
+declare module 'express-session' {
+  interface Session {
+    user: UserSession;
+  }
+}
+
+
 export const  UserController = {
 
-  // Import necessary dependencies and modules
 
-// ... other imports ...
 
 async UserSignup(req: Request, res: Response): Promise<void> {
   try {
-
     const { email , password , name , phone } = req.body;
-   
+    console.log(req.body)
 
     const otpCode: string = Math.floor(1000 + Math.random() * 9000).toString();
     
@@ -39,17 +53,15 @@ async UserSignup(req: Request, res: Response): Promise<void> {
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
 
- 
-    (req.session as any).userData = {
+    req.session.user = {
         email: email,
         password: password,
         name: name,
         phone: phone,
-        otpCode: otpCode,
-      
+        otpCode: otpCode
     };
-
-    console.log(req.session)
+    console.log("signup.................................")
+    console.log(req.session.user.email)
     res.status(200).json({ "message":"OTP send to email for verification.." , "email":email });
     
   } catch (error) {
@@ -61,14 +73,18 @@ async UserSignup(req: Request, res: Response): Promise<void> {
 
 async verifyOtp(req:Request , res: Response):Promise<void>{
   try {
+    console.log("user "+req.session.user)
     const otp = req.body.otp;
-    const userData = (req.session as any)?.userData; 
+    console.log("otp.............."+otp)
+    console.log(req.session)
+    const userData = req.session.user; 
           console.log("session stored userdata :", userData)
           const email = userData.email;
           const password = userData.password;
           const name = userData.name;
           const phone = userData.phone;
-          const otpCode = userData.otpCode
+          const otpCode = userData.otpCode;
+          console.log("session.............")
     if(otp === otpCode){
     const user = await signup(email , password , name , phone );
     res.status(201).json(user);

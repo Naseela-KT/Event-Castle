@@ -55,7 +55,6 @@ const UserSignupForm=()=> {
         toast.warn(response.data.message);
         navigate("/verify")
       }
-      
     })
     .catch((error) => {
       console.log('here', error);
@@ -78,8 +77,8 @@ const UserSignupForm=()=> {
         <Input label="Name" value={formValues.name} onChange={handleChange} name="name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
         <Input label="Email" value={formValues.email} onChange={handleChange} name="email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Phone" value={formValues.phone} onChange={handleChange} name="phone" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Password" value={formValues.password} onChange={handleChange} name="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Confirm Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Password" type="password" value={formValues.password} onChange={handleChange} name="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Confirm Password" type="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Button variant="gradient" fullWidth  placeholder={undefined} type="submit">
           Sign Up
         </Button>

@@ -84,7 +84,7 @@ const VendorLoginForm=()=> {
           onChange={handleChange} name="email"/>
           <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.email}</p>
         <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.password}
-          onChange={handleChange} name="password"/>
+          onChange={handleChange} name="password" type="password"/>
           <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.password}</p>
         <div className="ml-2.5">
           <Link to="/vendor/forgot-password">

@@ -80,12 +80,11 @@ const UserLoginForm=()=> {
       </CardHeader>
       <form onSubmit={handleSubmit}>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
-     
         <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.email}
           onChange={handleChange} name="email"/>
            <p style={{color:'red', fontSize: '12px',marginTop:"-10px"}}>{formErrors.email}</p>
         <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.password}
-          onChange={handleChange} name="password"/>
+          onChange={handleChange} name="password" type="password"/>
            <p style={{color:'red', fontSize: '12px',marginTop:"-10px"}}>{formErrors.password}</p>
         <div className="ml-2.5">
           <Link to="/forgot-password">

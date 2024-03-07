@@ -3,9 +3,10 @@ import jwt from 'jsonwebtoken';
 import { createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 
+
 interface LoginResponse {
   token: string;
-  userData: object; 
+  userData: UserDocument; 
   message: string;
 }
 
@@ -43,7 +44,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
         throw new Error('Incorrect password..');
         }
         const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-        return {token,userData:existingUser,message:"Successfully logged in.."};
+        return {token:token,userData:existingUser,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;

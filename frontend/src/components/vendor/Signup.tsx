@@ -113,8 +113,8 @@ const VendorSignupForm=()=> {
         </Select>
         <Input label="City" value={formValues.city} onChange={handleChange} name="city" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
         <Input label="Email" value={formValues.email} onChange={handleChange} name="email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
-        <Input label="Password" size="md" value={formValues.password} onChange={handleChange} name="password" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Mobile" value={formValues.phone} onChange={handleChange} name="phone" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Password" type="password" size="md" value={formValues.password} onChange={handleChange} name="password" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Button variant="gradient" fullWidth  placeholder={undefined} type="submit">
           Sign Up
         </Button>
