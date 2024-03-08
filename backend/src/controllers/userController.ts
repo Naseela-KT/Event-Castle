@@ -50,7 +50,7 @@ async UserSignup(req: Request, res: Response): Promise<void> {
         email: email,
         password: password,
         name: name,
-        phone: phone,
+        phone: parseInt(phone),
         otpCode: otpCode
     };
     

@@ -8,12 +8,13 @@ import {
   Input,
     Button,
 } from "@material-tailwind/react";
-import { useState,ChangeEvent ,FormEvent,useEffect} from 'react';
+import { useEffect} from 'react';
 import {Link,useNavigate} from 'react-router-dom'
 import {axiosInstanceVendor} from '../../api/axiosinstance';
 import {  useSelector,useDispatch } from 'react-redux';
 import { setVendorInfo } from "../../redux/slices/VendorSlice";
 import VendorRootState from '../../redux/rootstate/VendorState';
+import { useFormik } from "formik";
 import { validate } from "../../validations/loginVal";
 
 
@@ -29,14 +30,6 @@ const initialValues: FormValues = {
 
 const VendorLoginForm=()=> {
 
-  const [formValues,setFormValues]=useState<FormValues>(initialValues);
-  const [formErrors,setFormErrors]=useState({email:"",password:""})
-
-  const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
-    const {name,value}=e.target
-    setFormValues({...formValues,[name]:value})
-  }
-
   const vendor = useSelector((state : VendorRootState) => state.vendor.vendordata);
 
   const navigate = useNavigate();
@@ -48,24 +41,23 @@ const VendorLoginForm=()=> {
     }
   }, []) 
 
-  const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
-    e.preventDefault();
-    console.log(formValues)
-    const errors=validate(formValues)
-    setFormErrors({ ...formErrors, ...errors });
-    if(Object.values(errors).length===0){
-    axiosInstanceVendor.post("/login", formValues)
-    .then((response) => {
-      console.log(response);
-      dispatch(setVendorInfo(response.data.vendorData))
-      navigate("/vendor")
-    })
-    .catch((error) => {
-      console.log('here', error);
-    });
-  }
+  const formik = useFormik({
+    initialValues,
+    validate,
+    onSubmit: (values) => {
+      axiosInstanceVendor
+        .post("/login", values)
+        .then((response) => {
+          console.log(response);
+          dispatch(setVendorInfo(response.data.vendorData));
+          navigate("/Vendor");
+        })
+        .catch((error) => {
+          console.log("here", error);
+        });
+    },
+  });
 
-  }
   return (
     <Card className="w-96 mt-50 m-auto bg-dark"  placeholder={undefined} shadow={false}>
       <CardHeader
@@ -77,15 +69,17 @@ const VendorLoginForm=()=> {
           Vendor - Sign In
         </Typography>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
      
-        <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.email}
-          onChange={handleChange} name="email"/>
-          <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.email}</p>
-        <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" value={formValues.password}
-          onChange={handleChange} name="password" type="password"/>
-          <p style={{color:'red', fontSize: '12px',marginTop:"-12px"}}>{formErrors.password}</p>
+        <Input label="Email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" 
+         onChange={formik.handleChange}
+         value={formik.values.email} name="email"/>
+          {formik.errors.email ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.email}</p> : null}
+        <Input label="Password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" 
+         onChange={formik.handleChange}
+         value={formik.values.password} name="password" type="password"/>
+ {formik.errors.email ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.password}</p> : null}
         <div className="ml-2.5">
           <Link to="/vendor/forgot-password">
         <Typography variant="small" color="white"  placeholder={undefined} className='text-left'>
