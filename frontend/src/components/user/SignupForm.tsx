@@ -49,11 +49,11 @@ const UserSignupForm=()=> {
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
-    axiosInstance.post("/signup", formValues)
+    axiosInstance.post("/signup", formValues,{withCredentials:true})
     .then((response) => {
       if(response.data.email){
         toast.warn(response.data.message);
-        navigate("/verify")
+        navigate('/verify');
       }
     })
     .catch((error) => {
@@ -75,7 +75,7 @@ const UserSignupForm=()=> {
       <form onSubmit={handleSubmit}>
       <CardBody className="flex flex-col gap-4"  placeholder={undefined}>
         <Input label="Name" value={formValues.name} onChange={handleChange} name="name" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
-        <Input label="Email" value={formValues.email} onChange={handleChange} name="email" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
+        <Input label="Email" size="md" value={formValues.email} onChange={handleChange} name="email" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50" />
         <Input label="Phone" value={formValues.phone} onChange={handleChange} name="phone" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Password" type="password" value={formValues.password} onChange={handleChange} name="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>
         <Input label="Confirm Password" type="password" size="md" crossOrigin={undefined} color="pink" className="bg-white bg-opacity-50"/>

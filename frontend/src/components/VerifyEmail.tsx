@@ -7,11 +7,12 @@ import {
     Button,
 } from "@material-tailwind/react";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import UserRootState from "../redux/rootstate/UserState";
-import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../api/axiosinstance";
+import { useDispatch } from "react-redux";
+// import UserRootState from "../redux/rootstate/UserState";
+import { useNavigate,useLocation  } from "react-router-dom";
+import { axiosInstance, axiosInstanceVendor } from "../api/axiosinstance";
 import { setUserInfo } from "../redux/slices/UserSlice";
+import { setVendorInfo } from "../redux/slices/VendorSlice";
 import {toast} from "react-toastify"
 
 interface FormValues {
@@ -24,6 +25,7 @@ const initialValues: FormValues = {
 
 const VerifyEmail=()=> {
   
+  const location = useLocation();
   const [formValues,setFormValues]=useState<FormValues>(initialValues);
 
   const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
@@ -32,21 +34,33 @@ const VerifyEmail=()=> {
   }
 
   
-  const user = useSelector((state : UserRootState) => state.user.userdata);
+  // const user = useSelector((state : UserRootState) => state.user.userdata);
 
   const navigate = useNavigate();
   const dispatch= useDispatch();
 
   useEffect(() => {
-    if(user) {
-      navigate('/');
-    }
+    // if(user) {
+    //   navigate('/');
+    // }
+    console.log(location.pathname);
   }, []) 
 
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     console.log(formValues)
-    axiosInstance.post("/verifyOtp", formValues)
+    {location.pathname==="/vendor/verify"?axiosInstanceVendor.post("/verify", formValues,{withCredentials:true})
+    .then((response) => {
+      console.log(response);
+      dispatch(setVendorInfo(response.data.vendor))
+      toast.success("Successfully registered..!");
+      navigate("/")
+    })
+    .catch((error) => {
+      toast.error(error.message);
+      console.log('here', error);
+    }):
+    axiosInstance.post("/verify", formValues,{withCredentials:true})
     .then((response) => {
       console.log(response);
       dispatch(setUserInfo(response.data.user))
@@ -56,7 +70,8 @@ const VerifyEmail=()=> {
     .catch((error) => {
       toast.error(error.message);
       console.log('here', error);
-    });
+    })}
+    
   }
 
   return (

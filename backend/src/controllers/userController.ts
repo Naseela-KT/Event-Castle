@@ -2,8 +2,6 @@ import { Request , Response } from "express";
 import { signup , login, getUsers,toggleUserBlock } from "../services/userService";
 import nodemailer from 'nodemailer';
 
-import { Session } from 'express-session';
-
 interface UserSession {
   email: string;
   password: string;
@@ -29,9 +27,6 @@ async UserSignup(req: Request, res: Response): Promise<void> {
     console.log(req.body)
 
     const otpCode: string = Math.floor(1000 + Math.random() * 9000).toString();
-    
-    
-
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -42,14 +37,12 @@ async UserSignup(req: Request, res: Response): Promise<void> {
             pass: process.env.USER_PASSWORD,
         },
     });
-
     const mailOptions = {
         from: process.env.USER_NAME,
         to: email,
         subject: "Verification Code",
         text: `Your OTP code is: ${otpCode}`,
     };
-
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.response);
 
@@ -60,8 +53,9 @@ async UserSignup(req: Request, res: Response): Promise<void> {
         phone: phone,
         otpCode: otpCode
     };
-    console.log("signup.................................")
-    console.log(req.session.user.email)
+    
+    console.log("signup..")
+    console.log(req.session)
     res.status(200).json({ "message":"OTP send to email for verification.." , "email":email });
     
   } catch (error) {

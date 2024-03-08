@@ -27,3 +27,6 @@ export const getTypes = async ()=> {
 
 
 
+
+
+

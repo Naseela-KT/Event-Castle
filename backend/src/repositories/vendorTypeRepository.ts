@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import VendorType , {VendorTypeDocument} from "../models/vendorType";
 
 export const createVendorType = async (vendorData : Partial<VendorTypeDocument>): Promise<VendorTypeDocument> => {
@@ -21,6 +22,15 @@ export const createVendorType = async (vendorData : Partial<VendorTypeDocument>)
   export const findVerndorTypes = async (): Promise<VendorTypeDocument[] | null> => {
     try {
       return await VendorType.find();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  export const findVerndorIdByType = async (type:string): Promise<VendorTypeDocument | null> => {
+    try {
+      const data=await VendorType.findOne({type:type});
+      return data;
     } catch (error) {
       throw error;
     }

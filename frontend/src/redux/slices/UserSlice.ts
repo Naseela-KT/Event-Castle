@@ -29,7 +29,6 @@ const initialState :UserState ={
         state.userdata = null;
         state.isUserSignedIn=false;
     }
-
     }
 })
 

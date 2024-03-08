@@ -6,32 +6,36 @@ import userRoutes from "./routes/userRoutes";
 import vendorRoutes from "./routes/vendorRoutes";
 import cors from 'cors';
 import session from 'express-session';
+import { RequestHandler } from 'express';
 
 dotenv.config();
 connectDB();
 
 const app = express();
 
+
 app.use(cors({
   origin:"http://localhost:5000",
   credentials:true
 }));
 
+const sessionMiddleware: RequestHandler = session({
+  secret: 'cfcyygyv',
+  saveUninitialized: true,
+  resave:false,
+  cookie:{
+    secure:false,
+    httpOnly:true,
+    maxAge:24*60*60*1000,
+    sameSite:"lax"
+  }
+});
+
+app.use(sessionMiddleware)
+
 
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET!,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: false,
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite:'lax'
-    }
-  })
-);
 
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);

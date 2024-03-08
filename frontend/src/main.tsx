@@ -14,7 +14,7 @@ import {store,persistor} from './redux/store.ts'
 import { PersistGate } from 'redux-persist/integration/react';
 import HomePage from './pages/HomePage.tsx'
 import UserLoginForm from './components/user/Login.tsx';
-import UserSignupForm from './components/user/Signup.tsx'
+import UserSignupForm from './components/user/SignupForm.tsx';
 import VerifyEmail from './components/VerifyEmail.tsx';
 import ForgotPassword from './components/ForgotPassword.tsx';
 import ResetPassword from './components/ResetPassword.tsx'
@@ -31,6 +31,7 @@ import VendorHome from './pages/vendor/VendorHome.tsx';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
 import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
 import VendorPrivateRoute from './components/vendor/VendorPrivateRoute.tsx';
+import DefaultTable from './pages/user/Sample.tsx';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -43,6 +44,7 @@ const router = createBrowserRouter(
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path='/sample' element={<DefaultTable/>}/>
       {/* User Private Routes */}
       <Route path="" element={<UserPrivateRoute/>}>
       

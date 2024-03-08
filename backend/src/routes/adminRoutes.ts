@@ -2,7 +2,6 @@ import express from "express";
 import { AdminController } from "../controllers/adminController";
 import { UserController } from "../controllers/userController";
 import { VendorTypeController } from "../controllers/vendorTypeController";
-import { protectAdmin } from "../middlewares/adminAuthMiddleware";
 const router = express.Router();
 
 

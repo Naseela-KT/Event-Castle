@@ -33,8 +33,7 @@ export const VendorController = {
       const info = await transporter.sendMail(mailOptions);
       console.log("Email sent: " + info.response);
 
-      (req.session as any).vendorData = {
-        vendorsignupData: {
+      (req.session as any).vendor = {
           email: email,
           password: password,
           name: name,
@@ -42,7 +41,6 @@ export const VendorController = {
           city:city,
           otpCode: otpCode,
           vendor_type:vendor_type
-        },
       };
 
      
@@ -85,7 +83,7 @@ export const VendorController = {
       async verifyOtp(req:Request , res: Response):Promise<void>{
         try {
           const otp = req.body.otp;
-          const vendorData = (req.session as any).vendorData.vendorsignupData; 
+          const vendorData = (req.session as any).vendor; 
           console.log("session stored vendordata :", vendorData)
           const email = vendorData.email;
           const password = vendorData.password;
@@ -96,7 +94,7 @@ export const VendorController = {
           const vendor_type=vendorData.vendor_type
           if(otp === otpCode){
            const vendor = await signup(email , password , name , phone , city,vendor_type);
-          res.status(201).json({ "vendor  created" : vendor });
+          res.status(201).json(vendor);
           }else{
             res.status(400).json({ error:"Invalid otp !!"});
           }
