@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
+import { CustomError } from '../controllers/userController';
 
 
 interface LoginResponse {
@@ -31,25 +32,48 @@ export const signup = async (email:string ,password:string, name:string , phone:
   
 
 
-  export const login = async (email:string , password : string): Promise<LoginResponse> =>{
-    try {
-        const existingUser = await findUserByEmail(email);
-        if (!existingUser) {
-          throw new Error('User not exists..');
-        }
+//   export const login = async (email:string , password : string): Promise<LoginResponse> =>{
+//     try {
+//         const existingUser = await findUserByEmail(email);
+//         if (!existingUser) {
+//           throw new Error('User not exists..');
+//         }
     
-        const passwordMatch = await bcrypt.compare( password, existingUser.password);
+//         const passwordMatch = await bcrypt.compare( password, existingUser.password);
 
-        if (!passwordMatch) {
-        throw new Error('Incorrect password..');
-        }
-        const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-        return {token:token,userData:existingUser,message:"Successfully logged in.."};
+//         if (!passwordMatch) {
+//         throw new Error('Incorrect password..');
+//         }
+//         const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+//         return {token:token,userData:existingUser,message:"Successfully logged in.."};
         
-      } catch (error) {
-        throw error;
-      }
+//       } catch (error) {
+//         throw error;
+//       }
+// }
+export const login = async (email: string, password: string): Promise<LoginResponse> => {
+  try {
+    const existingUser = await findUserByEmail(email);
+    if (!existingUser) {
+      throw new CustomError('User not exists..', 404); // CustomError includes a status code
+    }
+
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+
+    if (!passwordMatch) {
+      throw new CustomError('Incorrect password..', 401);
+    }
+
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return { token: token, userData: existingUser, message: 'Successfully logged in..' };
+
+  } catch (error) {
+    throw error; // Let other errors propagate
+  }
 }
+
+
+
 
 export const getUsers=async()=>{
   try {

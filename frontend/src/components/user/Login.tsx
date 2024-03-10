@@ -17,6 +17,7 @@ import { setUserInfo } from "../../redux/slices/UserSlice";
 import UserRootState from "../../redux/rootstate/UserState";
 import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 
 interface FormValues {
   email: string;
@@ -55,6 +56,7 @@ const UserLoginForm = () => {
           navigate("/");
         })
         .catch((error) => {
+          toast.error(error.response.data.message)
           console.log("here", error);
         });
     },
