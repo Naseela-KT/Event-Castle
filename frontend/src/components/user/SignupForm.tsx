@@ -7,16 +7,16 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Link,useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserRootState from "../../redux/rootstate/UserState";
 import { axiosInstance } from "../../api/axiosinstance";
 import { toast } from "react-toastify";
-import { validate } from "../../validations/user/registerVal";
-import { useFormik } from "formik";
+import { validate } from "../../validations/user/userRegisterVal";
 
-interface FormValues {
+
+interface UserFormValues {
   email: string;
   password: string;
   name: string;
@@ -24,7 +24,7 @@ interface FormValues {
   confirm_password: string;
 }
 
-const initialValues: FormValues = {
+const initialValues: UserFormValues = {
   email: "",
   password: "",
   name: "",
@@ -34,7 +34,10 @@ const initialValues: FormValues = {
 
 const UserSignupForm = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
-  const navigate = useNavigate();
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState<UserFormValues>(initialValues);
+
+  const navigate=useNavigate()
 
   useEffect(() => {
     if (user) {
@@ -42,12 +45,21 @@ const UserSignupForm = () => {
     }
   }, []);
 
-  const formik = useFormik({
-    initialValues,
-    validate,
-    onSubmit: (values) => {
+  const handleChange = (e: { target: { name: string; value: string; }; }) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    const errors = validate({ ...formValues, [name]: value });
+    setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
+  };
+
+  const submitHandler = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const errors = validate(formValues);
+    setFormErrors(errors)
+    console.log(Object.values(errors))
+    if (Object.values(errors).every((error) => error === "")) {
       axiosInstance
-        .post("/signup", values, { withCredentials: true })
+        .post("/signup", formValues, { withCredentials: true })
         .then((response) => {
           console.log(response);
           if (response.data.email) {
@@ -58,8 +70,8 @@ const UserSignupForm = () => {
         .catch((error) => {
           console.log("here", error);
         });
-    },
-  });
+    }
+  };
 
   return (
     <Card
@@ -78,65 +90,100 @@ const UserSignupForm = () => {
           User - Sign Up
         </Typography>
       </CardHeader>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={submitHandler}>
         <CardBody className="flex flex-col gap-4" placeholder={undefined}>
           <Input
             label="Name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
+            onChange={handleChange}
+            value={formValues.name}
             name="name"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
-           {formik.errors.name ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.name}</p> : null}
+          {formErrors.name ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.name}
+            </p>
+          ) : null}
           <Input
             label="Email"
             size="md"
-            onChange={formik.handleChange}
-            value={formik.values.email}
+            onChange={handleChange}
+            value={formValues.email}
             name="email"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
-           {formik.errors.email ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.email}</p> : null}
+          {formErrors.email ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.email}
+            </p>
+          ) : null}
           <Input
             label="Phone"
-            onChange={formik.handleChange}
-            value={formik.values.phone}
+            onChange={handleChange}
+            value={formValues.phone}
             name="phone"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
-           {formik.errors.phone ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.phone}</p> : null}
+          {formErrors.phone ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.phone}
+            </p>
+          ) : null}
           <Input
             label="Password"
             type="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
+            onChange={handleChange}
+            value={formValues.password}
             name="password"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
-           {formik.errors.password ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.password}</p> : null}
+          {formErrors.password ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.password}
+            </p>
+          ) : null}
           <Input
             label="Confirm Password"
             type="password"
             size="md"
             crossOrigin={undefined}
             color="pink"
-            onChange={formik.handleChange}
-            value={formik.values.confirm_password}
+            onChange={handleChange}
+            value={formValues.confirm_password}
             name="confirm_password"
             className="bg-white bg-opacity-50"
           />
-           {formik.errors.confirm_password ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.confirm_password}</p> : null}
+          {formErrors.confirm_password ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.confirm_password}
+            </p>
+          ) : null}
           <Button
             variant="gradient"
             fullWidth

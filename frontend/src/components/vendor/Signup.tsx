@@ -10,10 +10,14 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
 import { axiosInstanceVendor } from "../../api/axiosinstance";
 import { toast } from "react-toastify";
+import { validate } from "../../validations/vendor/registerVal";
+
+
+
 
 interface VendorType {
   _id: string;
@@ -21,30 +25,59 @@ interface VendorType {
   status: boolean;
 }
 
-interface FormValues {
+interface VendorFormValues {
   name: string;
   vendor_type: string;
   email: string;
   password: string;
   city: string;
-  phone: number;
+  phone: string;
 }
 
-const initialValues: FormValues = {
+// interface VendorFormErrors {
+//   name: string;
+//   email: string;
+//   password: string;
+//   city: string;
+//   phone: string;
+// }
+
+const initialValues: VendorFormValues = {
   name: "",
   vendor_type: "",
   email: "",
   password: "",
   city: "",
-  phone: 0,
+  phone: "",
 };
 
 const VendorSignupForm = () => {
   const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState<VendorFormValues>({
+    name: "",
+  email: "",
+  password: "",
+  city: "",
+  phone: "",
+  vendor_type: "",
+  });
 
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState<FormValues>(initialValues);
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
+  ) => {
+    if (typeof e === "string") {
+      setFormValues({ ...formValues, vendor_type: e });
+    } else {
+      const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
+      setFormValues({ ...formValues, [name]: value });
+      const errors = validate({ ...formValues, [name]: value });
+      setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
+    }
+  };
+  
 
   useEffect(() => {
     axiosInstanceVendor
@@ -59,34 +92,27 @@ const VendorSignupForm = () => {
   }, []);
 
 
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
-  ) => {
-    if (typeof e === "string") {
-      setFormValues({ ...formValues, vendor_type: e });
-      console.log("Selected vendor_type:", e);
-    } else {
-      const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
-      setFormValues({ ...formValues, [name]: value });
-    }
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(formValues);
-    axiosInstanceVendor.post("/signup", formValues,{withCredentials:true})
-    .then((response) => {
-      if(response.data){
-        console.log(response.data)
-        toast.warn(response.data.message);
-        navigate("/vendor/verify")
-      }
-
-    })
-    .catch((error) => {
-      console.log('here', error);
-    });
+    const errors = validate(formValues);
+    setFormErrors(errors);
+    console.log(errors);
+    console.log(Object.values(errors))
+    if (Object.values(errors).every((error) => error === "")) {
+      console.log(formValues)
+      axiosInstanceVendor
+        .post("/signup", formValues, { withCredentials: true })
+        .then((response) => {
+          console.log(response);
+          if (response.data.email) {
+            toast.warn(response.data.message);
+            navigate("/verify");
+          }
+        })
+        .catch((error) => {
+          console.log("here", error);
+        });
+    }
   };
 
   return (
@@ -106,74 +132,128 @@ const VendorSignupForm = () => {
           Vendor - Sign Up
         </Typography>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={submitHandler}>
         <CardBody className="flex flex-col gap-4" placeholder={undefined}>
           <Input
             label="Name"
-            value={formValues.name}
             onChange={handleChange}
+            value={formValues.name}
             name="name"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
-           <Select
+          {formErrors.name ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.name}
+            </p>
+          ) : null}
+
+          <Select
             label="Vendor Type"
             size="md"
-            value={vendorTypes.find((type) => type._id === formValues.vendor_type)?.type}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => {
+              if(e){
+                handleChange(e)
+              }
+            }}
+            value={formValues.vendor_type}
             name="vendor_type"
             color="pink"
-            className="bg-white bg-opacity-50"  placeholder={undefined}>
-      {vendorTypes.map((val, index) => (
-        <Option value={val.type} key={index}>
-          {val.type}
-        </Option>
-      ))}
-
-    </Select>
+            className="bg-white bg-opacity-50"
+            placeholder={undefined}
+          >
+            {vendorTypes.map((val, index) => (
+              <Option value={val.type} key={index}>
+                {val.type}
+              </Option>
+            ))}
+          </Select>
+          {formErrors.vendor_type ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.vendor_type}
+            </p>
+          ) : null}
           <Input
             label="City"
-            value={formValues.city}
             onChange={handleChange}
+            value={formValues.city}
             name="city"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
+          {formErrors.city ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.city}
+            </p>
+          ) : null}
           <Input
             label="Email"
-            value={formValues.email}
             onChange={handleChange}
+            value={formValues.email}
             name="email"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
+          {formErrors.email ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.email}
+            </p>
+          ) : null}
           <Input
             label="Mobile"
-            value={formValues.phone}
             onChange={handleChange}
+            value={formValues.phone}
             name="phone"
             size="md"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
+          {formErrors.phone ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.phone}
+            </p>
+          ) : null}
           <Input
             label="Password"
             type="password"
             size="md"
-            value={formValues.password}
             onChange={handleChange}
+            value={formValues.password}
             name="password"
             crossOrigin={undefined}
             color="pink"
             className="bg-white bg-opacity-50"
           />
+          {formErrors.password ? (
+            <p
+              className="text-sm"
+              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+            >
+              {formErrors.password}
+            </p>
+          ) : null}
           <Button
             variant="gradient"
             fullWidth

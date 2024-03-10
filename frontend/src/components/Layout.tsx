@@ -26,7 +26,7 @@ const Layout: React.FC<Props> = ({ role, children }) => {
 
   return (
     <>
-      <link rel="stylesheet" type="text/css" href={cssFilePath} />
+      <link rel="stylesheet" type="text/css" href={cssFilePath}/>
       <div>{children}</div>
     </>
   );

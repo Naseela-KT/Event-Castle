@@ -1,4 +1,4 @@
-"use client";
+
 
 import React from "react";
 import { Link ,useNavigate} from 'react-router-dom';
@@ -63,9 +63,10 @@ const VendorNavbar=()=> {
           />
         </svg>
 
-        <a href="#" className="flex items-center">
-          Home
-        </a>
+      <Link to="/vendor">
+      Home
+      </Link>
+
       </Typography>
       <Typography
               as="li"
@@ -85,9 +86,9 @@ const VendorNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <a href="#" className="flex items-center" >
-          Vendors
-        </a>
+        <Link to="">
+        Vendors
+        </Link>
       </Typography>
       <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}>
         <svg
@@ -102,9 +103,9 @@ const VendorNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <a href="#" className="flex items-center">
-          About
-        </a>
+        <Link to="">
+        About
+        </Link>
       </Typography>
 
     </ul>

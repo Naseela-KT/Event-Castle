@@ -37,7 +37,7 @@ export const VendorController = {
           email: email,
           password: password,
           name: name,
-          phone: phone,
+          phone: parseInt(phone),
           city:city,
           otpCode: otpCode,
           vendor_type:vendor_type

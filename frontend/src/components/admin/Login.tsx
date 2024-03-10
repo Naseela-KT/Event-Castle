@@ -105,7 +105,7 @@ const AdminLogin = () => {
               name="password"
               type="password"
             />
-            {formik.errors.email ? (
+            {formik.errors.password ? (
               <p
                 className="text-sm"
                 style={{ color: "red", marginBottom: -10, marginTop: -10 }}
