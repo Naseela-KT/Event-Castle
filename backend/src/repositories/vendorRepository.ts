@@ -16,3 +16,11 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
       throw error;
     }
 };
+
+export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
+  try {
+    return await Vendor.find({}).exec();
+  } catch (error) {
+    throw error;
+  }
+};

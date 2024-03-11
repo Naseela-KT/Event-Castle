@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findvendorByEmail } from '../repositories/vendorRepository';
+import { createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
 import { ObjectId } from 'mongoose';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
+import vendor from '../models/vendor';
 
 
 interface LoginResponse {
@@ -62,5 +63,46 @@ export const signup = async (email:string ,password:string, name:string , phone:
         
       } catch (error) {
         throw error;
-      }
+      };
+
+
+      
+}
+
+
+export const CheckExistingVendor = async(email:string)=>{
+  try {
+    const existingVendor = await findvendorByEmail(email);
+    return existingVendor;
+  } catch (error) {
+    throw error
+  }
+}
+
+
+
+export const getVendors=async()=>{
+  try {
+    const vendors=await findAllVendors();
+    return vendors;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+export const toggleVendorBlock = async(vendorId:string): Promise<void> =>{
+  try {
+    const Vendor = await vendor.findById(vendorId)
+    if (!Vendor) {
+        throw new Error('Vendor not found');
+    }
+    
+    Vendor.isActive = !Vendor.isActive; // Toggle the isActive field
+    await Vendor.save();
+} catch (error) {
+    throw error;
+}
+
 }

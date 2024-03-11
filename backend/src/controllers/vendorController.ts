@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login } from "../services/vendorService";
+import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock } from "../services/vendorService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
 
@@ -89,7 +89,74 @@ export const VendorController = {
           console.log(error);
           res.status(500).json({message:"Server Error"})
         }
+      },
+
+      async VendorForgotPassword(req:Request , res: Response):Promise<void>{
+
+        try {
+          const email = req.body.email;
+          const vendor = await CheckExistingVendor(email);
+          if(vendor){
+            const otp = await generateOtp(email);
+            (req.session as any).vendorotp = {otp:otp ,email:email};
+            console.log(req.session)
+            res.status(200).json({ "message":"otp sent to vendor email for password updation request " , "email":email });
+          }else{
+            res.status(400).json({error:'Email not Registered with us !!'})            
+          }
+          
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
+
+
+      async VerifyOtpForPassword(req:Request , res: Response):Promise<void>{
+        try {
+          const ReceivedOtp = req.body.otp;
+          console.log("received otp",ReceivedOtp);
+          console.log(req.session)
+          const generatedOtp = (req.session as any).vendorotp.otp;
+          console.log("generated otp",generateOtp);
+          
+          if(ReceivedOtp === generatedOtp){
+            console.log("otp is correct , navigating vendor to update password.");
+            res.status(200).json({data:"otp is correct, please update password now"})
+          }else{
+            res.status(400).json({Error:`otp's didn't matched..`})
+          }
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
+
+      async getAllVendors(req: Request, res: Response): Promise<void>{
+        try{
+          const vendors = await getVendors();
+          res.status(200).json(vendors);
+        }catch(error){
+          console.log(error);
+          res.status(500).json({ message: "server error..." });
+        }
+      } ,
+
+      async Toggleblock(req:Request , res: Response):Promise<void>{
+        try {
+          const VendorId: string | undefined = req.query.VendorId as string | undefined;
+          if (!VendorId) {
+              throw new Error('Vendor ID is missing or invalid.');
+          } 
+          
+          await toggleVendorBlock(VendorId);
+          res.status(200).json({ message: "vendor block status toggled successfully." });
+      } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Server Error" });
       }
+      },
+
 
 
 

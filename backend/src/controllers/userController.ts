@@ -202,7 +202,34 @@ export const  UserController = {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
        }
-      }
+      },
+
+
+      async ResendOtp(req:Request , res: Response):Promise<void>{
+        try {
+         const userData: UserSession | undefined = req.session.user;
+         if (!userData) {
+           res.status(400).json({ error: "Session data not found. Please sign up again." });
+           return;
+         }
+         const email = userData.email;
+         const newOtp = await generateOtp(email);
+     
+         // Check if req.session.user is defined before updating otpCode
+         if (req.session.user) {
+           req.session.user.otpCode = newOtp;
+         } else {
+           // Handle the case where req.session.user is unexpectedly undefined
+           console.error("Session user data is unexpectedly undefined.");
+           res.status(500).json({ message: "Server Error: Session user data is unexpectedly undefined." });
+           return;
+         }
+         res.status(200).json({ "message": "New OTP sent to email" });
+        } catch (error) {
+         console.error(error);
+         res.status(500).json({ message: "Server Error" });
+        }
+       }
 };
 
 // Define a custom error class
