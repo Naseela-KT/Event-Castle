@@ -1,3 +1,4 @@
 body{
     background-image: url("../imgs/vendor-bg.png");
+    background-size: cover;
 }

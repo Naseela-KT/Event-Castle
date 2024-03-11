@@ -24,3 +24,16 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       throw error;
     }
   }; 
+
+  export const UpdatePassword = async(password:string , mail:string) =>{
+    try {
+      const result = await User.updateOne({ email: mail }, { password: password });
+      if (result.modifiedCount === 1) {
+        return { success: true, message: "Password updated successfully." };
+      } else {
+        return { success: false, message: "User not found or password not updated." };
+      }
+    } catch (error) {
+      throw error;
+    }
+  }

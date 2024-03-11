@@ -9,7 +9,9 @@ router.post('/signup', UserController.UserSignup );
 router.post('/verify' ,UserController.verifyOtp);
 router.post('/login', UserController.UserLogin );
 router.get('/logout' , UserController.UserLogout);
-
+router.post('/getotp' , UserController.UserForgotPassword)
+router.post('/verify-otp' , UserController.VerifyOtpForPassword)
+router.post('/resetpassword' , UserController.ResetUserPassword)
 
 
 

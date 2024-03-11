@@ -124,7 +124,7 @@ const UserNavbar=()=> {
         
         <div className="hidden lg:block">{navList}</div>
        
-        <div className="relative flex w-full gap-2 md:w-max">
+        <div className="relative flex w-full gap-2 lg:w-max">
           <Input
                           type="search"
                           color="white"

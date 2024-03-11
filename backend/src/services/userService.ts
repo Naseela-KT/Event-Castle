@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
+import { UpdatePassword, createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
-
+import generateOtp from '../utils/generateOtp';
 
 interface LoginResponse {
   token: string;
@@ -32,25 +32,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
   
 
 
-//   export const login = async (email:string , password : string): Promise<LoginResponse> =>{
-//     try {
-//         const existingUser = await findUserByEmail(email);
-//         if (!existingUser) {
-//           throw new Error('User not exists..');
-//         }
-    
-//         const passwordMatch = await bcrypt.compare( password, existingUser.password);
 
-//         if (!passwordMatch) {
-//         throw new Error('Incorrect password..');
-//         }
-//         const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-//         return {token:token,userData:existingUser,message:"Successfully logged in.."};
-        
-//       } catch (error) {
-//         throw error;
-//       }
-// }
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
     const existingUser = await findUserByEmail(email);
@@ -98,4 +80,41 @@ export const toggleUserBlock = async(userId:string): Promise<void> =>{
     throw error;
 }
 
+}
+
+export const generateOtpForPassword = async(email:string)=>{
+  try {
+    const otpCode = await generateOtp(email);
+    if(otpCode !== undefined){ 
+      return otpCode;
+    }else{
+      console.log("error on generating otp , please fix ..");
+      throw new Error(`couldn't generate otp, error occcured ,please fix !!`)
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const ResetPassword = async(password:string , email:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const status = await UpdatePassword(hashedPassword , email);
+    if(!status.success){
+      throw new Error(status.message)
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const CheckExistingUSer = async(email:string)=>{
+  try {
+    const existingUser = await findUserByEmail(email);
+    return existingUser;
+  } catch (error) {
+    throw error
+  }
 }

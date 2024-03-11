@@ -1,6 +1,7 @@
 import { Request , Response } from "express";
 import { signup , login } from "../services/vendorService";
 import nodemailer from 'nodemailer';
+import generateOtp from "../utils/generateOtp";
 
 export const VendorController = {
 
@@ -8,32 +9,10 @@ export const VendorController = {
     try {
       const { email , password , name , phone , city,vendor_type } = req.body;
 
-      const otpCode: string = Math.floor(1000 + Math.random() * 9000).toString();
+      const otpCode = await generateOtp(email);
       
-      
-
-      const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 587,
-          secure: false,
-          requireTLS: true,
-          auth: {
-              user: process.env.USER_NAME,
-              pass: process.env.USER_PASSWORD,
-          },
-      });
-
-      const mailOptions = {
-          from: process.env.USER_NAME,
-          to: email,
-          subject: "Verification Code",
-          text: `Your OTP code is: ${otpCode}`,
-      };
-
-      const info = await transporter.sendMail(mailOptions);
-      console.log("Email sent: " + info.response);
-
-      (req.session as any).vendor = {
+      if (otpCode !== undefined) {
+        (req.session as any).vendorData = {
           email: email,
           password: password,
           name: name,
@@ -41,16 +20,24 @@ export const VendorController = {
           city:city,
           otpCode: otpCode,
           vendor_type:vendor_type
+        
       };
 
-     
-      
-      res.status(200).json({ "message":"OTP send to email for verification.." , "email":email });
+      console.log("vendor signup..")
+      console.log(req.session)
+      res.status(200).json({ "message":"OTP send to vendor's email for verification.." , "email":email });   
+
+      }else{
+
+        console.log("couldn't generate otp, error occcured ,please fix !!");
+        res.status(500).json({ message: `Server Error couldn't generate otp, error occcured ,please fix !!` });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server Error' });
     }
   },
+
 
 
 
@@ -83,8 +70,7 @@ export const VendorController = {
       async verifyOtp(req:Request , res: Response):Promise<void>{
         try {
           const otp = req.body.otp;
-          const vendorData = (req.session as any).vendor; 
-          console.log("session stored vendordata :", vendorData)
+          const vendorData = (req.session as any).vendorData; 
           const email = vendorData.email;
           const password = vendorData.password;
           const name = vendorData.name;
@@ -104,5 +90,7 @@ export const VendorController = {
           res.status(500).json({message:"Server Error"})
         }
       }
+
+
 
 }
