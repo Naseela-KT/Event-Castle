@@ -6,8 +6,18 @@ import {
     Avatar,
   } from "@material-tailwind/react";
 
-   
-const VendorCard=()=> {
+  interface VendorCardProps {
+    name: string;
+    email: string;
+    phone: number;
+    city: string;
+    
+  }
+
+  const VendorCard: React.FC<VendorCardProps> = ({
+    name
+    
+  }) => {
     return (
       <Card
             shadow={false}
@@ -22,7 +32,7 @@ const VendorCard=()=> {
         <CardBody className="relative py-14 px-6 md:px-12"  placeholder={undefined}>
          
           <Typography variant="h5" className="mb-4 text-gray-400"  placeholder={undefined}>
-            Tania Andrew
+            {name}
           </Typography>
           <Avatar
                     size="md"

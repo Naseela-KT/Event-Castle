@@ -135,6 +135,7 @@ export const VendorController = {
       async getAllVendors(req: Request, res: Response): Promise<void>{
         try{
           const vendors = await getVendors();
+          console.log(vendors)
           res.status(200).json(vendors);
         }catch(error){
           console.log(error);

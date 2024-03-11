@@ -19,7 +19,7 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
 
 export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
   try {
-    return await Vendor.find({}).exec();
+    return await Vendor.find({});
   } catch (error) {
     throw error;
   }

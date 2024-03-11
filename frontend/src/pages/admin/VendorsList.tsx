@@ -1,8 +1,38 @@
 import VendorCard from "../../components/admin/vendorList/VendorCard"
 import { Button } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { axiosInstanceAdmin} from "../../api/axiosinstance";
+
+interface Vendor {
+  _id: string;
+  name: string;
+  email: string;
+  phone: number;
+  city:string;
+  password:string;
+  isActive: boolean;
+  isVerified:boolean;
+  verificationRequest:boolean;
+  totalBooking:number;
+
+}
 
 function VendorsList() {
+
+  const [vendors,setVendors]=useState<Vendor[]>([]);
+
+  useEffect(()=>{
+    axiosInstanceAdmin
+              .get("/getvendors", { withCredentials: true })
+              .then((response) => {
+                console.log(response);
+                setVendors(response.data)
+              })
+              .catch((error) => {
+                console.log("here", error);
+              })
+  },[])
 
   return (
     <div className="m-20">
@@ -17,9 +47,10 @@ function VendorsList() {
   </Button>
 </div>
       <div style={{ display: 'flex'}}>
-        <VendorCard />
-        <VendorCard />
-        <VendorCard />
+      {vendors.map((vendor, index) => (
+        <VendorCard key={index} {...vendor} />
+      ))}
+       
       </div>
     </div>
   )
