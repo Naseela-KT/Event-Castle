@@ -106,7 +106,7 @@ const VendorSignupForm = () => {
           console.log(response);
           if (response.data.email) {
             toast.warn(response.data.message);
-            navigate("/verify");
+            navigate("/vendor/verify");
           }
         })
         .catch((error) => {

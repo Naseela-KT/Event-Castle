@@ -8,7 +8,7 @@ interface UserSession {
   password: string;
   name: string;
   phone: number;
-  otpCode: string;
+  otpCode: string | undefined;
 }
 
 interface OTP {
@@ -45,6 +45,10 @@ export const  UserController = {
           phone: parseInt(phone),
           otpCode: otpCode
         }
+
+        setTimeout(()=>{
+        req.session.user.otpCode = undefined
+        } ,60000)
       
         console.log("signup..")
         console.log(req.session)
@@ -142,17 +146,17 @@ export const  UserController = {
       },
 
       async UserForgotPassword(req:Request , res: Response):Promise<void>{
-
         try {
           const email = req.body.email;
+          console.log(email)
           const user = await CheckExistingUSer(email);
-          if(!user){
+          if(user){
             const otp = await generateOtpForPassword(email);
             req.session.otp = { otp: otp  , email:email};
             console.log(req.session.otp)
-            res.status(200).json({ "message":"otp sent to email for password updation request " , "email":email });
+            res.status(200).json({ message:"OTP sent to email for password updation request " , email });
           }else{
-            res.status(400).json({error:'Email already Registered with us !!'})            
+            res.status(400).json({error:'User not found !!'})            
           }
           
         } catch (error) {

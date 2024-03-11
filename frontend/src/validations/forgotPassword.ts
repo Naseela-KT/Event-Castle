@@ -8,14 +8,12 @@ export interface EmailErrors {
    }
 
 
-   export interface FormValues{
-    email:string;
+   export interface otpValues{
     otp:string
    }
 
-   export interface FormErrors{
-    email:string;
-    otp:string
+   export interface otpErrors{
+    otp?:string
    }
 
 export const validateEmailValue =  (values: EmailValues): EmailErrors => {
@@ -30,16 +28,8 @@ export const validateEmailValue =  (values: EmailValues): EmailErrors => {
  };
 
 
-export const validateForm=(values:FormValues):FormErrors=>{
-    const errors: FormErrors = {
-        email: "",
-        otp:""
-    };
-   if (!values.email) {
-     errors.email = 'Email is required';
-   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-     errors.email = 'Invalid email address';
-   }
+export const validateOTP=(values:otpValues):otpErrors=>{
+    const errors: otpErrors = {};
 
    if (!values.otp) {
     errors.otp = 'OTP is required';
