@@ -57,14 +57,22 @@ export const login = async (email: string, password: string): Promise<LoginRespo
 
 
 
-export const getUsers=async()=>{
+// export const getUsers=async()=>{
+//   try {
+//     const users=await findAllUsers();
+//     return users;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+export const getUsers = async (page: number, limit: number, search: string) => {
   try {
-    const users=await findAllUsers();
+    const users = await findAllUsers(page, limit, search);
     return users;
   } catch (error) {
     throw error;
   }
-}
+};
 
 
 export const toggleUserBlock = async(userId:string): Promise<void> =>{

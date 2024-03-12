@@ -14,6 +14,7 @@ router.post('/add-type' , VendorTypeController.addVendorType);
 router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
 router.patch('/block-unblock' , UserController.Toggleblock)
 router.patch('/vendorblock-unblock' , VendorController.Toggleblock)
+router.get('/getvendor', VendorController.getVendor)
 export default router;
 
 

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Button,
   Card,
   List,
   ListItem,
@@ -8,15 +9,35 @@ import {
 import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstanceAdmin } from "../../api/axiosinstance";
+import { logout } from "../../redux/slices/AdminSlice";
+import { useDispatch } from "react-redux";
  
 const Sidebar=() =>{
   const [open, setOpen] = React.useState(0);
+
+  const navigate = useNavigate();
+  const dispatch= useDispatch();
  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleOpen = (value: React.SetStateAction<number>) => {
     setOpen(open === value ? 0 : value);
   };
+
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    axiosInstanceAdmin.get("/logout")
+      .then(() => {
+        dispatch(logout()); // Assuming you want to clear admin info on logout
+        navigate("/admin/login");
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  };
+  
  
   return (
     <div style={{ position: 'fixed', top: 50, left: 0, height: '100%', zIndex: 100 }}>
@@ -65,7 +86,10 @@ const Sidebar=() =>{
           <ListItemPrefix  placeholder={undefined}>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Logout
+          <Button variant="outlined" color="white" size="sm" className="" placeholder={undefined} onClick={handleLogout} style={{border:"none"}}>
+          <span>Logout</span>
+        </Button>
+          
         </ListItem>
       </List>
     </Card>

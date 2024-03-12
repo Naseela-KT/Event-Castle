@@ -21,7 +21,7 @@ import {
     return (
       <Card
             shadow={false}
-            className="relative grid h-[18rem] w-full max-w-[16rem] m-3 items-end justify-center overflow-hidden text-center"  placeholder={undefined}      >
+            className="relative grid h-[18rem] w-full max-w-[16rem] items-end justify-center overflow-hidden text-center"  placeholder={undefined}      >
         <CardHeader
                 floated={false}
                 shadow={false}

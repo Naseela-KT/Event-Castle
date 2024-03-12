@@ -17,13 +17,31 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
     }
   };
 
-  export const findAllUsers = async (): Promise<Document[] | null> => {
+  // export const findAllUsers = async (): Promise<Document[] | null> => {
+  //   try {
+  //     return await User.find({});
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }; 
+  export const findAllUsers = async (
+    page: number,
+    limit: number,
+    search: string
+  ): Promise<Document[] | null> => {
     try {
-      return await User.find({}).exec();
+      const query = search
+        ? { /* Add your search criteria here */ }
+        : {};
+      const users = await User.find(query)
+        .skip((page - 1) * limit)
+        .limit(limit);
+  
+      return users;
     } catch (error) {
       throw error;
     }
-  }; 
+  };
 
   export const UpdatePassword = async(password:string , mail:string) =>{
     try {

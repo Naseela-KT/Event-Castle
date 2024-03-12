@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock } from "../services/vendorService";
+import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor } from "../services/vendorService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
 
@@ -158,7 +158,26 @@ export const VendorController = {
       }
       },
 
+      async getVendor(req:Request , res: Response):Promise<void>{
+        try {
+          const vendorId: string = req.query.Id as string; // or req.query.Id?.toString()
+    
+          if (!vendorId) {
+            res.status(400).json({ error: "Vendor ID is required." });
+            return;
+          }
 
+          const data = await getSingleVendor(vendorId);
+          if(!data){
+            res.status(400).json({error:'Vendor not found , error occured'})
+          }else{
+            res.status(200).json({data:data})
+          }
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
 
 
 }

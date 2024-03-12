@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
 import { ObjectId } from 'mongoose';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
-import vendor from '../models/vendor';
+import vendor,{VendorDocument} from '../models/vendor';
 
 
 interface LoginResponse {
@@ -101,6 +101,20 @@ export const toggleVendorBlock = async(vendorId:string): Promise<void> =>{
     
     Vendor.isActive = !Vendor.isActive; // Toggle the isActive field
     await Vendor.save();
+} catch (error) {
+    throw error;
+}
+
+}
+
+
+export const getSingleVendor = async(vendorId:string): Promise<VendorDocument> =>{
+  try {
+    const Vendor = await vendor.findById(vendorId)
+    if (!Vendor) {
+        throw new Error('Vendor not found');
+    }
+   return Vendor;
 } catch (error) {
     throw error;
 }

@@ -48,7 +48,9 @@ function VendorsList() {
 </div>
       <div style={{ display: 'flex'}}>
       {vendors.map((vendor, index) => (
-        <VendorCard key={index} {...vendor} />
+        <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
+        <VendorCard {...vendor} />
+      </Link>
       ))}
        
       </div>

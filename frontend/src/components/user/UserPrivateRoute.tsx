@@ -4,10 +4,13 @@ import UserRootState from '../../redux/rootstate/UserState';
 
 
 const UserPrivateRoute = () => {
-    const user = useSelector((state : UserRootState) => state.user.isUserSignedIn);
-  return (
-    user ? <Outlet/> :<Navigate to='/login' replace/>
-  )
+    const user = useSelector((state : UserRootState) => state.user.userdata);
+
+    return user?.isActive===false ? (
+      <Navigate to="/login" replace />
+    ) : (
+      <Outlet />
+    );
 }
 
 export default UserPrivateRoute

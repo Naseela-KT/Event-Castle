@@ -4,7 +4,8 @@ import {createSlice} from '@reduxjs/toolkit';
 export interface UserData{
     name:string,
     email:string,
-    _id:string
+    _id:string,
+    isActive:boolean
 }
 
 export interface UserState{

@@ -1,7 +1,8 @@
-import { Request , Response } from "express";
+import { NextFunction, Request , Response } from "express";
 import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword } from "../services/userService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
+// import {isBlocked} from "../middlewares/userAuthMiddleware"
 
 interface UserSession {
   email: string;
@@ -95,6 +96,7 @@ export const  UserController = {
         try {
           const { email, password } = req.body;
           const { token, userData, message } = await login(email, password);
+          req.session.user=userData._id
           res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
           res.status(200).json({ token, userData, message });
         } catch (error) {
@@ -120,15 +122,31 @@ export const  UserController = {
         }
       },
 
-      async allUsers(req: Request, res: Response): Promise<void>{
-        try{
-          const users = await getUsers();
-          res.status(200).json(users);
-        }catch(error){
-          console.log(error);
-          res.status(500).json({ message: "server error..." });
+      // async allUsers(req: Request, res: Response): Promise<void>{
+      //   try{
+      //     const users = await getUsers();
+      //     res.status(200).json(users);
+      //   }catch(error){
+      //     console.log(error);
+      //     res.status(500).json({ message: "server error..." });
+      //   }
+      // } ,
+      async allUsers(req: Request, res: Response): Promise<void> {
+        try {
+          const { page = 1, limit = 10, search = '' } = req.query;
+          
+          // Convert page and limit to integers
+          const pageNumber = parseInt(page as string, 10);
+          const limitNumber = parseInt(limit as string, 10);
+      
+          const users = await getUsers(pageNumber, limitNumber, search.toString());
+          
+          res.status(200).json({users,pageNumber});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server error...' });
         }
-      } ,
+      },
 
       async Toggleblock(req:Request , res: Response):Promise<void>{
         try {
@@ -136,8 +154,8 @@ export const  UserController = {
           if (!userId) {
               throw new Error('User ID is missing or invalid.');
           } 
-          
           await toggleUserBlock(userId);
+          // await isBlocked(req, res, () => {});
           res.status(200).json({ message: "User block status toggled successfully." });
       } catch (error) {
           console.log(error);
