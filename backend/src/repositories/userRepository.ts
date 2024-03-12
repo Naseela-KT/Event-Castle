@@ -17,13 +17,7 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
     }
   };
 
-  // export const findAllUsers = async (): Promise<Document[] | null> => {
-  //   try {
-  //     return await User.find({});
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }; 
+  
   export const findAllUsers = async (
     page: number,
     limit: number,
@@ -31,7 +25,7 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
   ): Promise<Document[] | null> => {
     try {
       const query = search
-        ? { /* Add your search criteria here */ }
+        ? {name: { $regex: new RegExp(search, 'i') }}
         : {};
       const users = await User.find(query)
         .skip((page - 1) * limit)

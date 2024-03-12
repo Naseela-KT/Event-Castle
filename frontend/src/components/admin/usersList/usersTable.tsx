@@ -1,3 +1,5 @@
+
+
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
   Card,
@@ -12,9 +14,6 @@ import {
 } from "@material-tailwind/react";
 
 const TABLE_HEAD = ["User", "Phone", "Status", "Action"];
- 
-
- 
 
 import { useState, useEffect} from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
@@ -34,6 +33,7 @@ const UsersTable=()=> {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
+  const totalPages=Math.ceil(users.length/6);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,18 +41,17 @@ const UsersTable=()=> {
     const queryParams = new URLSearchParams(location.search);
     const pageParam = queryParams.get("page");
     const searchParam = queryParams.get("search");
-  
-    // Set initial state based on URL query parameters
     setPage(pageParam ? parseInt(pageParam, 10) : 1);
     setSearch(searchParam? searchParam: "");
   
     fetchData(pageParam, searchParam);
-  }, [users, location.search]);
+  }, [location.search]);
 
   const fetchData = (pageParam?: string | null, searchParam?: string | null) => {
     axiosInstanceAdmin
       .get(`/users?page=${pageParam || page}&search=${searchParam || search}`)
       .then((response) => {
+        console.log(response)
         setUsers(response.data.users);
       })
       .catch((error) => {
@@ -73,9 +72,9 @@ const UsersTable=()=> {
       });
   };
 
-  // const handleSearch = () => {
-  //   navigate(`/admin/users?page=${page}&search=${search}`);
-  // };
+  const handleSearch = () => {
+    navigate(`/admin/users?page=${page}&search=${search}`)
+  };
 
     return (
     <Card className="h-full w-full"  placeholder={undefined}>
@@ -95,7 +94,9 @@ const UsersTable=()=> {
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 name="search"
                 value={search}
+                color="black"
                 onChange={(e) =>setSearch(e.target.value)}
+                onKeyUp={handleSearch}
                crossOrigin={undefined}/>
       </div>
         </div>
@@ -185,7 +186,7 @@ const UsersTable=()=> {
     
        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined}>
         <Typography variant="small" color="blue-gray" className="font-normal" placeholder={undefined}>
-          Page {page} of 10
+          Page {page} of {totalPages}
         </Typography>
         <div className="flex gap-2">
           <Button
@@ -203,7 +204,7 @@ const UsersTable=()=> {
             variant="outlined"
             size="sm"
             onClick={() => {
-              const nextPage = page + 1 <= 10 ? page + 1 : 10;
+              const nextPage = page + 1 <= totalPages ? page + 1 : totalPages;
               navigate(`/admin/users?page=${nextPage}&search=${search}`);
             }}
             placeholder={undefined}

@@ -133,7 +133,7 @@ export const  UserController = {
       // } ,
       async allUsers(req: Request, res: Response): Promise<void> {
         try {
-          const { page = 1, limit = 10, search = '' } = req.query;
+          const { page = 1, limit = 6, search = '' } = req.query;
           
           // Convert page and limit to integers
           const pageNumber = parseInt(page as string, 10);
