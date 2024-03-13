@@ -13,5 +13,6 @@ router.get('/logout' , VendorController.VendorLogout)
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 router.post('/vgetotp' , VendorController.VendorForgotPassword)
 router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword)
+router.get('/getvendors' ,VendorController.getAllVendors )
 
 export default router;

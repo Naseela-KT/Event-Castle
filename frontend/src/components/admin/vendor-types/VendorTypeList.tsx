@@ -4,6 +4,8 @@ import {
 import { useState, useEffect } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 
+
+
 interface VendorType {
   _id: string;
   type:string;
@@ -13,6 +15,10 @@ interface VendorType {
 const VendorTypeList=()=> {
 
   const [vendorType, setVendorType] = useState<VendorType[]>([]);
+  
+
+  
+  
 
   useEffect(() => {
     axiosInstanceAdmin.get("/vendor-types")
@@ -25,7 +31,13 @@ const VendorTypeList=()=> {
       });
   }, []); 
 
+  
+
+
     return (
+      <>
+       
+
         <div className="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border">
           <div className="flex flex-col px-10 justify-between gap-8 mb-4 md:flex-row md:items-center">
@@ -112,8 +124,11 @@ const VendorTypeList=()=> {
                 <td className="p-4 border-b border-blue-gray-50">
                   <div className="w-max">
                   <Button size="sm" placeholder={undefined} className="mr-2">Edit</Button>
-                  <Button size="sm" placeholder={undefined} variant="outlined">Delete</Button>
+                  <Button size="sm" placeholder={undefined} variant="outlined"  >Delete</Button>
+                
                   </div>
+      
+   
                 </td>
               </tr>
               ))}
@@ -121,9 +136,13 @@ const VendorTypeList=()=> {
             </tbody>
           </table>
         </div>
-       
+      
       </div>
+ 
+      </>
+      
     );
+    
   }
 
 

@@ -39,6 +39,7 @@ export default function AddVendorType() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(formValues)
     axiosInstanceAdmin.post("/add-type", formValues)
     .then((response) => {
       console.log(response);
@@ -105,7 +106,7 @@ export default function AddVendorType() {
               }}
               value={formValues.status}
               name="status"
-              onChange={()=>handleChange}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => handleChange(e)}
             >
               <Option value="Active">Active</Option>
               <Option value="Non-Active">Non-Active</Option>

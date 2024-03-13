@@ -43,7 +43,6 @@ const UsersTable=()=> {
     const searchParam = queryParams.get("search");
     setPage(pageParam ? parseInt(pageParam, 10) : 1);
     setSearch(searchParam? searchParam: "");
-  
     fetchData(pageParam, searchParam);
   }, [location.search]);
 

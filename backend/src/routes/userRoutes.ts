@@ -1,5 +1,6 @@
 import express from 'express';
 import { UserController } from '../controllers/userController';
+import { VendorController } from '../controllers/vendorController';
 
 
 
@@ -14,7 +15,7 @@ router.get('/logout' , UserController.UserLogout);
 router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/resetpassword' , UserController.ResetUserPassword)
-
+router.get('/getvendors' ,VendorController.getAllVendors )
 
 
 export default router;

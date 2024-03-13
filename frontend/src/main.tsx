@@ -27,7 +27,6 @@ import AdminLogin from './components/admin/Login.tsx'
 import VendorsList from './pages/admin/VendorsList.tsx';
 import VendorTypes from './pages/admin/VendorTypes.tsx';
 import UsersList from './pages/admin/UsersList.tsx';
-import VendorHome from './pages/vendor/VendorHome.tsx';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
 import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
 import VendorPrivateRoute from './components/vendor/VendorPrivateRoute.tsx';
@@ -68,7 +67,7 @@ const router = createBrowserRouter(
 
 
     <Route path="/vendor" element={<VendorApp/>}>
-      <Route index={true} path="/vendor" element={<VendorHome />} />
+      <Route index={true} path="/vendor" element={<HomePage />} />
       <Route path="/vendor/login" element={<VendorLoginForm />} />
       <Route path="/vendor/signup" element={<VendorSignupForm />} />
       <Route path="/vendor/verify" element={<VerifyEmail />} />
