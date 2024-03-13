@@ -64,9 +64,9 @@ const UserNavbar=()=> {
           />
         </svg>
 
-        <a href="#" className="flex items-center">
+        <Link to="/">
           Home
-        </a>
+        </Link>
       </Typography>
       <Typography
               as="li"
@@ -198,10 +198,14 @@ const UserNavbar=()=> {
           {navList}
           <div className="flex items-center gap-x-1">
             <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
-              <span>Log In</span>
+              <Link to="/login">
+                Login
+              </Link>
             </Button>
             <Button fullWidth variant="gradient" size="sm" className=""  placeholder={undefined}>
-              <span>Sign in</span>
+             <Link to="/signup">
+                Signup
+              </Link>
             </Button>
           </div>
         </div>

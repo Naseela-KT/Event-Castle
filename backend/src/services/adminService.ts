@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { findAdminByEmail} from "../repositories/adminRepository";
+import { CustomError } from "../controllers/adminController";
 
 interface LoginResponse {
     token: string;
@@ -12,12 +13,12 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   try {
     const existingAdmin = await findAdminByEmail(email);
     if (!existingAdmin) {
-      throw new Error("Admin not exist");
+      throw new CustomError("Admin not exist",400);
     }
 
     const passwordMatch = await bcrypt.compare(password, existingAdmin.password);
     if (!passwordMatch) {
-      throw new Error("Incorrect password...");
+      throw new CustomError("Incorrect password...",401);
     }
     const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 

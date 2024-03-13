@@ -33,7 +33,7 @@ const VendorList=()=> {
     },[])
     return (
         <>
-        <div style={{ padding:"40px"}} className="bg-white">
+        <div style={{ padding:"20px"}} className="bg-white">
         <Typography
                   variant="h4"
                   color="black"

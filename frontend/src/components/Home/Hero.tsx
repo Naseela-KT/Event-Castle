@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <>
       <header className="bg-white" style={{ marginTop: -40, marginBottom: -40 }}>
-        <div className="grid min-h-[30vh] w-full lg:h-[33rem] md:h-[20rem] place-items-stretch bg-[url('/imgs/Hero.png')] bg-cover bg-contain bg-no-repeat">
+        <div className="grid min-h-[40vh] w-full lg:h-[33rem] md:h-[20rem] sm:h-[35rem] place-items-stretch bg-[url('/imgs/Hero.png')] bg-cover bg-contain bg-no-repeat">
           <div className="container mx-auto text-center my-auto">
             <Card style={{ backgroundColor: "#EC4C67", paddingRight: "20px" }} className="inline-flex text-xs rounded-lg font-medium text-primary" placeholder={undefined}>
               <CardBody placeholder={undefined}>

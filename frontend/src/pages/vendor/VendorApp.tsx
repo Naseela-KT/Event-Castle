@@ -1,9 +1,10 @@
+import React from 'react'
 import VendorNavbar from '../../components/vendor/Navbar'
 import { Outlet } from "react-router-dom"
 import Layout from '../../components/Layout'
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import React from 'react'
+
 
 const VendorApp: React.FC = () => {
     const role='vendor'

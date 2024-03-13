@@ -11,13 +11,10 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosInstanceVendor } from "../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../validations/vendor/registerVal";
-
-
-
 
 interface VendorType {
   _id: string;
@@ -56,11 +53,11 @@ const VendorSignupForm = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState<VendorFormValues>({
     name: "",
-  email: "",
-  password: "",
-  city: "",
-  phone: "",
-  vendor_type: "",
+    email: "",
+    password: "",
+    city: "",
+    phone: "",
+    vendor_type: "",
   });
 
   const navigate = useNavigate();
@@ -77,7 +74,6 @@ const VendorSignupForm = () => {
       setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
     }
   };
-  
 
   useEffect(() => {
     axiosInstanceVendor
@@ -91,15 +87,14 @@ const VendorSignupForm = () => {
       });
   }, []);
 
-
   const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const errors = validate(formValues);
     setFormErrors(errors);
     console.log(errors);
-    console.log(Object.values(errors))
+    console.log(Object.values(errors));
     if (Object.values(errors).every((error) => error === "")) {
-      console.log(formValues)
+      console.log(formValues);
       axiosInstanceVendor
         .post("/signup", formValues, { withCredentials: true })
         .then((response) => {
@@ -157,8 +152,8 @@ const VendorSignupForm = () => {
             label="Vendor Type"
             size="md"
             onChange={(e) => {
-              if(e){
-                handleChange(e)
+              if (e) {
+                handleChange(e);
               }
             }}
             value={formValues.vendor_type}
@@ -167,11 +162,13 @@ const VendorSignupForm = () => {
             className="bg-white bg-opacity-50"
             placeholder={undefined}
           >
-            {vendorTypes.map((val, index) => (
-              <Option value={val.type} key={index}>
-                {val.type}
-              </Option>
-            ))}
+            {vendorTypes.map((val, index) =>
+              val.status ? (
+                <Option value={val.type} key={index}>
+                  {val.type}
+                </Option>
+              ) :''
+            )}
           </Select>
           {formErrors.vendor_type ? (
             <p

@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
+import { UpdateVendorPassword, createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
 import { ObjectId } from 'mongoose';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
+import { CustomError } from '../controllers/vendorController';
 
 
 interface LoginResponse {
@@ -16,7 +17,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
     try {
       const existingVendor = await findvendorByEmail(email);
       if (existingVendor) {
-        throw new Error('vendor already exists');
+        throw new CustomError('Vendor already exists',409);
       }
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -46,13 +47,17 @@ export const signup = async (email:string ,password:string, name:string , phone:
     try {
         const existingVendor = await findvendorByEmail(email);
         if (!existingVendor) {
-          throw new Error('vendor not exists..');
+          throw new CustomError('vendor not exists..',404);
         }
     
         const passwordMatch = await bcrypt.compare( password, existingVendor.password);
 
         if (!passwordMatch) {
-        throw new Error('Incorrect password..');
+        throw new CustomError('Incorrect password..',401);
+        }
+
+        if(existingVendor.isActive===false){
+          throw new CustomError('Cannot login..!Blocked by Admin...',401);
         }
 
         const vendorData = await findvendorByEmail(email);
@@ -119,4 +124,18 @@ export const getSingleVendor = async(vendorId:string): Promise<VendorDocument> =
     throw error;
 }
 
+}
+
+
+export const ResetVendorPasswordService = async(password:string , email:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const status = await UpdateVendorPassword(hashedPassword , email);
+    if(!status.success){
+      throw new Error(status.message)
+    }
+  } catch (error) {
+    throw error;
+  }
 }

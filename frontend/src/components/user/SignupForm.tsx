@@ -68,7 +68,8 @@ const UserSignupForm = () => {
           }
         })
         .catch((error) => {
-          console.log("here", error);
+          toast.error(error.response.data.message)
+          console.log("here", error.data.message);
         });
     }
   };

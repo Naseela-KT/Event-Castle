@@ -15,9 +15,9 @@ export const signup = async (email:string ,password:string, name:string , phone:
   try {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new CustomError('User already exists',404);
     }
-
+    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const isActive:boolean = true;
@@ -37,8 +37,9 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   try {
     const existingUser = await findUserByEmail(email);
     if (!existingUser) {
-      throw new CustomError('User not exists..', 404); // CustomError includes a status code
+      throw new CustomError('User not exists..', 404); 
     }
+
 
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
 
@@ -46,25 +47,20 @@ export const login = async (email: string, password: string): Promise<LoginRespo
       throw new CustomError('Incorrect password..', 401);
     }
 
+    if(existingUser.isActive===false){
+      throw new CustomError('Blocked by Admin..',404);
+    }
+
     const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
     return { token: token, userData: existingUser, message: 'Successfully logged in..' };
 
   } catch (error) {
-    throw error; // Let other errors propagate
+    throw error; 
   }
 }
 
 
 
-
-// export const getUsers=async()=>{
-//   try {
-//     const users=await findAllUsers();
-//     return users;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
 export const getUsers = async (page: number, limit: number, search: string) => {
   try {
     const users = await findAllUsers(page, limit, search);

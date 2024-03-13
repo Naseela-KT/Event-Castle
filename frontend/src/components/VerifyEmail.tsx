@@ -67,7 +67,7 @@ const VerifyEmail = () => {
                 navigate("/vendor");
               })
               .catch((error) => {
-                toast.error(error.message);
+                toast.error(error.response.data.message);
                 console.log("here", error);
               })
           : axiosInstance
@@ -79,7 +79,7 @@ const VerifyEmail = () => {
                 navigate("/");
               })
               .catch((error) => {
-                toast.error(error.message);
+                toast.error(error.response.data.message);
                 console.log("here", error);
               });
       }

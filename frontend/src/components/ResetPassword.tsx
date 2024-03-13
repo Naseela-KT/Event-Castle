@@ -8,10 +8,11 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { useFormik } from "formik";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { validate } from "../validations/resetPassword";
-// import { axiosInstance } from "../api/axiosinstance";
-// import { useNavigate } from "react-router-dom";
+import { axiosInstance, axiosInstanceVendor } from "../api/axiosinstance";
+import { useNavigate,useLocation } from "react-router-dom";
+
 
 interface FormValues {
   password: string;
@@ -24,23 +25,39 @@ const initialValues: FormValues = {
 };
 
 const ResetPassword = () => {
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues,
     validate,
     onSubmit: (values) => {
       console.log(values);
-      // axiosInstance
-      //   .post("/reset-password", values, { withCredentials: true })
-      //   .then((response) => {
-      //     console.log(response);
-      //     navigate("/");
-      //   })
-      //   .catch((error) => {
-      //     toast.error(error.response.data.message);
-      //     console.log("here", error);
-      //   });
+      {
+        location.pathname === "/vendor/reset-password"
+          ? axiosInstanceVendor
+              .post("/reset-password", values, { withCredentials: true })
+              .then((response) => {
+                
+                toast.success(response.data.message);
+                navigate("/vendor");
+              })
+              .catch((error) => {
+                toast.error(error.response.data.error);
+                console.log("here", error);
+              })
+          : axiosInstance
+              .post("/reset-password", values, { withCredentials: true })
+              .then((response) => {
+                console.log(response);
+                toast.success(response.data.message);
+                navigate("/");
+              })
+              .catch((error) => {
+                toast.error(error.response.data.error);
+                console.log("here", error);
+              });
+      }
     },
   });
 

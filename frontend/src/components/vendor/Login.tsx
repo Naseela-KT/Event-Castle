@@ -16,6 +16,7 @@ import { setVendorInfo } from "../../redux/slices/VendorSlice";
 import VendorRootState from "../../redux/rootstate/VendorState";
 import { useFormik } from "formik";
 import { validate } from "../../validations/loginVal";
+import { toast } from "react-toastify";
 
 interface FormValues {
   email: string;
@@ -53,6 +54,7 @@ const VendorLoginForm = () => {
           navigate("/Vendor");
         })
         .catch((error) => {
+          toast.error(error.response.data.message)
           console.log("here", error);
         });
     },

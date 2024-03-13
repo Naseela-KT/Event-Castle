@@ -198,10 +198,15 @@ const VendorNavbar=()=> {
           {navList}
           <div className="flex items-center gap-x-1">
             <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
-              <span>Log In</span>
+            <Link to="/vendor/login">
+                Login
+              </Link>
             </Button>
             <Button fullWidth variant="gradient" size="sm" className=""  placeholder={undefined}>
-              <span>Sign in</span>
+              <Link to="/vendor/signup">
+                Signup
+              </Link>
+              
             </Button>
           </div>
         </div>

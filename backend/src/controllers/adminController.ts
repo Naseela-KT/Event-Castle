@@ -10,8 +10,12 @@ export const AdminController = {
       
       res.status(200).json({token, adminData, message });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "server error.." });
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+      }
     }
   },
 
@@ -27,3 +31,12 @@ export const AdminController = {
 
   
 };
+
+export class CustomError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}

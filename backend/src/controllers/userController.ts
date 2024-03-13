@@ -2,6 +2,7 @@ import { NextFunction, Request , Response } from "express";
 import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword } from "../services/userService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
+import { isBlocked } from "../middlewares/userAuthMiddleware";
 // import {isBlocked} from "../middlewares/userAuthMiddleware"
 
 interface UserSession {
@@ -46,10 +47,6 @@ export const  UserController = {
           phone: parseInt(phone),
           otpCode: otpCode
         }
-
-        setTimeout(()=>{
-        req.session.user.otpCode = undefined
-        } ,60000)
       
         console.log("signup..")
         console.log(req.session)
@@ -80,12 +77,16 @@ export const  UserController = {
       const user = await signup(email , password , name , phone );
       res.status(201).json(user);
       }else{
-        res.status(400).json({ error:"Invalid otp !!"});
+        throw new CustomError("Invalid otp !!",400)
       }
   
     } catch (error) {
-      console.log(error);
-      res.status(500).json({message:"Server Error"})
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+      }
     }},  
   
 
@@ -122,20 +123,10 @@ export const  UserController = {
         }
       },
 
-      // async allUsers(req: Request, res: Response): Promise<void>{
-      //   try{
-      //     const users = await getUsers();
-      //     res.status(200).json(users);
-      //   }catch(error){
-      //     console.log(error);
-      //     res.status(500).json({ message: "server error..." });
-      //   }
-      // } ,
+
       async allUsers(req: Request, res: Response): Promise<void> {
         try {
           const { page = 1, limit = 6, search = '' } = req.query;
-          
-          // Convert page and limit to integers
           const pageNumber = parseInt(page as string, 10);
           const limitNumber = parseInt(limit as string, 10);
       
@@ -152,11 +143,14 @@ export const  UserController = {
         try {
           const userId: string | undefined = req.query.userId as string | undefined;
           if (!userId) {
-              throw new Error('User ID is missing or invalid.');
-          } 
-          await toggleUserBlock(userId);
-          // await isBlocked(req, res, () => {});
-          res.status(200).json({ message: "User block status toggled successfully." });
+            res.status(400).json({ message: 'User ID is missing or invalid.' });
+            return;
+        }
+        await toggleUserBlock(userId);
+        await isBlocked(req, res, async () => {
+          res.status(200).json({ message: 'User block status toggled successfully.' });
+        });
+        
       } catch (error) {
           console.log(error);
           res.status(500).json({ message: "Server Error" });
@@ -232,12 +226,9 @@ export const  UserController = {
          }
          const email = userData.email;
          const newOtp = await generateOtp(email);
-     
-         // Check if req.session.user is defined before updating otpCode
          if (req.session.user) {
            req.session.user.otpCode = newOtp;
          } else {
-           // Handle the case where req.session.user is unexpectedly undefined
            console.error("Session user data is unexpectedly undefined.");
            res.status(500).json({ message: "Server Error: Session user data is unexpectedly undefined." });
            return;

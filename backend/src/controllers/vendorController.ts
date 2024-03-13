@@ -1,6 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor } from "../services/vendorService";
-import nodemailer from 'nodemailer';
+import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 
 export const VendorController = {
@@ -49,8 +48,12 @@ export const VendorController = {
             res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
             res.status(200).json({token, vendorData, message });
         } catch (error) {
-            console.log(error);
-            res.status(500).json({message:"Server Error"})
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
             
         }
       } ,
@@ -82,12 +85,16 @@ export const VendorController = {
            const vendor = await signup(email , password , name , phone , city,vendor_type);
           res.status(201).json(vendor);
           }else{
-            res.status(400).json({ error:"Invalid otp !!"});
+            throw new CustomError("Invalid otp !!",400);
           }
 
         } catch (error) {
-          console.log(error);
-          res.status(500).json({message:"Server Error"})
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
         }
       },
 
@@ -106,8 +113,12 @@ export const VendorController = {
           }
           
         } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
         }
       },
 
@@ -127,8 +138,12 @@ export const VendorController = {
             res.status(400).json({Error:`otp's didn't matched..`})
           }
         } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
         }
       },
 
@@ -179,5 +194,32 @@ export const VendorController = {
         }
       },
 
+      async ResetVendorPassword(req:Request , res: Response):Promise<void>{
+        
+        try {
+         const password = req.body.password;
+         const confirmPassword = req.body.confirmPassword;
+             if(password === confirmPassword){
+               const email=(req.session as any).vendorotp.email;;
+               const status = await ResetVendorPasswordService(password , email); 
+               res.status(200).json({ message: "Password reset successfully." });
+             }else{
+               res.status(400).json({ error: "Passwords do not match." });
+             }
+        } catch (error) {
+         console.error(error);
+         res.status(500).json({ message: "Server Error" });
+        }
+       },
 
+
+}
+
+
+export class CustomError extends Error {
+  statusCode: number;
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
 }

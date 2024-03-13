@@ -14,6 +14,7 @@ import { setAdminInfo } from "../../redux/slices/AdminSlice";
 import AdminRootState from "../../redux/rootstate/AdminState";
 import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
+import {toast} from "react-toastify"
 
 interface FormValues {
   email: string;
@@ -51,6 +52,7 @@ const AdminLogin = () => {
           navigate("/admin/dashboard");
         })
         .catch((error) => {
+          toast.error(error.response.data.message)
           console.log("here", error);
         });
     },

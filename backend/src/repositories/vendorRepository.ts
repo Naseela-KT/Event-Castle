@@ -24,3 +24,16 @@ export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
     throw error;
   }
 };
+
+export const UpdateVendorPassword = async(password:string , mail:string) =>{
+  try {
+    const result = await Vendor.updateOne({ email: mail }, { password: password });
+    if (result.modifiedCount === 1) {
+      return { success: true, message: "Vendor Password updated successfully." };
+    } else {
+      return { success: false, message: "Vendor not found or password not updated." };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
