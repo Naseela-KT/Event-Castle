@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { addType, getTypes } from "../services/vendorTypeService";
+import { addType, deleteType, getTypes } from "../services/vendorTypeService";
 
 
 export const VendorTypeController = {
@@ -24,6 +24,23 @@ export const VendorTypeController = {
           console.error(error);
           res.status(500).json({ message: 'Server Error' });
         }
-      }
+      },
 
-}
+      async deleteVendorType(req: Request, res: Response): Promise<void> {
+        try {
+          const vendorTypeId: string | undefined = req.query?.id as string | undefined;
+          
+          if (!vendorTypeId) {
+            res.status(400).json({ message: 'Vendor Type ID is missing or invalid.' });
+            return;
+          }
+      
+          const result = await deleteType(vendorTypeId);
+          res.status(200).json({ message: 'Vendor deleted successfully' });
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server Error' });
+        }
+      }
+    }
+

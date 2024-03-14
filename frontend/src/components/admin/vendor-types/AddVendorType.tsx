@@ -54,8 +54,8 @@ export default function AddVendorType() {
     axiosInstanceAdmin.post("/add-type", formValues)
     .then((response) => {
       console.log(response);
-      setFormValues({type:"",status:""});
-      navigate("/admin/vendor-types")
+      setFormValues(initialValues);
+      navigate("/admin/vendor-types",{ replace: true })
     })
     .catch((error) => {
       console.log('here', error);

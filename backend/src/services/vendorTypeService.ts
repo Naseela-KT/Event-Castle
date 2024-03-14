@@ -1,4 +1,4 @@
-import { createVendorType, findVerndorTypeByName ,findVerndorTypes} from "../repositories/vendorTypeRepository";
+import { createVendorType, deleteVendorById, findVerndorTypeByName ,findVerndorTypes} from "../repositories/vendorTypeRepository";
 
 
 export const addType = async (type: string, status: string)=> {
@@ -24,6 +24,16 @@ export const getTypes = async ()=> {
     throw error;
   }
 };
+
+
+export const deleteType=async(vendorTypeId:string)=>{
+  try {
+    return await deleteVendorById(vendorTypeId)
+    
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 

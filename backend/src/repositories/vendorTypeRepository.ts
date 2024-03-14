@@ -37,3 +37,13 @@ export const createVendorType = async (vendorData : Partial<VendorTypeDocument>)
   };
 
 
+  export const deleteVendorById=async(vendorTypeId:string):Promise<VendorTypeDocument | null>=>{
+    try {
+      return await VendorType.findByIdAndDelete(vendorTypeId);
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
