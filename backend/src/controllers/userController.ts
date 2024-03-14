@@ -1,8 +1,9 @@
 import { NextFunction, Request , Response } from "express";
-import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword } from "../services/userService";
+import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount } from "../services/userService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
 import { isBlocked } from "../middlewares/userAuthMiddleware";
+import user from "../models/user";
 // import {isBlocked} from "../middlewares/userAuthMiddleware"
 
 interface UserSession {
@@ -97,8 +98,11 @@ export const  UserController = {
         try {
           const { email, password } = req.body;
           const { token, userData, message } = await login(email, password);
-          req.session.user=userData._id
-          res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+      
+            req.session.user=userData._id
+            res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production'});
+          
+          
           res.status(200).json({ token, userData, message });
         } catch (error) {
           if (error instanceof CustomError) {
@@ -131,8 +135,9 @@ export const  UserController = {
           const limitNumber = parseInt(limit as string, 10);
       
           const users = await getUsers(pageNumber, limitNumber, search.toString());
+          const totalUsers=await getUsersCount();
           
-          res.status(200).json({users,pageNumber});
+          res.status(200).json({users,totalUsers});
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: 'Server error...' });
@@ -147,10 +152,9 @@ export const  UserController = {
             return;
         }
         await toggleUserBlock(userId);
-        await isBlocked(req, res, async () => {
-          res.status(200).json({ message: 'User block status toggled successfully.' });
-        });
-        
+        let process=await user.findOne({_id:userId})
+        res.status(200).json({ message: 'User block status toggled successfully.',process:!(process?.isActive)?"block":"unblock" });
+     
       } catch (error) {
           console.log(error);
           res.status(500).json({ message: "Server Error" });

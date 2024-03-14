@@ -29,7 +29,7 @@ const VendorTypeList=()=> {
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, [vendorType]); 
+  }, []); 
 
   
 

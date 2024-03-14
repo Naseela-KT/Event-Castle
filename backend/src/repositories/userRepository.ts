@@ -37,6 +37,16 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
     }
   };
 
+
+  export const findUsersCount=async()=>{
+    try {
+      const result=await User.find({});
+      return result.length;
+    } catch (error) {
+      throw error
+    }
+  }
+
   export const UpdatePassword = async(password:string , mail:string) =>{
     try {
       const result = await User.updateOne({ email: mail }, { password: password });

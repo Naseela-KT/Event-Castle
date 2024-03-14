@@ -60,7 +60,9 @@ const AdminNavbar=()=> {
       {isAdminSignedIn?
         <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
           <span>Logout</span>
+          
         </Button>
+        
       :
       <Link to="/admin/login">
         <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}>

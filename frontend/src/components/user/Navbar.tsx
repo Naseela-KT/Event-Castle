@@ -19,6 +19,7 @@ import '../../../public/imgs/event_castle.png'
 const UserNavbar=()=> {
   const [openNav, setOpenNav] = React.useState(false);
   const isUserSignedIn = useSelector((state: UserState) => state.user.isUserSignedIn);
+  const user=useSelector((state: UserState) => state.user.userdata);
 
   const navigate = useNavigate();
   const dispatch= useDispatch();
@@ -141,10 +142,10 @@ const UserNavbar=()=> {
           </Button>
         </div>
         <div className="flex items-center gap-x-1">
-          {isUserSignedIn?<Button variant="gradient"  size="sm" className="hidden lg:inline-block" placeholder={undefined}
+          {isUserSignedIn?<><Button variant="gradient"  size="sm" className="hidden lg:inline-block" placeholder={undefined}
           onClick={handleLogout}>
           <span>Logout</span>
-        </Button>:  <><Link to="/login">
+        </Button><p>{user?.name}</p></>:  <><Link to="/login">
         <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
           <span>Log In</span>
         </Button>

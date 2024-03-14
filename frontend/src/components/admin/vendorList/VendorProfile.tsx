@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/slices/VendorSlice";
 
 interface Vendor {
     _id: string;
@@ -21,6 +23,7 @@ interface Vendor {
   }
 
 const VendorProfile = () => {
+  const dispatch=useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const Id = queryParams.get('Id');
@@ -43,6 +46,9 @@ const VendorProfile = () => {
         .patch(`/vendorblock-unblock?VendorId=${Id}`)
         .then((response) => {
           console.log(response);
+          if (response.data.process === "block") {
+            dispatch(logout()); // Dispatch logout action if the vendor is blocked
+          }
           toast.success(response.data.message);
          
         })

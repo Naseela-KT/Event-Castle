@@ -1,24 +1,15 @@
-// import { NextFunction, Request, Response } from "express"
-// import User from "../models/user"
-
-// export const isBlocked = async(req:Request,res:Response,next:NextFunction)=>{
- 
-//     const user= await User.findOne(res.locals.user)
-//     console.log(user)
-//     if(user?.isActive==false){
-//       await res.cookie('jwtToken', '', { maxAge: 1 })
-//     }else{
-//       next()
-//     }
-//   }
-  
-//   module.exports = {isBlocked};
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user";
 
 export const isBlocked = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await User.findOne(req.body.userId); // Assuming userId is passed in the request body, adjust it as needed
+    const userId: string | undefined = req.query.userId as string | undefined;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is missing or invalid." });
+    }
+
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -26,7 +17,7 @@ export const isBlocked = async (req: Request, res: Response, next: NextFunction)
 
     if (!user.isActive) {
       // Clear JWT token if user is not active (blocked)
-      res.cookie("jwtToken", "", { maxAge: 1 });
+      res.clearCookie("jwtToken");
       return res.status(401).json({ message: "User is blocked" }); // Return 401 status to indicate blocked user
     }
 
@@ -37,4 +28,4 @@ export const isBlocked = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-module.exports = { isBlocked };
+export default isBlocked;

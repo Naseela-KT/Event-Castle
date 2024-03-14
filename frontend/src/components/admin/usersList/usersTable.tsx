@@ -19,6 +19,8 @@ import { useState, useEffect} from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/slices/UserSlice";
 
 interface User {
   _id: string;
@@ -29,11 +31,12 @@ interface User {
 }
 
 const UsersTable=()=> {
+  const dispatch = useDispatch();
 
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const totalPages=Math.ceil(users.length/6);
+  const [totalPages,setTotalPages]=useState<number>();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,6 +55,8 @@ const UsersTable=()=> {
       .then((response) => {
         console.log(response)
         setUsers(response.data.users);
+        setTotalPages(()=>{
+          return Math.ceil((response.data.totalUsers)/6)})
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -63,6 +68,9 @@ const UsersTable=()=> {
       .patch(`/block-unblock?userId=${userId}`)
       .then((response) => {
         console.log(response);
+        if (response.data.process === "block") {
+          dispatch(logout()); // Dispatch logout action if the user is blocked
+        }
         toast.success(response.data.message);
         navigate("/admin/users");
       })
@@ -71,6 +79,7 @@ const UsersTable=()=> {
       });
   };
 
+  
   const handleSearch = () => {
     navigate(`/admin/users?page=${page}&search=${search}`)
   };
@@ -203,7 +212,7 @@ const UsersTable=()=> {
             variant="outlined"
             size="sm"
             onClick={() => {
-              const nextPage = page + 1 <= totalPages ? page + 1 : totalPages;
+              const nextPage = page + 1 <= totalPages! ? page + 1 : totalPages;
               navigate(`/admin/users?page=${nextPage}&search=${search}`);
             }}
             placeholder={undefined}

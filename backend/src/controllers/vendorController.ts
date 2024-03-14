@@ -1,6 +1,7 @@
 import { Request , Response } from "express";
 import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
+import vendor from "../models/vendor";
 
 export const VendorController = {
 
@@ -166,7 +167,8 @@ export const VendorController = {
           } 
           
           await toggleVendorBlock(VendorId);
-          res.status(200).json({ message: "vendor block status toggled successfully." });
+          let process=await vendor.findOne({_id:VendorId})
+          res.status(200).json({ message: 'User block status toggled successfully.',process:!(process?.isActive)?"block":"unblock" });
       } catch (error) {
           console.log(error);
           res.status(500).json({ message: "Server Error" });

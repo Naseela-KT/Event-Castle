@@ -11,6 +11,7 @@ import {
 import { ChangeEvent, FormEvent, useState } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
+import { validate } from "../../../validations/admin/vendorTypeValidation";
 
 interface FormValues {
   type: string;
@@ -24,6 +25,11 @@ const initialValues: FormValues = {
 
 export default function AddVendorType() {
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
+  const [formErrors, setFormErrors] = useState<FormValues>({
+    type: "",
+    status: "",
+  });
+
   const navigate = useNavigate();
 
   const handleChange = (
@@ -34,12 +40,17 @@ export default function AddVendorType() {
     } else {
       const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
       setFormValues({ ...formValues, [name]: value });
+      const errors = validate({ ...formValues, [name]: value });
+      setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
     }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formValues)
+    const errors = validate(formValues);
+    setFormErrors(errors);
+    if (Object.values(errors).every((error) => error === "")) {
     axiosInstanceAdmin.post("/add-type", formValues)
     .then((response) => {
       console.log(response);
@@ -49,7 +60,9 @@ export default function AddVendorType() {
     .catch((error) => {
       console.log('here', error);
     });
+  }
   };
+
 
   return (
     <Card className="w-full mx-auto" placeholder={undefined} shadow={true}>
@@ -67,6 +80,7 @@ export default function AddVendorType() {
       <CardBody placeholder={undefined} className="ml-20">
         <form className="flex flex-row gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
+            <div className="flex flex-col">
             <Typography
               variant="small"
               color="blue-gray"
@@ -75,6 +89,9 @@ export default function AddVendorType() {
             >
               Vendor Type
             </Typography>
+           
+            </div>
+            
             <Input
               placeholder="Vendor Type"
               className=" focus:!border-t-gray-900"
@@ -88,6 +105,16 @@ export default function AddVendorType() {
               containerProps={{ className: "mt-4" }}
               crossOrigin={undefined}
             />
+           {formErrors.type ? (
+            <p
+              className="text-sm"
+              style={{ color: "red"}}
+            >
+              {formErrors.type}
+            </p>
+          ) : null}
+
+           
           </div>
           <div className="flex flex-col">
             <Typography
@@ -106,11 +133,23 @@ export default function AddVendorType() {
               }}
               value={formValues.status}
               name="status"
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => handleChange(e)}
+              onChange={(e) => {
+                if (e) {
+                  handleChange(e);
+                }
+              }}
             >
               <Option value="Active">Active</Option>
               <Option value="Non-Active">Non-Active</Option>
             </Select>
+            {formErrors.status ? (
+            <p
+              className="text-sm"
+              style={{ color: "red" }}
+            >
+              {formErrors.status}
+            </p>
+          ) : null}
           </div>
           <div className="mt-11">
             <Button size="md" placeholder={undefined} type="submit">

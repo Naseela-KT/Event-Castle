@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, createUser , findAllUsers, findUserByEmail } from '../repositories/userRepository';
+import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUsersCount } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
@@ -69,6 +69,16 @@ export const getUsers = async (page: number, limit: number, search: string) => {
     throw error;
   }
 };
+
+
+export const getUsersCount=async()=>{
+  try {
+    const total=await findUsersCount();
+    return total;
+  } catch (error) {
+    throw error
+  }
+}
 
 
 export const toggleUserBlock = async(userId:string): Promise<void> =>{

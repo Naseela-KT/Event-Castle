@@ -19,6 +19,8 @@ import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 
+
+
 interface FormValues {
   email: string;
   password: string;
@@ -52,10 +54,12 @@ const UserLoginForm = () => {
         .post("/login", values)
         .then((response) => {
           console.log(response);
+          // localStorage.setItem("userToken",response.data.token)
           dispatch(setUserInfo(response.data.userData));
           navigate("/");
         })
         .catch((error) => {
+          localStorage.removeItem("userToken");
           toast.error(error.response.data.message)
           console.log("here", error);
         });
@@ -149,6 +153,7 @@ const UserLoginForm = () => {
               Sign up
             </Typography>
           </Link>
+         
         </Typography>
         <Typography
           variant="small"
