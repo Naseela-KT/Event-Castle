@@ -16,6 +16,8 @@ router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/reset-password' , UserController.ResetUserPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
+router.post('/google/login',UserController.googleLogin)
+router.post('/google/register',UserController.googleRegister)
 
 
 export default router;

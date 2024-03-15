@@ -32,6 +32,45 @@ export const signup = async (email:string ,password:string, name:string , phone:
   
 
 
+export const googleSignup=async(email:string ,password:string, name:string): Promise<object> => {
+  try {
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      throw new CustomError('User already exists',404);
+    }
+    const isActive:boolean = true;
+    const newUser = await createUser({ email , password, name , isActive });
+
+    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
+    return {token:token,user:newUser};
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const gLogin=async (email: string, password: string): Promise<LoginResponse> => {
+  try {
+    console.log("in service",email,password)
+    const existingUser = await findUserByEmail(email);
+    if (!existingUser) {
+      throw new CustomError('User not exists..', 404); 
+    }
+
+    if(existingUser.isActive===false){
+      throw new CustomError('Blocked by Admin..',404);
+    }
+
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return { token: token, userData: existingUser, message: 'Successfully logged in..' };
+
+  } catch (error) {
+    throw error; 
+  }
+}
+  
+
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
@@ -39,7 +78,6 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     if (!existingUser) {
       throw new CustomError('User not exists..', 404); 
     }
-
 
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
 

@@ -1,10 +1,19 @@
 import { NextFunction, Request , Response } from "express";
-import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount } from "../services/userService";
+import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount, googleSignup, gLogin } from "../services/userService";
 import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
 import { isBlocked } from "../middlewares/userAuthMiddleware";
 import user from "../models/user";
 // import {isBlocked} from "../middlewares/userAuthMiddleware"
+import Jwt from "jsonwebtoken";
+
+
+interface DecodedData {
+  name: string;
+  email: string;
+  picture: string;
+  jti: string;
+}
 
 interface UserSession {
   email: string;
@@ -242,8 +251,66 @@ export const  UserController = {
          console.error(error);
          res.status(500).json({ message: "Server Error" });
         }
-       }
-};
+       },
+
+
+       async googleRegister (req: Request, res: Response){
+        try {
+          console.log("This is credential in body: ", req.body.credential);
+          const token = req.body.credential;
+          console.log(token)
+          const decodedData = Jwt.decode(req.body.credential);
+      
+          console.log("Decoded data: ", decodedData);
+          const {
+            name,
+            email,
+            jti,
+          }: DecodedData = decodedData as DecodedData;
+          const user=await googleSignup(email,jti,name)
+          if(user){
+            res.status(200).json({ message: "user saved successfully" });
+          }
+          
+        } catch (error) {
+          res.status(400).json({ error: "User already exists" });
+        }
+      },
+      
+     async googleLogin(req: Request, res: Response){
+        try {
+          const decodedData = Jwt.decode(req.body.credential) as DecodedData | null;
+          console.log(decodedData)
+      
+          if (!decodedData) {
+            return res.status(400).json({ error: "Invalid credentials" });
+          }
+      
+          const {email,jti} = decodedData;
+          const password=jti;
+          const { token, userData, message }=await gLogin(email,password)
+    
+          req.session.user=userData._id
+           res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production'});
+          
+          res.status(200).json({ token, userData, message });
+        } catch (error) {
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
+        }
+      }
+
+
+}
+
+
+
+
+
 
 // Define a custom error class
 export class CustomError extends Error {

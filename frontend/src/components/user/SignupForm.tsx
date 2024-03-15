@@ -14,6 +14,9 @@ import UserRootState from "../../redux/rootstate/UserState";
 import { axiosInstance } from "../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../validations/user/userRegisterVal";
+import { GoogleOAuthProvider , GoogleLogin } from "@react-oauth/google";
+
+const client_id = import.meta.env.VITE_CLIENT_ID || '';
 
 
 interface UserFormValues {
@@ -75,6 +78,7 @@ const UserSignupForm = () => {
   };
 
   return (
+    <GoogleOAuthProvider clientId={client_id}>
     <Card
       className="w-96 mt-50 m-auto bg-dark"
       placeholder={undefined}
@@ -195,6 +199,28 @@ const UserSignupForm = () => {
           </Button>
         </CardBody>
       </form>
+      {/* //GOOGLE Authentication */}
+      <div id="signInButton">
+              <GoogleLogin
+              type='standard'
+              theme='filled_black'
+              size='large'
+              ux_mode="popup"
+              onSuccess={response => {
+                axiosInstance.post('/google/register' , response).then((res) => {
+                  console.log(res)
+                  if(res.data.message) {
+                    toast.success(res.data.message);
+                    navigate('/login');
+                  }
+                })
+                .catch((error) => {
+                  console.log(error)
+                  toast.error(error.response.data.error)
+                })
+              }}
+              />
+            </div>
       <CardFooter className="pt-0" placeholder={undefined}>
         <Typography
           variant="small"
@@ -238,6 +264,7 @@ const UserSignupForm = () => {
         </Typography>
       </CardFooter>
     </Card>
+    </GoogleOAuthProvider>
   );
 };
 

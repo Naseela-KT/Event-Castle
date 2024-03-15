@@ -18,8 +18,9 @@ import UserRootState from "../../redux/rootstate/UserState";
 import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
+import {GoogleLogin , GoogleOAuthProvider} from '@react-oauth/google';
 
-
+const client_id = import.meta.env.VITE_CLIENT_ID || '';
 
 interface FormValues {
   email: string;
@@ -59,7 +60,7 @@ const UserLoginForm = () => {
           navigate("/");
         })
         .catch((error) => {
-          localStorage.removeItem("userToken");
+          // localStorage.removeItem("userToken");
           toast.error(error.response.data.message)
           console.log("here", error);
         });
@@ -70,6 +71,7 @@ const UserLoginForm = () => {
  
 
   return (
+    <GoogleOAuthProvider clientId={client_id}>
     <Card
       className="w-96 mt-50 bg-dark m-auto"
       placeholder={undefined}
@@ -133,6 +135,30 @@ const UserLoginForm = () => {
           </Button>
         </CardBody>
       </form>
+      <div id="signInButton">
+        <GoogleLogin
+        type='standard'
+        theme='filled_black'
+        size='large'
+        onSuccess={response => {
+          axiosInstance.post('/google/login' , response).then((res) => {
+            console.log(res , 'google @')
+            if(res.data) {
+              console.log(res.data)
+              // localStorage.setItem("studentToken",res.data.token)//for setting token in local storage
+              dispatch(setUserInfo(res.data.userData));
+              toast.success(res.data.message);
+              navigate('/');
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            toast.error(error.response.data.error)
+          })
+        }}
+        />
+    </div>
+
       <CardFooter className="pt-0" placeholder={undefined}>
         <Typography
           variant="small"
@@ -177,6 +203,7 @@ const UserLoginForm = () => {
         </Typography>
       </CardFooter>
     </Card>
+    </GoogleOAuthProvider>
   );
 };
 
