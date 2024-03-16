@@ -1,11 +1,9 @@
-import { NextFunction, Request , Response } from "express";
+import { Request , Response } from "express";
 import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount, googleSignup, gLogin } from "../services/userService";
-import nodemailer from 'nodemailer';
 import generateOtp from "../utils/generateOtp";
-import { isBlocked } from "../middlewares/userAuthMiddleware";
 import user from "../models/user";
-// import {isBlocked} from "../middlewares/userAuthMiddleware"
 import Jwt from "jsonwebtoken";
+
 
 
 interface DecodedData {
@@ -16,6 +14,7 @@ interface DecodedData {
 }
 
 interface UserSession {
+  otpSetTimestamp: number | undefined;
   email: string;
   password: string;
   name: string;
@@ -24,8 +23,9 @@ interface UserSession {
 }
 
 interface OTP {
-  otp: string;
-  email:string
+  otp: string | undefined;
+  email:string;
+  otpSetTimestamp: number | undefined;
 }
 
 
@@ -38,10 +38,9 @@ declare module 'express-session' {
 }
 
 
+
+
 export const  UserController = {
-
-
-
   async UserSignup(req: Request, res: Response): Promise<void> {
     try {
   
@@ -55,11 +54,14 @@ export const  UserController = {
           password: password,
           name: name,
           phone: parseInt(phone),
-          otpCode: otpCode
+          otpCode: otpCode,
+          otpSetTimestamp: Date.now() 
         }
-      
-        console.log("signup..")
+
+        console.log("signup..Before")
         console.log(req.session)
+
+
         res.status(200).json({ "message":"OTP send to email for verification.." , "email":email });   
       
       }
@@ -76,12 +78,17 @@ export const  UserController = {
   
   async verifyOtp(req:Request , res: Response):Promise<void>{
     try {
+      console.log("signup..After")
+      console.log(req.session)
       const otp = req.body.otp;
       const userData = req.session.user;
       const email = userData.email;
       const password = userData.password;
       const name = userData.name;
       const phone = userData.phone;
+      if(!userData.otpCode){
+        throw new CustomError("OTP Expired...Try to resend OTP !!",400)
+      }
       const otpCode = userData.otpCode;
       if(otp === otpCode){
       const user = await signup(email , password , name , phone );
@@ -177,7 +184,7 @@ export const  UserController = {
           const user = await CheckExistingUSer(email);
           if(user){
             const otp = await generateOtpForPassword(email);
-            req.session.otp = { otp: otp  , email:email};
+            req.session.otp = { otp: otp  , email:email,otpSetTimestamp:Date.now()};
             console.log(req.session.otp)
             res.status(200).json({ message:"OTP sent to email for password updation request " , email });
           }else{
@@ -195,16 +202,23 @@ export const  UserController = {
         try {
           const ReceivedOtp = req.body.otp;
           const generatedOtp = req.session.otp?.otp;
+          if(!req.session.otp){
+            throw new CustomError("OTP Expired...Try to resend OTP !!",400)
+          }
           
           if(ReceivedOtp === generatedOtp){
             console.log("otp is correct , navigating user to update password.");
             res.status(200).json({message:"Otp is verified..!"})
           }else{
-            res.status(400).json({Error:`otp's didn't matched..`})
+            throw new CustomError("Invalid OTP !!",400)
           }
         } catch (error) {
-          console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
         }
       } , 
 

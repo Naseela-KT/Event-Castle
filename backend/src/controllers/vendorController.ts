@@ -2,6 +2,27 @@ import { Request , Response } from "express";
 import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
+import { SessionData } from "express-session";
+
+
+interface VendorSession {
+  email: string;
+      password: string;
+      name: string;
+      phone: number;
+      city:string;
+      vendor_type:string;
+      otpCode?: string | undefined;
+      otpSetTimestamp?: number | undefined;
+}
+
+
+declare module 'express-session' {
+  interface Session {
+    vendorData: VendorSession;
+   
+  }
+}
 
 export const VendorController = {
 
@@ -12,18 +33,18 @@ export const VendorController = {
       const otpCode = await generateOtp(email);
       
       if (otpCode !== undefined) {
-        (req.session as any).vendorData = {
+        req.session.vendorData = {
           email: email,
           password: password,
           name: name,
           phone: parseInt(phone),
           city:city,
           otpCode: otpCode,
-          vendor_type:vendor_type
-        
+          vendor_type:vendor_type,
+          otpSetTimestamp: Date.now() 
       };
 
-      console.log("vendor signup..")
+      console.log("vendor signup..Before")
       console.log(req.session)
       res.status(200).json({ "message":"OTP send to vendor's email for verification.." , "email":email });   
 
@@ -80,8 +101,12 @@ export const VendorController = {
           const name = vendorData.name;
           const phone = vendorData.phone;
           const city = vendorData.city;
-          const otpCode = vendorData.otpCode
           const vendor_type=vendorData.vendor_type
+          const otpCode = vendorData.otpCode
+          
+          if(!vendorData.otpCode){
+            throw new CustomError("OTP Expired...Try to resend OTP !!",400)
+          }
           if(otp === otpCode){
            const vendor = await signup(email , password , name , phone , city,vendor_type);
           res.status(201).json(vendor);

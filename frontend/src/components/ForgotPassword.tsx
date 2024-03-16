@@ -108,7 +108,7 @@ const ForgotPassword = () => {
                 navigate("/reset-password");
               })
               .catch((error) => {
-                toast.error(error.response.data.error);
+                toast.error(error.response.data.message);
                 console.log("here", error);
               });
       }

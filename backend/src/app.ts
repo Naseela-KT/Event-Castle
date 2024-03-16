@@ -7,6 +7,7 @@ import vendorRoutes from "./routes/vendorRoutes";
 import cors from 'cors';
 import session from 'express-session';
 import { RequestHandler } from 'express';
+import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
 
 dotenv.config();
 connectDB();
@@ -35,7 +36,9 @@ app.use(sessionMiddleware)
 
 
 app.use(express.json());
-
+app.use(userOtpExpiration)
+app.use(vendorOtpExpiration)
+app.use(userEmailVerifyOtp)
 
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
