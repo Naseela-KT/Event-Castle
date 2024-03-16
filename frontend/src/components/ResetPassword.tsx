@@ -40,7 +40,7 @@ const ResetPassword = () => {
               .then((response) => {
                 
                 toast.success(response.data.message);
-                navigate("/vendor");
+                navigate("/vendor/login");
               })
               .catch((error) => {
                 toast.error(error.response.data.error);
@@ -51,7 +51,7 @@ const ResetPassword = () => {
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate("/");
+                navigate("/login");
               })
               .catch((error) => {
                 toast.error(error.response.data.error);

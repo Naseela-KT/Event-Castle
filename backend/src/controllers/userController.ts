@@ -33,7 +33,7 @@ interface OTP {
 declare module 'express-session' {
   interface Session {
     user: UserSession;
-    otp:OTP,
+    otp:OTP | undefined,
   }
 }
 
@@ -194,13 +194,11 @@ export const  UserController = {
       async VerifyOtpForPassword(req:Request , res: Response):Promise<void>{
         try {
           const ReceivedOtp = req.body.otp;
-          console.log("received otp",ReceivedOtp);
-          const generatedOtp = req.session.otp.otp;
-          console.log("generated otp",generateOtp);
+          const generatedOtp = req.session.otp?.otp;
           
           if(ReceivedOtp === generatedOtp){
             console.log("otp is correct , navigating user to update password.");
-            res.status(200).json({data:"otp is correct"})
+            res.status(200).json({message:"Otp is verified..!"})
           }else{
             res.status(400).json({Error:`otp's didn't matched..`})
           }
@@ -215,10 +213,12 @@ export const  UserController = {
         
        try {
         const password = req.body.password;
-        const confirmPassword = req.body.confirmPassword;
+        const confirmPassword = req.body.confirm_password;
             if(password === confirmPassword){
-              const email=req.session.otp.email;
-              const status = await ResetPassword(password , email); 
+              const email=req.session.otp?.email;
+              console.log("email "+email)
+              const status = await ResetPassword(password , email!); 
+              req.session.otp = undefined;
               res.status(200).json({ message: "Password reset successfully." });
             }else{
               res.status(400).json({ error: "Passwords do not match." });

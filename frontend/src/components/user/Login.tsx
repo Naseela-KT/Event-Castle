@@ -135,7 +135,7 @@ const UserLoginForm = () => {
           </Button>
         </CardBody>
       </form>
-      <div id="signInButton">
+      <div id="signInButton" className="pl-20">
         <GoogleLogin
         type='standard'
         theme='filled_black'

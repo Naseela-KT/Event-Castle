@@ -10,7 +10,8 @@ export interface VendorTypeDocument extends VendorType, Document {}
 
 const VendorTypeSchema: Schema = new Schema({
     type :{type:String , required:true} ,
-    status :{type:Boolean , required:true,default:true}
+    status :{type:Boolean , required:true,default:true},
+    isEditing:{type:Boolean,default:false}
 });
 
 export default mongoose.model<VendorTypeDocument>('vendortype', VendorTypeSchema);

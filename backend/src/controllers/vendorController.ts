@@ -134,7 +134,7 @@ export const VendorController = {
           
           if(ReceivedOtp === generatedOtp){
             console.log("otp is correct , navigating vendor to update password.");
-            res.status(200).json({data:"otp is correct, please update password now"})
+            res.status(200).json({message:"otp is correct, please update password now"})
           }else{
             res.status(400).json({Error:`otp's didn't matched..`})
           }
@@ -200,7 +200,7 @@ export const VendorController = {
         
         try {
          const password = req.body.password;
-         const confirmPassword = req.body.confirmPassword;
+         const confirmPassword = req.body.confirm_password;
              if(password === confirmPassword){
                const email=(req.session as any).vendorotp.email;;
                const status = await ResetVendorPasswordService(password , email); 

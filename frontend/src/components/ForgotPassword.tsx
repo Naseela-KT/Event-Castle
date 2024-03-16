@@ -56,7 +56,7 @@ const ForgotPassword = () => {
       {
         location.pathname === "/vendor/forgot-password"
           ? axiosInstanceVendor
-              .post("/getotp", values, { withCredentials: true })
+              .post("/vendor-getotp", values, { withCredentials: true })
               .then((response) => {
                 startOtpTimer();
                 setOtpButtonClicked(true);
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
       {
         location.pathname === "/vendor/forgot-password"
           ? axiosInstanceVendor
-              .post("/verify-otp", values, { withCredentials: true })
+              .post("/verifyVendorotp", values, { withCredentials: true })
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);

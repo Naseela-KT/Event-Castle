@@ -200,7 +200,7 @@ const UserSignupForm = () => {
         </CardBody>
       </form>
       {/* //GOOGLE Authentication */}
-      <div id="signInButton">
+      <div id="signUpButton" className="pl-20">
               <GoogleLogin
               type='standard'
               theme='filled_black'

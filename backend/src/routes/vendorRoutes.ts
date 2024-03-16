@@ -11,7 +11,7 @@ router.post('/verify' ,VendorController.verifyOtp)
 router.post('/login' , VendorController.VendorLogin)
 router.get('/logout' , VendorController.VendorLogout)
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
-router.post('/vgetotp' , VendorController.VendorForgotPassword)
+router.post('/vendor-getotp' , VendorController.VendorForgotPassword)
 router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/reset-password' , VendorController.ResetVendorPassword)
