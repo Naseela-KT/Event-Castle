@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.post('/signup' , VendorController.vendorSignup);
 router.post('/verify' ,VendorController.verifyOtp)
+router.get('/resendOtp' ,VendorController.ResendOtp);
+router.get('/pwd-resendOtp' ,VendorController.PwdResendOtp);
 router.post('/login' , VendorController.VendorLogin)
 router.get('/logout' , VendorController.VendorLogout)
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);

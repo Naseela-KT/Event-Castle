@@ -115,6 +115,34 @@ const ForgotPassword = () => {
     },
   });
 
+
+  const handleResendOtp=async()=>{
+    location.pathname === "/vendor/verify"
+          ? axiosInstanceVendor
+              .get("/pwd-resendOtp",{ withCredentials: true })
+              .then((response) => {
+                startOtpTimer();
+                console.log(response);
+                toast.warn(response.data.message);
+                
+              })
+              .catch((error) => {
+                toast.error(error.response.data.message);
+                console.log("here", error);
+              })
+          : axiosInstance
+              .get("/pwd-resendOtp", { withCredentials: true })
+              .then((response) => {
+                startOtpTimer();
+                console.log(response);
+                toast.warn(response.data.message);
+              })
+              .catch((error) => {
+                toast.error(error.response.data.message);
+                console.log("here", error);
+              });
+  }
+
   return (
     <Card
       className="w-96 mt-50 m-auto bg-dark"
@@ -172,6 +200,7 @@ const ForgotPassword = () => {
               placeholder={undefined}
               type="button"
               size="sm"
+              onClick={handleResendOtp}
             >
               Resend OTP
             </Button>

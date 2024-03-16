@@ -16,11 +16,16 @@ interface VendorSession {
       otpSetTimestamp?: number | undefined;
 }
 
+interface OTP {
+  otp: string | undefined;
+  email:string;
+  otpSetTimestamp: number | undefined;
+}
 
 declare module 'express-session' {
   interface Session {
     vendorData: VendorSession;
-   
+    otp:OTP | undefined,
   }
 }
 
@@ -59,6 +64,53 @@ export const VendorController = {
     }
   },
 
+
+  async ResendOtp(req:Request , res: Response):Promise<void>{
+    try {
+     const vendorData: VendorSession | undefined = req.session.vendorData;
+     if (!vendorData) {
+       res.status(400).json({ error: "Session data not found. Please sign up again." });
+       return;
+     }
+     const email = vendorData.email;
+     const newOtp = await generateOtp(email);
+     if (req.session.vendorData) {
+       req.session.vendorData.otpCode = newOtp;
+     } else {
+       console.error("Session user data is unexpectedly undefined.");
+       res.status(500).json({ message: "Server Error: Session user data is unexpectedly undefined." });
+       return;
+     }
+     res.status(200).json({ "message": "New OTP sent to email" });
+    } catch (error) {
+     console.error(error);
+     res.status(500).json({ message: "Server Error" });
+    }
+   },
+
+
+   async PwdResendOtp(req:Request , res: Response):Promise<void>{
+    try {
+     const otp: OTP | undefined = req.session.otp;
+     if (!otp) {
+       res.status(400).json({ error: "Session data not found. Please sign up again." });
+       return;
+     }
+     const email = otp.email;
+     const newOtp = await generateOtp(email);
+     if (req.session.otp) {
+       req.session.otp.otp = newOtp;
+     } else {
+       console.error("Session user data is unexpectedly undefined.");
+       res.status(500).json({ message: "Server Error: Session user data is unexpectedly undefined." });
+       return;
+     }
+     res.status(200).json({ "message": "New OTP sent to email" });
+    } catch (error) {
+     console.error(error);
+     res.status(500).json({ message: "Server Error" });
+    }
+   },
 
 
 

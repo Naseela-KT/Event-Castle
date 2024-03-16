@@ -86,6 +86,34 @@ const VerifyEmail = () => {
     },
   });
 
+
+  const handleResendOtp=async()=>{
+    location.pathname === "/vendor/verify"
+          ? axiosInstanceVendor
+              .get("/resendOtp",{ withCredentials: true })
+              .then((response) => {
+                startTimer();
+                console.log(response);
+                toast.warn(response.data.message);
+                
+              })
+              .catch((error) => {
+                toast.error(error.response.data.error);
+                console.log("here", error);
+              })
+          : axiosInstance
+              .get("/resendOtp", { withCredentials: true })
+              .then((response) => {
+                startTimer();
+                console.log(response);
+                toast.warn(response.data.message);
+              })
+              .catch((error) => {
+                toast.error(error.response.data.error);
+                console.log("here", error);
+              });
+  }
+
   return (
     <Card
       className="w-96 mt-50 m-auto bg-dark"
@@ -135,6 +163,7 @@ const VerifyEmail = () => {
             placeholder={undefined}
             type="button"
             size="sm"
+            onClick={handleResendOtp}
           >
             Resend OTP
           </Button>
