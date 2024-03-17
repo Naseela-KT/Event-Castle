@@ -1,4 +1,4 @@
-import { createVendorType, deleteVendorById, findVerndorTypeByName ,findVerndorTypes} from "../repositories/vendorTypeRepository";
+import { createVendorType, deleteVendorById, findVerndorTypeByName ,findVerndorTypes, getVendorById, updateById} from "../repositories/vendorTypeRepository";
 
 
 export const addType = async (type: string, status: string)=> {
@@ -32,6 +32,26 @@ export const deleteType=async(vendorTypeId:string)=>{
     
   } catch (error) {
     throw error;
+  }
+}
+
+
+export const getSingleType=async(vendorTypeId:string)=>{
+  try {
+    return await getVendorById(vendorTypeId)
+    
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const updateVendorType=async(vendorTypeId: string, type: string, status: string): Promise<any> =>{
+  try {
+      const updatedType = await updateById(vendorTypeId, { type, status:status==="Active"?true:false });
+      return updatedType;
+  } catch (error) {
+      throw new Error('Failed to update vendor type.');
   }
 }
 

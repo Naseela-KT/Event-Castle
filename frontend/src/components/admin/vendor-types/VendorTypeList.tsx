@@ -2,6 +2,7 @@ import { Button } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
+import EditTypeModal from "./EditTypeModal";
 
 interface VendorType {
   _id: string;
@@ -11,7 +12,10 @@ interface VendorType {
 
 const VendorTypeList = () => {
   const [vendorType, setVendorType] = useState<VendorType[]>([]);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+  const [editId, setEditId] = useState<string>(""); // State to store the id of the type being edited
+  const [open, setOpen] = useState(false); 
+
 
   useEffect(() => {
     axiosInstanceAdmin
@@ -19,25 +23,37 @@ const VendorTypeList = () => {
       .then((response) => {
         console.log(response);
         setVendorType(response.data);
-        navigate("/admin/vendor-types")
+        navigate("/admin/vendor-types");
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, []);
+  }, [!open]);
 
-  const handleDelete = async (vendorTypeId:string) => {
+  const handleDelete = async (vendorTypeId: string) => {
     axiosInstanceAdmin
       .delete(`/delete-vendortype?id=${vendorTypeId}`, {
         withCredentials: true,
       })
-      .then((response)=>{
+      .then((response) => {
         console.log(response);
-        setVendorType(prevVendorTypes => prevVendorTypes.filter(type => type._id !== vendorTypeId));
-        navigate("/admin/vendor-types")
-      }).catch((error) => {
-        console.log('here', error);
+        setVendorType((prevVendorTypes) =>
+          prevVendorTypes.filter((type) => type._id !== vendorTypeId)
+        );
+        navigate("/admin/vendor-types");
+      })
+      .catch((error) => {
+        console.log("here", error);
       });
+  };
+
+  const handleEdit = (vendorTypeId: string) => {
+    setEditId(vendorTypeId); // Set the id of the type being edited
+    setOpen(true); // Open the modal
+  };
+
+  const handleClose = () => {
+    setOpen(false); // Close the modal
   };
 
   return (
@@ -135,8 +151,9 @@ const VendorTypeList = () => {
                     <div className="w-max">
                       <Button
                         size="sm"
-                        placeholder={undefined}
+                        onClick={() => handleEdit(type._id)}
                         className="mr-2"
+                        placeholder={undefined}
                       >
                         Edit
                       </Button>
@@ -144,7 +161,7 @@ const VendorTypeList = () => {
                         size="sm"
                         placeholder={undefined}
                         variant="outlined"
-                        onClick={()=>handleDelete(type._id)}
+                        onClick={() => handleDelete(type._id)}
                       >
                         Delete
                       </Button>
@@ -156,6 +173,7 @@ const VendorTypeList = () => {
           </table>
         </div>
       </div>
+      <EditTypeModal open={open} onClose={handleClose} vendorTypeId={editId} />
     </>
   );
 };

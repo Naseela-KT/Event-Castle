@@ -30,7 +30,7 @@ import UsersList from './pages/admin/UsersList.tsx';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
 import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
 import VendorPrivateRoute from './components/vendor/VendorPrivateRoute.tsx';
-import DefaultTable from './pages/user/Sample.tsx';
+import DialogWithForm from './pages/user/Sample.tsx';
 import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
 import Wallet from './pages/admin/Wallet.tsx';
 
@@ -44,7 +44,7 @@ const router = createBrowserRouter(
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path='/sample' element={<DefaultTable/>}/>
+      <Route path='/sample' element={<DialogWithForm/>}/>
       {/* User Private Routes */}
       <Route path="" element={<UserPrivateRoute/>}>
     

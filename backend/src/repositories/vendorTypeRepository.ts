@@ -44,6 +44,25 @@ export const createVendorType = async (vendorData : Partial<VendorTypeDocument>)
     } catch (error) {
       throw error;
     }
-  }
+  };
 
+
+  export const getVendorById=async(vendorTypeId:string):Promise<VendorTypeDocument | null>=>{
+    try {
+      return await VendorType.findOne({_id:vendorTypeId});
+      
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
+  export const updateById=async(vendorTypeId: string, update: Partial<VendorTypeDocument>): Promise<any>=> {
+        try {
+            const updatedType = await VendorType.findByIdAndUpdate(vendorTypeId, update, { new: true });
+            return updatedType;
+        } catch (error) {
+            throw new Error('Failed to update vendor type in the database.');
+        }
+    }
 

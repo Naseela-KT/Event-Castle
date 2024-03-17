@@ -8,14 +8,23 @@ const router = express.Router();
 
 router.post('/login' , AdminController.Adminlogin);
 router.get('/logout' , AdminController.Adminlogout);
+
+//user
 router.get('/users' , UserController.allUsers);
-router.get('/getvendors' ,VendorController.getAllVendors )
-router.post('/add-type' , VendorTypeController.addVendorType);
-router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
 router.patch('/block-unblock' , UserController.Toggleblock)
+
+//Vendor
 router.patch('/vendorblock-unblock' , VendorController.Toggleblock)
 router.get('/getvendor', VendorController.getVendor)
+router.get('/getvendors' ,VendorController.getAllVendors )
+
+//vendorType
+router.post('/add-type' , VendorTypeController.addVendorType);
+router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
 router.delete('/delete-vendortype',VendorTypeController.deleteVendorType)
+router.get("/single-type",VendorTypeController.LoadSingleType)
+router.put("/update-type",VendorTypeController.updateType)
+
 export default router;
 
 

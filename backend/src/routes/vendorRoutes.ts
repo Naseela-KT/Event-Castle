@@ -18,4 +18,5 @@ router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/reset-password' , VendorController.ResetVendorPassword)
 
+
 export default router;
