@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import EditTypeModal from "./EditTypeModal";
+import DeleteTypeModal from "./DeleteTypeModal";
 
 interface VendorType {
   _id: string;
@@ -14,8 +15,9 @@ const VendorTypeList = () => {
   const [vendorType, setVendorType] = useState<VendorType[]>([]);
   const navigate = useNavigate();
   const [editId, setEditId] = useState<string>(""); // State to store the id of the type being edited
-  const [open, setOpen] = useState(false); 
-
+  const [deleteId, setDeleteId] = useState<string>(""); // State to store the id of the type being deleted
+  const [openEditModal, setOpenEditModal] = useState(false); // State to track whether the edit modal is open
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     axiosInstanceAdmin
@@ -28,7 +30,7 @@ const VendorTypeList = () => {
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, [!open]);
+  }, [openEditModal, openDeleteModal]);
 
   const handleDelete = async (vendorTypeId: string) => {
     axiosInstanceAdmin
@@ -49,11 +51,20 @@ const VendorTypeList = () => {
 
   const handleEdit = (vendorTypeId: string) => {
     setEditId(vendorTypeId); // Set the id of the type being edited
-    setOpen(true); // Open the modal
+    setOpenEditModal(true); // Open the edit modal
   };
 
-  const handleClose = () => {
-    setOpen(false); // Close the modal
+  const handleDeleteModal = (vendorTypeId: string) => {
+    setDeleteId(vendorTypeId); // Set the id of the type being deleted
+    setOpenDeleteModal(true); // Open the delete modal
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false); // Close the edit modal
+  };
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false); // Close the delete modal
   };
 
   return (
@@ -161,7 +172,7 @@ const VendorTypeList = () => {
                         size="sm"
                         placeholder={undefined}
                         variant="outlined"
-                        onClick={() => handleDelete(type._id)}
+                        onClick={() => handleDeleteModal(type._id)}
                       >
                         Delete
                       </Button>
@@ -173,7 +184,19 @@ const VendorTypeList = () => {
           </table>
         </div>
       </div>
-      <EditTypeModal open={open} onClose={handleClose} vendorTypeId={editId} />
+      <EditTypeModal
+        open={openEditModal}
+        onClose={handleCloseEditModal}
+        vendorTypeId={editId}
+      />
+
+      {/* Delete Modal */}
+      <DeleteTypeModal
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        vendorTypeId={deleteId}
+        onDelete={handleDelete} // Pass the delete function to the delete modal
+      />
     </>
   );
 };
