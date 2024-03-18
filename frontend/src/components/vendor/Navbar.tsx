@@ -1,7 +1,5 @@
-
-
 import React from "react";
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   Typography,
@@ -10,17 +8,19 @@ import {
   Input,
   MobileNav,
 } from "@material-tailwind/react";
-import { useSelector,useDispatch } from 'react-redux';
-import VendorState  from '../../redux/rootstate/VendorState';
-import {axiosInstanceVendor} from '../../api/axiosinstance';
+import { useSelector, useDispatch } from "react-redux";
+import VendorState from "../../redux/rootstate/VendorState";
+import { axiosInstanceVendor } from "../../api/axiosinstance";
 import { logout } from "../../redux/slices/VendorSlice";
 
-const VendorNavbar=()=> {
+const VendorNavbar = () => {
   const [openNav, setOpenNav] = React.useState(false);
-  const isVendorSignedIn = useSelector((state: VendorState) => state.vendor.isVendorSignedIn);
+  const isVendorSignedIn = useSelector(
+    (state: VendorState) => state.vendor.isVendorSignedIn
+  );
 
   const navigate = useNavigate();
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -29,27 +29,28 @@ const VendorNavbar=()=> {
     );
   }, []);
 
-
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axiosInstanceVendor.get("/logout")
+    axiosInstanceVendor
+      .get("/logout")
       .then(() => {
         dispatch(logout());
         navigate("/vendor/login");
       })
       .catch((error) => {
-        console.log('here', error);
+        console.log("here", error);
       });
   };
-
- 
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
-              as="li"
-              variant="small"
-              className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined} color="white"     >
+        as="li"
+        variant="small"
+        className="flex items-center gap-x-2 p-1 font-medium"
+        placeholder={undefined}
+        color="white"
+      >
         <svg
           width="16"
           height="15"
@@ -63,15 +64,15 @@ const VendorNavbar=()=> {
           />
         </svg>
 
-      <Link to="/vendor">
-      Home
-      </Link>
-
+        <Link to="/vendor">Home</Link>
       </Typography>
       <Typography
-              as="li"
-              variant="small"
-              className="flex items-center gap-x-2 p-1 font-medium"  color="white" placeholder={undefined}    >
+        as="li"
+        variant="small"
+        className="flex items-center gap-x-2 p-1 font-medium"
+        color="white"
+        placeholder={undefined}
+      >
         <svg
           width="16"
           height="17"
@@ -86,11 +87,15 @@ const VendorNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <Link to="">
-        Vendors
-        </Link>
+        <Link to="">Vendors</Link>
       </Typography>
-      <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}>
+      <Typography
+        as="li"
+        variant="small"
+        color="white"
+        className="flex items-center gap-x-2 p-1 font-medium"
+        placeholder={undefined}
+      >
         <svg
           width="14"
           height="15"
@@ -103,63 +108,93 @@ const VendorNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <Link to="">
-        About
-        </Link>
+        <Link to="">About</Link>
       </Typography>
-
     </ul>
   );
 
   return (
-    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark" placeholder={undefined} style={{ borderRadius: 0,border:0 }} >
+    <Navbar
+      className="px-4  lg:px-8 lg:py-2 lg:mb-6"
+      placeholder={undefined}
+      style={{ borderRadius: 0, border: 0, backgroundColor: "#565656" }}
+    >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
-                  as="a"
-                  href="#"
-                  className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
+          as="a"
+          href="#"
+          className="mr-4 cursor-pointer py-1.5 font-medium"
+          color="pink"
+          placeholder={undefined}
+        >
           Event Castle
-         
         </Typography>
         <div className="hidden lg:block">{navList}</div>
-       
+
         <div className="relative flex w-full gap-2 md:w-max">
           <Input
-                          type="search"
-                          color="white"
-                          label="Type here..."
-                          className="pr-20"
-                          containerProps={{
-                              className: "min-w-[288px]",
-                          }} crossOrigin={undefined}          />
+            type="search"
+            color="white"
+            label="Type here..."
+            className="pr-20"
+            containerProps={{
+              className: "min-w-[288px]",
+            }}
+            crossOrigin={undefined}
+          />
           <Button
-                          size="sm"
-                          color="black"
-                          className="!absolute right-1 top-1 rounded"  placeholder={undefined}          >
+            size="sm"
+            color="black"
+            className="!absolute right-1 top-1 rounded"
+            placeholder={undefined}
+          >
             Search
           </Button>
         </div>
         <div className="flex items-center gap-x-1">
-          {isVendorSignedIn?<Button variant="gradient"  size="sm" className="hidden lg:inline-block" placeholder={undefined}
-          onClick={handleLogout}>
-          <span>Logout</span>
-        </Button>:  <><Link to="/vendor/login">
-        <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
-          <span>Log In</span>
-        </Button>
-      </Link>
-      <Link to="/vendor/signup">
-        <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
-          <span>Sign up</span>
-        </Button>
-      </Link></>}
-      
-    </div>
-        <IconButton
+          {isVendorSignedIn ? (
+            <Button
+              variant="gradient"
+              size="sm"
+              className="hidden lg:inline-block"
+              placeholder={undefined}
+              onClick={handleLogout}
+            >
+              <span>Logout</span>
+            </Button>
+          ) : (
+            <>
+              <Link to="/vendor/login">
+                <Button
                   variant="text"
-                  className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                  ripple={false}
-                  onClick={() => setOpenNav(!openNav)}  placeholder={undefined}        >
+                  color="white"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={undefined}
+                >
+                  <span>Log In</span>
+                </Button>
+              </Link>
+              <Link to="/vendor/signup">
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={undefined}
+                >
+                  <span>Sign up</span>
+                </Button>
+              </Link>
+            </>
+          )}
+        </div>
+        <IconButton
+          variant="text"
+          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          ripple={false}
+          onClick={() => setOpenNav(!openNav)}
+          placeholder={undefined}
+        >
           {openNav ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -192,27 +227,33 @@ const VendorNavbar=()=> {
           )}
         </IconButton>
       </div>
-      
-      <MobileNav  open={openNav}>
+
+      <MobileNav open={openNav}>
         <div className="container mx-auto">
           {navList}
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
-            <Link to="/vendor/login">
-                Login
-              </Link>
+            <Button
+              fullWidth
+              variant="text"
+              size="sm"
+              className=""
+              placeholder={undefined}
+            >
+              <Link to="/vendor/login">Login</Link>
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className=""  placeholder={undefined}>
-              <Link to="/vendor/signup">
-                Signup
-              </Link>
-              
+            <Button
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className=""
+              placeholder={undefined}
+            >
+              <Link to="/vendor/signup">Signup</Link>
             </Button>
           </div>
         </div>
-      </MobileNav >
-     
+      </MobileNav>
     </Navbar>
   );
-}
- export default VendorNavbar
+};
+export default VendorNavbar;

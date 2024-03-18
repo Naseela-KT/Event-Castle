@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 
+
 const VendorApp: React.FC = () => {
     const role='vendor'
 
@@ -16,6 +17,7 @@ const VendorApp: React.FC = () => {
     <VendorNavbar/>
     <Outlet/>
     </Layout>
+    
     </>
   )
 }

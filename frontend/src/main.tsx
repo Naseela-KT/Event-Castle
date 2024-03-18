@@ -33,6 +33,9 @@ import VendorPrivateRoute from './components/vendor/VendorPrivateRoute.tsx';
 import DialogWithForm from './pages/user/Sample.tsx';
 import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
 import Wallet from './pages/admin/Wallet.tsx';
+import VendorProfilePage from './pages/vendor/Profile.tsx';
+import CreatePost from './components/vendor/CreatePost.tsx';
+import UserSidebar from './components/user/Profile/Sidebar.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
@@ -47,8 +50,9 @@ const router = createBrowserRouter(
       <Route path='/sample' element={<DialogWithForm/>}/>
       {/* User Private Routes */}
       <Route path="" element={<UserPrivateRoute/>}>
+
     
-      <Route path="/profile" />
+      <Route path="/profile" element={<UserSidebar/>}/>
       </Route>
     </Route>
 
@@ -73,8 +77,12 @@ const router = createBrowserRouter(
       <Route path="/vendor/verify" element={<VerifyEmail />} />
       <Route path="/vendor/forgot-password" element={<ForgotPassword />} />
       <Route path="/vendor/reset-password" element={<ResetPassword />} />
+
       {/* Admin Private Routes */}
       <Route path="" element={<VendorPrivateRoute/>}></Route>
+      <Route path="/vendor/profile" element={<VendorProfilePage />} />
+      <Route path="/vendor/create-post" element={<CreatePost />} />
+     
     </Route>
     </>
   )
