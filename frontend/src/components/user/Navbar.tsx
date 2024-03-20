@@ -49,9 +49,9 @@ const UserNavbar=()=> {
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
-              as="li"
-              variant="small"
-              className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined} color="white"     >
+        as="li"
+        variant="small"
+        className="flex items-center gap-x-2 p-1 font-medium" placeholder={undefined} color="white"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}     >
         <svg
           width="16"
           height="15"
@@ -70,9 +70,9 @@ const UserNavbar=()=> {
         </Link>
       </Typography>
       <Typography
-              as="li"
-              variant="small"
-              className="flex items-center gap-x-2 p-1 font-medium"  color="white" placeholder={undefined}    >
+        as="li"
+        variant="small"
+        className="flex items-center gap-x-2 p-1 font-medium" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
         <svg
           width="16"
           height="17"
@@ -91,7 +91,7 @@ const UserNavbar=()=> {
           Vendors
         </a>
       </Typography>
-      <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium"  placeholder={undefined}>
+      <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <svg
           width="14"
           height="15"
@@ -108,17 +108,17 @@ const UserNavbar=()=> {
           About
         </a>
       </Typography>
-
+    
     </ul>
   );
 
   return (
-    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark" placeholder={undefined} style={{ borderRadius: 0,border:0 }} >
+    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark fixed" placeholder={undefined} style={{borderRadius: 0, border: 0, backgroundColor: "#565656" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
-                  as="a"
-                  href="#"
-                  className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
+          as="a"
+          href="#"
+          className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           <img src="../../../public/imgs/event_castle.png" alt="" />
          
         </Typography>
@@ -127,40 +127,40 @@ const UserNavbar=()=> {
        
         <div className="relative flex w-full gap-2 lg:w-max">
           <Input
-                          type="search"
-                          color="white"
-                          label="Type here..."
-                          className="pr-20"
-                          containerProps={{
-                              className: "min-w-[288px]",
-                          }} crossOrigin={undefined}          />
+            type="search"
+            color="white"
+            label="Type here..."
+            className="pr-20"
+            containerProps={{
+              className: "min-w-[288px]",
+            }} crossOrigin={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           <Button
-                          size="sm"
-                          color="black"
-                          className="!absolute right-1 top-1 rounded"  placeholder={undefined}          >
+            size="sm"
+            color="black"
+            className="!absolute right-1 top-1 rounded" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Search
           </Button>
         </div>
         <div className="flex items-center gap-x-1">
-          {isUserSignedIn?<><Button variant="gradient"  size="sm" className="hidden lg:inline-block" placeholder={undefined}
-          onClick={handleLogout}>
+          {isUserSignedIn?<><Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}
+          onClick={handleLogout}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Logout</span>
         </Button><p>{user?.name}</p></>:  <><Link to="/login">
-        <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+        <Button variant="text" color="white" size="sm" className="hidden lg:inline-block" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Log In</span>
         </Button>
       </Link>
       <Link to="/signup">
-        <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+        <Button variant="gradient" size="sm" className="hidden lg:inline-block" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Sign up</span>
         </Button>
       </Link></>}
     </div>
         <IconButton
-                  variant="text"
-                  className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                  ripple={false}
-                  onClick={() => setOpenNav(!openNav)}  placeholder={undefined}        >
+          variant="text"
+          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          ripple={false}
+          onClick={() => setOpenNav(!openNav)} placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           {openNav ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -198,12 +198,12 @@ const UserNavbar=()=> {
         <div className="container mx-auto">
           {navList}
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
+            <Button fullWidth variant="text" size="sm" className="" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <Link to="/login">
                 Login
               </Link>
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className=""  placeholder={undefined}>
+            <Button fullWidth variant="gradient" size="sm" className="" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
              <Link to="/signup">
                 Signup
               </Link>

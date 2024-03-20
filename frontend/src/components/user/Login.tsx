@@ -73,64 +73,58 @@ const UserLoginForm = () => {
   return (
     <GoogleOAuthProvider clientId={client_id}>
     <Card
-      className="w-96 mt-50 bg-dark m-auto"
-      placeholder={undefined}
-      shadow={false}
-    >
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="mt-10 rounded-none text-center"
+        className="w-96 mt-50 bg-dark m-auto"
         placeholder={undefined}
-      >
-        <Typography variant="h4" color="white" placeholder={undefined}>
+        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+      <CardHeader
+          floated={false}
+          shadow={false}
+          color="transparent"
+          className="mt-10 rounded-none text-center"
+          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           User - Sign In
         </Typography>
       </CardHeader>
       <form onSubmit={formik.handleSubmit}>
-        <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+        <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Input
-            label="Email"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            name="email"
-          />
+              label="Email"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              name="email" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formik.errors.email ? <p className="text-sm" style={{color:"red",marginBottom:-10,marginTop:-10}}>{formik.errors.email}</p> : null}
           <Input
-            label="Password"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            name="password"
-            type="password"
-          />
+              label="Password"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+              name="password"
+              type="password" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formik.errors.password ? <p className="text-sm" style={{color:"red",padding:0,marginTop:-10}}>{formik.errors.password}</p> : null}
           <div className="ml-2.5">
             <Link to="/forgot-password">
               <Typography
-                variant="small"
-                color="white"
-                placeholder={undefined}
-                className="text-left"
-              >
+                  variant="small"
+                  color="white"
+                  placeholder={undefined}
+                  className="text-left"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
                 Forgot password?
               </Typography>
             </Link>
           </div>
           <Button
-            variant="gradient"
-            fullWidth
-            placeholder={undefined}
-            type="submit"
-          >
+              variant="gradient"
+              fullWidth
+              placeholder={undefined}
+              type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Sign In
           </Button>
         </CardBody>
@@ -159,44 +153,40 @@ const UserLoginForm = () => {
         />
     </div>
 
-      <CardFooter className="pt-0" placeholder={undefined}>
+      <CardFooter className="pt-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Typography
-          variant="small"
-          color="white"
-          className="mt-6 flex justify-center "
-          placeholder={undefined}
-        >
+            variant="small"
+            color="white"
+            className="mt-6 flex justify-center "
+            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Don&apos;t have an account?
           <Link to="/signup">
             <Typography
-              as="a"
-              href="#signup"
-              variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}
-            >
+                as="a"
+                href="#signup"
+                variant="small"
+                color="white"
+                className="ml-1 font-bold"
+                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Sign up
             </Typography>
           </Link>
          
         </Typography>
         <Typography
-          variant="small"
-          color="white"
-          className="mt-3 flex justify-center"
-          placeholder={undefined}
-        >
+            variant="small"
+            color="white"
+            className="mt-3 flex justify-center"
+            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
           <Link to="/vendor/login">
             <Typography
-              as="a"
-              href="#signup"
-              variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}
-            >
+                as="a"
+                href="#signup"
+                variant="small"
+                color="white"
+                className="ml-1 font-bold"
+                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Login here
             </Typography>
           </Link>

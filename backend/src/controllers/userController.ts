@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount, googleSignup, gLogin } from "../services/userService";
+import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOtpForPassword, ResetPassword, getUsersCount, googleSignup, gLogin, checkCurrentPassword, UpdatePasswordService } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
 import user from "../models/user";
 import Jwt from "jsonwebtoken";
@@ -341,7 +341,38 @@ export const  UserController = {
             res.status(500).json({ message: 'Server Error' });
           }
         }
-      }
+      },
+
+      async updatePasswordController(req: Request, res: Response): Promise<void> {
+        try {
+          console.log(req.body)
+          const currentPassword = req.body.current_password;
+          const newPassword = req.body.new_password;
+          const userId: string = req.query.userid as string;
+    
+          let status = await checkCurrentPassword(currentPassword, userId);
+    
+          if (!status) {
+            throw new CustomError(`Current password is wrong!` ,400);
+            
+          }      
+          
+          const data = await UpdatePasswordService(newPassword , userId);
+    
+          if(!data){
+            res.status(400).json({error:"couldn't update password..internal error."})
+          }
+          res.status(200).json({message:"password updated successfully.."})
+    
+        } catch (error) {
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
+        }
+      },
 
 
 }

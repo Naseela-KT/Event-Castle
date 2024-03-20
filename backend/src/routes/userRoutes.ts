@@ -20,5 +20,7 @@ router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/google/login',UserController.googleLogin)
 router.post('/google/register',UserController.googleRegister)
 
+router.post('/update-password' , UserController.updatePasswordController)
+
 
 export default router;

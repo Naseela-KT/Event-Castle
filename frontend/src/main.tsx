@@ -35,7 +35,7 @@ import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
 import Wallet from './pages/admin/Wallet.tsx';
 import VendorProfilePage from './pages/vendor/Profile.tsx';
 import CreatePost from './components/vendor/CreatePost.tsx';
-import UserSidebar from './components/user/Profile/Sidebar.tsx';
+import Profile from './pages/user/Profile.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
@@ -49,10 +49,8 @@ const router = createBrowserRouter(
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path='/sample' element={<DialogWithForm/>}/>
       {/* User Private Routes */}
-      <Route path="" element={<UserPrivateRoute/>}>
-
-    
-      <Route path="/profile" element={<UserSidebar/>}/>
+      <Route path="" element={<UserPrivateRoute/>}> 
+      <Route path="/profile/*" element={<Profile/>}/>
       </Route>
     </Route>
 

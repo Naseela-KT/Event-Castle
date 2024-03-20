@@ -291,6 +291,17 @@ export const VendorController = {
         }
        },
 
+       async addNewPost(req:Request , res: Response):Promise<void>{
+        try {
+          console.log(req.body)
+          console.log(req.file?.buffer)
+        } catch (error) {
+         console.error(error);
+         res.status(500).json({ message: "Server Error" });
+        }
+       },
+
+
 
 }
 

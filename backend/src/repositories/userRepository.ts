@@ -47,6 +47,16 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
     }
   }
 
+  export const findUserById = async (
+    userId: string
+  ): Promise<UserDocument | null> => {
+    try {
+      return await User.findById( userId );
+    } catch (error) {
+      throw error;
+    }
+  };
+
   export const UpdatePassword = async(password:string , mail:string) =>{
     try {
       const result = await User.updateOne({ email: mail }, { password: password });
