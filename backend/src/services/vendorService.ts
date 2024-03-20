@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UpdateVendorPassword, createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
-import { ObjectId } from 'mongoose';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -139,3 +138,5 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
     throw error;
   }
 }
+
+

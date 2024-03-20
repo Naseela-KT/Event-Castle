@@ -7,6 +7,7 @@ import { VendorController } from '../controllers/vendorController';
 const router = express.Router();
 
 
+
 router.post('/signup', UserController.UserSignup );
 router.post('/verify' ,UserController.verifyOtp);
 router.get('/resendOtp' ,UserController.ResendOtp);

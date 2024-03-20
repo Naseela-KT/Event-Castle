@@ -1,8 +1,11 @@
 import express from 'express';
 import { VendorController } from '../controllers/vendorController';
 import { VendorTypeController } from '../controllers/vendorTypeController';
+import { S3Client,PutObjectCommand} from "@aws-sdk/client-s3";
+
 
 import multer from 'multer';
+import { PostController } from '../controllers/postController';
 const router = express.Router();
 
 // const storage = multer.diskStorage({
@@ -19,6 +22,8 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 
+
+
 router.post('/signup' , VendorController.vendorSignup);
 router.post('/verify' ,VendorController.verifyOtp)
 router.get('/resendOtp' ,VendorController.ResendOtp);
@@ -31,7 +36,7 @@ router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/reset-password' , VendorController.ResetVendorPassword)
 
-router.post("/add-post",upload.single('image'),VendorController.addNewPost)
+router.post("/add-post",upload.single('image'),PostController.addNewPost)
 
 
 export default router;

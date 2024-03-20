@@ -18,7 +18,8 @@ const postSchema=new Schema<PostDocument>({
         default:Date.now()
     },
     vendor_id:{
-        type:Boolean,
+        type:Schema.Types.ObjectId,
+        ref: 'Vendor',
         required:true
     },
     image:{

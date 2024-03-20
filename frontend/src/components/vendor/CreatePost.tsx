@@ -7,15 +7,28 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link ,useNavigate} from "react-router-dom";
 import { axiosInstanceVendor } from "../../api/axiosinstance";
+import { toast } from "react-toastify";
+import VendorRootState from "../../redux/rootstate/VendorState";
+import { useSelector } from "react-redux";
 
-// import { axiosInstanceVendor } from "../../api/axiosinstance";
+
 
 const CreatePost = () => {
+  const vendor = useSelector(
+    (state: VendorRootState) => state.vendor.vendordata
+  );
+
+  useEffect(()=>{
+    console.log(vendor?._id)
+  },[])
+  
   const [caption, setCaption] = useState<string>("");
   const [file, setFile] = useState<File | undefined>(undefined);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,8 +38,16 @@ const CreatePost = () => {
     if (file) {
       formData.append("image", file, file.name);
     }
-    await axiosInstanceVendor.post("/add-post", formData, {
+    axiosInstanceVendor.post(`/add-post?vendorid=${vendor?._id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
+    }).then((response) => {
+      console.log(response);
+      toast.success("Post added successfully...!")
+      navigate("/Vendor/profile");
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message)
+      console.log("here", error);
     });
   };
 

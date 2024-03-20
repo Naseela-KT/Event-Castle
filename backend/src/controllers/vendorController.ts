@@ -2,7 +2,7 @@ import { Request , Response } from "express";
 import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
-import { SessionData } from "express-session";
+
 
 
 interface VendorSession {
@@ -291,15 +291,7 @@ export const VendorController = {
         }
        },
 
-       async addNewPost(req:Request , res: Response):Promise<void>{
-        try {
-          console.log(req.body)
-          console.log(req.file?.buffer)
-        } catch (error) {
-         console.error(error);
-         res.status(500).json({ message: "Server Error" });
-        }
-       },
+     
 
 
 

@@ -9,6 +9,8 @@ import session from 'express-session';
 import { RequestHandler } from 'express';
 import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
 
+
+
 dotenv.config();
 connectDB();
 
@@ -31,6 +33,11 @@ const sessionMiddleware: RequestHandler = session({
     sameSite:"lax"
   }
 });
+
+
+
+
+
 
 app.use(sessionMiddleware)
 

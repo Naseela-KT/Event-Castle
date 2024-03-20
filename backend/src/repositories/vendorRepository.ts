@@ -37,3 +37,4 @@ export const UpdateVendorPassword = async(password:string , mail:string) =>{
     throw error;
   }
 }
+
