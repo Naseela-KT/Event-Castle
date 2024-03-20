@@ -37,6 +37,7 @@ router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/reset-password' , VendorController.ResetVendorPassword)
 
 router.post("/add-post",upload.single('image'),PostController.addNewPost)
+router.get("/posts",PostController.getPosts)
 
 
 export default router;

@@ -1,5 +1,6 @@
 
-import { createNewPost } from "../repositories/postRepository";
+import Post , {PostDocument} from "../models/post";
+import { createNewPost, findPostsByVendorId } from "../repositories/postRepository";
 import mongoose from "mongoose";
 
 export const createPost=async(caption:string,imageName:string,vendor_id:string): Promise<object>=>{
@@ -11,3 +12,12 @@ export const createPost=async(caption:string,imageName:string,vendor_id:string):
       throw error;
     }
   }
+
+export const getAllPostsByVendor=async(vendor_id:string):Promise<PostDocument[]>=>{
+  try{
+    const posts=await findPostsByVendorId(vendor_id)
+    return posts;
+  } catch (error) {
+    throw error;
+  }
+}

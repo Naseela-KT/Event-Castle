@@ -2,6 +2,7 @@ import {Document,Schema,model} from "mongoose";
 
 
 export interface PostDocument extends Document{
+    imageUrl: string;
     caption:string;
     image:string;
     createdAt:Date;
@@ -25,6 +26,9 @@ const postSchema=new Schema<PostDocument>({
     image:{
         type:String,
         required:true
+    },
+    imageUrl:{
+        type:String
     }
 })
 

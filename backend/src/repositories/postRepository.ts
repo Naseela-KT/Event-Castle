@@ -9,3 +9,13 @@ export const createNewPost=async (postData: Partial<PostDocument>): Promise<Post
       throw error;
     }
   }
+
+
+export const findPostsByVendorId=async(vendor_id: string):Promise<PostDocument[]>=>{
+  try {
+    const result = await Post.find({vendor_id:vendor_id});
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
