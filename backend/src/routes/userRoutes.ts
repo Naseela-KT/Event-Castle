@@ -1,10 +1,13 @@
 import express from 'express';
 import { UserController } from '../controllers/userController';
 import { VendorController } from '../controllers/vendorController';
+import multer from 'multer';
 
-
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 const router = express.Router();
+
 
 
 router.post('/signup', UserController.UserSignup );
@@ -19,6 +22,11 @@ router.post('/reset-password' , UserController.ResetUserPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/google/login',UserController.googleLogin)
 router.post('/google/register',UserController.googleRegister)
+
+router.post('/update-password' , UserController.updatePasswordController)
+router.put('/update-profile',upload.single('image'),UserController.updateProfile)
+
+router.post('/addVendorReview' , VendorController.addVendorReview)
 
 
 export default router;

@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdateVendorPassword, createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
-import { ObjectId } from 'mongoose';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail } from '../repositories/vendorRepository';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -139,3 +138,59 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
     throw error;
   }
 }
+
+export const checkCurrentPassword = async(currentpassword:string , vendorId:string)=>{
+
+  try {
+    
+    const existingVendor = await findVendorById(vendorId);
+    console.log(existingVendor)
+
+    if(!existingVendor){
+     throw new CustomError("Vendor not found",404)
+    }
+
+    const passwordMatch = await bcrypt.compare(currentpassword, existingVendor.password);
+    if (!passwordMatch) {
+      throw new CustomError("Password doesn't match",401)
+    }
+
+    return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const UpdatePasswordService = async(newPassword:string , vendorId:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const existingUser = await findVendorById(vendorId);
+    if(!existingUser){
+      throw new CustomError("user not found",404)
+    }
+    const email = existingUser.email;
+
+    const updatedValue = await UpdatePassword(hashedPassword , email);
+    if(updatedValue){
+      return true;
+    }
+    return false
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const PushFavoriteVendor = async(content:string , rating:number , userid:string , vendorid:string)=>{
+  try {
+    console.log("inside service " , rating)
+    const data = await AddVendorReview(content , rating, userid , vendorid)
+    return  data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+

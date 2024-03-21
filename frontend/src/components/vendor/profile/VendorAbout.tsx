@@ -5,19 +5,17 @@ export default function VendorAbout() {
     <Card
       className="mt-6 w-96 ml-20 w-200 mr-20 mb-20 shadow-md bg-gray"
       placeholder={undefined}
-      style={{backgroundColor:"#EFF1FF"}}
-    >
-      <CardBody placeholder={undefined}>
+      style={{ backgroundColor: "#EFF1FF" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+      <CardBody placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Typography
           variant="h5"
           color="blue-gray"
           className="mb-2"
-          placeholder={undefined}
-        >
+          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           About
         </Typography>
         <hr className="my-4 border-t border-gray-300" />
-        <Typography placeholder={undefined}>
+        <Typography placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean dui
           augue, ornare ut eros eu, accumsan accumsan ligula. Aliquam erat
           volutpat. Nulla et pretium metus. Ut at imperdiet augue. Quisque

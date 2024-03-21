@@ -6,7 +6,7 @@ export interface VendorData{
     name: string;
     vendor_type:string   
     email:string;
-    id : string;
+    _id : string;
     city:string;
     mobile:number;
 }

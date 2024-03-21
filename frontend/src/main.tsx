@@ -35,7 +35,10 @@ import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
 import Wallet from './pages/admin/Wallet.tsx';
 import VendorProfilePage from './pages/vendor/Profile.tsx';
 import CreatePost from './components/vendor/CreatePost.tsx';
-import UserSidebar from './components/user/Profile/Sidebar.tsx';
+import Profile from './pages/user/Profile.tsx';
+import EditProfileCard from './components/vendor/EditProfileCard.tsx';
+import ChangePassword from './components/vendor/ChangePassword.tsx';
+import VendorListing from './pages/VendorListing.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
@@ -49,10 +52,10 @@ const router = createBrowserRouter(
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path='/sample' element={<DialogWithForm/>}/>
       {/* User Private Routes */}
-      <Route path="" element={<UserPrivateRoute/>}>
-
-    
-      <Route path="/profile" element={<UserSidebar/>}/>
+      <Route path="" element={<UserPrivateRoute/>}> 
+      <Route path="/profile/*" element={<Profile/>}/>
+      <Route path="/vendors" element={<VendorListing/>}/>
+      <Route path="/view-vendor" element={<VendorProfilePage/>}/>
       </Route>
     </Route>
 
@@ -82,7 +85,8 @@ const router = createBrowserRouter(
       <Route path="" element={<VendorPrivateRoute/>}></Route>
       <Route path="/vendor/profile" element={<VendorProfilePage />} />
       <Route path="/vendor/create-post" element={<CreatePost />} />
-     
+      <Route path="/vendor/edit-profile" element={<EditProfileCard />} />
+      <Route path="/vendor/change-password" element={<ChangePassword />} />
     </Route>
     </>
   )

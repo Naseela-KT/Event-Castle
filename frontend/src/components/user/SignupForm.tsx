@@ -80,33 +80,30 @@ const UserSignupForm = () => {
   return (
     <GoogleOAuthProvider clientId={client_id}>
     <Card
-      className="w-96 mt-50 m-auto bg-dark"
-      placeholder={undefined}
-      shadow={false}
-    >
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="mt-10 rounded-none text-center"
+        className="w-96 mt-50 m-auto bg-dark"
         placeholder={undefined}
-      >
-        <Typography variant="h4" color="white" placeholder={undefined}>
+        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+      <CardHeader
+          floated={false}
+          shadow={false}
+          color="transparent"
+          className="mt-10 rounded-none text-center"
+          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           User - Sign Up
         </Typography>
       </CardHeader>
       <form onSubmit={submitHandler}>
-        <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+        <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Input
-            label="Name"
-            onChange={handleChange}
-            value={formValues.name}
-            name="name"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-          />
+              label="Name"
+              onChange={handleChange}
+              value={formValues.name}
+              name="name"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.name ? (
             <p
               className="text-sm"
@@ -116,15 +113,14 @@ const UserSignupForm = () => {
             </p>
           ) : null}
           <Input
-            label="Email"
-            size="md"
-            onChange={handleChange}
-            value={formValues.email}
-            name="email"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-          />
+              label="Email"
+              size="md"
+              onChange={handleChange}
+              value={formValues.email}
+              name="email"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.email ? (
             <p
               className="text-sm"
@@ -134,15 +130,14 @@ const UserSignupForm = () => {
             </p>
           ) : null}
           <Input
-            label="Phone"
-            onChange={handleChange}
-            value={formValues.phone}
-            name="phone"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-          />
+              label="Phone"
+              onChange={handleChange}
+              value={formValues.phone}
+              name="phone"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.phone ? (
             <p
               className="text-sm"
@@ -152,16 +147,15 @@ const UserSignupForm = () => {
             </p>
           ) : null}
           <Input
-            label="Password"
-            type="password"
-            onChange={handleChange}
-            value={formValues.password}
-            name="password"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-          />
+              label="Password"
+              type="password"
+              onChange={handleChange}
+              value={formValues.password}
+              name="password"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.password ? (
             <p
               className="text-sm"
@@ -171,16 +165,15 @@ const UserSignupForm = () => {
             </p>
           ) : null}
           <Input
-            label="Confirm Password"
-            type="password"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            onChange={handleChange}
-            value={formValues.confirm_password}
-            name="confirm_password"
-            className="bg-white bg-opacity-50"
-          />
+              label="Confirm Password"
+              type="password"
+              size="md"
+              crossOrigin={undefined}
+              color="pink"
+              onChange={handleChange}
+              value={formValues.confirm_password}
+              name="confirm_password"
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.confirm_password ? (
             <p
               className="text-sm"
@@ -190,11 +183,10 @@ const UserSignupForm = () => {
             </p>
           ) : null}
           <Button
-            variant="gradient"
-            fullWidth
-            placeholder={undefined}
-            type="submit"
-          >
+              variant="gradient"
+              fullWidth
+              placeholder={undefined}
+              type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Sign Up
           </Button>
         </CardBody>
@@ -221,43 +213,39 @@ const UserSignupForm = () => {
               }}
               />
             </div>
-      <CardFooter className="pt-0" placeholder={undefined}>
+      <CardFooter className="pt-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Typography
-          variant="small"
-          className="mt-6 flex justify-center"
-          color="white"
-          placeholder={undefined}
-        >
+            variant="small"
+            className="mt-6 flex justify-center"
+            color="white"
+            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Already have an account?
           <Link to="/login">
             <Typography
-              as="a"
-              href="#"
-              variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}
-            >
+                as="a"
+                href="#"
+                variant="small"
+                color="white"
+                className="ml-1 font-bold"
+                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Login
             </Typography>
           </Link>
         </Typography>
         <Typography
-          variant="small"
-          className="mt-3 flex justify-center"
-          color="white"
-          placeholder={undefined}
-        >
+            variant="small"
+            className="mt-3 flex justify-center"
+            color="white"
+            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
           <Link to="/vendor/signup">
             <Typography
-              as="a"
-              href="#signup"
-              variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}
-            >
+                as="a"
+                href="#signup"
+                variant="small"
+                color="white"
+                className="ml-1 font-bold"
+                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Signup here
             </Typography>
           </Link>

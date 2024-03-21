@@ -1,55 +1,80 @@
-export default function VendorPosts() {
-    const data = [
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1432462770865-65b70566d673?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80",
-      },
-      {
-        imageLink:
-          "https://demos.creative-tim.com/material-kit-pro/assets/img/examples/blog5.jpg",
-      },
-      {
-        imageLink:
-          "https://material-taillwind-pro-ct-tailwind-team.vercel.app/img/content2.jpg",
-      },
-      {
-        imageLink:
-          "https://images.unsplash.com/photo-1620064916958-605375619af8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1493&q=80",
-      },
-    ];
-   
-    return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {data.map(({ imageLink }, index) => (
-          <div key={index}>
-            <img
-              className="h-40 w-full max-w-full rounded-lg object-cover object-center"
-              src={imageLink}
-              alt="gallery-photo"
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { toast } from "react-toastify";
+import {axiosInstanceVendor} from "../../../api/axiosinstance";
+import VendorRootState from "../../../redux/rootstate/VendorState";
+import { DialogWithImage } from "./DialogWithImage";
+import { AxiosResponse } from 'axios'; // Import AxiosResponse
+
+// Define the interface for your response data
+interface Post {
+ imageUrl: string;
+ _id: string;
+}
+
+const VendorPosts: React.FC = () => {
+ const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
+ const [posts, setPosts] = useState<Post[]>([]);
+ const [fetchTrigger, setFetchTrigger] = useState(false);
+ const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+ const [open, setOpen] = useState(false);
+ const navigate = useNavigate();
+ const location = useLocation();
+ const path=location.pathname;
+
+ useEffect(() => {
+    axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendor?._id}`).then((response: AxiosResponse<Post[]>) => {
+      setPosts(response.data);
+    }).catch((error) => {
+      console.log("here", error);
+    });
+ }, [fetchTrigger]);
+
+ const handleDelete = (postId: string) => {
+    axiosInstanceVendor.delete(`/posts/${postId}`).then((response) => {
+      toast.success(response.data.message);
+      setFetchTrigger(!fetchTrigger);
+      navigate("/Vendor/profile");
+    }).catch((error) => {
+      toast.error(error.response.data.message);
+      console.log("here", error);
+    });
+ };
+
+ const handleOpen = () => {
+    setOpen(!open);
+ };
+
+ return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      {posts.map(({ imageUrl, _id }, index) => (
+        <div key={index} className="relative" onClick={() => { setSelectedPost({ imageUrl, _id }); handleOpen(); }}>
+          <img
+            className="h-40 w-full max-w-full rounded-lg object-cover object-center"
+            src={imageUrl}
+            alt="gallery-photo"
+          />
+          {path=="/view-vendor"?"":<button
+            onClick={() => handleDelete(_id)}
+            className="absolute top-0 right-0 m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>}
+          
+          {selectedPost && (
+            <DialogWithImage
+              imageUrl={selectedPost.imageUrl}
+              open={open}
+              handler={handleOpen}
             />
-          </div>
-        ))}
-      </div>
-    );
-  }
-   
+          )}
+        </div>
+      ))}
+    </div>
+ );
+};
+
+export default VendorPosts;

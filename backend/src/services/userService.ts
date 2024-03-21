@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUsersCount } from '../repositories/userRepository';
+import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
@@ -168,5 +168,64 @@ export const CheckExistingUSer = async(email:string)=>{
     return existingUser;
   } catch (error) {
     throw error
+  }
+}
+
+export const checkCurrentPassword = async(currentpassword:string , userId:string)=>{
+
+  try {
+    
+    const existingUser = await findUserById(userId);
+
+    if(!existingUser){
+     throw new CustomError("user not found",404)
+    }
+
+    const passwordMatch = await bcrypt.compare(currentpassword, existingUser.password);
+    if (!passwordMatch) {
+      throw new CustomError("Password doesn't match",401)
+    }
+
+    return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateProfileService= async(name:string , phone:number,image:string,userId:string,imageUrl:string)=>{
+  try {
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new CustomError('User not found',404)
+    }
+  const updatedData=await findUserByIdAndUpdate(name,phone,image,userId,imageUrl)
+  const userData=await findUserById(userId)
+     return userData;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const UpdatePasswordService = async(newPassword:string , userId:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new CustomError("user not found",404)
+    }
+    const email = existingUser.email;
+
+    const updatedValue = await UpdatePassword(hashedPassword , email);
+    if(updatedValue){
+      return true;
+    }
+    return false
+  } catch (error) {
+    throw error;
   }
 }

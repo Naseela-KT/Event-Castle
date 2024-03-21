@@ -15,6 +15,8 @@ interface Vendors {
     totalBooking:number;
   }
 
+  
+
 
 const VendorList=()=> {
 
@@ -35,11 +37,10 @@ const VendorList=()=> {
         <>
         <div style={{ padding:"20px"}} className="bg-white">
         <Typography
-                  variant="h4"
-                  color="black"
-                  className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5"
-                  placeholder={undefined}
-                >
+            variant="h4"
+            color="black"
+            className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5"
+            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                   Vendors
                 </Typography>
         <div style={{ display: 'flex',flexWrap:"wrap"}}>

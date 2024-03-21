@@ -1,54 +1,22 @@
-import React, { useState } from 'react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
-import { IconButton, Drawer } from '@material-tailwind/react'; // Importing from @material-tailwind/react
-import UserSidebar from '../../components/user/Profile/Sidebar';
-import { useMediaQuery } from '@mui/material'; // Importing useMediaQuery hook from Material-UI
+import { Routes, Route } from "react-router-dom";
+import ChangePassword from "../../components/user/Profile/ChangePassword";
+import Favourites from "../../components/user/Profile/Favourites";
+import UserSidebar from "../../components/user/Profile/UserSidebar";
+import  ProfileCard  from "../../components/user/Profile/ProfileCard";
 
 const Profile = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const isMedium = useMediaQuery('(max-width: 960px)'); // Use useMediaQuery hook to check screen width
-
-  const openDrawer = () => setIsDrawerOpen(true);
-  const closeDrawer = () => setIsDrawerOpen(false);
-
   return (
-    <>
-      {/* Show the icon on screens smaller than medium */}
-      {!isMedium && (
-        <div className="md:hidden fixed top-4 left-4 z-50">
-          <IconButton
-                      variant="text"
-                      size="lg"
-                      onClick={openDrawer}  placeholder={undefined}          >
-            <Bars3Icon className="h-8 w-8 stroke-2" />
-          </IconButton>
-        </div>
-      )}
-
-      {/* Conditionally render the sidebar or hamburger icon */}
-      {isMedium ? (
-        <div className="hidden md:block">
-          <UserSidebar /> 
-        </div>
-      ) : null}
-
-      {/* Show the drawer on screens smaller than medium */}
-      <Drawer open={isDrawerOpen} onClose={closeDrawer}  placeholder={undefined}>
-        <div className="md:hidden">
-          <IconButton
-                      variant="text"
-                      size="lg"
-                      onClick={closeDrawer}  placeholder={undefined}          >
-            <XMarkIcon className="h-8 w-8 stroke-2" />
-          </IconButton>
-        </div>
-        <div className="md:hidden">
-          <UserSidebar />
-        </div>
-      </Drawer>
-    </>
+    <div style={{ display: 'flex' }}>
+      <UserSidebar />
+      <div style={{ marginLeft: '200px', flex: 1 ,marginTop:"50px"}}>
+        <Routes>
+          <Route path="/" element={<ProfileCard />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/favourites" element={<Favourites />} />
+        </Routes>
+      </div>
+    </div>
   );
-}
+};
 
 export default Profile;

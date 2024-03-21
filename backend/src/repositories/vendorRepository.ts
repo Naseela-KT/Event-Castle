@@ -37,3 +37,44 @@ export const UpdateVendorPassword = async(password:string , mail:string) =>{
     throw error;
   }
 }
+
+
+export const findVendorById = async (
+  vendorId: string
+): Promise<VendorDocument | null> => {
+  try {
+    return await Vendor.findById( vendorId );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const UpdatePassword = async(password:string , mail:string) =>{
+  try {
+    const result = await Vendor.updateOne({ email: mail }, { password: password });
+    if (result.modifiedCount === 1) {
+      return { success: true, message: "Password updated successfully." };
+    } else {
+      return { success: false, message: "User not found or password not updated." };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const AddVendorReview = async(content: string, rating: number, userId: string, vendorId: string)=>{
+  try {
+     const vendorData = await Vendor.findById(vendorId);
+       if (!vendorData) {
+         throw new Error('Vendor not found');
+       }
+ 
+     vendorData.reviews.push({content,rating,userId});
+ 
+     await vendorData.save();
+     return true;
+  } catch (error) {
+    throw error;
+  }
+ }
+
