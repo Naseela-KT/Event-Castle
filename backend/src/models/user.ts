@@ -8,6 +8,7 @@ export interface User {
     phone : number;
     isActive:boolean;
     image:string;
+    imageUrl:string
 }
 
 export interface UserDocument extends User, Document {}
@@ -18,7 +19,8 @@ const UserSchema: Schema = new Schema({
     name :{type:String , required:true} ,
     phone :{type:Number },
     isActive :{type:Boolean , required:true},
-    image:{type:String}
+    image:{type:String},
+    imageUrl:{type:String}
 });
 
 export default mongoose.model<UserDocument>('User', UserSchema);

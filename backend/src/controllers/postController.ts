@@ -29,8 +29,6 @@ const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 export const PostController = {
   async addNewPost(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body);
-      console.log(req.file);
       const caption = req.body.caption;
       const vendor_id: string = req.query.vendorid as string;
       console.log(vendor_id);

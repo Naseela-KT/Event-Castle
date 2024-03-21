@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUserById, findUsersCount } from '../repositories/userRepository';
+import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
@@ -187,6 +187,21 @@ export const checkCurrentPassword = async(currentpassword:string , userId:string
     }
 
     return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateProfileService= async(name:string , phone:number,image:string,userId:string,imageUrl:string)=>{
+  try {
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new CustomError('User not found',404)
+    }
+  const updatedData=await findUserByIdAndUpdate(name,phone,image,userId,imageUrl)
+  const userData=await findUserById(userId)
+     return userData;
 
   } catch (error) {
     throw error;

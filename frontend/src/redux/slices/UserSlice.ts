@@ -7,7 +7,8 @@ export interface UserData{
     _id:string,
     isActive:boolean,
     image:string,
-    
+    phone:string,
+    imageUrl:string
 }
 
 export interface UserState{

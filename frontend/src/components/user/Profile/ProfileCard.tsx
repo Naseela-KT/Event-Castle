@@ -1,110 +1,201 @@
-import { Card, CardHeader, CardBody, Input, Button } from "@material-tailwind/react";
+import React, { useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Input,
+  Button,
+} from "@material-tailwind/react";
 import UserRootState from "../../../redux/rootstate/UserState";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { axiosInstance } from "../../../api/axiosinstance";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { setUserInfo } from "../../../redux/slices/UserSlice";
+
+interface FormInputs {
+  name: string;
+  phone: string;
+}
+
+// interface FormErrors {
+//  name?: string;
+//  phone?: string;
+// }
+
+export interface UserData {
+  name: string;
+  email: string;
+  _id: string;
+  isActive: boolean;
+  image: string;
+  phone: string;
+  imageUrl:string
+}
+
 
 const ProfileCard = () => {
- const user = useSelector((state: UserRootState) => state.user.userdata);
- const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const user= useSelector((state: UserRootState) => state.user.userdata);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [inputs, setInputs] = useState<FormInputs>({
+    name: user?.name || "",
+    phone: user?.phone || "",
+  });
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  const navigate = useNavigate();
+  const dispatch=useDispatch()
 
 
- const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (e.target.files && e.target.files.length > 0) {
-     const file = e.target.files[0];
-     const reader = new FileReader();
-     reader.onloadend = () => {
-       setSelectedImage(reader.result as string);
-     };
-     reader.readAsDataURL(file);
-  }
- };
 
- return (
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  
+    e.preventDefault();
+
+    // Submit form data
+    const formData = new FormData();
+    formData.append("name", inputs.name);
+    formData.append("phone", inputs.phone);
+    if (file) {
+      formData.append("image", file, file.name);
+    }
+    console.log("Submitting form data:", formData);
+    axiosInstance
+      .put(`/update-profile?userid=${user?._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        console.log(response);
+        toast.success("Profile updated successfully...!");
+        dispatch(setUserInfo(response.data));
+        navigate("/profile");
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+        console.log("here", error);
+      });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInputs({ ...inputs, [name]: value });
+  };
+
+  return (
     <Card
       className="w-96 mx-auto"
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
     >
-      <CardHeader
-        floated={false}
-        className="h-50 bg-transparent shadow-none flex items-center justify-center"
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      >
-         {selectedImage ? (
-          <img src={selectedImage} alt="Selected Profile" className="h-40 w-40 rounded-full" />
-        ) : user?.image ? (
-          <img src={user.image} alt="User Profile" className="h-40 w-40 rounded-full" />
-        ) : (
-          <label
-            htmlFor="file-upload"
-            className="cursor-pointer flex items-center justify-center inline-block text-white font-bold py-2 px-4 rounded transition-colors duration-200"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-40 w-40 text-gray-500"
+      <form onSubmit={handleSubmit}>
+        <CardHeader
+          floated={false}
+          className="h-50 bg-transparent shadow-none flex items-center justify-center"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Selected Profile"
+              className="h-40 w-40 rounded-full"
+            />
+          ) : user?.image ? (
+            <img
+              src={user.imageUrl}
+              alt="User Profile"
+              className="h-40 w-40 rounded-full"
+            />
+          ) : (
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer flex items-center justify-center inline-block text-white font-bold py-2 px-4 rounded transition-colors duration-200"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-              />
-            </svg>
-          </label>
-        )}
-        <input id="file-upload" type="file" className="hidden"  onChange={handleImageChange}/>
-      </CardHeader>
-      <CardBody
-        className="text-center flex flex-col gap-4"
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      >
-        {user?.email && (
-          <Input
-            label="Email"
-            disabled
-            size="md"
-            value={user.email}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-            crossOrigin={undefined}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-40 w-40 text-gray-500"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                />
+              </svg>
+            </label>
+          )}
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            name="image"
+            onChange={(e) => {
+              if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+                setFile(file);
+                setPreviewUrl(URL.createObjectURL(file));
+              }
+            }}
           />
-        )}
-        {user?.name && (
+        </CardHeader>
+        <CardBody
+          className="text-center flex flex-col gap-4"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          {user?.email && (
+            <Input
+              label="Email"
+              disabled
+              size="md"
+              value={user.email}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              crossOrigin={undefined}
+            />
+          )}
           <Input
             label="Name"
             size="md"
-            value={user.name}
+            name="name"
+            value={inputs.name}
+            onChange={handleInputChange}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
             crossOrigin={undefined}
           />
-        )}
-        <Input
+
+          <Input
             label="Phone"
             size="md"
-            value=""
+            name="phone"
+            value={inputs.phone}
+            onChange={handleInputChange}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
             crossOrigin={undefined}
           />
-       <Button
-              variant="gradient"
-              fullWidth
-              placeholder={undefined}
-              type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
+          <Button
+            variant="gradient"
+            fullWidth
+            type="submit"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             Update
           </Button>
-      </CardBody>
+        </CardBody>
+      </form>
     </Card>
- );
+  );
 };
 
 export default ProfileCard;
+
