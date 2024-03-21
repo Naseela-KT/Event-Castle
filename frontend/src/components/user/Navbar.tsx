@@ -113,13 +113,13 @@ const UserNavbar=()=> {
   );
 
   return (
-    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark" placeholder={undefined} style={{borderRadius: 0, border: 0, backgroundColor: "#565656" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
+    <Navbar className="px-4  lg:px-8 lg:py-2 lg:mb-6 bg-dark" placeholder={undefined} style={{borderRadius: 0, border: 0,backgroundColor:"#121314",opacity:"0.7" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
           href="#"
           className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          <img src="../../../public/imgs/event_castle.png" alt="" />
+          <img src="../../../public/imgs/event_castle.svg" alt="" />
          
         </Typography>
         
