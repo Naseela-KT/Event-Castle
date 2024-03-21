@@ -32,7 +32,10 @@ import { Link } from "react-router-dom";
           <Button  placeholder={undefined} color="pink" size="lg" className="mr-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Create Post</Button>
           </Link>
           <Link to="/vendor/edit-profile">
-          <Button  placeholder={undefined} color="pink" size="lg"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Edit Profile</Button>
+          <Button  placeholder={undefined} color="pink" size="lg" className="mr-3" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Edit Profile</Button>
+          </Link>
+          <Link to="/vendor/change-password">
+          <Button  placeholder={undefined} color="pink" size="lg"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Change Password</Button>
           </Link>
         </CardFooter>
       </Card>

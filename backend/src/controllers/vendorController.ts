@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
+import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService, UpdatePasswordService, checkCurrentPassword } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
 
@@ -291,6 +291,40 @@ export const VendorController = {
         }
        },
 
+
+       //Profile-Changepassword
+       async updatePassword(req: Request, res: Response): Promise<void> {
+        try {
+          console.log(req.body);
+          
+          const currentPassword = req.body.current_password;
+          const newPassword = req.body.new_password;
+          const vendorId: string = req.query.vendorid as string;
+          console.log(vendorId)
+    
+          let status = await checkCurrentPassword(currentPassword, vendorId);
+    
+          if (!status) {
+            throw new CustomError(`Current password is wrong!` ,400);
+            
+          }      
+          
+          const data = await UpdatePasswordService(newPassword , vendorId);
+    
+          if(!data){
+            res.status(400).json({error:"couldn't update password..internal error."})
+          }
+          res.status(200).json({message:"password updated successfully.."})
+    
+        } catch (error) {
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+          }
+        }
+      },
      
 
 

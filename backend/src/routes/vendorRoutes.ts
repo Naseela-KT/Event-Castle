@@ -41,4 +41,8 @@ router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
 
 
+
+router.patch('/update-password',VendorController.updatePassword)
+
+
 export default router;

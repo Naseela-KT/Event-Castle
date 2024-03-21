@@ -38,3 +38,27 @@ export const UpdateVendorPassword = async(password:string , mail:string) =>{
   }
 }
 
+
+export const findVendorById = async (
+  vendorId: string
+): Promise<VendorDocument | null> => {
+  try {
+    return await Vendor.findById( vendorId );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const UpdatePassword = async(password:string , mail:string) =>{
+  try {
+    const result = await Vendor.updateOne({ email: mail }, { password: password });
+    if (result.modifiedCount === 1) {
+      return { success: true, message: "Password updated successfully." };
+    } else {
+      return { success: false, message: "User not found or password not updated." };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
