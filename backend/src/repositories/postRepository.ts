@@ -19,3 +19,22 @@ export const findPostsByVendorId=async(vendor_id: string):Promise<PostDocument[]
     throw error;
   }
 }
+
+export const findPostById=async(_id: string):Promise<PostDocument | null>=>{
+  try {
+    const result = await Post.findById({_id});
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const deletePostById=async(_id: string):Promise<PostDocument | null>=>{
+  try {
+    const result = await Post.findByIdAndDelete({_id});
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}

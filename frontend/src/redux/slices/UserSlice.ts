@@ -5,7 +5,9 @@ export interface UserData{
     name:string,
     email:string,
     _id:string,
-    isActive:boolean
+    isActive:boolean,
+    image:string,
+    
 }
 
 export interface UserState{

@@ -3,11 +3,12 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import sharp from "sharp";
-import { createPost, getAllPostsByVendor } from "../services/postService";
+import { createPost, deletePostService, getAllPostsByVendor, getPostById } from "../services/postService";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 
@@ -82,4 +83,41 @@ export const PostController = {
       res.status(500).json({ message: "Server Error" });
     }
   },
+
+  async deletePost(req: Request, res: Response): Promise<void> {
+    try {
+      const id=req.params.id;
+      const post=await getPostById(id);
+
+      if(!post){
+        throw new CustomError('Post not found!',404)
+      }
+      const params={
+        Bucket: process.env.BUCKET_NAME!,
+        Key: post.image,
+      }
+      
+      const command=new DeleteObjectCommand(params);
+      await s3.send(command);
+      
+      await deletePostService(id);
+      res.status(200).json({message:"Post deleted successfully"});
+
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
 };
+
+
+
+export class CustomError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}

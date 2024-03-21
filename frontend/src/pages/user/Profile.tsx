@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <div style={{ display: 'flex' }}>
       <UserSidebar />
-      <div style={{ marginLeft: '200px', flex: 1 ,marginTop:"100px"}}>
+      <div style={{ marginLeft: '200px', flex: 1 ,marginTop:"50px"}}>
         <Routes>
           <Route path="/" element={<ProfileCard />} />
           <Route path="/change-password" element={<ChangePassword />} />

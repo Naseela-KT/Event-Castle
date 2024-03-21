@@ -38,6 +38,7 @@ router.post('/reset-password' , VendorController.ResetVendorPassword)
 
 router.post("/add-post",upload.single('image'),PostController.addNewPost)
 router.get("/posts",PostController.getPosts)
+router.delete("/posts/:id",PostController.deletePost)
 
 
 export default router;
