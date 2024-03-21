@@ -62,3 +62,19 @@ export const UpdatePassword = async(password:string , mail:string) =>{
   }
 }
 
+export const AddVendorReview = async(content: string, rating: number, userId: string, vendorId: string)=>{
+  try {
+     const vendorData = await Vendor.findById(vendorId);
+       if (!vendorData) {
+         throw new Error('Vendor not found');
+       }
+ 
+     vendorData.reviews.push({content,rating,userId});
+ 
+     await vendorData.save();
+     return true;
+  } catch (error) {
+    throw error;
+  }
+ }
+

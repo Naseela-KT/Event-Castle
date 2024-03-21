@@ -26,5 +26,7 @@ router.post('/google/register',UserController.googleRegister)
 router.post('/update-password' , UserController.updatePasswordController)
 router.put('/update-profile',upload.single('image'),UserController.updateProfile)
 
+router.post('/addVendorReview' , VendorController.addVendorReview)
+
 
 export default router;

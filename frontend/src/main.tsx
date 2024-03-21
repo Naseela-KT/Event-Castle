@@ -38,6 +38,7 @@ import CreatePost from './components/vendor/CreatePost.tsx';
 import Profile from './pages/user/Profile.tsx';
 import EditProfileCard from './components/vendor/EditProfileCard.tsx';
 import ChangePassword from './components/vendor/ChangePassword.tsx';
+import VendorListing from './pages/VendorListing.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
@@ -53,6 +54,8 @@ const router = createBrowserRouter(
       {/* User Private Routes */}
       <Route path="" element={<UserPrivateRoute/>}> 
       <Route path="/profile/*" element={<Profile/>}/>
+      <Route path="/vendors" element={<VendorListing/>}/>
+      <Route path="/view-vendor" element={<VendorProfilePage/>}/>
       </Route>
     </Route>
 

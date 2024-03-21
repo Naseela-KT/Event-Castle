@@ -87,9 +87,9 @@ const UserNavbar=()=> {
             fill="#90A4AE"
           />
         </svg>
-        <a href="#" className="flex items-center" >
+        <Link to="/vendors">
           Vendors
-        </a>
+          </Link>
       </Typography>
       <Typography as="li" variant="small" color="white" className="flex items-center gap-x-2 p-1 font-medium" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <svg

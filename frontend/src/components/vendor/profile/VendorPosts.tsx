@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
@@ -22,6 +22,8 @@ const VendorPosts: React.FC = () => {
  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
  const [open, setOpen] = useState(false);
  const navigate = useNavigate();
+ const location = useLocation();
+ const path=location.pathname;
 
  useEffect(() => {
     axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendor?._id}`).then((response: AxiosResponse<Post[]>) => {
@@ -55,12 +57,13 @@ const VendorPosts: React.FC = () => {
             src={imageUrl}
             alt="gallery-photo"
           />
-          <button
+          {path=="/view-vendor"?"":<button
             onClick={() => handleDelete(_id)}
             className="absolute top-0 right-0 m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >
             <FontAwesomeIcon icon={faTrash} />
-          </button>
+          </button>}
+          
           {selectedPost && (
             <DialogWithImage
               imageUrl={selectedPost.imageUrl}

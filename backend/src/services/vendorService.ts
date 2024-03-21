@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail } from '../repositories/vendorRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail } from '../repositories/vendorRepository';
 import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -178,6 +178,16 @@ export const UpdatePasswordService = async(newPassword:string , vendorId:string)
       return true;
     }
     return false
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const PushFavoriteVendor = async(content:string , rating:number , userid:string , vendorid:string)=>{
+  try {
+    console.log("inside service " , rating)
+    const data = await AddVendorReview(content , rating, userid , vendorid)
+    return  data;
   } catch (error) {
     throw error;
   }

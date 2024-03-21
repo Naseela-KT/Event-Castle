@@ -118,21 +118,19 @@ const VerifyEmail = () => {
     <Card
       className="w-96 mt-50 m-auto bg-dark"
       placeholder={undefined}
-      shadow={false}
-    >
+      shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
       <CardHeader
         floated={false}
         shadow={false}
         color="transparent"
         className="mt-10 rounded-none text-center"
-        placeholder={undefined}
-      >
-        <Typography variant="h4" color="white" placeholder={undefined}>
+        placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Verify OTP
         </Typography>
       </CardHeader>
       <form onSubmit={formik.handleSubmit}>
-        <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+        <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Input
             label="Enter OTP"
             size="md"
@@ -141,8 +139,7 @@ const VerifyEmail = () => {
             onChange={formik.handleChange}
             crossOrigin={undefined}
             color="pink"
-            className="bg-white bg-opacity-50"
-          />
+            className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formik.errors.otp ? (
             <p
               className="text-sm"
@@ -158,13 +155,12 @@ const VerifyEmail = () => {
             </p>
           ) : (
             <Button
-            variant="text"
-            className="text-center"
-            placeholder={undefined}
-            type="button"
-            size="sm"
-            onClick={handleResendOtp}
-          >
+                variant="text"
+                className="text-center"
+                placeholder={undefined}
+                type="button"
+                size="sm"
+                onClick={handleResendOtp}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Resend OTP
           </Button>
           )}
@@ -173,8 +169,7 @@ const VerifyEmail = () => {
             variant="gradient"
             fullWidth
             placeholder={undefined}
-            type="submit"
-          >
+            type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Verify and Login
           </Button>
         </CardBody>

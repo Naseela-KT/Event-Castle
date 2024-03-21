@@ -9,8 +9,10 @@ import {
 } from "@material-tailwind/react";
 import VendorPosts from "./VendorPosts";
 
+
 export default function VendorTabs() {
   const [activeTab, setActiveTab] = useState("images");
+
 
   const handleTabChange = (value: SetStateAction<string>) => {
     setActiveTab(value);

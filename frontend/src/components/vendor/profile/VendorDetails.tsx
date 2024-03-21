@@ -5,10 +5,12 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
 
    
   export default function VendorDetails() {
+    const location = useLocation();
+    const path=location.pathname;
     return (
       <Card className=" ml-60 mr-60 lg:w-400 mb-20 mt-[-20]" placeholder={undefined} style={{ backgroundColor: "#EFF1FF", marginTop: "-30px" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <CardBody  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -26,7 +28,16 @@ import { Link } from "react-router-dom";
           </div>
           </div>
         </CardBody>
-        <CardFooter className="pt-0 flex justify-center " placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        {path==="/view-vendor"? <CardFooter className="pt-0 flex justify-center " placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <Button  placeholder={undefined} color="pink" size="lg" className="mr-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Chat with Us</Button>
+          <Link to="/vendor/create-post">
+          <Button  placeholder={undefined} color="pink" size="lg" className="mr-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Contact Us</Button>
+          </Link>
+          <Link to="/vendor/edit-profile">
+          <Button  placeholder={undefined} color="pink" size="lg" className="mr-3" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Check Availability</Button>
+          </Link>
+       
+        </CardFooter>: <CardFooter className="pt-0 flex justify-center " placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Button  placeholder={undefined} color="pink" size="lg" className="mr-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Booking Details</Button>
           <Link to="/vendor/create-post">
           <Button  placeholder={undefined} color="pink" size="lg" className="mr-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Create Post</Button>
@@ -37,7 +48,8 @@ import { Link } from "react-router-dom";
           <Link to="/vendor/change-password">
           <Button  placeholder={undefined} color="pink" size="lg"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Change Password</Button>
           </Link>
-        </CardFooter>
+        </CardFooter>}
+      
       </Card>
     );
   }
