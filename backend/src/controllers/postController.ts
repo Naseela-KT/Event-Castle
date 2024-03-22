@@ -31,7 +31,7 @@ export const PostController = {
     try {
       const caption = req.body.caption;
       const vendor_id: string = req.query.vendorid as string;
-      console.log(vendor_id);
+  
 
       const buffer = await sharp(req.file?.buffer)
         .resize({ height: 1920, width: 1080, fit: "contain" })
@@ -47,10 +47,18 @@ export const PostController = {
       };
 
       const command = new PutObjectCommand(params);
-
       await s3.send(command);
 
-      const post = await createPost(caption, imageName, vendor_id);
+      const getObjectParams={
+        Bucket: process.env.BUCKET_NAME!,
+        Key: imageName,
+      }
+
+      const command2 = new GetObjectCommand(getObjectParams);
+      const url = await getSignedUrl(s3, command2);
+      let imageUrl=url;
+
+      const post = await createPost(caption, imageName, vendor_id,imageUrl);
       res.status(201).json(post);
     } catch (error) {
       console.error(error);
@@ -61,21 +69,8 @@ export const PostController = {
 
   async getPosts(req: Request, res: Response): Promise<void> {
     try {
-
       const vendor_id:string=req.query.vendorid as string;
       const posts=await getAllPostsByVendor(vendor_id)
-      console.log(posts)
-
-      for(const post of posts){
-        const getObjectParams={
-          Bucket: process.env.BUCKET_NAME!,
-          Key: post.image,
-        }
-  
-        const command = new GetObjectCommand(getObjectParams);
-        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-        post.imageUrl=url;
-      }
       res.status(201).json(posts);
     } catch (error) {
       console.error(error);

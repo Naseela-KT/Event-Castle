@@ -64,7 +64,7 @@ const VendorProfilePage=()=> {
       <>
         <VendorCover logo={vendor?.logo} coverpic={vendor?.coverpic}/>
         <VendorDetails name={vendor?.name} city={vendor?.city}/>
-        <VendorTabs id={vendor?._id}/>
+        <VendorTabs/>
         {path=='/view-vendor'?<VendorReview id={vendor?._id}/>:""}
         <VendorAbout/>
       </>

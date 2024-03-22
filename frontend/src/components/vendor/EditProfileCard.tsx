@@ -15,7 +15,9 @@ const initialFormState = {
   coverpicPreview: null, // Store coverpic preview separately
   about: "",
   logo: null,
-  logoPreview: null, // 
+  logoPreview: null,
+  logoUrl:null,
+  coverpicUrl:null // 
 };
 
 const EditProfileCard: React.FC = () => {
@@ -31,7 +33,7 @@ const EditProfileCard: React.FC = () => {
 
   useEffect(() => {
     axiosInstanceVendor
-        .get(`/get-vendor?vendorid=${vendor?._id}`)
+        .get(`/getvendor?vendorid=${vendor?._id}`)
         .then((response) => {
             console.log(response);
             const { coverpic, logo, ...restData } = response.data.data;
@@ -141,13 +143,17 @@ const EditProfileCard: React.FC = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 onChange={handleInputChange}
               />
-              {formState.coverpicPreview && (
+              {formState.coverpicUrl? (
                 <img
-                  src={formState.coverpicPreview}
-                  alt="Cover Picture Preview"
+                  src={formState.coverpicUrl}
+                  alt="Logo Preview"
                   className="mt-2 w-full h-32 object-cover"
                 />
-              )}
+              ):(formState.coverpicPreview&&<img
+              src={formState.coverpicPreview}
+              alt="Logo Preview"
+              className="mt-2 w-full h-32 object-cover"
+            />)}
             </div>
             <div className="md:w-1/2">
               <label
@@ -163,13 +169,17 @@ const EditProfileCard: React.FC = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 onChange={handleInputChange}
               />
-              {formState.logoPreview && (
+              {formState.logoUrl? (
                 <img
-                  src={formState.logoPreview}
+                  src={formState.logoUrl}
                   alt="Logo Preview"
                   className="mt-2 w-full h-32 object-cover"
                 />
-              )}
+              ):(formState.logoPreview&&<img
+              src={formState.logoPreview}
+              alt="Logo Preview"
+              className="mt-2 w-full h-32 object-cover"
+            />)}
             </div>
             </div>
             <div className="md:flex md:space-x-4">

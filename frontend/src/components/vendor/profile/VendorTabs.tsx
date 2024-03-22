@@ -10,10 +10,8 @@ import {
 import VendorPosts from "./VendorPosts";
 
 
-interface VendorTabsProps {
-  id: string | undefined;  
-}
-const VendorTabs: React.FC<VendorTabsProps> = ({ id }) => {
+
+const VendorTabs=() => {
 
   const [activeTab, setActiveTab] = useState("images");
 
@@ -54,7 +52,7 @@ const VendorTabs: React.FC<VendorTabsProps> = ({ id }) => {
       <TabsBody placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         {data.map(({ value, desc }) => (
           <TabPanel key={value} value={value}>
-            {value === "images" && <VendorPosts id={id}/>}
+            {value === "images" && <VendorPosts />}
             {value === "reviews" && <div>{desc}</div>}
             <div className="flex justify-center">
               <Button

@@ -5,6 +5,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
 import {axiosInstance, axiosInstanceVendor} from "../../../api/axiosinstance";
 import { DialogWithImage } from "./DialogWithImage";
+import { useSelector } from "react-redux";
+import VendorRootState from "../../../redux/rootstate/VendorState";
 
 
 // Define the interface for your response data
@@ -13,12 +15,12 @@ interface Post {
  _id: string;
 }
 
-interface VendorPostsProps {
-  id: string | null|undefined;  
- 
-}
 
-const VendorPosts: React.FC<VendorPostsProps> = ({ id }) => {
+
+const VendorPosts= () => {
+  const vendorData = useSelector(
+    (state: VendorRootState) => state.vendor.vendordata
+  );
  const [posts, setPosts] = useState<Post[]>([]);
  const [fetchTrigger, setFetchTrigger] = useState(false);
  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -26,6 +28,8 @@ const VendorPosts: React.FC<VendorPostsProps> = ({ id }) => {
  const navigate = useNavigate();
  const location = useLocation();
  const path=location.pathname;
+ const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
 
  useEffect(() => {
     if(path=="/view-vendor"){
@@ -36,7 +40,7 @@ const VendorPosts: React.FC<VendorPostsProps> = ({ id }) => {
         console.log("here", error);
       });
     }else{
-      axiosInstanceVendor.get(`/posts?vendorid=${id}`,{withCredentials:true}).then((response) => {
+      axiosInstanceVendor.get(`/posts?vendorid=${vendorData?._id}`,{withCredentials:true}).then((response) => {
         setPosts(response.data);
         console.log(response.data)
       }).catch((error) => {
