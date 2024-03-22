@@ -5,6 +5,7 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 
   interface VendorCardProps {
@@ -12,9 +13,10 @@ import {
     email: string;
     phone: string;
     city: string;
+    _id:string;
   }
 
-const VendorListingCard:React.FC<VendorCardProps> = ({name,city})=> {
+const VendorListingCard:React.FC<VendorCardProps> = ({name,city,_id})=> {
   return (
     <>
     <Card className="w-full max-w-[35rem] shadow-lg flex flex-row justify-center p-5 m-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -53,10 +55,11 @@ const VendorListingCard:React.FC<VendorCardProps> = ({name,city})=> {
         <Typography color="gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           {city}
         </Typography>
-      
+        <Link to={`/view-vendor?id=${_id}`}>
         <Button size="md" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           View Profile
         </Button>
+        </Link>
       </CardBody>
 
       

@@ -78,3 +78,17 @@ export const AddVendorReview = async(content: string, rating: number, userId: st
   }
  }
 
+ export async function updateVendorData(vendorId: string, formData: any, coverpicUrl: string, logoUrl: string): Promise<void> {
+  try {
+      // Update coverpicUrl and logoUrl fields in vendor document
+      console.log(coverpicUrl,logoUrl)
+      await Vendor.findByIdAndUpdate(vendorId, {
+          ...formData,
+          coverpicUrl,
+          logoUrl
+      });
+  } catch (error) {
+      throw new Error('Failed to update vendor data');
+  }
+}
+

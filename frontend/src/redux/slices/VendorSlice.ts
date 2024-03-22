@@ -8,7 +8,7 @@ export interface VendorData{
     email:string;
     _id : string;
     city:string;
-    mobile:number;
+    phone:number;
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

@@ -8,18 +8,12 @@ import multer from 'multer';
 import { PostController } from '../controllers/postController';
 const router = express.Router();
 
-// const storage = multer.diskStorage({
-//  destination: function (req, file, cb) {
-//     cb(null, '/tmp/my-uploads')
-//  },
-//  filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-//     cb(null, file.fieldname + '-' + uniqueSuffix)
-//  }
-// });
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
+
+const coverpicUpload = multer({ storage: multer.memoryStorage() });
+const logoUpload = multer({ storage: multer.memoryStorage() });
 
 
 
@@ -41,8 +35,9 @@ router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
 
 
-
+router.get('/getvendor',VendorController.getVendor)
 router.patch('/update-password',VendorController.updatePassword)
+router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
 
 
 export default router;

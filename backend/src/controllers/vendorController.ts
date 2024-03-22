@@ -1,8 +1,7 @@
 import { Request , Response } from "express";
-import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService, UpdatePasswordService, checkCurrentPassword, PushFavoriteVendor } from "../services/vendorService";
+import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService, UpdatePasswordService, checkCurrentPassword, PushFavoriteVendor, uploadCoverpicAndLogo, updateVendor } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
-
 
 
 interface VendorSession {
@@ -254,7 +253,7 @@ export const VendorController = {
 
       async getVendor(req:Request , res: Response):Promise<void>{
         try {
-          const vendorId: string = req.query.Id as string; // or req.query.Id?.toString()
+          const vendorId: string = req.query.vendorid as string; // or req.query.Id?.toString()
     
           if (!vendorId) {
             res.status(400).json({ error: "Vendor ID is required." });
@@ -328,7 +327,8 @@ export const VendorController = {
 
       async addVendorReview(req:Request , res: Response):Promise<void>{
         try {
-          
+          console.log("Add vendor review...........")
+          console.log(req.body)
           const content = req.body.content;
           const rating :number = req.body.rate as number;
           console.log(rating)
@@ -344,8 +344,38 @@ export const VendorController = {
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-       }
-     
+       },
+
+
+        async updateProfile(req: Request, res: Response): Promise<void> {
+        try {
+            const vendorId = req.body._id; // Assuming vendorId is sent in the request body
+            const formData = req.body;
+
+            let coverpicFile;
+            let logoFile;
+            if (typeof req.files === 'object' && 'coverpic' in req.files && Array.isArray(req.files['coverpic'])) {
+              coverpicFile = req.files['coverpic'][0];
+              // Use coverpicFile...
+          }
+          
+          // Check if req.files is an object with the 'logo' property
+          if (typeof req.files === 'object' && 'logo' in req.files && Array.isArray(req.files['logo'])) {
+              logoFile = req.files['logo'][0];
+              // Use logoFile...
+          }
+            
+            const { coverpicUrl, logoUrl } = await uploadCoverpicAndLogo(coverpicFile!, logoFile!, vendorId);
+            
+            const updatedVendor = await updateVendor(vendorId, formData, coverpicUrl, logoUrl);
+    
+            res.status(200).json(updatedVendor);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Server Error' });
+        }
+    }
+
 
 
 

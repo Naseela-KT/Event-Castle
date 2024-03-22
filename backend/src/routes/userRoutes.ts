@@ -2,6 +2,7 @@ import express from 'express';
 import { UserController } from '../controllers/userController';
 import { VendorController } from '../controllers/vendorController';
 import multer from 'multer';
+import { PostController } from '../controllers/postController';
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -26,7 +27,10 @@ router.post('/google/register',UserController.googleRegister)
 router.post('/update-password' , UserController.updatePasswordController)
 router.put('/update-profile',upload.single('image'),UserController.updateProfile)
 
+router.get('/getvendor', VendorController.getVendor)
 router.post('/addVendorReview' , VendorController.addVendorReview)
+router.get("/posts",PostController.getPosts)
+router.delete("/posts/:id",PostController.deletePost)
 
 
 export default router;

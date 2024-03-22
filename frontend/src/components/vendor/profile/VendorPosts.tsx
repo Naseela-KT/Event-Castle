@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
-import {axiosInstanceVendor} from "../../../api/axiosinstance";
-import VendorRootState from "../../../redux/rootstate/VendorState";
+import {axiosInstance, axiosInstanceVendor} from "../../../api/axiosinstance";
 import { DialogWithImage } from "./DialogWithImage";
-import { AxiosResponse } from 'axios'; // Import AxiosResponse
+
 
 // Define the interface for your response data
 interface Post {
@@ -15,8 +13,12 @@ interface Post {
  _id: string;
 }
 
-const VendorPosts: React.FC = () => {
- const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
+interface VendorPostsProps {
+  id: string | null|undefined;  
+ 
+}
+
+const VendorPosts: React.FC<VendorPostsProps> = ({ id }) => {
  const [posts, setPosts] = useState<Post[]>([]);
  const [fetchTrigger, setFetchTrigger] = useState(false);
  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -26,11 +28,22 @@ const VendorPosts: React.FC = () => {
  const path=location.pathname;
 
  useEffect(() => {
-    axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendor?._id}`).then((response: AxiosResponse<Post[]>) => {
-      setPosts(response.data);
-    }).catch((error) => {
-      console.log("here", error);
-    });
+    if(path=="/view-vendor"){
+      axiosInstance.get(`/posts?vendorid=${id}`,{withCredentials:true}).then((response) => {
+        setPosts(response.data);
+        console.log(response.data)
+      }).catch((error) => {
+        console.log("here", error);
+      });
+    }else{
+      axiosInstanceVendor.get(`/posts?vendorid=${id}`,{withCredentials:true}).then((response) => {
+        setPosts(response.data);
+        console.log(response.data)
+      }).catch((error) => {
+        console.log("here", error);
+      });
+    }
+    
  }, [fetchTrigger]);
 
  const handleDelete = (postId: string) => {

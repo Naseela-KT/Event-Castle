@@ -1,9 +1,30 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail } from '../repositories/vendorRepository';
-import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail, updateVendorData } from '../repositories/vendorRepository';
+import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+
+
+
+
+dotenv.config();
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY!,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY!,
+  },
+  region: process.env.BUCKET_REGION!,
+});
 
 
 interface LoginResponse {
@@ -192,5 +213,67 @@ export const PushFavoriteVendor = async(content:string , rating:number , userid:
     throw error;
   }
 }
+
+
+
+export async function uploadCoverpicAndLogo(coverpic: Express.Multer.File, logo: Express.Multer.File, vendorId: string): Promise<{ coverpicUrl: string, logoUrl: string }> {
+   
+
+    // Upload coverpic to S3
+    const coverpicUploadParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: coverpic.originalname,
+        Body: coverpic.buffer,
+        ContentType: coverpic.mimetype,
+    };
+    const covercommand = new PutObjectCommand(coverpicUploadParams);
+    await s3.send(covercommand);
+
+    const getObjectParams={
+      Bucket: process.env.BUCKET_NAME!,
+      Key:  coverpic.originalname,
+    }
+
+    const covercommand2 = new GetObjectCommand(getObjectParams);
+    const coverpicUrl = await getSignedUrl(s3, covercommand2,{expiresIn:36000});
+  
+
+    // Upload logo to S3
+    const logoUploadParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: logo.originalname,
+        Body: logo.buffer,
+        ContentType: logo.mimetype,
+    };
+
+    const logocommand = new PutObjectCommand(logoUploadParams);
+    await s3.send(logocommand);
+
+    const getLogoObjectParams={
+      Bucket: process.env.BUCKET_NAME!,
+      Key:  logo.originalname,
+    }
+
+    const logocommand2 = new GetObjectCommand(getLogoObjectParams);
+    const logoUrl = await getSignedUrl(s3, logocommand2,{expiresIn:36000});
+
+    return { coverpicUrl, logoUrl };
+}
+
+
+export async function updateVendor(vendorId: string, formData: any, coverpicUrl: string, logoUrl: string): Promise<any> {
+    try {
+        // Update vendor data with coverpicUrl and logoUrl
+        await updateVendorData(vendorId, formData, coverpicUrl, logoUrl);
+
+        // Fetch updated vendor data
+        const updatedVendor = await getVendorById(vendorId);
+
+        return updatedVendor;
+    } catch (error) {
+        throw new Error('Failed to update vendor data');
+    }
+}
+
 
 

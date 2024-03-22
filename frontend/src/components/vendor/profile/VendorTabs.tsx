@@ -10,7 +10,11 @@ import {
 import VendorPosts from "./VendorPosts";
 
 
-export default function VendorTabs() {
+interface VendorTabsProps {
+  id: string | undefined;  
+}
+const VendorTabs: React.FC<VendorTabsProps> = ({ id }) => {
+
   const [activeTab, setActiveTab] = useState("images");
 
 
@@ -50,7 +54,7 @@ export default function VendorTabs() {
       <TabsBody placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         {data.map(({ value, desc }) => (
           <TabPanel key={value} value={value}>
-            {value === "images" && <VendorPosts />}
+            {value === "images" && <VendorPosts id={id}/>}
             {value === "reviews" && <div>{desc}</div>}
             <div className="flex justify-center">
               <Button
@@ -68,3 +72,6 @@ export default function VendorTabs() {
     </Tabs>
   );
 }
+
+
+export default VendorTabs

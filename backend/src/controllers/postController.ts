@@ -57,6 +57,7 @@ export const PostController = {
       res.status(500).json({ message: "Server Error" });
     }
   },
+  
 
   async getPosts(req: Request, res: Response): Promise<void> {
     try {

@@ -4,8 +4,16 @@ import { axiosInstance } from '../../../api/axiosinstance';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import UserRootState from '../../../redux/rootstate/UserState';
+import { useSelector } from 'react-redux';
 
-export default function VendorReview() {
+
+interface VendorReviewProps {
+  id: string | undefined;  
+}
+const VendorReview: React.FC<VendorReviewProps> = ({ id }) => {
+  const user = useSelector((state: UserRootState) => state.user.userdata);
+
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>('');
   const navigate=useNavigate();
@@ -21,18 +29,24 @@ export default function VendorReview() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Rating:', rating);
-    console.log('Review:', review);
-    const formData=new FormData();
-    formData.append("rate",rating.toString());
-    formData.append("content",review);
+    if (rating === 0) {
+      toast.error("Please select a rating.");
+      return;
+    }
+  
+    if (!review.trim()) {
+      toast.error("Please enter a review.");
+      return;
+    }
+   
     setRating(0);
     setReview('');
+     console.log(rating,review)
     axiosInstance
-    .post("/addVendorReview", formData)
+    .post(`/addVendorReview?vendorid=${id}&userid=${user?._id}`, {rate:rating,content:review},{withCredentials:true})
     .then((response) => {
       console.log(response);
-      toast.error(response.data.message)
+      toast.success(response.data.message)
       navigate("/view-vendor");
     })
     .catch((error) => {
@@ -61,3 +75,6 @@ export default function VendorReview() {
     </div>
   );
 }
+
+
+export default VendorReview;

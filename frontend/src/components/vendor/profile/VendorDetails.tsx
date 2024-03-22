@@ -7,8 +7,11 @@ import {
   } from "@material-tailwind/react";
 import { Link ,useLocation} from "react-router-dom";
 
-   
-  export default function VendorDetails() {
+interface VendorDetailsProps {
+  name: string  | undefined;
+  city: string | undefined;
+}
+const VendorDetails: React.FC<VendorDetailsProps> = ({ name, city }) => {
     const location = useLocation();
     const path=location.pathname;
     return (
@@ -17,10 +20,10 @@ import { Link ,useLocation} from "react-router-dom";
             <div className="flex flex-row justify-between">
                 <div>
           <Typography variant="h5" color="blue-gray" className="mb-2" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            Vendor Name
+            {name}
           </Typography>
           <Typography  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            City
+            {city}
           </Typography>
           </div>
           <div>
@@ -53,3 +56,6 @@ import { Link ,useLocation} from "react-router-dom";
       </Card>
     );
   }
+
+
+  export default VendorDetails
