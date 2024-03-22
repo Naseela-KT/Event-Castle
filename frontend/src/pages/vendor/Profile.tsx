@@ -9,6 +9,14 @@ import { axiosInstance, axiosInstanceVendor } from "../../api/axiosinstance"
 import { useSelector } from "react-redux"
 import VendorRootState from "../../redux/rootstate/VendorState"
 
+
+interface Review {
+  _id: string;
+  rating: number;
+  content: string;
+  // Add any other properties of a review here
+}
+
 interface Vendor {
   _id: string;
   name: string;
@@ -19,6 +27,7 @@ interface Vendor {
   totalBooking:number;
   coverpic:string;
   logo:string;
+  reviews: Review[];
 }
 
 const VendorProfilePage=()=> {

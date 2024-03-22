@@ -332,10 +332,10 @@ export const VendorController = {
           const content = req.body.content;
           const rating :number = req.body.rate as number;
           console.log(rating)
-          const userid :string  = req.query.userid as string
+          const username :string  = req.query.username as string;
           const vendorid :string=req.query.vendorid as string;
 
-          const status = await PushFavoriteVendor(content,rating,userid,vendorid);
+          const status = await PushFavoriteVendor(content,rating,username,vendorid);
           if(!status){
             res.status(400).json({error:`couldn't add reviews, some error occured`})
           }

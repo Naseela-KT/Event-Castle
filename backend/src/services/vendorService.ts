@@ -204,10 +204,9 @@ export const UpdatePasswordService = async(newPassword:string , vendorId:string)
   }
 }
 
-export const PushFavoriteVendor = async(content:string , rating:number , userid:string , vendorid:string)=>{
+export const PushFavoriteVendor = async(content:string , rating:number , username:string , vendorid:string)=>{
   try {
-    console.log("inside service " , rating)
-    const data = await AddVendorReview(content , rating, userid , vendorid)
+    const data = await AddVendorReview(content , rating, username , vendorid)
     return  data;
   } catch (error) {
     throw error;

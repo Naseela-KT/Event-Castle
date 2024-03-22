@@ -43,7 +43,7 @@ const VendorReview: React.FC<VendorReviewProps> = ({ id }) => {
     setReview('');
      console.log(rating,review)
     axiosInstance
-    .post(`/addVendorReview?vendorid=${id}&userid=${user?._id}`, {rate:rating,content:review},{withCredentials:true})
+    .post(`/addVendorReview?vendorid=${id}&username=${user?.name}`, {rate:rating,content:review},{withCredentials:true})
     .then((response) => {
       console.log(response);
       toast.success(response.data.message)
