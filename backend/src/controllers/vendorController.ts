@@ -453,7 +453,7 @@ export const VendorController = {
           Key: coverpicFile?.originalname,
         });
         coverpicUrl = await getSignedUrl(s3, covercommand2, {
-          expiresIn: 36000,
+          expiresIn: 86400 * 3,
         });
 
         // Upload logo to S3
@@ -472,7 +472,7 @@ export const VendorController = {
           Key: logoFile?.originalname,
         });
         logoUrl = await getSignedUrl(s3, logocommand2, {
-          expiresIn: 36000,
+          expiresIn: 86400 * 3,
         });
       }
 

@@ -432,7 +432,7 @@ export const UserController = {
         }
   
         const command = new GetObjectCommand(getObjectParams);
-        imageUrl = await getSignedUrl(s3, command);
+        imageUrl = await getSignedUrl(s3, command,{expiresIn: 86400 * 3});
         
       }
 

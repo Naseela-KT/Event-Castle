@@ -55,7 +55,7 @@ export const PostController = {
       }
 
       const command2 = new GetObjectCommand(getObjectParams);
-      const url = await getSignedUrl(s3, command2);
+      const url = await getSignedUrl(s3, command2,{expiresIn: 86400 * 3});
       let imageUrl=url;
 
       const post = await createPost(caption, imageName, vendor_id,imageUrl);
