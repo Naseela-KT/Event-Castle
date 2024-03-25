@@ -32,5 +32,9 @@ router.post('/addVendorReview' , VendorController.addVendorReview)
 router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
 
+router.post('/add-Favorite-Vendor' , UserController.AddFavVendor)
+router.get('/get-favorite-vendor' , UserController.getFavoriteVendors)
+
+
 
 export default router;

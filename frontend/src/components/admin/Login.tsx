@@ -63,21 +63,19 @@ const AdminLogin = () => {
       <Card
         className="w-96 mt-20 bg-gray-200"
         placeholder={undefined}
-        shadow={false}
-      >
+        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
         <CardHeader
           floated={false}
           shadow={false}
           color="transparent"
           className="mt-10 rounded-none text-center"
-          placeholder={undefined}
-        >
-          <Typography variant="h4" color="black" placeholder={undefined}>
+          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
+          <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             Admin - Login
           </Typography>
         </CardHeader>
         <form onSubmit={formik.handleSubmit}>
-          <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+          <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <Input
               label="Email"
               size="md"
@@ -86,8 +84,7 @@ const AdminLogin = () => {
               className="bg-white bg-opacity-50"
               onChange={formik.handleChange}
               value={formik.values.email}
-              name="email"
-            />
+              name="email" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
             {formik.errors.email ? (
               <p
                 className="text-sm"
@@ -105,8 +102,7 @@ const AdminLogin = () => {
               onChange={formik.handleChange}
               value={formik.values.password}
               name="password"
-              type="password"
-            />
+              type="password" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
             {formik.errors.password ? (
               <p
                 className="text-sm"
@@ -119,8 +115,7 @@ const AdminLogin = () => {
               fullWidth
               placeholder={undefined}
               type="submit"
-              className="bg-gray-700"
-            >
+              className="bg-gray-700"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Login
             </Button>
           </CardBody>

@@ -78,18 +78,21 @@ const UserSignupForm = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={client_id}>
-    <Card
-        className="w-96 mt-50 m-auto bg-dark"
-        placeholder={undefined}
-        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('/public/imgs/login.png')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p>
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
+      <GoogleOAuthProvider clientId={client_id}>
+        <Card className="w-full md:w-96 m-auto bg-dark" shadow={false}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <CardHeader
           floated={false}
           shadow={false}
           color="transparent"
           className="mt-10 rounded-none text-center"
           placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           User - Sign Up
         </Typography>
       </CardHeader>
@@ -102,7 +105,7 @@ const UserSignupForm = () => {
               name="name"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.name ? (
             <p
@@ -119,7 +122,7 @@ const UserSignupForm = () => {
               value={formValues.email}
               name="email"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.email ? (
             <p
@@ -136,7 +139,7 @@ const UserSignupForm = () => {
               name="phone"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.phone ? (
             <p
@@ -154,7 +157,7 @@ const UserSignupForm = () => {
               name="password"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formErrors.password ? (
             <p
@@ -169,7 +172,7 @@ const UserSignupForm = () => {
               type="password"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               onChange={handleChange}
               value={formValues.confirm_password}
               name="confirm_password"
@@ -196,8 +199,9 @@ const UserSignupForm = () => {
               <GoogleLogin
               type='standard'
               theme='filled_black'
-              size='large'
+              size='medium'
               ux_mode="popup"
+              width={50}
               onSuccess={response => {
                 axiosInstance.post('/google/register' , response).then((res) => {
                   console.log(res)
@@ -217,7 +221,7 @@ const UserSignupForm = () => {
         <Typography
             variant="small"
             className="mt-6 flex justify-center"
-            color="white"
+            color="black"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Already have an account?
           <Link to="/login">
@@ -225,7 +229,7 @@ const UserSignupForm = () => {
                 as="a"
                 href="#"
                 variant="small"
-                color="white"
+                color="black"
                 className="ml-1 font-bold"
                 placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Login
@@ -235,7 +239,7 @@ const UserSignupForm = () => {
         <Typography
             variant="small"
             className="mt-3 flex justify-center"
-            color="white"
+            color="black"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
           <Link to="/vendor/signup">
@@ -243,7 +247,7 @@ const UserSignupForm = () => {
                 as="a"
                 href="#signup"
                 variant="small"
-                color="white"
+                color="black"
                 className="ml-1 font-bold"
                 placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Signup here
@@ -253,6 +257,8 @@ const UserSignupForm = () => {
       </CardFooter>
     </Card>
     </GoogleOAuthProvider>
+    </div>
+    </div>
   );
 };
 

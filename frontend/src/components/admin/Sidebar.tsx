@@ -1,27 +1,21 @@
+//
 import React from "react";
-import {
-  Button,
-  Card,
-  List,
-  ListItem,
-  ListItemPrefix
-} from "@material-tailwind/react";
-import {
-  PowerIcon,
-} from "@heroicons/react/24/solid";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { axiosInstanceAdmin } from "../../api/axiosinstance";
 import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
+import { SetStateAction } from "react";
  
 const Sidebar=() =>{
-  const [open, setOpen] = React.useState(0);
+  
 
   const navigate = useNavigate();
   const dispatch= useDispatch();
  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOpen = (value: React.SetStateAction<number>) => {
+  const handleOpen = (value: SetStateAction<boolean> | '') => {
     setOpen(open === value ? 0 : value);
   };
 
@@ -37,62 +31,80 @@ const Sidebar=() =>{
         console.log('here', error);
       });
   };
+
+  
+    // Function to handle window resize and adjust sidebar accordingly
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setOpen(false); // Set sidebar to closed when screen size hits medium or below
+      } else {
+        setOpen(true); // Set sidebar to open for larger screens
+      }
+    };
+  
+    // Add event listener for window resize
+    useEffect(() => {
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
   
  
+  const [open, setOpen] = useState(true);
+  const Menus = [
+    { title: "Dashboard", src: "Chart_fill" },
+    { title: "Inbox", src: "Chat" },
+    { title: "Accounts", src: "User", gap: true },
+    { title: "Schedule ", src: "Calendar" },
+    { title: "Search", src: "Search" },
+    { title: "Analytics", src: "Chart" },
+    { title: "Files ", src: "Folder", gap: true },
+    { title: "Setting", src: "Setting" },
+  ];
+
   return (
-    <div style={{ position: 'fixed', top: 50, left: 0, height: '100%', zIndex: 100 }}>
-    <Card className="h-[calc(100vh-2rem)] fixed-sidebar w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
-      <List  placeholder={undefined}>
-      <Link to="/admin/dashboard">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-table-columns" color="white"></i>
-          </ListItemPrefix>
-          Dashboard
-        </ListItem>
-        </Link>
-        <Link to="/admin/users">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-users"></i>
-          </ListItemPrefix>
-          
-          Users
-        </ListItem>
-        </Link>
-        <Link to="/admin/vendors">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-user-tie"></i>
-          </ListItemPrefix>
-          
-            Vendors
-          
-          
-        </ListItem>
-        </Link>
-        <Link to="/admin/wallet">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-wallet"></i>
-          </ListItemPrefix>
-        
-            Wallet
-         
-        </ListItem>
-        </Link>
-        <hr className="my-2 border-blue-gray-50" />
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          <Button variant="outlined" color="white" size="sm" className="" placeholder={undefined} onClick={handleLogout} style={{border:"none"}}>
-          <span>Logout</span>
-        </Button>
-          
-        </ListItem>
-      </List>
-    </Card>
+    <div className="flex">
+      <div
+          className={`sidebar ${open ? "" : "closed"} bg-dark-purple h-screen p-5 pt-8 relative duration-300`}
+          style={{ width: open ? "250px" : "80px" }} 
+      >
+        <img
+          src="/public/imgs/control.png"
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
+           border-2 rounded-full  ${!open && "rotate-180"}`}
+          onClick={() => setOpen(!open)}
+        />
+        <div className="flex gap-x-4 items-center">
+          <img
+            src="/public/imgs/logo.png"
+            className={`cursor-pointer duration-500 ${
+              open && "rotate-[360deg]"
+            }`}
+          />
+          <h1
+            className={`text-white origin-left font-medium text-xl duration-200 ${
+              !open && "scale-0"
+            }`}
+          >
+            Designer
+          </h1>
+        </div>
+        <ul className="pt-6">
+          {Menus.map((Menu, index) => (
+            <li
+              key={index}
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              ${Menu.gap ? "mt-9" : "mt-2"} ${
+                index === 0 && "bg-light-white"
+              } `}
+            >
+              <img src={`/public/imgs/${Menu.src}.png`} />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                {Menu.title}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

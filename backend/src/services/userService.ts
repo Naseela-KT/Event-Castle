@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount } from '../repositories/userRepository';
+import { UpdatePassword, addVendorToFavorites, createUser , findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount, getfavVendors } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
@@ -229,3 +229,24 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
     throw error;
   }
 }
+
+export const FavoriteVendor = async(vendorId:string , userId:string)=>{
+  try {
+    const result = await addVendorToFavorites(userId, vendorId);
+    return result;
+} catch (error) {
+    console.error("Error in addToFavorites service:", error);
+    throw new Error("Failed to add vendor to favorites.");
+}
+};
+
+export const FavoriteVendors=async(userid:string)=>{
+  try {
+    const data = await getfavVendors(userid);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+

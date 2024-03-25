@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardHeader,
@@ -54,123 +53,190 @@ const VendorLoginForm = () => {
           navigate("/Vendor");
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(error.response.data.message);
           console.log("here", error);
         });
     },
   });
 
   return (
-    <Card
-      className="w-96 mt-50 m-auto bg-dark"
-      placeholder={undefined}
-      shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="mt-10 rounded-none text-center"
-        placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          Vendor - Sign In
-        </Typography>
-      </CardHeader>
-      <form onSubmit={formik.handleSubmit}>
-        <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <Input
-            label="Email"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            name="email" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formik.errors.email ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formik.errors.email}
-            </p>
-          ) : null}
-          <Input
-            label="Password"
-            size="md"
-            crossOrigin={undefined}
-            color="pink"
-            className="bg-white bg-opacity-50"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            name="password"
-            type="password" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formik.errors.password ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formik.errors.password}
-            </p>
-          ) : null}
-          <div className="ml-2.5">
-            <Link to="/vendor/forgot-password">
-              <Typography
-                variant="small"
-                color="white"
-                placeholder={undefined}
-                className="text-left"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
-                Forgot password?
-              </Typography>
-            </Link>
-          </div>
-          <Button
-            variant="gradient"
-            fullWidth
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+      <div
+        className="w-full md:w-1/2 h-full object-cover"
+        style={{
+          backgroundImage: `url('/public/imgs/vendor-bg.png')`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backdropFilter: "revert-layer",
+        }}
+      >
+        <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">
+          Unlock Your Potential with Us
+        </h1>
+        <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">
+          {" "}
+          "Your vision, our canvas. Let's paint the future."
+        </p>
+      </div>
+      <div className="w-full md:w-1/2 mt-10 md:mt-0">
+        <Card
+          className="w-full md:w-96 m-auto bg-dark"
+          shadow={false}
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="mt-20 rounded-none text-center"
             placeholder={undefined}
-            type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
-            Sign In
-          </Button>
-        </CardBody>
-      </form>
-      <CardFooter className="pt-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <Typography
-          variant="small"
-          color="white"
-          className="mt-6 flex justify-center "
-          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          Don&apos;t have an account?
-          <Link to="/vendor/signup">
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             <Typography
-              as="a"
-              href="#signup"
-              variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              Sign up
+              variant="h4"
+              color="black"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Vendor - Sign In
             </Typography>
-          </Link>
-        </Typography>
-        <Typography
-          variant="small"
-          color="white"
-          className="mt-3 flex justify-center"
-          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          Are you a user?
-          <Link to="/login">
+          </CardHeader>
+          <form onSubmit={formik.handleSubmit}>
+            <CardBody
+              className="flex flex-col gap-4"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <Input
+                label="Email"
+                size="md"
+                crossOrigin={undefined}
+                color="black"
+                className="bg-white bg-opacity-50"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                name="email"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formik.errors.email ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formik.errors.email}
+                </p>
+              ) : null}
+              <Input
+                label="Password"
+                size="md"
+                crossOrigin={undefined}
+                color="black"
+                className="bg-white bg-opacity-50"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                name="password"
+                type="password"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formik.errors.password ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formik.errors.password}
+                </p>
+              ) : null}
+              <div className="ml-2.5">
+                <Link to="/vendor/forgot-password">
+                  <Typography
+                    variant="small"
+                    color="black"
+                    placeholder={undefined}
+                    className="text-left"
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    Forgot password?
+                  </Typography>
+                </Link>
+              </div>
+              <Button
+                variant="gradient"
+                fullWidth
+                placeholder={undefined}
+                type="submit"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                Sign In
+              </Button>
+            </CardBody>
+          </form>
+          <CardFooter
+            className="pt-0"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             <Typography
-              as="a"
-              href="#signup"
               variant="small"
-              color="white"
-              className="ml-1 font-bold"
-              placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              Login here
+              color="black"
+              className="mt-6 flex justify-center "
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Don&apos;t have an account?
+              <Link to="/vendor/signup">
+                <Typography
+                  as="a"
+                  href="#signup"
+                  variant="small"
+                  color="black"
+                  className="ml-1 font-bold"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Sign up
+                </Typography>
+              </Link>
             </Typography>
-          </Link>
-        </Typography>
-      </CardFooter>
-    </Card>
+            <Typography
+              variant="small"
+              color="black"
+              className="mt-3 flex justify-center"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Are you a user?
+              <Link to="/login">
+                <Typography
+                  as="a"
+                  href="#signup"
+                  variant="small"
+                  color="black"
+                  className="ml-1 font-bold"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Login here
+                </Typography>
+              </Link>
+            </Typography>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 };
 

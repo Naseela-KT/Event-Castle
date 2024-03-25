@@ -9,6 +9,8 @@ export interface VendorData{
     _id : string;
     city:string;
     phone:number;
+    coverpicUrl:string;
+    logoUrl:string;
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

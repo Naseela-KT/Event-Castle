@@ -11,7 +11,7 @@ import VendorRootState from "../../redux/rootstate/VendorState"
 
 
 interface Review {
-  _id: string;
+  username: string;
   rating: number;
   content: string;
   // Add any other properties of a review here
@@ -27,7 +27,9 @@ interface Vendor {
   totalBooking:number;
   coverpic:string;
   logo:string;
-  reviews: Review[];
+  reviews: Review[] | undefined;
+  logoUrl:string;
+  coverpicUrl:string
 }
 
 const VendorProfilePage=()=> {
@@ -62,9 +64,9 @@ const VendorProfilePage=()=> {
 
     return (
       <>
-        <VendorCover logo={vendor?.logo} coverpic={vendor?.coverpic}/>
-        <VendorDetails name={vendor?.name} city={vendor?.city}/>
-        <VendorTabs/>
+        <VendorCover logo={vendor?.logoUrl} coverpic={vendor?.coverpicUrl}/>
+        <VendorDetails name={vendor?.name} city={vendor?.city} id={vendor?._id}/>
+        <VendorTabs reviews={vendor?.reviews}/>
         {path=='/view-vendor'?<VendorReview id={vendor?._id}/>:""}
         <VendorAbout/>
       </>

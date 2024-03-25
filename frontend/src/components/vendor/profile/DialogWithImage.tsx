@@ -1,5 +1,5 @@
 // DialogWithImage.js
-import React from "react";
+
 import {
 
     Avatar,
@@ -23,7 +23,7 @@ export function DialogWithImage({ imageUrl, open, handler }:DialogWithImageProps
 
 
  return (
-    <Dialog size="sm" open={open} handler={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Dialog size="sm" open={open} onClose={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <DialogHeader className="justify-between"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <div className="flex items-center gap-3">
             <Avatar

@@ -15,7 +15,8 @@ interface Vendor {
   isVerified:boolean;
   verificationRequest:boolean;
   totalBooking:number;
-
+  coverpicUrl:string;
+  logoUrl:string;
 }
 
 function VendorsList() {
@@ -40,7 +41,7 @@ function VendorsList() {
   <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-inherit">
     Vendors List
   </h3>
-  <Button variant="gradient" className="rounded-full" placeholder={undefined}>
+  <Button variant="gradient" className="rounded-full" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
     <Link to="/admin/vendor-types">
     View Vendor Types
     </Link>

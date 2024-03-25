@@ -4,14 +4,38 @@ import {
     CardFooter,
     Typography,
     Button,
+    IconButton,
   } from "@material-tailwind/react";
+import { useState } from "react";
 import { Link ,useLocation} from "react-router-dom";
+import { axiosInstance } from "../../../api/axiosinstance";
+import { toast } from "react-toastify";
+import UserRootState from "../../../redux/rootstate/UserState";
+import { useSelector } from "react-redux";
 
 interface VendorDetailsProps {
   name: string  | undefined;
   city: string | undefined;
+  id:string | undefined;
 }
-const VendorDetails: React.FC<VendorDetailsProps> = ({ name, city }) => {
+const VendorDetails: React.FC<VendorDetailsProps> = ({ name, city,id }) => {
+  const user = useSelector((state: UserRootState) => state.user.userdata);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleIsFavorite=()=>{
+    axiosInstance.post(`/add-Favorite-Vendor?vendorId=${id}&&userId=${user?._id}`,
+    {withCredentials:true})
+    .then((response)=>{
+      console.log(response)
+      toast.success("vendor added to favorites.");
+      setIsFavorite((cur) => !cur)
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message);
+    });
+  }
+  
+ 
     const location = useLocation();
     const path=location.pathname;
     return (
@@ -27,7 +51,18 @@ const VendorDetails: React.FC<VendorDetailsProps> = ({ name, city }) => {
           </Typography>
           </div>
           <div>
+            {path==="/view-vendor"?
+            <IconButton
+            variant="text"
+            size="lg"
+            color={isFavorite ? "red" : "blue-gray"}
+            onClick={handleIsFavorite}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
+          <i className="fas fa-heart" />
+        </IconButton>
+            :""}
+          
           <Button color="green" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>4.7</Button>
+          
           </div>
           </div>
         </CardBody>

@@ -491,7 +491,11 @@ export const VendorController = {
       res.status(500).json({ message: "Server Error" });
     }
   },
+
+  
 };
+
+
 
 export class CustomError extends Error {
   statusCode: number;

@@ -1,5 +1,6 @@
 import User , {UserDocument} from "../models/user";
 import { Document } from 'mongoose';
+import vendor from "../models/vendor";
 
 export const createUser = async (userData: Partial<UserDocument>): Promise<UserDocument> => {
     try {
@@ -125,3 +126,51 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       throw error;
     }
   }
+
+
+  export const addVendorToFavorites = async (
+    userId: string,
+    vendorId: string
+  ) => {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found.");
+      }
+  
+      if (user.favourite.includes(vendorId)) {
+        return false; // Vendor already in favorites
+      }
+  
+      user.favourite.push(vendorId);
+      await user.save();
+  
+      return true;
+    } catch (error) {
+      console.error("Error in addVendorToFavorites repository:", error);
+      throw new Error("Failed to add vendor to favorites.");
+    }
+  };
+
+
+  export const getfavVendors=async( userid:string)=>{
+    try {
+      const userData = await User.findById(userid);
+      if (!userData) {
+        throw new Error('User not found');
+      }
+    
+      const favoriteVendorIds = userData.favourite;
+    
+      if (!favoriteVendorIds || favoriteVendorIds.length === 0) {
+        throw new Error('No favorite vendors found for this user');
+      }
+    
+      const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } });
+    
+      return favoriteVendors;
+      
+    } catch (error) {
+     throw error; 
+    }
+    }

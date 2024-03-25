@@ -11,9 +11,12 @@ export const VendorTypeController = {
           const vendor = await addType(type,status);
           res.status(201).json(vendor);
         } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: 'Server Error' });
-        }
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            console.error(error);
+            res.status(500).json({ message: "Server Error" });
+          }}
       },
 
       async getVendorTypes(req:Request,res:Response):Promise<void>{
@@ -80,4 +83,12 @@ export const VendorTypeController = {
     }
 }
 
+export class CustomError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
 

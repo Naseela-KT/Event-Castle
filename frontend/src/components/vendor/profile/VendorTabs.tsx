@@ -8,13 +8,21 @@ import {
   Button,
 } from "@material-tailwind/react";
 import VendorPosts from "./VendorPosts";
+import ReviewCard from "./ReviewCard";
 
+interface Review {
+  username: string;
+  rating: number;
+  content: string;
+  // Add any other properties of a review here
+}
 
+interface VendorReviewProps {
+  reviews: Review[] | undefined;
+}
 
-const VendorTabs=() => {
-
+const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
   const [activeTab, setActiveTab] = useState("images");
-
 
   const handleTabChange = (value: SetStateAction<string>) => {
     setActiveTab(value);
@@ -42,25 +50,45 @@ const VendorTabs=() => {
       onChange={handleTabChange}
       className="ml-20 mr-20 mb-20"
     >
-      <TabsHeader placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <TabsHeader
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
         {data.map(({ label, value }) => (
-          <Tab key={value} value={value} placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <Tab
+            key={value}
+            value={value}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             {label}
           </Tab>
         ))}
       </TabsHeader>
-      <TabsBody placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        {data.map(({ value, desc }) => (
+      <TabsBody
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        {data.map(({ value }) => (
           <TabPanel key={value} value={value}>
             {value === "images" && <VendorPosts />}
-            {value === "reviews" && <div>{desc}</div>}
+            {value === "reviews" &&
+              reviews?.map((review, index) => (
+                <ReviewCard key={index} {...review} />
+              ))}
             <div className="flex justify-center">
               <Button
                 variant="outlined"
                 placeholder={undefined}
                 color="pink"
                 size="lg"
-                className="mr-3 mt-5 text-center"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
+                className="mr-3 mt-5 text-center"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 View More
               </Button>
             </div>
@@ -69,7 +97,6 @@ const VendorTabs=() => {
       </TabsBody>
     </Tabs>
   );
-}
+};
 
-
-export default VendorTabs
+export default VendorTabs;

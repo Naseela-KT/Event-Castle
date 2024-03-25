@@ -13,6 +13,7 @@ interface Vendors {
     city:string;
     isActive: boolean;
     totalBooking:number;
+    logoUrl:string;
   }
 
   

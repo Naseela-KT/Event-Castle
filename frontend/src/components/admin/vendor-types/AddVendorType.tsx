@@ -12,6 +12,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../../validations/admin/vendorTypeValidation";
+import { toast } from "react-toastify";
 
 interface FormValues {
   type: string;
@@ -58,6 +59,7 @@ export default function AddVendorType() {
       navigate("/admin/vendor-types",{ replace: true })
     })
     .catch((error) => {
+      toast.error(error.response.data.message)
       console.log('here', error);
     });
   }
