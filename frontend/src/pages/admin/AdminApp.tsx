@@ -1,7 +1,6 @@
 
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Layout from "../../components/Layout";
 import Sidebar from "../../components/admin/Sidebar";
 import { useSelector } from 'react-redux';
 import AdminState  from '../../redux/rootstate/AdminState';
@@ -17,8 +16,8 @@ const AdminApp: React.FC = () => {
     
         <ToastContainer/>
         <div className="flex">
-          {isAdminSignedIn && <Sidebar className="sidebar" />}
-          <div className="mainContent flex-1 p-1">
+          {isAdminSignedIn && <Sidebar />}
+          <div className="mainContent flex-1">
             <Outlet />
           </div>
         </div>

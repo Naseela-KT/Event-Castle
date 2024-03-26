@@ -19,44 +19,45 @@ interface Vendor {
   logoUrl:string;
 }
 
+// VendorCard component remains unchanged
+
 function VendorsList() {
-
-  const [vendors,setVendors]=useState<Vendor[]>([]);
-
-  useEffect(()=>{
-    axiosInstanceAdmin
-              .get("/getvendors", { withCredentials: true })
-              .then((response) => {
-                console.log(response);
-                setVendors(response.data)
-              })
-              .catch((error) => {
-                console.log("here", error);
-              })
-  },[])
-
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+ 
+  useEffect(() => {
+     axiosInstanceAdmin
+       .get("/getvendors", { withCredentials: true })
+       .then((response) => {
+         console.log(response);
+         setVendors(response.data);
+       })
+       .catch((error) => {
+         console.log("here", error);
+       });
+  }, []);
+ 
   return (
-    <div className="m-20">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="mb-5">
-  <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-inherit">
-    Vendors List
-  </h3>
-  <Button variant="gradient" className="rounded-full" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-    <Link to="/admin/vendor-types">
-    View Vendor Types
-    </Link>
-  </Button>
-</div>
-      <div style={{ display: 'flex'}}>
-      {vendors.map((vendor, index) => (
-        <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
-        <VendorCard {...vendor} />
-      </Link>
-      ))}
-       
-      </div>
-    </div>
-  )
-}
+     <div className="m-20">
+       <div className="mb-5 flex justify-between">
+         <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-inherit">
+           Vendors List
+         </h3>
+         <Button variant="gradient" className="rounded-full"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+           <Link to="/admin/vendor-types">View Vendor Types</Link>
+         </Button>
+       </div>
+       <div className="flex flex-wrap justify-center gap-4">
+         {vendors.map((vendor, index) => (
+           <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+             <VendorCard {...vendor} />
+           </Link>
+         ))}
+       </div>
+     </div>
+  );
+ }
+ 
+ export default VendorsList;
+ 
 
-export default VendorsList
+

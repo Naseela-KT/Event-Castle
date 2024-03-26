@@ -68,10 +68,6 @@ const VendorProfile = () => {
           backgroundImage: `url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80")`,
         }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
         <CardBody placeholder={undefined} className="h-40" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} children={undefined}>
-          {/* <img
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          alt="ui/ux review check"
-        /> */}
         </CardBody>
       </Card>
       <Card className="" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -80,10 +76,6 @@ const VendorProfile = () => {
           className="mb-4 grid h-28 place-items-center w-40"
           placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Logo
-          {/* <img 
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          alt="ui/ux review check"
-        /> */}
         </CardHeader>
 
         <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

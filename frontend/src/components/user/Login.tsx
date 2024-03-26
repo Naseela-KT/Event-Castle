@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardHeader,
@@ -19,7 +17,7 @@ import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import {GoogleLogin , GoogleOAuthProvider} from '@react-oauth/google';
-import { url } from "inspector";
+
 
 const client_id = import.meta.env.VITE_CLIENT_ID || '';
 

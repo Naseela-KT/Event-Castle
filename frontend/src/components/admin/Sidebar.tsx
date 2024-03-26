@@ -1,76 +1,67 @@
-//
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosInstanceAdmin } from "../../api/axiosinstance";
 import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { SetStateAction } from "react";
- 
-const Sidebar=() =>{
-  
+import { PowerIcon } from "@heroicons/react/24/outline";
 
+const Sidebar = () => {
   const navigate = useNavigate();
-  const dispatch= useDispatch();
- 
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOpen = (value: SetStateAction<boolean> | '') => {
+  const handleOpen = (value: SetStateAction<boolean> | "") => {
     setOpen(open === value ? 0 : value);
   };
 
-
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axiosInstanceAdmin.get("/logout")
+    axiosInstanceAdmin
+      .get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
         navigate("/admin/login");
       })
       .catch((error) => {
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
-  
-    // Function to handle window resize and adjust sidebar accordingly
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setOpen(false); // Set sidebar to closed when screen size hits medium or below
-      } else {
-        setOpen(true); // Set sidebar to open for larger screens
-      }
-    };
-  
-    // Add event listener for window resize
-    useEffect(() => {
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
- 
+  // Function to handle window resize and adjust sidebar accordingly
+  const handleResize = () => {
+    if (window.innerWidth <= 768) {
+      setOpen(false); // Set sidebar to closed when screen size hits medium or below
+    } else {
+      setOpen(true); // Set sidebar to open for larger screens
+    }
+  };
+
+  // Add event listener for window resize
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [open, setOpen] = useState(true);
-  const Menus = [
-    { title: "Dashboard", src: "Chart_fill" },
-    { title: "Inbox", src: "Chat" },
-    { title: "Accounts", src: "User", gap: true },
-    { title: "Schedule ", src: "Calendar" },
-    { title: "Search", src: "Search" },
-    { title: "Analytics", src: "Chart" },
-    { title: "Files ", src: "Folder", gap: true },
-    { title: "Setting", src: "Setting" },
-  ];
 
   return (
-    <div className="flex">
+    <div className="sidebar">
       <div
-          className={`sidebar ${open ? "" : "closed"} bg-dark-purple h-screen p-5 pt-8 relative duration-300`}
-          style={{ width: open ? "250px" : "80px" }} 
+        className={`sidebar ${
+          open ? "open" : "closed"
+        } bg-dark-purple h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ width: open ? "250px" : "80px" }}
       >
         <img
           src="/public/imgs/control.png"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple border-2 rounded-full ${
+            !open && "rotate-180"
+          }`}
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
@@ -89,25 +80,73 @@ const Sidebar=() =>{
           </h1>
         </div>
         <ul className="pt-6">
-          {Menus.map((Menu, index) => (
+          <Link to="/admin/dashboard">
             <li
-              key={index}
               className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                index === 0 && "bg-light-white"
-              } `}
+              mt-9 bg-light-white
+              `}
             >
-              <img src={`/public/imgs/${Menu.src}.png`} />
+              <img src={`/public/imgs/Chart_fill.png`} />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
+                Dashboard
               </span>
             </li>
-          ))}
+          </Link>
+          <Link to="/admin/users">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-users"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Users
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/vendors">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-user-tie"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Vendors
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/wallet">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-wallet"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Wallet
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/wallet">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-6
+              `}
+            >
+              <PowerIcon className="h-5 w-5" />
+              <span
+                className={`${!open && "hidden"} origin-left duration-200`}
+                onClick={handleLogout}
+              >
+                Logout
+              </span>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
   );
-}
+};
 
-
-export default Sidebar
+export default Sidebar;

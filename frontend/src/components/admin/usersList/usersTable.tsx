@@ -85,33 +85,33 @@ const UsersTable=()=> {
   };
 
     return (
-    <Card className="h-full w-full" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <CardHeader floated={false} shadow={false} className="rounded-none" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <div className="mb-2 flex items-center justify-between gap-8">
-          <div>
-            <Typography variant="h5" color="blue-gray" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              Users list
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              See information about all members
-            </Typography>
-          </div>
-          <div className="w-full md:w-72">
-            <Input
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                name="search"
-                value={search}
-                color="black"
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyUp={handleSearch}
-                crossOrigin={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}/>
-      </div>
-        </div>
-      
+      <Card className="h-full w-full" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <CardHeader floated={false} shadow={false} className="rounded-none" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+         <div className="mb-2 flex flex-col md:flex-row items-center justify-between gap-8">
+           {/* Adjusted for smaller screens */}
+           <div>
+             <Typography variant="h5" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+               Users list
+             </Typography>
+             <Typography color="gray" className="mt-1 font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+               See information about all members
+             </Typography>
+           </div>
+           <div className="w-full md:w-72">
+             <Input
+                 label="Search"
+                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                 name="search"
+                 value={search}
+                 color="black"
+                 onChange={(e) => setSearch(e.target.value)}
+                 onKeyUp={handleSearch}
+                 crossOrigin={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}/>
+           </div>
+         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <table className="mt-4 w-full min-w-max table-auto text-left">
+      <CardBody className="overflow-scroll px-0" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
@@ -192,7 +192,7 @@ const UsersTable=()=> {
         </table>
       </CardBody>
     
-       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <CardFooter className="flex flex-col md:flex-row items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Typography variant="small" color="blue-gray" className="font-normal" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Page {page} of {totalPages}
         </Typography>
