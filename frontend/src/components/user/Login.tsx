@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardHeader,
@@ -19,6 +17,7 @@ import { validate } from "../../validations/loginVal";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import {GoogleLogin , GoogleOAuthProvider} from '@react-oauth/google';
+
 
 const client_id = import.meta.env.VITE_CLIENT_ID || '';
 
@@ -71,18 +70,21 @@ const UserLoginForm = () => {
  
 
   return (
-    <GoogleOAuthProvider clientId={client_id}>
-    <Card
-        className="w-96 mt-50 bg-dark m-auto"
-        placeholder={undefined}
-        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('/public/imgs/login.png')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p>
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
+      <GoogleOAuthProvider clientId={client_id}>
+        <Card className="w-full md:w-96 m-auto bg-dark" shadow={false}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <CardHeader
           floated={false}
           shadow={false}
           color="transparent"
-          className="mt-10 rounded-none text-center"
+          className="mt-20 rounded-none text-center"
           placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           User - Sign In
         </Typography>
       </CardHeader>
@@ -92,7 +94,7 @@ const UserLoginForm = () => {
               label="Email"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50"
               onChange={formik.handleChange}
               value={formik.values.email}
@@ -102,7 +104,7 @@ const UserLoginForm = () => {
               label="Password"
               size="md"
               crossOrigin={undefined}
-              color="pink"
+              color="black"
               className="bg-white bg-opacity-50"
               onChange={formik.handleChange}
               value={formik.values.password}
@@ -113,7 +115,7 @@ const UserLoginForm = () => {
             <Link to="/forgot-password">
               <Typography
                   variant="small"
-                  color="white"
+                  color="black"
                   placeholder={undefined}
                   className="text-left"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
                 Forgot password?
@@ -133,7 +135,8 @@ const UserLoginForm = () => {
         <GoogleLogin
         type='standard'
         theme='filled_black'
-        size='large'
+        size='medium'
+        width={50}
         onSuccess={response => {
           axiosInstance.post('/google/login' , response).then((res) => {
             console.log(res , 'google @')
@@ -156,7 +159,7 @@ const UserLoginForm = () => {
       <CardFooter className="pt-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Typography
             variant="small"
-            color="white"
+            color="black"
             className="mt-6 flex justify-center "
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Don&apos;t have an account?
@@ -165,7 +168,7 @@ const UserLoginForm = () => {
                 as="a"
                 href="#signup"
                 variant="small"
-                color="white"
+                color="black"
                 className="ml-1 font-bold"
                 placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Sign up
@@ -175,7 +178,7 @@ const UserLoginForm = () => {
         </Typography>
         <Typography
             variant="small"
-            color="white"
+            color="black"
             className="mt-3 flex justify-center"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
@@ -184,7 +187,7 @@ const UserLoginForm = () => {
                 as="a"
                 href="#signup"
                 variant="small"
-                color="white"
+                color="black"
                 className="ml-1 font-bold"
                 placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Login here
@@ -194,6 +197,8 @@ const UserLoginForm = () => {
       </CardFooter>
     </Card>
     </GoogleOAuthProvider>
+    </div>
+    </div>
   );
 };
 

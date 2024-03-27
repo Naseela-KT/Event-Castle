@@ -5,6 +5,7 @@ import {
     Typography,
     Button,
   } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 
   interface VendorCardProps {
@@ -12,17 +13,20 @@ import {
     email: string;
     phone: string;
     city: string;
+    _id:string;
+    coverpicUrl:string;
   }
 
-const VendorListingCard:React.FC<VendorCardProps> = ({name,city})=> {
+const VendorListingCard:React.FC<VendorCardProps> = ({name,city,_id,coverpicUrl})=> {
   return (
     <>
     <Card className="w-full max-w-[35rem] shadow-lg flex flex-row justify-center p-5 m-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <CardHeader floated={false} color="transparent" className="w-2/5 bg-transparent" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       
     <img
-      src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-      alt="ui/ux review check" className=""/>
+      src={coverpicUrl?coverpicUrl:
+      ""}
+      alt={name?name:""} className=""/>
 
         <div className="to-bg-black-20 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/70 " />
        
@@ -53,10 +57,11 @@ const VendorListingCard:React.FC<VendorCardProps> = ({name,city})=> {
         <Typography color="gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           {city}
         </Typography>
-      
+        <Link to={`/view-vendor?id=${_id}`}>
         <Button size="md" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           View Profile
         </Button>
+        </Link>
       </CardBody>
 
       

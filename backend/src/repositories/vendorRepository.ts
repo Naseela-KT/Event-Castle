@@ -62,14 +62,14 @@ export const UpdatePassword = async(password:string , mail:string) =>{
   }
 }
 
-export const AddVendorReview = async(content: string, rating: number, userId: string, vendorId: string)=>{
+export const AddVendorReview = async(content: string, rating: number, username: string, vendorId: string)=>{
   try {
      const vendorData = await Vendor.findById(vendorId);
        if (!vendorData) {
          throw new Error('Vendor not found');
        }
- 
-     vendorData.reviews.push({content,rating,userId});
+
+     vendorData.reviews.push({content,rating,username});
  
      await vendorData.save();
      return true;
@@ -77,4 +77,32 @@ export const AddVendorReview = async(content: string, rating: number, userId: st
     throw error;
   }
  }
+
+ export async function updateVendorData(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<void> {
+  try {
+      // Update coverpicUrl and logoUrl fields in vendor document
+      console.log(vendorId)
+      console.log("in repository......")
+      console.log(coverpicUrl,logoUrl)
+      console.log("name"+formData.name);
+
+      const update = {
+        name:formData.name,
+        city:formData.city,
+        phone:parseInt(formData.phone),
+        coverpicUrl: coverpicUrl,
+        logoUrl: logoUrl,
+        logo: logo,
+        coverpic: coverpic
+      };
+  
+      // Use the $set operator to update the document
+      await Vendor.updateOne({ _id: vendorId }, { $set: update });
+       
+    
+    
+  } catch (error) {
+      throw new Error('Failed to update vendor data');
+  }
+}
 

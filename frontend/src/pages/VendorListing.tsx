@@ -11,6 +11,7 @@ interface Vendors {
     city:string;
     isActive: boolean;
     totalBooking:number;
+    coverpicUrl:string;
   }
 
 function VendorListing() {

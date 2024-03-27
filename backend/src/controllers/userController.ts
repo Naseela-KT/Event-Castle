@@ -13,6 +13,8 @@ import {
   checkCurrentPassword,
   UpdatePasswordService,
   updateProfileService,
+  FavoriteVendor,
+  FavoriteVendors,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
 import user from "../models/user";
@@ -432,7 +434,7 @@ export const UserController = {
         }
   
         const command = new GetObjectCommand(getObjectParams);
-        imageUrl = await getSignedUrl(s3, command);
+        imageUrl = await getSignedUrl(s3, command,{expiresIn: 86400 * 3});
         
       }
 
@@ -447,6 +449,54 @@ export const UserController = {
       }
     }
   },
+
+  async AddFavVendor(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId: string = req.query.vendorId as string;
+      const userId: string = req.query.userId as string;
+
+      if (!vendorId) {
+        res.status(400).json({ error: "Invalid vendor id." });
+      }
+      if (!userId) {
+        res.status(400).json({ error: "Invalid user id." });
+      }
+      console.log("Userid: " + userId);
+      console.log("vendorId: ", vendorId);
+      
+      const data = await FavoriteVendor(vendorId, userId);
+
+      if (data) {
+        res.status(200).json({ message: "vendor added to Favorite list.." });
+      } else {
+        res.status(400).json({ message: "vendor already present in favorites." });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
+  async getFavoriteVendors(req: Request, res: Response): Promise<void>{
+    try {
+      const userId: string = req.query.userid as string;
+
+      if (!userId) {
+        res.status(400).json({ error: "Invalid user id." });
+      }
+      const result = await FavoriteVendors( userId);
+      if (result) {
+        res.status(200).json({ data:result});
+      } else {
+        res.status(400).json({ message: "No vendors in favorites." });
+      }
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
 };
 
 // Define a custom error class

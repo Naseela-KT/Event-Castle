@@ -5,8 +5,7 @@ export const userOtpExpiration = (req: Request, res: Response, next: NextFunctio
     const now = Date.now();
     if (req.session.user && req.session.user.otpCode && req.session.user.otpSetTimestamp) {
         const timeElapsed = now - req.session.user.otpSetTimestamp;
-        if (timeElapsed >= 60000) { // Check if 1 minute has passed
-            // Expire OTP code
+        if (timeElapsed >= 60000) { 
             req.session.user.otpCode = undefined;
             req.session.user.otpSetTimestamp = undefined;
             console.log("Expired OTP code cleaned up");

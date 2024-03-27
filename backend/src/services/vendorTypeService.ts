@@ -1,3 +1,4 @@
+import { CustomError } from "../controllers/vendorTypeController";
 import { createVendorType, deleteVendorById, findVerndorTypeByName ,findVerndorTypes, getVendorById, updateById} from "../repositories/vendorTypeRepository";
 
 
@@ -5,7 +6,7 @@ export const addType = async (type: string, status: string)=> {
   try {
     const existingType = await findVerndorTypeByName(type);
     if (existingType) {
-      throw new Error("Type already exist!");
+      throw new CustomError("Type already exist!",401);
     }
     
     const new_type=await createVendorType({type,status:status==="Active"})

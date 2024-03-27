@@ -1,9 +1,22 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail } from '../repositories/vendorRepository';
-import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail, updateVendorData } from '../repositories/vendorRepository';
+import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+
+
+
+
+
 
 
 interface LoginResponse {
@@ -183,14 +196,33 @@ export const UpdatePasswordService = async(newPassword:string , vendorId:string)
   }
 }
 
-export const PushFavoriteVendor = async(content:string , rating:number , userid:string , vendorid:string)=>{
+export const PushFavoriteVendor = async(content:string , rating:number , username:string , vendorid:string)=>{
   try {
-    console.log("inside service " , rating)
-    const data = await AddVendorReview(content , rating, userid , vendorid)
+    const data = await AddVendorReview(content , rating, username , vendorid)
     return  data;
   } catch (error) {
     throw error;
   }
 }
+
+
+
+
+
+
+export async function updateVendor(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<any> {
+    try {
+        // Update vendor data with coverpicUrl and logoUrl
+        console.log(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic)
+        await updateVendorData(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic);
+        // Fetch updated vendor data
+        const updatedVendor = await getVendorById(vendorId);
+
+        return updatedVendor;
+    } catch (error) {
+        throw new Error('Failed to update vendor data');
+    }
+}
+
 
 

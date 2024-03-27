@@ -1,4 +1,4 @@
-"use client";
+
 
 import React from "react";
 import { Link ,useNavigate} from 'react-router-dom';
@@ -45,37 +45,37 @@ const AdminNavbar=()=> {
  
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100 }}>
-    <Navbar className="px-4 lg:px-8 lg:py-2" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} >
+    <Navbar className="px-4 lg:px-8 lg:py-2" placeholder={undefined} style={{ borderRadius: 0, border: 0, backgroundColor: '#565656' }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
-                  as="a"
-                  href="#"
-                  className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
-          Event Castle
+            as="a"
+            href="#"
+            className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
+         <img src="../../../public/imgs/event_castle.svg" alt="" width={150}/>
          
         </Typography>
        
        
         <div className="flex items-center gap-x-1">
       {isAdminSignedIn?
-        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
+        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Logout</span>
           
         </Button>
         
       :
       <Link to="/admin/login">
-        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Login</span>
         </Button>
       </Link>
       }
     </div>
         <IconButton
-                  variant="text"
-                  className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                  ripple={false}
-                  onClick={() => setOpenNav(!openNav)}  placeholder={undefined}        >
+            variant="text"
+            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+            ripple={false}
+            onClick={() => setOpenNav(!openNav)} placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           {openNav ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ const AdminNavbar=()=> {
       <MobileNav  open={openNav}>
         <div className="container mx-auto">
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
+            <Button fullWidth variant="text" size="sm" className="" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <span>Log In</span>
             </Button>
           </div>

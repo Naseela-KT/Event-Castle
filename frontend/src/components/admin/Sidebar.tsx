@@ -1,101 +1,152 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  List,
-  ListItem,
-  ListItemPrefix
-} from "@material-tailwind/react";
-import {
-  PowerIcon,
-} from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosInstanceAdmin } from "../../api/axiosinstance";
 import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
- 
-const Sidebar=() =>{
-  const [open, setOpen] = React.useState(0);
+import { useState } from "react";
+import { useEffect } from "react";
+import { SetStateAction } from "react";
+import { PowerIcon } from "@heroicons/react/24/outline";
 
+const Sidebar = () => {
   const navigate = useNavigate();
-  const dispatch= useDispatch();
- 
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOpen = (value: React.SetStateAction<number>) => {
+  const handleOpen = (value: SetStateAction<boolean> | "") => {
     setOpen(open === value ? 0 : value);
   };
 
-
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    axiosInstanceAdmin.get("/logout")
+    axiosInstanceAdmin
+      .get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
         navigate("/admin/login");
       })
       .catch((error) => {
-        console.log('here', error);
+        console.log("here", error);
       });
   };
-  
- 
+
+  // Function to handle window resize and adjust sidebar accordingly
+  const handleResize = () => {
+    if (window.innerWidth <= 768) {
+      setOpen(false); // Set sidebar to closed when screen size hits medium or below
+    } else {
+      setOpen(true); // Set sidebar to open for larger screens
+    }
+  };
+
+  // Add event listener for window resize
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const [open, setOpen] = useState(true);
+
   return (
-    <div style={{ position: 'fixed', top: 50, left: 0, height: '100%', zIndex: 100 }}>
-    <Card className="h-[calc(100vh-2rem)] fixed-sidebar w-full max-w-[16rem] shadow-xl shadow-blue-gray-900/5"  style={{ borderRadius: 0,border:0,backgroundColor:'#565656' }} placeholder={undefined}>
-      <List  placeholder={undefined}>
-      <Link to="/admin/dashboard">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-table-columns" color="white"></i>
-          </ListItemPrefix>
-          Dashboard
-        </ListItem>
-        </Link>
-        <Link to="/admin/users">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-users"></i>
-          </ListItemPrefix>
-          
-          Users
-        </ListItem>
-        </Link>
-        <Link to="/admin/vendors">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-user-tie"></i>
-          </ListItemPrefix>
-          
-            Vendors
-          
-          
-        </ListItem>
-        </Link>
-        <Link to="/admin/wallet">
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-          <i className="fa-solid fa-wallet"></i>
-          </ListItemPrefix>
-        
-            Wallet
-         
-        </ListItem>
-        </Link>
-        <hr className="my-2 border-blue-gray-50" />
-        <ListItem  placeholder={undefined} style={{ color: 'white' }}>
-          <ListItemPrefix  placeholder={undefined}>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          <Button variant="outlined" color="white" size="sm" className="" placeholder={undefined} onClick={handleLogout} style={{border:"none"}}>
-          <span>Logout</span>
-        </Button>
-          
-        </ListItem>
-      </List>
-    </Card>
+    <div className="sidebar">
+      <div
+        className={`sidebar ${
+          open ? "open" : "closed"
+        } bg-dark-purple h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ width: open ? "250px" : "80px" }}
+      >
+        <img
+          src="/public/imgs/control.png"
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple border-2 rounded-full ${
+            !open && "rotate-180"
+          }`}
+          onClick={() => setOpen(!open)}
+        />
+        <div className="flex gap-x-4 items-center">
+          <img
+            src="/public/imgs/logo.png"
+            className={`cursor-pointer duration-500 ${
+              open && "rotate-[360deg]"
+            }`}
+          />
+          <h1
+            className={`text-white origin-left font-medium text-xl duration-200 ${
+              !open && "scale-0"
+            }`}
+          >
+            Designer
+          </h1>
+        </div>
+        <ul className="pt-6">
+          <Link to="/admin/dashboard">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-9 bg-light-white
+              `}
+            >
+              <img src={`/public/imgs/Chart_fill.png`} />
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Dashboard
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/users">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-users"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Users
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/vendors">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-user-tie"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Vendors
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/wallet">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-2
+              `}
+            >
+              <i className="fa-solid fa-wallet"></i>
+              <span className={`${!open && "hidden"} origin-left duration-200`}>
+                Wallet
+              </span>
+            </li>
+          </Link>
+          <Link to="/admin/wallet">
+            <li
+              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              mt-6
+              `}
+            >
+              <PowerIcon className="h-5 w-5" />
+              <span
+                className={`${!open && "hidden"} origin-left duration-200`}
+                onClick={handleLogout}
+              >
+                Logout
+              </span>
+            </li>
+          </Link>
+        </ul>
+      </div>
     </div>
   );
-}
+};
 
-
-export default Sidebar
+export default Sidebar;
