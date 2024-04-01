@@ -3,7 +3,6 @@ import {
     CardHeader,
     CardBody,
     Typography,
-    Avatar,
     Rating,
   } from "@material-tailwind/react";
    

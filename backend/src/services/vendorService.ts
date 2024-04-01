@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, createVendor , findAllVendors, findVendorById, findvendorByEmail, updateVendorData } from '../repositories/vendorRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, createVendor , findAllVendors, findVendorById, findvendorByEmail, updateVendorData } from '../repositories/vendorRepository';
 import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -212,16 +212,24 @@ export const PushFavoriteVendor = async(content:string , rating:number , usernam
 
 export async function updateVendor(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<any> {
     try {
-        // Update vendor data with coverpicUrl and logoUrl
         console.log(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic)
         await updateVendorData(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic);
-        // Fetch updated vendor data
         const updatedVendor = await getVendorById(vendorId);
 
         return updatedVendor;
     } catch (error) {
         throw new Error('Failed to update vendor data');
     }
+}
+
+
+export async function addReviewReplyController(vendorId:string,content:string,reviewId:string): Promise<any> {
+  try {
+    const data=await addReviewReplyById(vendorId,content,reviewId)
+    return data;
+  } catch (error) {
+    
+  }
 }
 
 

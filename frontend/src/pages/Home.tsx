@@ -502,7 +502,6 @@ function Home() {
 <SubsribeCard />
 </section>
 
-    
 <div className="bg-white">
          <Footer />
        </div>

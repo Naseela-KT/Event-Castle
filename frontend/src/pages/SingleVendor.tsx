@@ -15,6 +15,7 @@ import VendorTabs from '../components/Home/VendorProfile/VendorTabs';
 import { toast } from 'react-toastify';
 import UserRootState from '../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
+import AddReview from '../components/Home/VendorProfile/AddReview';
 
 interface Review {
   username: string;
@@ -219,6 +220,9 @@ export function VendorProfile() {
       </section>
       <section>
         <VendorTabs reviews={vendor?.reviews}/>
+      </section>
+      <section className='mb-20'>
+        <AddReview id={vendor?._id}/>
       </section>
       <div className="bg-white">
         <Footer />

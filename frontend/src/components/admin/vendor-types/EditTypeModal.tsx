@@ -114,19 +114,17 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-none"
-        placeholder={undefined}
-      >
-        <Card className="mx-auto w-full max-w-[24rem]" placeholder={undefined}>
-          <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+        placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Card className="mx-auto w-full max-w-[24rem]" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <form onSubmit={handleSubmit}>
               <Typography
                 variant="h4"
                 color="blue-gray"
-                placeholder={undefined}
-              >
+                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
                 Editing {singleType?.type}
               </Typography>
-              <Typography className="mb-2" variant="h6" placeholder={undefined}>
+              <Typography className="mb-2" variant="h6" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 Type
               </Typography>
               <Input
@@ -136,14 +134,13 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
                 name="type"
                 crossOrigin={undefined}
                 value={formValues.type}
-                onChange={handleChange}
-              />
+                onChange={handleChange} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              />
               {formErrors.type ? (
                 <p className="text-sm" style={{ color: "red" }}>
                   {formErrors.type}
                 </p>
               ) : null}
-              <Typography className="mb-2" variant="h6" placeholder={undefined}>
+              <Typography className="mb-2" variant="h6" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 Status
               </Typography>
               <Select
@@ -158,8 +155,7 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
                   if (e) {
                     handleChange(e);
                   }
-                }}
-              >
+                } }  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
                 <Option value="Active">Active</Option>
                 <Option value="Non-Active">Non-Active</Option>
               </Select>
@@ -170,20 +166,18 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
               ) : null}
           <div className="pt-5 mr-0">
             <Button
-              variant="outlined"
-              color="red"
-              className="mr-1"
-              onClick={onClose}
-              placeholder={undefined}
-            >
+                  variant="outlined"
+                  color="red"
+                  className="mr-1"
+                  onClick={onClose}
+                  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               <span>Cancel</span>
             </Button>
             <Button
-              variant="gradient"
-              color="green"
-              placeholder={undefined}
-              type="submit"
-            >
+                  variant="gradient"
+                  color="green"
+                  placeholder={undefined}
+                  type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               <span>Update</span>
             </Button>
             </div>

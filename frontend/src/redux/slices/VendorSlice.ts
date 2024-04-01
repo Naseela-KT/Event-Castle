@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface Review {
+    _id:string;
     username: string;
     rating: number;
     content: string;
+    date:Date;
+    reply:Array<string>
   }
 //represents the structure of user data
 export interface VendorData{

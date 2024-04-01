@@ -40,4 +40,7 @@ router.patch('/update-password',VendorController.updatePassword)
 router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
 
 
+router.put('/add-review-reply',VendorController.addReviewReply)
+
+
 export default router;
