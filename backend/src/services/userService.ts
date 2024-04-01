@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, addVendorToFavorites, createUser , findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount, getfavVendors } from '../repositories/userRepository';
+import { UpdatePassword, addVendorToFavorites, createUser , deletefavVendor, findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount, getfavVendors } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
@@ -243,6 +243,15 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
 export const FavoriteVendors=async(userid:string)=>{
   try {
     const data = await getfavVendors(userid);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteFromFavorite=async(userId:string,vendorId:string)=>{
+  try {
+    const data = await deletefavVendor(userId,vendorId);
     return data;
   } catch (error) {
     throw error;

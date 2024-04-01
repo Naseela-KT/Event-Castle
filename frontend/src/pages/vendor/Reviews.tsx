@@ -1,9 +1,24 @@
-import { Progress, Rating } from '@material-tailwind/react';
+import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
 import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
+import { useSelector } from 'react-redux';
+import VendorRootState from '../../redux/rootstate/VendorState';
+import React from 'react';
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
 
 export const Reviews = () => {
+  const vendor = useSelector(
+    (state: VendorRootState) => state.vendor.vendordata
+  );
+  const [open, setOpen] = React.useState(false);
+ 
+  const handleOpen = () => setOpen(!open);
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Reviews" folderName="" />
@@ -109,52 +124,55 @@ export const Reviews = () => {
        
 
       </div>
-      {/* <div className="items-start w-full"> */}
-        <hr className="border-bodydark2 mx-10 my-6" />
-        {/* </div> */}
-        <div className="flex flex-col md:flex-row gap-8 m-10">
-  {/* Left Side */}
-  <div className="md:w-1/2">
-    <div className="mb-4 gap-1">
-      <Rating value={4} className="text-sm" ratedColor="amber" readonly placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
-      <h2 className="text-lg font-bold">Bessie Cooper</h2>
-      <p className="text-sm text-gray-500">March 14, 2021</p>
+    
+      {vendor?.reviews.map((val, index) => (
+ <React.Fragment key={index}>
+    <hr className="border-bodydark2 mx-10 my-6" />
+    <div className="flex flex-col md:flex-row gap-8 m-10">
+      <div className="md:w-1/2">
+        <div className="mb-4 gap-1">
+          <Rating value={val.rating} className="text-sm" ratedColor="amber" readonly placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+          <h2 className="text-lg font-bold">{val.username}</h2>
+          <p className="text-sm text-gray-500">March 14, 2021</p>
+        </div>
+      </div>
+      <div className="md:w-1/2">
+        <div className="mb-4 gap-4">
+          <p className="text-sm text-gray-600">
+            {val.content}
+          </p>
+        </div>
+      </div>
+      <div>
+      <Button onClick={handleOpen} size="sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Give reply</Button>
+      </div>
     </div>
-  </div>
+   
+ </React.Fragment>
+))}
 
-  {/* Right Side */}
-  <div className="md:w-1/2">
-    <div className="mb-4 gap-4">
-      <p className="text-sm font-semibold">Great product, smooth purchase</p>
-      <p className="text-sm text-gray-600">
-        Almost completed building my replacement website and very pleased with the result. Although the customization is great, the theme's features and Customer Support have also been great.
-      </p>
-    </div>
-  </div>
-</div>
-<hr className="border-bodydark2 mx-10 my-6" />
-        {/* </div> */}
-        <div className="flex flex-col md:flex-row gap-8 m-10">
-  {/* Left Side */}
-  <div className="md:w-1/2">
-    <div className="mb-4 gap-1">
-      <Rating value={4} className="text-sm" ratedColor="amber" readonly placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
-      <h2 className="text-lg font-bold">Bessie Cooper</h2>
-      <p className="text-sm text-gray-500">March 14, 2021</p>
-    </div>
-  </div>
 
-  {/* Right Side */}
-  <div className="md:w-1/2">
-    <div className="mb-4 gap-4">
-      <p className="text-sm font-semibold">Great product, smooth purchase</p>
-      <p className="text-sm text-gray-600">
-        Almost completed building my replacement website and very pleased with the result. Although the customization is great, the theme's features and Customer Support have also been great.
-      </p>
-    </div>
-  </div>
-</div>
-
+      <Dialog size="xs" open={open} handler={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <DialogHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Add Reply</DialogHeader>
+        <DialogBody placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+     
+      <Textarea label="Message" color="blue-gray" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+   
+        </DialogBody>
+        <DialogFooter placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" color="green" onClick={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <span>Submit</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </DefaultLayout>
+
   );
 };
