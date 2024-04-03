@@ -31,11 +31,15 @@ export const PostController = {
     try {
       const caption = req.body.caption;
       const vendor_id: string = req.query.vendorid as string;
+
+      console.log("req file.........")
+      console.log(req.file)
   
 
       const buffer = await sharp(req.file?.buffer)
-        .resize({ height: 1920, width: 1080, fit: "contain" })
-        .toBuffer();
+      .resize({ height: 1920, width: 1080, fit: 'inside', background: { r: 0, g: 0, b: 0, alpha: 1 } })
+      .toBuffer();
+  
 
       const imageName = randomImage();
 

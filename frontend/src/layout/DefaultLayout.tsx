@@ -4,9 +4,8 @@ import Sidebar from '../components/vendor/Sidebar';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <div className="bg-gray dark:text-bodydark">
+    <div className="bg-gray text-black">
       <div className="flex h-screen overflow-hidden">
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 

@@ -1,6 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
+interface Review {
+    _id:string;
+    username: string;
+    rating: number;
+    content: string;
+    date:Date;
+    reply:Array<string>
+  }
 //represents the structure of user data
 export interface VendorData{
     name: string;
@@ -11,6 +18,7 @@ export interface VendorData{
     phone:number;
     coverpicUrl:string;
     logoUrl:string;
+    reviews:Array<Review>
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

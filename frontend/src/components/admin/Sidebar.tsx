@@ -49,14 +49,12 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <div
-        className={`sidebar ${
+      <div className={`sidebar ${
           open ? "open" : "closed"
-        } bg-dark-purple h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+        } bg-blue h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ width: open ? "250px" : "80px" }}
-      >
+        style={{ width: open ? "250px" : "80px" }}>
         <img
           src="/public/imgs/control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple border-2 rounded-full ${

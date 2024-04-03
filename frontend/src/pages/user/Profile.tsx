@@ -1,21 +1,32 @@
 import { Routes, Route } from "react-router-dom";
 import ChangePassword from "../../components/user/Profile/ChangePassword";
 import Favourites from "../../components/user/Profile/Favourites";
-import UserSidebar from "../../components/user/Profile/UserSidebar";
 import  ProfileCard  from "../../components/user/Profile/ProfileCard";
+import Sidebar from "../../components/user/Profile/UserSidebar";
+import Footer from "../../layout/userLayout/footer";
+import BookingDetails from "../../components/user/Profile/BookingDetails";
 
-const Profile = () => {
+
+
+const Profile: React.FC = () => {
+
   return (
-    <div style={{ display: 'flex' }}>
-      <UserSidebar />
-      <div style={{ marginLeft: '200px', flex: 1 ,marginTop:"50px"}}>
-        <Routes>
+    <>
+    <div className="flex bg-gray-100">
+    <Sidebar/>
+      <div className="flex-1 bg-gray-100 my-20 mt-30">
+      <Routes>
           <Route path="/" element={<ProfileCard />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/favourites" element={<Favourites />} />
+          <Route path="/booking-details" element={<BookingDetails />} />
         </Routes>
       </div>
     </div>
+    <div className="bg-white">
+    <Footer />
+  </div>
+</>
   );
 };
 

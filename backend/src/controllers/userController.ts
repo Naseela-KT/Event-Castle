@@ -15,6 +15,7 @@ import {
   updateProfileService,
   FavoriteVendor,
   FavoriteVendors,
+  deleteFromFavorite,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
 import user from "../models/user";
@@ -487,6 +488,28 @@ export const UserController = {
       const result = await FavoriteVendors( userId);
       if (result) {
         res.status(200).json({ data:result});
+      } else {
+        res.status(400).json({ message: "No vendors in favorites." });
+      }
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
+
+  async deleteFavoriteVendor(req: Request, res: Response): Promise<void>{
+    try {
+      const vendorId: string = req.query.vendorId as string;
+      const userId:string = req.query.userId as string;
+
+      if (!userId) {
+        res.status(400).json({ error: "Invalid user id." });
+      }
+      const result = await deleteFromFavorite(userId,vendorId);
+      if (result) {
+        res.status(200).json({userData:result});
       } else {
         res.status(400).json({ message: "No vendors in favorites." });
       }

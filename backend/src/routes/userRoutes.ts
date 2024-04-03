@@ -3,6 +3,7 @@ import { UserController } from '../controllers/userController';
 import { VendorController } from '../controllers/vendorController';
 import multer from 'multer';
 import { PostController } from '../controllers/postController';
+import { BookingController } from '../controllers/bookingController';
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -32,8 +33,14 @@ router.post('/addVendorReview' , VendorController.addVendorReview)
 router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
 
-router.post('/add-Favorite-Vendor' , UserController.AddFavVendor)
+router.post('/add-favorite-vendor' , UserController.AddFavVendor)
 router.get('/get-favorite-vendor' , UserController.getFavoriteVendors)
+router.delete('/delete-favorite-vendor' , UserController.deleteFavoriteVendor)
+
+
+router.post('/book-an-event',BookingController.bookAnEvent)
+router.get('/get-bookings',BookingController.getBookingsByUser)
+
 
 
 

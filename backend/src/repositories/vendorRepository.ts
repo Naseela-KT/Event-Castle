@@ -1,4 +1,6 @@
-import Vendor , {VendorDocument} from "../models/vendor";
+import mongoose from "mongoose";
+import Vendor , {VendorDocument,Review} from "../models/vendor";
+import { CustomError } from "../controllers/vendorController";
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
     try {
@@ -68,8 +70,13 @@ export const AddVendorReview = async(content: string, rating: number, username: 
        if (!vendorData) {
          throw new Error('Vendor not found');
        }
-
-     vendorData.reviews.push({content,rating,username});
+       const reviewId = new mongoose.Types.ObjectId();
+     vendorData.reviews.push({
+      _id: reviewId,
+       content, rating, username,
+       date: new Date(),
+       reply: []
+     });
  
      await vendorData.save();
      return true;
@@ -105,4 +112,36 @@ export const AddVendorReview = async(content: string, rating: number, username: 
       throw new Error('Failed to update vendor data');
   }
 }
+
+
+export async function addReviewReplyById(vendorId: string, content: string, reviewId: string) {
+  try {
+    console.log("here in repository")
+    const vendorData = await Vendor.findById(vendorId);
+    if (!vendorData) {
+      console.log('Vendor not found')
+      throw new CustomError('Vendor not found', 404);
+    }
+    const review = vendorData.reviews.find((review: Review) => review._id.toString() === reviewId);
+    console.log(review)
+    if (!review) {
+      console.log('Review not found')
+      throw new CustomError('Review not found', 404);
+    }
+    const result = await Vendor.findByIdAndUpdate(
+      vendorId,
+      { $push: { 'reviews.$[review].reply': content } },
+      {
+        arrayFilters: [{ 'review._id': { $eq: new mongoose.Types.ObjectId(reviewId) } }],
+        new: true 
+      }
+    );
+    console.log(result)
+    return result
+   
+  } catch (error) {
+    throw new Error('Failed to add reply');
+  }
+}
+
 

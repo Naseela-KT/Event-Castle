@@ -16,6 +16,8 @@ import VendorSignupForm from './Authentication/Signup';
 import VendorLoginForm from './Authentication/Login';
 import VendorPrivateRoute from '../../components/vendor/VendorPrivateRoute';
 import Dashboard from './Dashboard';
+import CustomDatePicker from './Booking/Dates';
+import VerifyEmail from '../../components/VerifyEmail';
 
 function VendorApp() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -50,6 +52,15 @@ function VendorApp() {
             <>
               
               <VendorLoginForm />
+            </>
+          }
+        />
+         <Route
+          path="/vendor/verify"
+          element={
+            <>
+              
+              <VerifyEmail/>
             </>
           }
         />
@@ -133,6 +144,16 @@ function VendorApp() {
               <BookingHistory      
               
               />
+            </>
+          }
+        />
+         <Route
+          index
+          path="/vendor/add-date"
+          element={
+            <>
+             
+              <CustomDatePicker/>
             </>
           }
         />

@@ -1,6 +1,6 @@
 import DefaultLayout from '../../../layout/DefaultLayout'
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb'
-import TableThree from '../../../components/vendor/Tables/TableThree'
+import BookingTable from '../../../components/vendor/Tables/BookingTable'
 
 const BookingHistory = () => {
   return (
@@ -9,7 +9,7 @@ const BookingHistory = () => {
 
     <div className="flex flex-col gap-10">
       
-      <TableThree />
+      <BookingTable />
     </div>
   </DefaultLayout>
   )

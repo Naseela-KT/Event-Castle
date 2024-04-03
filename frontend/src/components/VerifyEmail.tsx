@@ -116,7 +116,7 @@ const VerifyEmail = () => {
 
   return (
     <Card
-      className="w-96 mt-50 m-auto bg-dark"
+      className="w-96 mt-50 m-auto bg-black"
       placeholder={undefined}
       shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
       <CardHeader
@@ -125,7 +125,7 @@ const VerifyEmail = () => {
         color="transparent"
         className="mt-10 rounded-none text-center"
         placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h4" color="white" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Verify OTP
         </Typography>
       </CardHeader>

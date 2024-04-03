@@ -9,6 +9,7 @@ export interface UserData{
     image:string,
     phone:string,
     imageUrl:string,
+    favourite:Array<string>
 }
 
 export interface UserState{

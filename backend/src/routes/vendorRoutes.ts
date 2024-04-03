@@ -6,6 +6,7 @@ import { S3Client,PutObjectCommand} from "@aws-sdk/client-s3";
 
 import multer from 'multer';
 import { PostController } from '../controllers/postController';
+import { BookingController } from '../controllers/bookingController';
 const router = express.Router();
 
 
@@ -38,6 +39,12 @@ router.delete("/posts/:id",PostController.deletePost)
 router.get('/getvendor',VendorController.getVendor)
 router.patch('/update-password',VendorController.updatePassword)
 router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
+
+
+router.put('/add-review-reply',VendorController.addReviewReply)
+
+
+router.get('/booking-details',BookingController.getAllBookings);
 
 
 export default router;

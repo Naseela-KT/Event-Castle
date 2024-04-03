@@ -174,3 +174,19 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
      throw error; 
     }
     }
+
+
+    export const deletefavVendor=async( userId:string,vendorId:string)=>{
+      try {
+        const updatedUser = await User.findByIdAndUpdate(userId, { $pull: { favourite: vendorId } }, { new: true });
+
+    if (!updatedUser) {
+      throw new Error('User not found');
+    }
+
+    return updatedUser;
+        
+      } catch (error) {
+       throw error; 
+      }
+      }
