@@ -25,6 +25,7 @@ export default function Favourites() {
     setSelectedId(id); // Set the selected id when opening the dialog
     setOpen(true);
   };
+  
   const handleClose = () => setOpen(false); // Close the dialog
   const [favourites, setFavourites] = useState([]);
   const user = useSelector((state: UserRootState) => state.user.userdata);

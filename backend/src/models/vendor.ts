@@ -27,7 +27,7 @@ export interface Vendor {
     isActive:boolean;
     coverpicUrl:string;
     logoUrl:string;
-
+    bookedDates:Array<string>
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -48,7 +48,8 @@ const VendorSchema: Schema = new Schema({
     vendor_type:{type:Schema.Types.ObjectId},
     isActive:{type:Boolean},
     coverpicUrl:{type:String},
-    logoUrl:{type:String}
+    logoUrl:{type:String},
+    bookedDates:{type:Array<String>}
 });
 
 export default mongoose.model<VendorDocument>('Vendor', VendorSchema);

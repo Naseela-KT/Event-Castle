@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import UserRootState from '../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import AddReview from '../components/Home/VendorProfile/AddReview';
+import ProfileButtons from '../components/Home/VendorProfile/ProfileButtons';
 
 interface Review {
   username: string;
@@ -38,12 +39,12 @@ interface Vendor {
   logoUrl: string;
   coverpicUrl: string;
   favourite:Array<string>
+  bookedDates:Array<string>
 }
 
 export function VendorProfile() {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const location = useLocation();
-  const path = location.pathname;
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
   const [vendor, setVendor] = useState<Vendor>();
@@ -86,9 +87,9 @@ export function VendorProfile() {
 
   return (
     <>
-    <section className="relative block h-[80vh] overflow-hidden">
-  <div className="absolute top-0 left-0 w-full h-full bg-cover scale-105" style={{ backgroundImage: `url(${vendor?.coverpicUrl})` }} />
-  <div className="absolute top-0 h-full w-full bg-black/20 bg-cover bg-center" />
+    <section className="relative block h-[100vh] overflow-hidden">
+  <div className="absolute top-0 left-0 w-full h-full  scale-105" style={{ backgroundImage: `url(${vendor?.coverpicUrl})`,backgroundSize:"cover" }} />
+  <div className="absolute top-0 h-full w-full bg-black/20 bg-cover" />
 </section>
       <section className="relative bg-white py-10">
         <div className="relative -mt-40 flex w-full px-8 min-w-0 flex-col break-words bg-white px-15">
@@ -157,32 +158,7 @@ export function VendorProfile() {
 
                 
                 </div>
-
-                <div className="flex md:flex-row flex-col justify-start py-4 pt-8 lg:pt-4">
-                  <div className="mr-1 p-3 text-center">
-                  <Button
-                    className="w-fit"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                   
-                  >
-                    Check Availability
-                  </Button>
-                  </div>
-                  <div className="mr-1 p-3 text-center">
-                  <Button
-                    className="w-fit"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                   
-                  >
-                    Chat with us
-                  </Button>
-                  </div>
-               
-                </div>
+                <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates}/>
               </div>
             </div>
             <div className="-mt-4 lg:pl-20 container space-y-2">

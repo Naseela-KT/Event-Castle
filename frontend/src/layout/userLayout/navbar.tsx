@@ -120,7 +120,7 @@ const Navbar = () => {
     
     <MTNavbar
       color="transparent"
-      className={path.pathname.includes('/profile')?'z-50 px-3 bg-black h-18 -mt-5':'z-50 px-3'}
+      className={path.pathname.includes('/profile') || path.pathname.includes('/book-event')?'z-50 px-3 bg-black h-18 -mt-5':'z-50 px-3'}
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}

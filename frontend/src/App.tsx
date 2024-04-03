@@ -11,6 +11,7 @@ import VendorProfile from './pages/SingleVendor';
 import UserPrivateRoute from './components/user/UserPrivateRoute';
 import VendorsListing from './pages/VendorsListing';
 import Profile from './pages/user/Profile';
+import BookEventForm from './pages/BookEventForm';
 
 
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
         <Route path="" element={<UserPrivateRoute />}>
             <Route path="/view-vendor" element={<VendorProfile />}/>
             <Route path="/profile/*" element={<Profile />}/>
+            <Route path="/book-event" element={<BookEventForm/>}/>
         </Route>
       </Routes>
     </>
