@@ -18,6 +18,7 @@ import VendorPrivateRoute from '../../components/vendor/VendorPrivateRoute';
 import Dashboard from './Dashboard';
 import CustomDatePicker from './Booking/Dates';
 import VerifyEmail from '../../components/VerifyEmail';
+import ViewBooking from './Booking/ViewBooking';
 
 function VendorApp() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -142,6 +143,18 @@ function VendorApp() {
             <>
               <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <BookingHistory      
+              
+              />
+            </>
+          }
+        />
+        <Route
+          index
+          path="/vendor/view-booking"
+          element={
+            <>
+             
+              <ViewBooking
               
               />
             </>

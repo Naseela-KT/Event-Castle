@@ -12,6 +12,8 @@ import UserPrivateRoute from './components/user/UserPrivateRoute';
 import VendorsListing from './pages/VendorsListing';
 import Profile from './pages/user/Profile';
 import BookEventForm from './pages/BookEventForm';
+import PaymentSuccess from './pages/PaymentSuccess';
+
 
 
 
@@ -37,6 +39,7 @@ const App: React.FC = () => {
             <Route path="/view-vendor" element={<VendorProfile />}/>
             <Route path="/profile/*" element={<Profile />}/>
             <Route path="/book-event" element={<BookEventForm/>}/>
+            <Route path="/payment-success" element={<PaymentSuccess/>}/>
         </Route>
       </Routes>
     </>

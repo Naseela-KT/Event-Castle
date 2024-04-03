@@ -4,6 +4,7 @@ import { VendorController } from '../controllers/vendorController';
 import multer from 'multer';
 import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
+import { PaymentController } from '../controllers/paymentController';
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -42,6 +43,7 @@ router.post('/book-an-event',BookingController.bookAnEvent)
 router.get('/get-bookings',BookingController.getBookingsByUser)
 
 
+router.post('/create-checkout-session',PaymentController.makePayment);
 
 
 export default router;

@@ -5,6 +5,7 @@ import UserRootState from '../../../redux/rootstate/UserState';
 
 
 
+
 interface Booking{
   date:string;
   name:string;
@@ -12,6 +13,7 @@ interface Booking{
   city:string;
   pin:number;
   mobile:number;
+  vendorId:string;
 }
 
 const BookingDetails = () => {
@@ -30,6 +32,19 @@ const BookingDetails = () => {
         console.log('here', error);
       });
   },[])
+
+  const handleClick=async()=>{
+    axiosInstance
+      .post(`/create-checkout-session`,{userId:user?._id,vendorId:bookings[0].vendorId}, { withCredentials: true })
+      .then((response) => {
+        if(response.data.url){
+          window.location.href=response.data.url
+        }
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -150,7 +165,9 @@ const BookingDetails = () => {
                         />
                       </svg>
                     </button>
-                   
+                    <button color='black' onClick={handleClick}>
+                      Checkout
+                    </button>
                   </div>
                 </td>
               </tr>
