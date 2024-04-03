@@ -1,72 +1,152 @@
-import React from 'react'
+
 import DefaultLayout from '../../../layout/DefaultLayout'
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb'
-import { Card, CardBody, Typography, CardFooter, Button, CardHeader, Select,Option } from '@material-tailwind/react'
+import { Card, CardBody, Typography,  CardHeader } from '@material-tailwind/react'
+import UpdateStatus  from './UpdateStatus'
+import { useEffect, useState } from 'react';
+import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { useLocation } from 'react-router-dom';
+
+
+interface Booking{
+  _id:string;
+  date:string;
+  name:string;
+  eventName:string;
+  city:string;
+  pin:number;
+  mobile:number;
+  status:string;
+  payment_status:string;
+}
 
 const ViewBooking = () => {
+  const [bookings, setBookings] = useState<Booking>({});
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+
+  useEffect(()=>{
+    axiosInstanceVendor
+      .get(`/single-booking-details?bookingId=${id}`, { withCredentials: true })
+      .then((response) => {
+        setBookings(response.data.bookings[0]);
+        console.log(response.data.bookings[0]);
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  },[])
+
   return (
     <DefaultLayout>
     <Breadcrumb pageName="View" folderName='Booking'/>
     <div className='flex flex-col md:flex-row justify-between gap-4'>
-    <Card className="mt-6 w-full"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Card className="mt-6 w-full px-5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
     <CardHeader
                   floated={false}
                   shadow={false}
                   color="transparent"
                   className="m-0 mb-1 rounded-none border-b border-white/10 text-left p-5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h5" color="blue-gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <div className='flex justify-between'>
+        <div>
+        <Typography variant="h5" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          Event
+        </Typography>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.eventName}
+        </Typography>
+        </div>
+          <div>
+        <Typography variant="h5" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Venue
         </Typography>
-        <Typography variant="h6" color="blue-gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.city}
+        </Typography>
+        </div>
+        <div>
+        <Typography variant="h5" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Date
         </Typography>
-    
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.date}
+        </Typography>
+        </div>
+        <div>
+        <Typography variant="h5" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          Status
+        </Typography>
+        <Typography variant="small" color="blue" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.status}
+        </Typography>
+        </div>
+        </div>
       </CardHeader>
       <hr />
       <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
        <div className='flex flex-col md:flex-row justify-between'>
         <div>
-        <Typography variant="h6" color="blue-gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h6" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Customer
+        </Typography>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.name}
         </Typography>
         </div>
         <div>
-        <Typography variant="h6" color="blue-gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h6" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          Contact
+        </Typography>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.mobile}
+        </Typography>
+        </div>
+        <div>
+        <Typography variant="h6" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Address
         </Typography>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.city}
+        </Typography>
+        <Typography variant="small" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {bookings.pin}
+        </Typography>
+     
         </div>
        </div>
       </CardBody>
      
     </Card>
-    <Card className="w-80"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-     
-      <CardBody className="flex flex-col gap-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <Typography variant="h6" color="blue-gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          Change Status
-        </Typography>
-      <Select
-                          placeholder="USA"
-                          className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                          labelProps={{
-                              className: "before:content-none after:content-none",
-                          }}
-                            onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                  >
-           
-                      <Option >Pending</Option>
-                      <Option >Accepted</Option>
-                      <Option >Rejected</Option>
-                  </Select>
-       
-      </CardBody>
-      <CardFooter className="pt-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <Button variant="gradient" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          Update
-        </Button>
-      
-      </CardFooter>
-    </Card>
+    <UpdateStatus bookingId={bookings._id}/>
     </div>
+    <Card className="mt-6 w-full mb-20"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <CardHeader
+                  floated={false}
+                  shadow={false}
+                  color="transparent"
+                  className="m-0 mb-1 rounded-none border-b border-white/10 text-left p-5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Typography variant="h5" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          Payment Details
+        </Typography>
+        <Typography variant="h6" color="gray" className="mb-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          Status : <span className='text-blue-200'>{bookings.payment_status}</span>
+        </Typography>
+    
+      </CardHeader>
+     
+      <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+       <div className='flex flex-col md:flex-row justify-between'>
+        <div>
+       
+        </div>
+        <div>
+      
+        </div>
+       </div>
+      </CardBody>
+     
+    </Card>
     </DefaultLayout>
   )
 }

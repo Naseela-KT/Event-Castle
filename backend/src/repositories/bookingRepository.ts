@@ -40,3 +40,15 @@ export const findBookingsByUserId=async (
     throw error;
   }
 };
+
+
+export const findBookingsByBookingId=async (
+  bookingId: string
+): Promise<bookingDocument|{}> => {
+  try {
+    const result = await Booking.find({ _id: bookingId });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
