@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Vendor , {VendorDocument,Review} from "../models/vendor";
 import { CustomError } from "../controllers/vendorController";
+import vendor from "../models/vendor";
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
     try {
@@ -141,6 +142,15 @@ export async function addReviewReplyById(vendorId: string, content: string, revi
    
   } catch (error) {
     throw new Error('Failed to add reply');
+  }
+}
+
+export async function requestForVerification(vendorId:string){
+  try {
+    const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
+    return data;
+  } catch (error) {
+    
   }
 }
 

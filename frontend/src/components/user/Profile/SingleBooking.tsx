@@ -106,7 +106,7 @@ const SingleBooking = () => {
 
   return (
     <>
-      {booking.payment_status === 'Pending' ? (
+      {booking.payment_status === 'Pending'&& booking.status==="Accepted" ? (
         <div className="mx-20 w-100">
           <Alert icon={<Icon />} color="red">
             Complete your payment !
@@ -356,14 +356,15 @@ const SingleBooking = () => {
               </Typography>
             </div>
             <div>
-              <Button
+              {booking.status==="Accepted" && booking.payment_status==="Pending"?<Button
                 onClick={handleOpen}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
                 Make Payment
-              </Button>
+              </Button>:""}
+              
             </div>
           </div>
         </CardHeader>

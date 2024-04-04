@@ -49,4 +49,7 @@ router.get('/single-booking-details',BookingController.getBookingsById);
 router.put('/update-booking-status',BookingController.updateStatus)
 
 
+router.post('/verification-request',VendorController.sendVerifyRequest)
+
+
 export default router;

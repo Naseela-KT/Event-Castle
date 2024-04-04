@@ -12,6 +12,7 @@ import {
   PushFavoriteVendor,
   updateVendor,
   addReviewReplyController,
+  verificationRequest,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
@@ -509,9 +510,24 @@ export const VendorController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
+  },
+
+  async sendVerifyRequest(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.body.vendorId as string;
+      const result=await verificationRequest(vendorId);
+      res.status(200).json(result)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
   }
 
-  
+
 };
 
 
