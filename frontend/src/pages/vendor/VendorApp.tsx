@@ -19,6 +19,8 @@ import Dashboard from './Dashboard';
 import CustomDatePicker from './Booking/Dates';
 import VerifyEmail from '../../components/VerifyEmail';
 import ViewBooking from './Booking/ViewBooking';
+import ResetPassword from '../../components/ResetPassword';
+import ForgotPassword from '../../components/ForgotPassword';
 
 function VendorApp() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -62,6 +64,24 @@ function VendorApp() {
             <>
               
               <VerifyEmail/>
+            </>
+          }
+        />
+          <Route
+          path="/vendor/reset-password"
+          element={
+            <>
+              
+              <ResetPassword/>
+            </>
+          }
+        />
+          <Route
+          path="/vendor/forgot-password"
+          element={
+            <>
+              
+              <ForgotPassword/>
             </>
           }
         />
