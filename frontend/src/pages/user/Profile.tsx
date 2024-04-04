@@ -5,6 +5,7 @@ import  ProfileCard  from "../../components/user/Profile/ProfileCard";
 import Sidebar from "../../components/user/Profile/UserSidebar";
 import Footer from "../../layout/userLayout/footer";
 import BookingDetails from "../../components/user/Profile/BookingDetails";
+import SingleBooking from "../../components/user/Profile/SingleBooking";
 
 
 
@@ -20,6 +21,7 @@ const Profile: React.FC = () => {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/booking-details" element={<BookingDetails />} />
+          <Route path="/booking" element={<SingleBooking />} />
         </Routes>
       </div>
     </div>

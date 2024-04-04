@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Booking,{bookingDocument} from "../models/booking";
-import { createNewBooking, findBookingsByBookingId, findBookingsByUserId, findBookingsByVendorId } from "../repositories/bookingRepository";
+import { createNewBooking, findBookingsByBookingId, findBookingsByUserId, findBookingsByVendorId, updateBookingStatusById } from "../repositories/bookingRepository";
 
 
 export const addABooking=async(eventName:string, name:string, city:string,date:string,pin:number,mobile:number,vendorId:string,userId:string): Promise<object>=>{
@@ -32,9 +32,20 @@ export const getAllBookingsByUser=async(userId:string):Promise<bookingDocument[]
   }
 }
 
-export const getAllBookingsById=async(bookingId:string):Promise<bookingDocument|{}>=>{
+export const getAllBookingsById=async(bookingId:string):Promise<bookingDocument|{
+  
+}>=>{
   try{
     const bookings=await findBookingsByBookingId(bookingId)
+    return bookings;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateStatusById=async(bookingId:string,status:string)=>{
+  try{
+    const bookings=await updateBookingStatusById(bookingId,status)
     return bookings;
   } catch (error) {
     throw error;

@@ -1,5 +1,9 @@
+import { Document } from "mongoose";
 import Booking, { bookingDocument } from "../models/booking";
-import vendor from "../models/vendor";
+import vendor, { VendorDocument } from "../models/vendor";
+import user, { UserDocument } from "../models/user";
+
+
 
 export const createNewBooking = async (
   bookingData: Partial<bookingDocument>
@@ -41,14 +45,27 @@ export const findBookingsByUserId=async (
   }
 };
 
-
 export const findBookingsByBookingId=async (
   bookingId: string
 ): Promise<bookingDocument|{}> => {
   try {
-    const result = await Booking.find({ _id: bookingId });
+    const result = await Booking.find({ _id: bookingId }).populate('userId').populate('vendorId');
     return result;
   } catch (error) {
     throw error;
   }
 };
+
+export const updateBookingStatusById=async (
+  bookingId: string,
+  status:string
+) => {
+  try {
+    const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
+    return result
+    
+  } catch (error) {
+    throw error;
+  }
+};
+

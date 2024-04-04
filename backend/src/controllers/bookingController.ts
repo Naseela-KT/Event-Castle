@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { addABooking, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor } from "../services/bookingService";
+import { addABooking, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, updateStatusById } from "../services/bookingService";
+
+
+
+
 
 export const BookingController = {
     async bookAnEvent(req: Request, res: Response): Promise<void> {
@@ -48,6 +52,18 @@ export const BookingController = {
       try {
         const bookingId: string = req.query.bookingId as string;
         const bookings = await getAllBookingsById(bookingId);
+        res.status(201).json({bookings});
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    },
+
+    async updateStatus(req: Request, res: Response): Promise<void> {
+      try {
+        const bookingId: string = req.query.bookingId as string;
+        const status=req.body.status
+        const bookings = await updateStatusById(bookingId,status);
         res.status(201).json({bookings});
       } catch (error) {
         console.error(error);

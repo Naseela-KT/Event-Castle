@@ -41,9 +41,10 @@ router.delete('/delete-favorite-vendor' , UserController.deleteFavoriteVendor)
 
 router.post('/book-an-event',BookingController.bookAnEvent)
 router.get('/get-bookings',BookingController.getBookingsByUser)
+router.get('/single-booking',BookingController.getBookingsById);
 
 
 router.post('/create-checkout-session',PaymentController.makePayment);
-
+router.post('/add-payment',PaymentController.addPayment);
 
 export default router;

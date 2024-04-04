@@ -46,6 +46,7 @@ router.put('/add-review-reply',VendorController.addReviewReply)
 
 router.get('/booking-details',BookingController.getBookingsByVendor);
 router.get('/single-booking-details',BookingController.getBookingsById);
+router.put('/update-booking-status',BookingController.updateStatus)
 
 
 export default router;
