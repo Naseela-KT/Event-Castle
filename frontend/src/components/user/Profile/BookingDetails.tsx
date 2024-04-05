@@ -103,14 +103,14 @@ const BookingDetails = () => {
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      item.payment_status === 'Accepted'
+                      item.payment_status === 'Completed'
                         ? 'bg-green-200 text-green-400'
                         : item.payment_status === 'Rejected'
                         ? 'bg-red-200 text-red-400'
                         : 'bg-blue-300 text-blue-400'
                     }`}
                   >
-                    {item.status}
+                    {item.payment_status}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

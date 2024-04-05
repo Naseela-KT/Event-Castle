@@ -29,6 +29,7 @@ router.put("/update-type",VendorTypeController.updateType)
 router.get('/all-payment-details',PaymentController.getAllPayments);
 
 router.put('/update-verify-status',VendorController.updateVerifyStatus);
+router.get('/load-admin-data',AdminController.getAdminData)
 
 export default router;
 

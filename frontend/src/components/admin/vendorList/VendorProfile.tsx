@@ -72,6 +72,7 @@ const VendorProfile = () => {
       .put(`/update-verify-status`,{vendorId:vendor?._id,status:status},{withCredentials:true})
       .then((response) => {
         console.log(response);
+        handleOpen()
         toast.success(response.data.message);
       })
       .catch((error) => {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { login } from "../services/adminService";
+import { getDatas, login } from "../services/adminService";
 
 export const AdminController = {
   async Adminlogin(req: Request, res: Response): Promise<void> {
@@ -23,6 +23,19 @@ export const AdminController = {
     try {
       res.clearCookie('jwtToken');
       res.status(200).json({ message: "admin logged out successfully.." });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "server error..." });
+    }
+  },
+
+
+  async getAdminData(req: Request, res: Response): Promise<void> {
+    try {
+      const adminId:string=req.query.adminId as string
+      console.log(adminId)
+      const adminData=await getDatas(adminId);
+      res.status(200).json({adminData});
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "server error..." });

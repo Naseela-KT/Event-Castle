@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findAdminByEmail} from "../repositories/adminRepository";
+import { findAdminByEmail, findAdminById} from "../repositories/adminRepository";
 import { CustomError } from "../controllers/adminController";
+import { AdminDocument } from "../models/admin";
 
 interface LoginResponse {
     token: string;
@@ -27,6 +28,15 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     throw error;
   }
 };
+
+export const getDatas=async (adminId:string):Promise<AdminDocument | null>=>{
+  try {
+    const result=await findAdminById(adminId);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 
