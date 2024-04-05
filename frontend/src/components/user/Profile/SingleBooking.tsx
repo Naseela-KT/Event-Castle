@@ -107,9 +107,9 @@ const SingleBooking = () => {
   return (
     <>
       {booking.payment_status === 'Pending'&& booking.status==="Accepted" ? (
-        <div className="mx-20 w-100">
+        <div className="mx-20 w-150">
           <Alert icon={<Icon />} color="red">
-            Complete your payment !
+          Please complete your payment to confirm your booking.
           </Alert>
         </div>
       ) : (
@@ -393,15 +393,25 @@ const SingleBooking = () => {
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          Dialog
+          Confirm Payment
         </DialogHeader>
         <DialogBody
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
+           <Typography
+            variant="small"
+            color="red"
+            className="mb-2"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            Please note that the token amount is non-refundable in case of cancellation.
+          </Typography>
           <Typography
-            variant="h5"
+            variant="h6"
             color="gray"
             className="mb-2"
             placeholder={undefined}

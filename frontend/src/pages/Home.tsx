@@ -114,9 +114,7 @@ function Home() {
       <section>
         <div className="mt-32 flex flex-wrap items-start mb-20 w-full h-full bg-[url('/imgs/bg-4.jpg')] bg-cover bg-center">
           <div className="mx-20 -mt-8 w-full px-4 md:w-5/12">
-            <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-gray-900 p-2 text-center shadow-lg">
-              <FingerPrintIcon className="h-8 w-8 text-white " />
-            </div>
+      
             <div className="lg:mx-20 lg:my-20 mb-10 px-4 md:w-full">
               <Card
                 className="shadow-lg border shadow-gray-500/10 rounded-lg"

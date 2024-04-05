@@ -6,6 +6,7 @@ export interface AdminDocument extends Document{
     password:string;
     createdAt:Date;
     isAdmin:boolean;
+    wallet:number;
 }
 
 const adminSchema=new Schema<AdminDocument>({
@@ -24,6 +25,10 @@ const adminSchema=new Schema<AdminDocument>({
     isAdmin:{
         type:Boolean,
         required:true
+    },
+    wallet:{
+        type:Number,
+        default:0
     }
 })
 

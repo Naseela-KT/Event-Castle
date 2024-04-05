@@ -127,7 +127,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange  }
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            Add Reply
+            Update Status
           </DialogHeader>
           <DialogBody
             placeholder={undefined}

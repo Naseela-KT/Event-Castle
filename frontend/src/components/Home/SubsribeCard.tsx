@@ -7,7 +7,7 @@ const SubsribeCard = () => {
     <div className="container flex flex-col mx-auto items-center justify-center h-full">
       <div className="relative flex !w-full py-10 mb-5 md:mb-20 container max-w-6xl mx-auto rounded-2xl p-5 bg-[url('/imgs/bg-6.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 bg-black opacity-30 rounded-2xl"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center text-white w-full">
+        <div className="relative  flex flex-col items-center justify-center text-center text-white w-full">
           <Typography className="text-2xl md:text-3xl font-bold" color="white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             Join our community!
           </Typography>

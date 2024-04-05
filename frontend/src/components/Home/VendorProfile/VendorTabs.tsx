@@ -11,10 +11,11 @@ import VendorPosts from './VendorsPosts';
 import ReviewCard from './ReviewCard';
 
 interface Review {
+  _id:string;
   username: string;
   rating: number;
   content: string;
-  // Add any other properties of a review here
+  reply:Array<string>
 }
 
 interface VendorReviewProps {
@@ -23,6 +24,7 @@ interface VendorReviewProps {
 
 const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
   const [activeTab, setActiveTab] = useState('images');
+  
 
   const handleTabChange = (value: SetStateAction<string>) => {
     setActiveTab(value);
@@ -54,6 +56,7 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
+        className='z-0'
       >
         {data.map(({ label, value }) => (
           <Tab
