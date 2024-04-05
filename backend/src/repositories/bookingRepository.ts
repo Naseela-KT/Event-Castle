@@ -61,6 +61,19 @@ export const updateBookingStatusById=async (
   status:string
 ) => {
   try {
+    const booking = await Booking.findById(bookingId);
+    
+    if (!booking) {
+      throw new Error('Booking not found');
+    }
+    
+    if (booking.status === 'Rejected') {
+      const { vendorId, date } = booking;
+      
+      await vendor.findByIdAndUpdate(vendorId, {
+        $pull: { bookedDates: date }
+      });
+    }
     const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
     return result
     
