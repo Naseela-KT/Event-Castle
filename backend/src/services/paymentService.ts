@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { createNewPaymnet } from "../repositories/paymentRepository";
+import { createNewPaymnet, findAllPayments } from "../repositories/paymentRepository";
 
 export const addNewPayment=async(amount:number,userId:string,vendorId:string,bookingId:string): Promise<object>=>{
     try{
@@ -11,6 +11,15 @@ export const addNewPayment=async(amount:number,userId:string,vendorId:string,boo
     } catch (error) {
       throw error;
     }
+}
+
+export const getPayments=async()=>{
+  try {
+    const payment=await findAllPayments();
+    return payment;
+  } catch (error) {
+    throw error;
+  }
 }
 
 

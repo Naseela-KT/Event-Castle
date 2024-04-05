@@ -47,7 +47,7 @@ const AdminLogin = () => {
       axiosInstanceAdmin
         .post("/login", values)
         .then((response) => {
-          console.log(response);
+          console.log(response.data.adminData);
           dispatch(setAdminInfo(response.data.adminData));
           navigate("/admin/dashboard");
         })
@@ -59,9 +59,9 @@ const AdminLogin = () => {
   });
 
   return (
-    <div className="ml-auto">
+    <div className="-ml-50" >
       <Card
-        className="w-96 mt-20 bg-gray-200"
+        className="w-96 mt-20 bg-gray-200 mx-auto"
         placeholder={undefined}
         shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
         <CardHeader

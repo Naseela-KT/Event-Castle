@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 //represents the structure of user data
 export interface AdminData{
-    name:string,
     email:string ,
-    id : string,
+    wallet:number,
+    _id : string,
 }
 export interface AdminState{
     admindata : AdminData | null;
@@ -19,9 +19,8 @@ const adminSlice =createSlice({
     name:'admin',
     initialState,
     reducers:{
-
         setAdminInfo:(state,action)=>{
-            state.admindata =action.payload
+            state.admindata=action.payload
             state.isAdminSignedIn=true
         },
        

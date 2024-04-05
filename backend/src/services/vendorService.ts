@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, createVendor , findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData } from '../repositories/vendorRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, createVendor , findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -236,6 +236,16 @@ export async function addReviewReplyController(vendorId:string,content:string,re
 export async function verificationRequest(vendorId:string){
   try {
     const data=await requestForVerification(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+
+export async function changeVerifyStatus(vendorId:string,status:string){
+  try {
+    const data=await updateVerificationStatus(vendorId,status)
     return data
   } catch (error) {
     

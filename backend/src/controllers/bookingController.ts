@@ -70,6 +70,18 @@ export const BookingController = {
         res.status(500).json({ message: "Server Error" });
       }
     },
+
+    async cancelBookingByUser(req: Request, res: Response): Promise<void> {
+      try {
+        const bookingId: string = req.query.bookingId as string;
+        const status="Cancelled"
+        const bookings = await updateStatusById(bookingId,status);
+        res.status(201).json({bookings});
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    },
     
   
   };

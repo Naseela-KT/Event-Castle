@@ -3,8 +3,8 @@ import {
   CardHeader,
   Typography,
   CardBody,
-  Button,
   Alert,
+  Button,
   Dialog,
   DialogBody,
   DialogFooter,
@@ -12,9 +12,9 @@ import {
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../api/axiosinstance';
-import UserRootState from '../../../redux/rootstate/UserState';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import PaymentCard from './PaymentCard';
+import { toast } from 'react-toastify';
 
 interface Vendor {
   _id: string;
@@ -32,7 +32,7 @@ interface Vendor {
 }
 
 interface Booking {
-  _id:string;
+  _id: string;
   date: string;
   name: string;
   eventName: string;
@@ -66,7 +66,6 @@ function Icon() {
 const SingleBooking = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const user = useSelector((state: UserRootState) => state.user.userdata);
   const [booking, setBooking] = useState<Booking>({});
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -85,38 +84,44 @@ const SingleBooking = () => {
       });
   }, [id]);
 
-  const handleClick = async () => {
-  
+
+  const confirmCancel=async()=>{
     axiosInstance
-      .post(
-        `/create-checkout-session`,
-        { userId: user?._id, ...booking?.vendorId,bookingId:booking._id},
-        { withCredentials: true },
-      )
+      .put(`/cancel-booking?bookingId=${id}`,{}, { withCredentials: true })
       .then((response) => {
-        console.log(response)
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
+        // setBooking(response.data.bookings[0]);
+        handleOpen();
+        toast.success("Booking cancelled Successfully!")
+        console.log(response.data.bookings[0]);
       })
       .catch((error) => {
         console.log('here', error);
       });
-  };
+  }
 
   return (
     <>
-      {booking.payment_status === 'Pending'&& booking.status==="Accepted" ? (
+      {booking.payment_status === 'Pending' && booking.status === 'Accepted' ? (
         <div className="mx-20 w-150">
           <Alert icon={<Icon />} color="red">
-          Please complete your payment to confirm your booking.
+            Please complete your payment to confirm your booking.
           </Alert>
         </div>
       ) : (
         ''
       )}
-
-      <div className="flex flex-col md:flex-row justify-between gap-4 mx-20">
+      {booking.status!=="Cancelled"?<div className="float-right mx-20">
+        <Button
+          color="red"
+          onClick={handleOpen}
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          Cancel Booking
+        </Button>
+      </div>:""}
+      <div className="flex flex-col md:flex-row justify-between gap-4 mx-20 mt-10">
         <Card
           className="mt-6 w-full px-5"
           placeholder={undefined}
@@ -316,72 +321,9 @@ const SingleBooking = () => {
           </CardBody>
         </Card>
       </div>
-      <Card
-        className="mt-6 mb-20 mx-20"
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      >
-        <CardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="m-0 mb-1 rounded-none border-b border-white/10 text-left p-5"
-          placeholder={undefined}
-          onPointerEnterCapture={undefined}
-          onPointerLeaveCapture={undefined}
-        >
-          <div className="flex justify-between">
-            <div>
-              <Typography
-                variant="h5"
-                color="gray"
-                className="mb-2"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                Payment Details
-              </Typography>
-              <Typography
-                variant="h6"
-                color="gray"
-                className="mb-2"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                Status :{' '}
-                <span className={booking?.payment_status=="Completed"?"text-green-500":"text-blue-400"}>{booking?.payment_status}</span>
-              </Typography>
-            </div>
-            <div>
-              {booking.status==="Accepted" && booking.payment_status==="Pending"?<Button
-                onClick={handleOpen}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                Make Payment
-              </Button>:""}
-              
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardBody
-          placeholder={undefined}
-          onPointerEnterCapture={undefined}
-          onPointerLeaveCapture={undefined}
-        >
-          <div className="flex flex-col md:flex-row justify-between">
-            <div></div>
-            <div></div>
-          </div>
-        </CardBody>
-      </Card>
+      <PaymentCard booking={booking} />
       <Dialog
-        size="xs"
+      size='xs'
         open={open}
         handler={handleOpen}
         placeholder={undefined}
@@ -393,33 +335,15 @@ const SingleBooking = () => {
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          Confirm Payment
+          Confirm Cancellation
         </DialogHeader>
         <DialogBody
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
+          color='red'
         >
-           <Typography
-            variant="small"
-            color="red"
-            className="mb-2"
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            Please note that the token amount is non-refundable in case of cancellation.
-          </Typography>
-          <Typography
-            variant="h6"
-            color="gray"
-            className="mb-2"
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            Token Amount : 1000
-          </Typography>
+          Are you sure want to cancel the booking?
         </DialogBody>
         <DialogFooter
           placeholder={undefined}
@@ -435,17 +359,17 @@ const SingleBooking = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <span>Cancel</span>
+            <span>No</span>
           </Button>
           <Button
+          onClick={confirmCancel}
             variant="gradient"
             color="green"
-            onClick={handleClick}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <span>Proceed</span>
+            <span>Confirm</span>
           </Button>
         </DialogFooter>
       </Dialog>

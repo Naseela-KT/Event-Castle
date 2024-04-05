@@ -13,6 +13,7 @@ import VendorRootState from "../../../redux/rootstate/VendorState";
 interface Post {
  imageUrl: string;
  _id: string;
+ caption:string;
 }
 
 
@@ -83,6 +84,7 @@ const VendorPosts= () => {
           
           {selectedPost && (
             <DialogWithImage
+            caption={selectedPost.caption}
               imageUrl={selectedPost.imageUrl}
               open={open}
               handler={handleOpen}

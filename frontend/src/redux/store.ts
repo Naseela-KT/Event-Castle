@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
-import userReducer from "./slices/UserSlice.ts"
-import adminReducer from './slices/AdminSlice.ts';
-import vendorReducer from  './slices/VendorSlice.ts';
+import userReducer from "./slices/UserSlice"
+import adminReducer from './slices/AdminSlice';
+import vendorReducer from  './slices/VendorSlice';
 import {persistReducer,persistStore} from "redux-persist";
 import storage from "redux-persist/lib/storage";//localstorage
 
@@ -18,14 +18,15 @@ const persistConfigVendor = {
     storage,
     key:"vendor"
 }
+
 const persistedUserreducer = persistReducer(persistConfigUser,userReducer)
-const persistedAdiminreducer = persistReducer(persistConfigAdmin,adminReducer)
+const persistedAdminreducer = persistReducer(persistConfigAdmin,adminReducer)
 const persistedVendorreducer = persistReducer(persistConfigVendor,vendorReducer)
 
  export const store= configureStore({
     reducer:{
         user :persistedUserreducer,
-        admin :persistedAdiminreducer,
+        admin :persistedAdminreducer,
         vendor :persistedVendorreducer,
     }
     

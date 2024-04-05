@@ -67,7 +67,7 @@ export const updateBookingStatusById=async (
       throw new Error('Booking not found');
     }
     
-    if (booking.status === 'Rejected') {
+    if (booking.status === 'Rejected' || booking.status==="Cancelled") {
       const { vendorId, date } = booking;
       
       await vendor.findByIdAndUpdate(vendorId, {

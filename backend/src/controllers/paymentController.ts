@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addNewPayment } from "../services/paymentService";
+import { addNewPayment, getPayments } from "../services/paymentService";
 const Stripe = require("stripe");
 
 require("dotenv").config();
@@ -14,7 +14,6 @@ interface PaymentSession {
 declare module "express-session" {
   interface Session {
     payment: PaymentSession;
-    
   }
 }
 
@@ -75,7 +74,16 @@ export const PaymentController = {
     } catch (error) {
       console.log(error)
     }
-  }
+  },
+
+  async getAllPayments(req: Request, res: Response){
+    try {
+      const payment=await getPayments()
+      res.status(200).json({payment})
+    } catch (error) {
+      console.log(error)
+    }
+  },
 };
 
 

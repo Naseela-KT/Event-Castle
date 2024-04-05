@@ -3,6 +3,7 @@ import { AdminController } from "../controllers/adminController";
 import { UserController } from "../controllers/userController";
 import { VendorTypeController } from "../controllers/vendorTypeController";
 import { VendorController } from "../controllers/vendorController";
+import { PaymentController } from "../controllers/paymentController";
 const router = express.Router();
 
 
@@ -24,6 +25,10 @@ router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
 router.delete('/delete-vendortype',VendorTypeController.deleteVendorType)
 router.get("/single-type",VendorTypeController.LoadSingleType)
 router.put("/update-type",VendorTypeController.updateType)
+
+router.get('/all-payment-details',PaymentController.getAllPayments);
+
+router.put('/update-verify-status',VendorController.updateVerifyStatus);
 
 export default router;
 

@@ -4,6 +4,7 @@ import {
     CardBody,
     Typography,
     Avatar,
+    Badge,
   } from "@material-tailwind/react";
 
   interface VendorCardProps {
@@ -13,14 +14,24 @@ import {
     city: string;
     coverpicUrl:string;
     logoUrl:string;
+    verificationRequest:boolean;
   }
 
   const VendorCard: React.FC<VendorCardProps> = ({
     name,
     coverpicUrl,
-    logoUrl
+    logoUrl,
+    verificationRequest,
   }) => {
     return (
+      <>
+    {verificationRequest && (
+    <Badge
+      content={<i className="text-lg leading-none fas fa-bell"></i>}
+      color="red" 
+      className="mt-2 ml-2 z-10 -mr-55" 
+    />
+  )}
       <Card
         shadow={false}
         className="relative grid h-[18rem] w-full max-w-[16rem] items-end justify-center overflow-hidden text-center" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
@@ -45,6 +56,9 @@ import {
             src={logoUrl?logoUrl:"https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
         </CardBody>
       </Card>
+      
+
+      </>
     );
   }
 

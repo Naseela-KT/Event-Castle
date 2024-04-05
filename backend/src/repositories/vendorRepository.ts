@@ -154,4 +154,12 @@ export async function requestForVerification(vendorId:string){
   }
 }
 
+export async function updateVerificationStatus(vendorId:string,status:string){
+  try {
+    const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
+    return data;
+  } catch (error) {
+    
+  }
+}
 

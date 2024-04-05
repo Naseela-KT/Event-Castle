@@ -48,10 +48,10 @@ const Sidebar = () => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="sidebar">
+    <div className="sidebar fixed">
       <div className={`sidebar ${
           open ? "open" : "closed"
-        } bg-blue h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+        } bg-blue-900 h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: open ? "250px" : "80px" }}>
@@ -63,18 +63,18 @@ const Sidebar = () => {
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
-          <img
+          {/* <img
             src="/public/imgs/logo.png"
             className={`cursor-pointer duration-500 ${
               open && "rotate-[360deg]"
             }`}
-          />
+          /> */}
           <h1
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
             }`}
           >
-            Designer
+            Event Castle
           </h1>
         </div>
         <ul className="pt-6">

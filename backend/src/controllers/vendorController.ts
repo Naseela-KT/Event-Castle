@@ -13,6 +13,7 @@ import {
   updateVendor,
   addReviewReplyController,
   verificationRequest,
+  changeVerifyStatus,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
@@ -525,7 +526,23 @@ export const VendorController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  }
+  },
+
+  async updateVerifyStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.body.vendorId as string;
+      const status=req.body.status;
+      const result=await changeVerifyStatus(vendorId,status)
+      res.status(200).json({result,message:"Status updated successfully!"})
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
 
 
 };

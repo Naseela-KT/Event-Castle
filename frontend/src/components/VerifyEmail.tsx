@@ -94,6 +94,7 @@ const VerifyEmail = () => {
               .then((response) => {
                 startTimer();
                 console.log(response);
+                
                 toast.warn(response.data.message);
                 
               })

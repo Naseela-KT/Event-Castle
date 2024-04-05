@@ -47,4 +47,6 @@ router.get('/single-booking',BookingController.getBookingsById);
 router.post('/create-checkout-session',PaymentController.makePayment);
 router.post('/add-payment',PaymentController.addPayment);
 
+router.put('/cancel-booking',BookingController.cancelBookingByUser)
+
 export default router;

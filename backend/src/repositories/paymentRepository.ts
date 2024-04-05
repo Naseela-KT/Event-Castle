@@ -19,3 +19,13 @@ export const createNewPaymnet = async (
       throw error;
     }
   };
+
+
+  export const findAllPayments=async():Promise<paymentDocument[]>=>{
+    try {
+      const result=await payment.find().populate('userId').populate('vendorId').populate('bookingId');
+      return result
+    } catch (error) {
+      throw error;
+    }
+  }
