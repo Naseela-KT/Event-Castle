@@ -54,12 +54,10 @@ const UserLogin = () => {
         .post("/login", values)
         .then((response) => {
           console.log(response);
-          // localStorage.setItem("userToken",response.data.token)
           dispatch(setUserInfo(response.data.userData));
           navigate("/home");
         })
         .catch((error) => {
-          // localStorage.removeItem("userToken");
           toast.error(error.response.data.message)
           console.log("here", error);
         });
