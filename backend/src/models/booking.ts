@@ -14,7 +14,7 @@ export interface bookingDocument extends Document{
     status:string;
     payment_status:string;
     amount:number;
-
+    refundAmount:number;
 }
 
 const bookingSchema=new Schema<bookingDocument>({
@@ -65,6 +65,10 @@ const bookingSchema=new Schema<bookingDocument>({
         default:Date.now()
     },
     amount:{
+        type:Number,
+        default:0
+    },
+    refundAmount:{
         type:Number,
         default:0
     }

@@ -40,7 +40,7 @@ router.get('/getvendor',VendorController.getVendor)
 router.patch('/update-password',VendorController.updatePassword)
 router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
 
-
+router.get('/get-all-reviews',VendorController.loadAllReviews)
 router.put('/add-review-reply',VendorController.addReviewReply)
 
 
@@ -50,6 +50,8 @@ router.put('/update-booking-status',BookingController.updateStatus)
 
 
 router.post('/verification-request',VendorController.sendVerifyRequest)
+router.post('/add-dates',VendorController.addDates)
+router.get('/load-dates',VendorController.loadDates)
 
 
 export default router;

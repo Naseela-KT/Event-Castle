@@ -2,6 +2,8 @@ import { Document } from "mongoose";
 import Booking, { bookingDocument } from "../models/booking";
 import vendor, { VendorDocument } from "../models/vendor";
 import user, { UserDocument } from "../models/user";
+import admin from "../models/admin";
+import payment from "../models/payment";
 
 
 
@@ -56,6 +58,7 @@ export const findBookingsByBookingId=async (
   }
 };
 
+
 export const updateBookingStatusById=async (
   bookingId: string,
   status:string
@@ -67,12 +70,32 @@ export const updateBookingStatusById=async (
       throw new Error('Booking not found');
     }
     
-    if (booking.status === 'Rejected' || booking.status==="Cancelled") {
+    if (status === 'Rejected' || status==="Cancelled") {
       const { vendorId, date } = booking;
       
       await vendor.findByIdAndUpdate(vendorId, {
         $pull: { bookedDates: date }
       });
+
+      const Payment=await payment.findOne({bookingId:bookingId})
+
+      if(status=="Cancelled" && Payment){
+        const { userId } = booking;
+        const User = await user.findById(userId);
+        const Admin = await admin.findOne();
+        if (!User || !Admin) {
+          throw new Error('User or admin not found');
+        }
+
+        User.wallet += 500;
+        await User.save();
+        Admin.wallet -= 500;
+        await Admin.save();
+
+        booking.refundAmount+=500;
+        await booking.save();
+
+      }
     }
     const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
     return result

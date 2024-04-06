@@ -3,7 +3,7 @@ import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../redux/rootstate/VendorState';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
 import { axiosInstanceVendor } from '../../api/axiosinstance';
 import { toast } from 'react-toastify';
@@ -13,6 +13,15 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+
+interface Review {
+  _id:string;
+  username: string;
+  rating: number;
+  content: string;
+  date:Date;
+  reply:Array<string>
+}
 
 export const Reviews = () => {
   const vendor = useSelector(
@@ -24,6 +33,20 @@ export const Reviews = () => {
   const [content, setContent] = useState('');
   const [open, setOpen] = useState(false);
   const [currentReviewId, setCurrentReviewId] = useState('');
+  const [reviews,setReviews]=useState<Review[]>([])
+
+
+  useEffect(()=>{
+    axiosInstanceVendor
+      .get(`/get-all-reviews?vendorId=${vendor?._id}`, { withCredentials: true })
+      .then((response) => {
+        setReviews(response.data.reviews);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  },[content])
 
   const handleOpen = (reviewId: string) => {
     setCurrentReviewId(reviewId); // Set the current review ID
@@ -205,7 +228,7 @@ export const Reviews = () => {
         </div>
       </div>
 
-      {vendor?.reviews.map((val, index) => (
+      {reviews?.map((val, index) => (
         <React.Fragment key={index}>
           <hr className="border-bodydark2 mx-10 my-6" />
           <div className="flex flex-col md:flex-row gap-8 m-10">

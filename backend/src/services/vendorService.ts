@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, createVendor , findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import { CustomError } from '../controllers/vendorController';
@@ -246,6 +246,33 @@ export async function verificationRequest(vendorId:string){
 export async function changeVerifyStatus(vendorId:string,status:string){
   try {
     const data=await updateVerificationStatus(vendorId,status)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function getAllReviews(vendorId:string){
+  try {
+    const data=await findAllReviews(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function addDateAvailability(vendorId:string,status:string,date:string){
+  try {
+    const data=await changeDateAvailability(vendorId,status,date)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function getAllDates(vendorId:string){
+  try {
+    const data=await findAllDatesById(vendorId)
     return data
   } catch (error) {
     

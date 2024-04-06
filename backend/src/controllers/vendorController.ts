@@ -14,6 +14,9 @@ import {
   addReviewReplyController,
   verificationRequest,
   changeVerifyStatus,
+  getAllReviews,
+  addDateAvailability,
+  getAllDates,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
@@ -534,6 +537,55 @@ export const VendorController = {
       const status=req.body.status;
       const result=await changeVerifyStatus(vendorId,status)
       res.status(200).json({result,message:"Status updated successfully!"})
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
+
+  async loadAllReviews(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.query.vendorId as string;
+      const reviews=await getAllReviews(vendorId)
+      res.status(200).json({reviews})
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
+
+  async addDates(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.body.vendorId as string;
+      const status=req.body.status;
+      const date=req.body.date;
+      console.log(vendorId,status,date)
+      const bookedDates=await addDateAvailability(vendorId,status,date)
+      res.status(200).json({bookedDates,message:"Date status updated!"})
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
+
+
+  async loadDates(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.query.vendorId as string;
+      const bookedDates=await getAllDates(vendorId)
+      res.status(200).json({bookedDates})
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
