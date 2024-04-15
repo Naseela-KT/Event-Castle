@@ -8,7 +8,8 @@ import cors from 'cors';
 import session from 'express-session';
 import { RequestHandler } from 'express';
 import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
-
+import cookieParser = require('cookie-parser');
+import messageRoutes from './routes/messageRoutes';
 
 
 dotenv.config();
@@ -43,6 +44,7 @@ app.use(sessionMiddleware)
 
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(userOtpExpiration)
 app.use(vendorOtpExpiration)
 app.use(userEmailVerifyOtp)
@@ -50,6 +52,7 @@ app.use(userEmailVerifyOtp)
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/vendor', vendorRoutes);
+app.use('/api/message',messageRoutes)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
