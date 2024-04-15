@@ -1,5 +1,5 @@
 
-import useGetConversations from '../../../hooks/useGetConversations';
+import useGetConversations from '../../../../hooks/useGetConversations';
 import Conversation from './Conversation';
 
 const Conversations = () => {

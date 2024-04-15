@@ -1,7 +1,8 @@
 
 
 import { Link } from 'react-router-dom'
-import useConversation from '../../../zustand/useConversation';
+import useConversation from '../../../../zustand/useConversation';
+import useGetMessages from '../../../../hooks/useGetMessages';
 
 interface conversationProps{
   _id:string;
@@ -11,6 +12,7 @@ interface conversationProps{
 
 const Conversation:React.FC<conversationProps>=({conversation}) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
+  const { messages} = useGetMessages();
 
 	const isSelected = selectedConversation?._id ===conversation._id;
 	// const { onlineUsers } = useSocketContext();
@@ -34,7 +36,7 @@ const Conversation:React.FC<conversationProps>=({conversation}) => {
               <div className="text-gray-400 text-xs">12:34 AM</div>
             </div>
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-500 truncate">Hi</p>
+              <p className="text-sm text-gray-500 truncate">{isSelected && messages?messages[messages.length-1]?.message:""}</p>
               <div className="text-white text-xs bg-red-400 rounded-full px-1 py-0">
                 2
               </div>

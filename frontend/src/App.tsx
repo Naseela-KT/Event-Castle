@@ -16,7 +16,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import VerifyEmail from './components/VerifyEmail';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import Chat from './pages/Chat';
+import Chat from './pages/user/Chat';
 
 
 

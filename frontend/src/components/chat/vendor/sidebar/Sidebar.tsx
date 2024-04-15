@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import SearchInput from './SearchInput';
 import Conversations from './Conversations';
-import UserRootState from '../../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
+import VendorRootState from '../../../../redux/rootstate/VendorState';
 
 const Sidebar = () => {
-  const user = useSelector((state: UserRootState) => state.user.userdata);
+  const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
 
   return (
     <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-gray-300">
@@ -14,14 +14,14 @@ const Sidebar = () => {
           <div className="flex-shrink-0">
             <img
               className="h-12 w-12 rounded-full"
-              src={user?.imageUrl}
+              src={vendor?.logoUrl}
               alt=""
             />
           </div>
           <div className="flex-1 min-w-0">
             <Link to="" className="focus:outline-none">
               <span className="absolute inset-0" />
-              <p className="text-sm font-bold text-red-600">{user?.name}</p>
+              <p className="text-sm font-bold text-red-600">{vendor?.name}</p>
             </Link>
           </div>
         </div>

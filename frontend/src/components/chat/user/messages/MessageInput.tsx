@@ -1,5 +1,5 @@
 import { IconButton, Textarea } from '@material-tailwind/react'
-import useSendMessage from '../../../hooks/useSendMessage';
+import useSendMessage from '../../../../hooks/useSendMessage';
 import { useState } from 'react';
 import { BsSend } from "react-icons/bs";
 

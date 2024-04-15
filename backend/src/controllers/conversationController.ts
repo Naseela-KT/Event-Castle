@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Conversation, { conversationDocument } from "../models/conversation";
 import vendor from "../models/vendor";
+import user from "../models/user";
 
 
 export const conversationController = {
@@ -24,6 +25,34 @@ export const conversationController = {
         });
 
         const vendors = await vendor.find({ _id: { $in: otherParticipantIds } });
+        console.log(userConversations)
+        res.status(200).json(vendors);
+    } catch (error) {
+        console.log("Error in getUserConversations Controller", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+  },
+
+  async getVendorConversations(req: Request, res: Response): Promise<void> {
+    try {
+        
+        const vendorId = req.query.vendorId;
+
+      
+        const userConversations = await Conversation.find({
+            participants: vendorId
+        })
+      
+        const otherParticipantIds: string[] = [];
+        userConversations.forEach((conversation: conversationDocument) => {
+            conversation.participants.forEach((participant: any) => {
+                if (participant._id != vendorId) {
+                    otherParticipantIds.push(participant._id);
+                }
+            });
+        });
+
+        const vendors = await user.find({ _id: { $in: otherParticipantIds } });
         console.log(userConversations)
         res.status(200).json(vendors);
     } catch (error) {

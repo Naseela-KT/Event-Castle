@@ -45,6 +45,7 @@
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
+    "timeago.js": "^4.0.2",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

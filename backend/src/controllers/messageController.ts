@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Conversation from "../models/conversation";
 import Message from "../models/message";
+import { getReceiverSocketId, io } from "../socket/socket";
 
 export const messageController = {
   async sendMessage(req: Request, res: Response): Promise<void> {
@@ -29,6 +30,12 @@ export const messageController = {
         conversation.messages.push(newMessage._id)
       }
       await Promise.all([conversation.save(),newMessage.save()])
+
+      const receiverSocketId = getReceiverSocketId(receiverId);
+		if (receiverSocketId) {
+			// io.to(<socket_id>).emit() used to send events to specific client
+			io.to(receiverSocketId).emit("newMessage", newMessage);
+		}
 
       res.status(201).json(newMessage)
 

@@ -10,12 +10,13 @@ import { RequestHandler } from 'express';
 import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
 import cookieParser = require('cookie-parser');
 import messageRoutes from './routes/messageRoutes';
+import {app,server} from './socket/socket'
 
 
 dotenv.config();
 connectDB();
 
-const app = express();
+
 
 
 app.use(cors({
@@ -55,6 +56,6 @@ app.use('/api/vendor', vendorRoutes);
 app.use('/api/message',messageRoutes)
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });

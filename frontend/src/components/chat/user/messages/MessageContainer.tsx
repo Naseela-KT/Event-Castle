@@ -1,5 +1,5 @@
 
-import useConversation from "../../../zustand/useConversation";
+import useConversation from "../../../../zustand/useConversation";
 import MessageInput from "./MessageInput"
 import Messages from "./Messages"
 

@@ -1,4 +1,4 @@
-import useConversation from "../../../zustand/useConversation";
+import useConversation from "../../../../zustand/useConversation";
 
 
 const ChatProfile = () => {

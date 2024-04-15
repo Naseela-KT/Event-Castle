@@ -2,22 +2,33 @@ import { useEffect } from "react";
 
 import { useSocketContext } from "../context/SocketContext";
 import useConversation from "../zustand/useConversation";
+import { useLocation } from "react-router-dom";
+import useVendorConversation from "../zustand/useVendorConversation";
 
-import notificationSound from "../assets/sounds/notification.mp3";
 
 const useListenMessages = () => {
 	const { socket } = useSocketContext();
 	const { messages, setMessages } = useConversation();
+	const { messagesV, setMessagesV } = useVendorConversation();
+	const location=useLocation()
 
 	useEffect(() => {
-		socket?.on("newMessage", (newMessage) => {
-			newMessage.shouldShake = true;
-			const sound = new Audio(notificationSound);
-			sound.play();
-			setMessages([...messages, newMessage]);
-		});
-
-		return () => socket?.off("newMessage");
-	}, [socket, setMessages, messages]);
+		if(location.pathname=="/vendor/chat"){
+			socket?.on("newMessage", (newMessage: { shouldShake: boolean; }) => {
+				newMessage.shouldShake = true;
+				setMessagesV([...messagesV, newMessage]);
+			});
+	
+			return () => socket?.off("newMessage");
+		}else{
+			socket?.on("newMessage", (newMessage: { shouldShake: boolean; }) => {
+				newMessage.shouldShake = true;
+				setMessages([...messages, newMessage]);
+			});
+	
+			return () => socket?.off("newMessage");
+		}
+		
+	}, [socket, setMessages, messages,setMessagesV,messagesV]);
 };
 export default useListenMessages;

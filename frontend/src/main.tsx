@@ -21,6 +21,7 @@ import UsersList from './pages/admin/UsersList';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute';
 import VendorProfile from './components/admin/vendorList/VendorProfile';
 import Wallet from './pages/admin/Wallet';
+import { SocketContextProvider } from './context/SocketContext';
 
 
 
@@ -28,7 +29,7 @@ import Wallet from './pages/admin/Wallet';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/*" element={<App />}>
+      <Route path="/*" element={<SocketContextProvider><App /></SocketContextProvider>}>
       </Route>
 
       <Route path="/admin" element={<AdminApp />}>
@@ -44,7 +45,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path="" element={<VendorApp/>}>
+      <Route path="" element={<SocketContextProvider><VendorApp/></SocketContextProvider>}>
       <Route path="/vendor/*" element={<VendorApp/>} />
         </Route>
      

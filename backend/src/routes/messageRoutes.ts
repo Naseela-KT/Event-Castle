@@ -8,6 +8,7 @@ const router=express()
 router.get('/get-messages',messageController.getMessages)
 router.post('/send/:id',messageController.sendMessage)
 router.get('/get-user-conversations',conversationController.getUserConversations)
+router.get('/get-vendor-conversations',conversationController.getVendorConversations)
 
 
 export default router

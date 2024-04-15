@@ -2,8 +2,9 @@ import { createContext, useState, useEffect, useContext } from "react";
 import io from "socket.io-client";
 import UserRootState from "../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
+import VendorRootState from "../redux/rootstate/VendorState";
 
-const SocketContext = createContext();
+const SocketContext = createContext('light');
 
 export const useSocketContext = () => {
 	return useContext(SocketContext);
@@ -11,15 +12,24 @@ export const useSocketContext = () => {
 
 export const SocketContextProvider = ({ children }) => {
     const user = useSelector((state: UserRootState) => state.user.userdata);
+	const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
 	const [socket, setSocket] = useState(null);
 	const [onlineUsers, setOnlineUsers] = useState([]);
 	
 
-	useEffect(() => {
-		if (user) {
-			const socket = io("https://chat-app-yt.onrender.com", {
+	useEffect(()=>{
+		if (user || vendor) {
+			let userId;
+			if(user){
+				userId=user?._id
+			}
+			if(vendor){
+				userId=vendor?._id
+			}
+			const socket = io("http://localhost:3000", {
+				
 				query: {
-					userId: user._id,
+					userId: userId,
 				},
 			});
 
@@ -37,7 +47,7 @@ export const SocketContextProvider = ({ children }) => {
 				setSocket(null);
 			}
 		}
-	}, [user]);
+	}, [user,vendor]);
 
 	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
 };

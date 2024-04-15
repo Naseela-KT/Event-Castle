@@ -1,8 +1,8 @@
 
 import { Link } from 'react-router-dom';
-import Sidebar from '../components/chat/sidebar/Sidebar';
-import MessageContainer from '../components/chat/messages/MessageContainer';
-import ChatProfile from '../components/chat/profile/ChatProfile';
+import Sidebar from '../../components/chat/user/sidebar/Sidebar';
+import MessageContainer from '../../components/chat/user/messages/MessageContainer';
+import ChatProfile from '../../components/chat/user/profile/ChatProfile';
 
 const Chat = () => {
   return (

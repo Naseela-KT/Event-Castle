@@ -50,6 +50,7 @@ const UserLogin = () => {
     initialValues,
     validate,
     onSubmit: (values) => {
+      console.log(values)
       axiosInstance
         .post("/login", values)
         .then((response) => {
@@ -58,7 +59,7 @@ const UserLogin = () => {
           navigate("/home");
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(error.response)
           console.log("here", error);
         });
     },
