@@ -1,18 +1,18 @@
-import { useSelector } from "react-redux";
-import UserRootState from "../../../../redux/rootstate/UserState";
+
 import {format} from 'timeago.js'
 
-const Message = ({message}) => {
-  const user = useSelector((state: UserRootState) => state.user.userdata);
-  const fromMe = message.senderId === user?._id;
+const Message = ({message,own}) => {
+  
+ 
   return (
     <>
-    {fromMe?<div className="chat-message mb-0 flex flex-col">
+    {own?
+   <div>
       <div className="flex items-end justify-end">
         <div className="flex flex-col space-y-2 text-xs mfx-w-xs mx-2 order-2 items-end">
           <div>
             <span className="px-4 py-2 rounded-1g inline-block rounded-bl-none bg-red-500 text-white">
-            {message.message}
+            {message.text}
             </span>
           </div>
         </div>
@@ -29,7 +29,7 @@ const Message = ({message}) => {
         <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
           <div>
             <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600">
-              {message.message}
+            {message.text}
             </span>
           </div>
         </div>
@@ -39,9 +39,11 @@ const Message = ({message}) => {
         /> */}
       </div>
       <p className="text-xs text-gray-500 ml-2">{format(message.createdAt)}</p>
-    </div> }
+    </div> 
   
-    </>
+ 
+      }
+      </>
   )
 }
 

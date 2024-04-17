@@ -10,7 +10,9 @@ import { RequestHandler } from 'express';
 import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
 import cookieParser = require('cookie-parser');
 import messageRoutes from './routes/messageRoutes';
-import {app,server} from './socket/socket'
+import chatRoute from './routes/conversationRoutes'
+
+const app=express()
 
 
 dotenv.config();
@@ -53,9 +55,10 @@ app.use(userEmailVerifyOtp)
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/vendor', vendorRoutes);
-app.use('/api/message',messageRoutes)
+app.use('/api/messages',messageRoutes)
+app.use('/api/conversation',chatRoute)
 
 const PORT = process.env.PORT;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });

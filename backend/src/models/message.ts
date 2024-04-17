@@ -1,23 +1,21 @@
 import { Document,Schema,model } from "mongoose";
 
 export interface messageDocument extends Document{
-    senderId:Schema.Types.ObjectId;
-    receiverId:Schema.Types.ObjectId;
-    message:string;
+    conversationId:String;
+    senderId:String;
+    text:string;
 }
 
 const messageSchema=new Schema<messageDocument>({
+    conversationId:{
+        type:String,
+        required:true
+    },
     senderId:{
-        type:Schema.Types.ObjectId,
-        ref:"User",
+        type:String,
         required:true
     },
-    receiverId:{
-        type:Schema.Types.ObjectId,
-        ref:"Vendor",
-        required:true
-    },
-    message:{
+    text:{
         type:String,
         required:true
     }

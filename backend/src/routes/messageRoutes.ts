@@ -1,14 +1,9 @@
-import express from "express";
-import { messageController } from "../controllers/messageController";
-import protectUser from "../middlewares/protectUserRoute";
-import { conversationController } from "../controllers/conversationController";
-const router=express()
+import express from 'express';
+import {createMessage , getMessages} from '../controllers/messageController'
+export const router = express.Router();
+
+router.post('/', createMessage);
+router.get('/', getMessages);
 
 
-router.get('/get-messages',messageController.getMessages)
-router.post('/send/:id',messageController.sendMessage)
-router.get('/get-user-conversations',conversationController.getUserConversations)
-router.get('/get-vendor-conversations',conversationController.getVendorConversations)
-
-
-export default router
+export default router;

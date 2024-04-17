@@ -16,6 +16,7 @@ import {
   FavoriteVendor,
   FavoriteVendors,
   deleteFromFavorite,
+  findUser,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
 import user, { User } from "../models/user";
@@ -528,7 +529,22 @@ export const UserController = {
       console.error("Error in getUsersForSidebar: ", error);
       res.status(500).json({ error: "Internal server error" });
     }
-  }
+  },
+
+
+  async getUser(req: Request, res: Response): Promise<void>{
+    try {
+      
+      const userId:string = req.query.userId as string;
+
+      const data = await findUser(userId);
+      res.status(200).json(data);
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
 
 };
 

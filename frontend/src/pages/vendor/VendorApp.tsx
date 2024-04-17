@@ -20,7 +20,8 @@ import ResetPassword from '../../components/ResetPassword';
 import ForgotPassword from '../../components/ForgotPassword';
 import Profile from './Profile/Profile';
 import { ToastContainer } from 'react-toastify';
-import VendorChat from './Chat';
+import Chat from './Chat';
+
 
 
 function VendorApp() {
@@ -56,6 +57,15 @@ function VendorApp() {
             <>
               
               <VendorLoginForm />
+            </>
+          }
+        />
+        <Route
+          path="/vendor/chat"
+          element={
+            <>
+              
+              <Chat />
             </>
           }
         />
@@ -97,16 +107,7 @@ function VendorApp() {
             </>
           }
         />
-          <Route
-          index
-          path="/vendor/chat"
-          element={
-            <>
-
-              <VendorChat />
-            </>
-          }
-        />
+         
         <Route
           index
           path="/vendor/dashboard"

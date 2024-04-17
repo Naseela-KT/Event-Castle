@@ -15,6 +15,9 @@ export const axiosInstance = axios.create({
 })
 
 export const axiosInstanceChat = axios.create({
-    baseURL:'http://localhost:3000/api/message'
+    baseURL:'http://localhost:3000/api/conversation'
 })
 
+export const axiosInstanceMsg = axios.create({
+    baseURL:'http://localhost:3000/api/messages'
+})

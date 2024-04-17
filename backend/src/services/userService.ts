@@ -48,6 +48,16 @@ export const googleSignup=async(email:string ,password:string, name:string): Pro
   }
 };
 
+export const  findUser = async (userId: string)=>{
+  try {
+    const user = await findUserById(userId)
+    return user;
+  } catch (error) {
+    throw error ;
+  }
+  
+  };
+
 
 
 export const gLogin=async (email: string, password: string): Promise<LoginResponse> => {

@@ -6,15 +6,14 @@ import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
 import { PaymentController } from '../controllers/paymentController';
 import protectUser from '../middlewares/protectUserRoute';
-import { messageController } from '../controllers/messageController';
+
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 const router = express.Router();
 
-
-
+router.get('/getUser', UserController.getUser)
 router.post('/signup', UserController.UserSignup );
 router.post('/verify' ,UserController.verifyOtp);
 router.get('/resendOtp' ,UserController.ResendOtp);
@@ -52,8 +51,6 @@ router.post('/add-payment',PaymentController.addPayment);
 router.put('/cancel-booking',BookingController.cancelBookingByUser)
 
 
-// Chat
-// router.post('/send-message/:id',protectUser,messageController.sendMessage)
 
 
 export default router;

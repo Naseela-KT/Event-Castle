@@ -1,66 +1,48 @@
+import Conversation from '../models/conversation'
 import { Request, Response } from "express";
-import Conversation, { conversationDocument } from "../models/conversation";
-import vendor from "../models/vendor";
-import user from "../models/user";
+
+//create chat 
+//getuserchats
+//findchat
 
 
-export const conversationController = {
-  async getUserConversations(req: Request, res: Response): Promise<void> {
-    try {
-        
-        const userId = req.query.userId;
 
-      
-        const userConversations = await Conversation.find({
-            participants: userId
-        })
-      
-        const otherParticipantIds: string[] = [];
-        userConversations.forEach((conversation: conversationDocument) => {
-            conversation.participants.forEach((participant: any) => {
-                if (participant._id != userId) {
-                    otherParticipantIds.push(participant._id);
-                }
-            });
-        });
 
-        const vendors = await vendor.find({ _id: { $in: otherParticipantIds } });
-        console.log(userConversations)
-        res.status(200).json(vendors);
-    } catch (error) {
-        console.log("Error in getUserConversations Controller", error);
-        res.status(500).json({ error: "Internal server error" });
+export const createChat = async (req: Request, res: Response): Promise<void> => {
+
+    const {senderId , receiverId} = req.body;
+   
+  try {
+    let chat = await Conversation.findOne({ members: [senderId, receiverId] });
+
+    if (!chat) {
+      const newChat = new Conversation({ members: [senderId, receiverId] });
+      chat = await newChat.save();
     }
-  },
 
-  async getVendorConversations(req: Request, res: Response): Promise<void> {
+    res.status(200).json(chat);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
+
+export const findUserchats = async (req: Request, res: Response):Promise<any> => {
+    let userId  = req.query.userId;
     try {
+        const chats  = await Conversation.find({members:{$in :[userId]}})
         
-        const vendorId = req.query.vendorId;
-
-      
-        const userConversations = await Conversation.find({
-            participants: vendorId
-        })
-      
-        const otherParticipantIds: string[] = [];
-        userConversations.forEach((conversation: conversationDocument) => {
-            conversation.participants.forEach((participant: any) => {
-                if (participant._id != vendorId) {
-                    otherParticipantIds.push(participant._id);
-                }
-            });
-        });
-
-        const vendors = await user.find({ _id: { $in: otherParticipantIds } });
-        console.log(userConversations)
-        res.status(200).json(vendors);
+        res.status(200).json(chats);
     } catch (error) {
-        console.log("Error in getUserConversations Controller", error);
-        res.status(500).json({ error: "Internal server error" });
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
     }
-  },
+};
 
 
- 
-}
+
+
+
+

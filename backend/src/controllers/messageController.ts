@@ -1,69 +1,38 @@
 import { Request, Response } from "express";
-import Conversation from "../models/conversation";
-import Message from "../models/message";
-import { getReceiverSocketId, io } from "../socket/socket";
+import Message from '../models/message'
 
-export const messageController = {
-  async sendMessage(req: Request, res: Response): Promise<void> {
-    try {
-      const {message,senderId}=req.body
-      const {id:receiverId}=req.params
 
-      
-      let conversation=await Conversation.findOne({
-        participants:{$all:[senderId,receiverId]}
-      })
 
-      if(!conversation){
-        conversation=await Conversation.create({
-          participants:[senderId,receiverId]
-        })
-      }
 
-      const newMessage=new Message({
+export const createMessage = async (req: Request, res: Response):Promise<any> =>{
+
+    const {conversationId , senderId , text } = req.body;
+
+    const message = new Message({
+        conversationId,
         senderId,
-        receiverId,
-        message
-      })
+        text
+    })
 
-      if(newMessage){
-        conversation.messages.push(newMessage._id)
-      }
-      await Promise.all([conversation.save(),newMessage.save()])
-
-      const receiverSocketId = getReceiverSocketId(receiverId);
-		if (receiverSocketId) {
-			// io.to(<socket_id>).emit() used to send events to specific client
-			io.to(receiverSocketId).emit("newMessage", newMessage);
-		}
-
-      res.status(201).json(newMessage)
-
-    } catch (error) {
-     console.log("Error in sendMessage Controller",error);
-     res.status(500).json({error:"Internal server error"})
-    }
-  },
-
-
-  async getMessages(req: Request, res: Response): Promise<void> {
     try {
-      const {receiverId:userToChatId}=req.query;
-      const senderId=req.query.userId
-
-      const conversation=await Conversation.findOne({
-        participants:{$all:[senderId,userToChatId]},
-      }).populate("messages")
-
-      if(!conversation){ 
-        res.status(200).json([])
-      }
-
-      res.status(200).json(conversation?.messages)
-
+        const response = await message.save();
+        res.status(200).json(response);
     } catch (error) {
-      console.log("Error in getMessages Controller",error);
-      res.status(500).json({error:"Internal server error"})
+        console.log(error)
+        res.status(500).json({ message: "Server Error" });
     }
-  }
+}
+
+
+
+export const getMessages = async (req: Request, res: Response):Promise<any> =>{
+    const conversationId = req.query.conversationId;
+    try {
+        const messages = await Message.find({conversationId: conversationId});
+        res.status(200).json(messages);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+        
+    }
 }
