@@ -1,14 +1,12 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUsersCount } from '../repositories/userRepository';
+import { UpdatePassword, addVendorToFavorites, createUser , deletefavVendor, findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount, getfavVendors } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
 import generateOtp from '../utils/generateOtp';
-<<<<<<< Updated upstream
-=======
 import generateUserTokenAndSetCookie from '../utils/generateUserToken';
-import { Response } from 'express';
 import { CustomError } from '../error/customError';
->>>>>>> Stashed changes
+
+
 
 interface LoginResponse {
   token: string;
@@ -16,7 +14,7 @@ interface LoginResponse {
   message: string;
 }
 
-export const signup = async (email:string ,password:string, name:string , phone:number ): Promise<object> => {
+export const signup = async (email:string ,password:string, name:string , phone:number,res:Response): Promise<object> => {
   try {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
@@ -27,9 +25,9 @@ export const signup = async (email:string ,password:string, name:string , phone:
     const hashedPassword = await bcrypt.hash(password, salt);
     const isActive:boolean = true;
     const newUser = await createUser({ email , password: hashedPassword , name , phone , isActive });
-
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
-    return {token:token,user:newUser};
+    generateUserTokenAndSetCookie(newUser._id,res)
+  
+    return {user:newUser};
   } catch (error) {
     throw error;
   }
@@ -45,13 +43,21 @@ export const googleSignup=async(email:string ,password:string, name:string): Pro
     }
     const isActive:boolean = true;
     const newUser = await createUser({ email , password, name , isActive });
-
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
-    return {token:token,user:newUser};
+    return {user:newUser};
   } catch (error) {
     throw error;
   }
 };
+
+export const  findUser = async (userId: string)=>{
+  try {
+    const user = await findUserById(userId)
+    return user;
+  } catch (error) {
+    throw error ;
+  }
+  
+  };
 
 
 
@@ -175,3 +181,92 @@ export const CheckExistingUSer = async(email:string)=>{
     throw error
   }
 }
+
+export const checkCurrentPassword = async(currentpassword:string , userId:string)=>{
+
+  try {
+    
+    const existingUser = await findUserById(userId);
+
+    if(!existingUser){
+     throw new CustomError("user not found",404)
+    }
+
+    const passwordMatch = await bcrypt.compare(currentpassword, existingUser.password);
+    if (!passwordMatch) {
+      throw new CustomError("Password doesn't match",401)
+    }
+
+    return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateProfileService= async(name:string , phone:number,image:string,userId:string,imageUrl:string)=>{
+  try {
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new CustomError('User not found',404)
+    }
+  const updatedData=await findUserByIdAndUpdate(name,phone,image,userId,imageUrl)
+  const userData=await findUserById(userId)
+     return userData;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const UpdatePasswordService = async(newPassword:string , userId:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new CustomError("user not found",404)
+    }
+    const email = existingUser.email;
+
+    const updatedValue = await UpdatePassword(hashedPassword , email);
+    if(updatedValue){
+      return true;
+    }
+    return false
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const FavoriteVendor = async(vendorId:string , userId:string)=>{
+  try {
+    const result = await addVendorToFavorites(userId, vendorId);
+    return result;
+} catch (error) {
+    console.error("Error in addToFavorites service:", error);
+    throw new Error("Failed to add vendor to favorites.");
+}
+};
+
+export const FavoriteVendors=async(userid:string)=>{
+  try {
+    const data = await getfavVendors(userid);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteFromFavorite=async(userId:string,vendorId:string)=>{
+  try {
+    const data = await deletefavVendor(userId,vendorId);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+

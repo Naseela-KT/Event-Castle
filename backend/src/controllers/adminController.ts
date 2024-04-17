@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-<<<<<<< Updated upstream
-import { login } from "../services/adminService";
-=======
 import { createRefreshTokenAdmin, getDatas, login } from "../services/adminService";
 import { CustomError } from "../error/customError";
 import dotenv from 'dotenv';
 dotenv.config();
->>>>>>> Stashed changes
+
+
 
 export const AdminController = {
   async Adminlogin(req: Request, res: Response): Promise<void> {
@@ -14,12 +12,9 @@ export const AdminController = {
       const { email, password } = req.body;
       const {refreshToken, token, adminData, message } = await login(email, password);
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-<<<<<<< Updated upstream
-      
+
       res.status(200).json({token, adminData, message });
-=======
       res.status(200).json({refreshToken,token, adminData, message });
->>>>>>> Stashed changes
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -40,9 +35,7 @@ export const AdminController = {
     }
   },
 
-<<<<<<< Updated upstream
-  
-=======
+
 
   async getAdminData(req: Request, res: Response): Promise<void> {
     try {
@@ -56,6 +49,8 @@ export const AdminController = {
     }
   },
 
+
+
   async createRefreshToken(req: Request, res: Response):Promise<void>{
     try {
       const { refreshToken } = req.body;
@@ -67,7 +62,7 @@ export const AdminController = {
     }
   },
 
->>>>>>> Stashed changes
+
 };
 
 

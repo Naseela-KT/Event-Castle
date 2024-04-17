@@ -10,8 +10,8 @@ import crypto from "crypto";
 import sharp from "sharp";
 import { createPost, deletePostService, getAllPostsByVendor, getPostById } from "../services/postService";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { CustomError } from "../error/customError";
 
+import { CustomError } from "../error/customError";
 
 
 
@@ -109,6 +109,5 @@ export const PostController = {
     }
   },
 };
-
 
 

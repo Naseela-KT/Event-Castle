@@ -6,11 +6,8 @@ export interface AdminDocument extends Document{
     password:string;
     createdAt:Date;
     isAdmin:boolean;
-<<<<<<< Updated upstream
-=======
     wallet:number;
     refreshToken:string;
->>>>>>> Stashed changes
 }
 
 const adminSchema=new Schema<AdminDocument>({
@@ -26,13 +23,10 @@ const adminSchema=new Schema<AdminDocument>({
         type:Date,
         default:Date.now()
     },
-<<<<<<< Updated upstream
     isAdmin:{
         type:Boolean,
         required:true
-    }
-})
-=======
+    },
     wallet:{
         type:Number,
         default:0
@@ -41,7 +35,7 @@ const adminSchema=new Schema<AdminDocument>({
         type:String
     },
 },{timestamps:true})
->>>>>>> Stashed changes
+
 
 export default model<AdminDocument>('Admin',adminSchema)
 

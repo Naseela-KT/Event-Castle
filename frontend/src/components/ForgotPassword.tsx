@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardHeader,
@@ -144,24 +145,35 @@ const ForgotPassword = () => {
   }
 
   return (
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage: location.pathname === "/forgot-password" ? `url('/public/imgs/login.png')` :location.pathname === "/vendor/forgot-password"?`url('/public/imgs/vendor-bg.png')`: "", backgroundSize: "cover", backgroundRepeat: "no-repeat", backdropFilter: "revert-layer"}}>
+        {location.pathname === "/forgot-password"?(<><h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+          <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p></>):(<>  <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">
+              Unlock Your Potential with Us
+            </h1>
+            <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">
+              {" "}
+              "Your vision, our canvas. Let's paint the future."
+            </p></>)}
+          
+        </div>
+        <div className="w-full md:w-1/2 mt-10 md:mt-20 md:mb-20 mb-20">
     <Card
       className="w-96 mt-50 m-auto bg-dark"
       placeholder={undefined}
-      shadow={false}
-    >
+      shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
       <CardHeader
         floated={false}
         shadow={false}
         color="transparent"
         className="mt-10 rounded-none text-center"
-        placeholder={undefined}
-      >
-        <Typography variant="h4" color="white" placeholder={undefined}>
+        placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Forgot Password
         </Typography>
       </CardHeader>
 
-      <CardBody className="flex flex-col gap-4" placeholder={undefined}>
+      <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <form onSubmit={formik.handleSubmit}>
           <div className="flex items-center">
             <Input
@@ -171,15 +183,13 @@ const ForgotPassword = () => {
               name="email"
               crossOrigin={undefined}
               color="pink"
-              className="bg-white bg-opacity-50"
-            />
+              className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
             <Button
               variant="gradient"
               placeholder={undefined}
               size="md"
               type="submit"
-              disabled={!!(otpButtonClicked && !otpTimer)}
-            >
+              disabled={!!(otpButtonClicked && !otpTimer)}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               OTP
             </Button>
           </div>
@@ -200,8 +210,7 @@ const ForgotPassword = () => {
               placeholder={undefined}
               type="button"
               size="sm"
-              onClick={handleResendOtp}
-            >
+              onClick={handleResendOtp}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               Resend OTP
             </Button>
           )}
@@ -214,8 +223,7 @@ const ForgotPassword = () => {
             color="pink"
             className="bg-white bg-opacity-50"
             onChange={otpFormik.handleChange}
-            name="otp"
-          />
+            name="otp" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {otpFormik.errors.otp ? (
             <p className="text-sm" style={{ color: "red", marginBottom: -10 }}>
               {otpFormik.errors.otp}
@@ -227,13 +235,14 @@ const ForgotPassword = () => {
             fullWidth
             placeholder={undefined}
             type="submit"
-            className="mt-3"
-          >
+            className="mt-3"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             Verify OTP
           </Button>
         </form>
       </CardBody>
     </Card>
+    </div>
+    </div>
   );
 };
 

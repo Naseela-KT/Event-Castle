@@ -1,14 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
+interface Review {
+    _id:string;
+    username: string;
+    rating: number;
+    content: string;
+    date:Date;
+    reply:Array<string>
+  }
 //represents the structure of user data
 export interface VendorData{
     name: string;
     vendor_type:string   
     email:string;
-    id : string;
+    _id : string;
     city:string;
-    mobile:number;
+    phone:number;
+    coverpicUrl:string;
+    logoUrl:string;
+    reviews:Array<Review>
+    bookedDates:Array<string>
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

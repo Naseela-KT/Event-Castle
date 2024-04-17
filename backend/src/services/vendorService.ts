@@ -1,13 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdateVendorPassword, createVendor , findAllVendors, findvendorByEmail } from '../repositories/vendorRepository';
-import { ObjectId } from 'mongoose';
-import { findVerndorIdByType } from '../repositories/vendorTypeRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
-<<<<<<< Updated upstream
-import { CustomError } from '../controllers/vendorController';
-=======
-
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -15,14 +10,9 @@ import {
 } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
 import { CustomError } from '../error/customError';
 
-
-
-
-
-
->>>>>>> Stashed changes
 
 
 interface LoginResponse {
@@ -157,3 +147,133 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
     throw error;
   }
 }
+
+export const checkCurrentPassword = async(currentpassword:string , vendorId:string)=>{
+
+  try {
+    
+    const existingVendor = await findVendorById(vendorId);
+    console.log(existingVendor)
+
+    if(!existingVendor){
+     throw new CustomError("Vendor not found",404)
+    }
+
+    const passwordMatch = await bcrypt.compare(currentpassword, existingVendor.password);
+    if (!passwordMatch) {
+      throw new CustomError("Password doesn't match",401)
+    }
+
+    return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const UpdatePasswordService = async(newPassword:string , vendorId:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const existingUser = await findVendorById(vendorId);
+    if(!existingUser){
+      throw new CustomError("user not found",404)
+    }
+    const email = existingUser.email;
+
+    const updatedValue = await UpdatePassword(hashedPassword , email);
+    if(updatedValue){
+      return true;
+    }
+    return false
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const PushFavoriteVendor = async(content:string , rating:number , username:string , vendorid:string)=>{
+  try {
+    const data = await AddVendorReview(content , rating, username , vendorid)
+    return  data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+
+
+
+export async function updateVendor(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<any> {
+    try {
+        console.log(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic)
+        await updateVendorData(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic);
+        const updatedVendor = await getVendorById(vendorId);
+
+        return updatedVendor;
+    } catch (error) {
+        throw new Error('Failed to update vendor data');
+    }
+}
+
+
+export async function addReviewReplyController(vendorId:string,content:string,reviewId:string): Promise<any> {
+  try {
+    const data=await addReviewReplyById(vendorId,content,reviewId)
+    return data;
+  } catch (error) {
+    
+  }
+}
+
+
+export async function verificationRequest(vendorId:string){
+  try {
+    const data=await requestForVerification(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+
+export async function changeVerifyStatus(vendorId:string,status:string){
+  try {
+    const data=await updateVerificationStatus(vendorId,status)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function getAllReviews(vendorId:string){
+  try {
+    const data=await findAllReviews(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function addDateAvailability(vendorId:string,status:string,date:string){
+  try {
+    const data=await changeDateAvailability(vendorId,status,date)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+export async function getAllDates(vendorId:string){
+  try {
+    const data=await findAllDatesById(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+
+

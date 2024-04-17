@@ -1,13 +1,11 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-<<<<<<< Updated upstream
-import { findAdminByEmail} from "../repositories/adminRepository";
-import { CustomError } from "../controllers/adminController";
-=======
 import { findAdminByEmail, findAdminById} from "../repositories/adminRepository";
 import admin, { AdminDocument } from "../models/admin";
 import { CustomError } from "../error/customError";
->>>>>>> Stashed changes
+
+
+
 
 interface LoginResponse {
     refreshToken:string
@@ -44,6 +42,15 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     throw error;
   }
 };
+
+export const getDatas=async (adminId:string):Promise<AdminDocument | null>=>{
+  try {
+    const result=await findAdminById(adminId);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 export const createRefreshTokenAdmin = async (refreshToken:string)=>{
