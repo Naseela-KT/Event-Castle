@@ -12,8 +12,6 @@ export const AdminController = {
       const { email, password } = req.body;
       const {refreshToken, token, adminData, message } = await login(email, password);
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-
-      res.status(200).json({token, adminData, message });
       res.status(200).json({refreshToken,token, adminData, message });
     } catch (error) {
       if (error instanceof CustomError) {
