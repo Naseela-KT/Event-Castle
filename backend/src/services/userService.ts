@@ -4,6 +4,8 @@ import { UpdatePassword, addVendorToFavorites, createUser , deletefavVendor, fin
 import User , { UserDocument } from '../models/user';
 import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
+import generateUserTokenAndSetCookie from '../utils/generateUserToken';
+import { Response } from 'express';
 
 interface LoginResponse {
   token: string;
@@ -11,7 +13,7 @@ interface LoginResponse {
   message: string;
 }
 
-export const signup = async (email:string ,password:string, name:string , phone:number ): Promise<object> => {
+export const signup = async (email:string ,password:string, name:string , phone:number,res:Response): Promise<object> => {
   try {
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
@@ -22,9 +24,9 @@ export const signup = async (email:string ,password:string, name:string , phone:
     const hashedPassword = await bcrypt.hash(password, salt);
     const isActive:boolean = true;
     const newUser = await createUser({ email , password: hashedPassword , name , phone , isActive });
-
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
-    return {token:token,user:newUser};
+    generateUserTokenAndSetCookie(newUser._id,res)
+  
+    return {user:newUser};
   } catch (error) {
     throw error;
   }
@@ -40,13 +42,21 @@ export const googleSignup=async(email:string ,password:string, name:string): Pro
     }
     const isActive:boolean = true;
     const newUser = await createUser({ email , password, name , isActive });
-
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
-    return {token:token,user:newUser};
+    return {user:newUser};
   } catch (error) {
     throw error;
   }
 };
+
+export const  findUser = async (userId: string)=>{
+  try {
+    const user = await findUserById(userId)
+    return user;
+  } catch (error) {
+    throw error ;
+  }
+  
+  };
 
 
 

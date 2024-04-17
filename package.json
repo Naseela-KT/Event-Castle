@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "gapi-script": "^1.2.0",
-    "react-google-login": "^5.2.2"
+    "react-google-login": "^5.2.2",
+    "socket.io": "^4.7.5"
   }
 }

@@ -16,15 +16,17 @@ import {
   FavoriteVendor,
   FavoriteVendors,
   deleteFromFavorite,
+  findUser,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
-import user from "../models/user";
+import user, { User } from "../models/user";
 import Jwt from "jsonwebtoken";
 import sharp from "sharp";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import generateUserTokenAndSetCookie from "../utils/generateUserToken";
 
 interface DecodedData {
   name: string;
@@ -118,7 +120,8 @@ export const UserController = {
       }
       const otpCode = userData.otpCode;
       if (otp === otpCode) {
-        const user = await signup(email, password, name, phone);
+        const user= await signup(email, password, name, phone,res);
+        
         res.status(201).json(user);
       } else {
         throw new CustomError("Invalid otp !!", 400);
@@ -136,15 +139,12 @@ export const UserController = {
   async UserLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, userData, message } = await login(email, password);
+      const {  userData, message } = await login(email, password);
 
-      req.session.user = userData._id;
-      res.cookie("jwtToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      });
+      
+      await generateUserTokenAndSetCookie(userData._id,res)
 
-      res.status(200).json({ token, userData, message });
+      res.status(200).json({ userData, message});
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -157,7 +157,7 @@ export const UserController = {
 
   async UserLogout(req: Request, res: Response): Promise<void> {
     try {
-      res.clearCookie("jwtToken");
+      res.cookie("jwtUser","",{maxAge:0});
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
       console.log(error);
@@ -516,6 +516,32 @@ export const UserController = {
 
     } catch (error) {
       console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
+  async getUsersForSidebar(req: Request, res: Response) {
+    try {
+      const filteredUsers = await user.find({}).select("-password");
+  
+      res.status(200).json(filteredUsers);
+    } catch (error) {
+      console.error("Error in getUsersForSidebar: ", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+
+
+  async getUser(req: Request, res: Response): Promise<void>{
+    try {
+      
+      const userId:string = req.query.userId as string;
+
+      const data = await findUser(userId);
+      res.status(200).json(data);
+      
+    } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
   },

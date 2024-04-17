@@ -16,6 +16,7 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import VerifyEmail from './components/VerifyEmail';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import Chat from './pages/user/Chat';
 
 
 
@@ -26,7 +27,7 @@ const App: React.FC = () => {
   return (
     <>
       <ToastContainer />
-      {!(pathname == '/login' || pathname == '/signup' || pathname=="/verify" || pathname=="/vendor/verify" || pathname.includes("/forgot-password") ||pathname.includes("/reset-password")) && (
+      {!(pathname == '/login'|| pathname=='/chat' || pathname == '/signup' || pathname=="/verify" || pathname=="/vendor/verify" || pathname.includes("/forgot-password") ||pathname.includes("/reset-password")) && (
         
         <div className="container fixed left-2/4 z-10 mx-auto -translate-x-2/4 pt-4">
           <Navbar />
@@ -46,6 +47,7 @@ const App: React.FC = () => {
             <Route path="/profile/*" element={<Profile />}/>
             <Route path="/book-event" element={<BookEventForm/>}/>
             <Route path="/payment-success" element={<PaymentSuccess/>}/>
+            <Route path="/chat" element={<Chat/>}/>
         </Route>
       </Routes>
     </>

@@ -10,17 +10,35 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link} from 'react-router-dom';
+import { axiosInstanceChat } from '../../../api/axiosinstance';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileButtonsProps {
   vendorId: string | undefined; 
   bookedDates:Array<string> | undefined;
+  userId:string | undefined; 
 }
 
-const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates }) => {
+const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,userId }) => {
   const [open, setOpen] = useState(false);
+  const navigate=useNavigate()
 
 
   const handleOpen = () => setOpen((cur) => !cur);
+
+  const handleChat =async()=>{
+    const body ={
+      senderId :userId,
+      receiverId:vendorId
+    }
+    try {
+      await axiosInstanceChat.post('/' , body).then((res)=>{
+        navigate('/chat')
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <>
@@ -54,6 +72,7 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
+            onClick={handleChat}
           >
             Chat with us
           </Button>

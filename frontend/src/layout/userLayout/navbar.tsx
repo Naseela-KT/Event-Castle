@@ -120,12 +120,13 @@ const Navbar = () => {
     
     <MTNavbar
       color="transparent"
-      className={path.pathname.includes('/profile') || path.pathname.includes('/book-event') ||path.pathname.includes('/payment-success')?'z-50 px-3 bg-black h-18 -mt-5':'z-50 px-3'}
+      className={path.pathname.includes('/profile') || path.pathname.includes('/book-event') || path.pathname.includes('/chat')||path.pathname.includes('/payment-success')?'z-50 px-3 bg-black h-18 -mt-5':'z-50 px-3'}
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
     >
-    <div className={`navbar ${isScrolled && (!location.pathname.includes('/profile') )? 'container mx-auto flex items-center justify-between bg-black -mt-8 rounded-lg p-5 shadow-lg' : 'container mx-auto flex items-center justify-between text-white'}`}>
+   <div className={`navbar container mx-auto flex items-center justify-between ${isScrolled && (!location.pathname.includes('/profile') || !location.pathname.includes('/chat')) ? 'bg-black -mt-8 rounded-lg p-5 shadow-lg text-white' : ''}`}>
+
         <Link to="/home">
           <Typography
             className="mr-4 ml-2 cursor-pointer py-1.5 font-bold"

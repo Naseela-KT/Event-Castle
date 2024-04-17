@@ -177,7 +177,7 @@ export function VendorProfile() {
 
                 
                 </div>
-                <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates}/>
+                <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates} userId={user?._id}/>
               </div>
             </div>
             <div className="-mt-4 lg:pl-20 container space-y-2">
