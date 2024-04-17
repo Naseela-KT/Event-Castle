@@ -17,6 +17,7 @@ import {
   FavoriteVendors,
   deleteFromFavorite,
   findUser,
+  createRefreshToken,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
 import user, { User } from "../models/user";
@@ -141,12 +142,9 @@ export const UserController = {
   async UserLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const {  userData, message } = await login(email, password);
-
-      
-      await generateUserTokenAndSetCookie(userData._id,res)
-
-      res.status(200).json({ userData, message});
+      const {  token,refreshToken,userData, message } = await login(email, password);
+      res.cookie("jwtToken", token, { httpOnly: true });
+      res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -154,6 +152,21 @@ export const UserController = {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
+    }
+  },
+
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
+      
+      const token = await createRefreshToken(refreshToken);
+    
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
     }
   },
 
@@ -354,7 +367,7 @@ export const UserController = {
 
       const { email, jti } = decodedData;
       const password = jti;
-      const { token, userData, message } = await gLogin(email, password);
+      const { refreshToken,token, userData, message } = await gLogin(email, password);
 
       req.session.user = userData._id;
       res.cookie("jwtToken", token, {
@@ -362,7 +375,7 @@ export const UserController = {
         secure: process.env.NODE_ENV === "production",
       });
 
-      res.status(200).json({ token, userData, message });
+      res.status(200).json({ refreshToken,token, userData, message });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });

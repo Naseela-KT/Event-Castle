@@ -11,6 +11,7 @@ export interface User {
     imageUrl:string;
     favourite:Array<string>;
     wallet:number;
+    refreshToken:string;
 }
 
 export interface UserDocument extends User, Document {}
@@ -24,7 +25,8 @@ const UserSchema: Schema = new Schema({
     image:{type:String},
     imageUrl:{type:String},
     favourite:{type:Array},
-    wallet:{type:Number,default:0}
+    wallet:{type:Number,default:0},
+    refreshToken: { type: String }
 });
 
 export default mongoose.model<UserDocument>('User', UserSchema);

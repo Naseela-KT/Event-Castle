@@ -21,6 +21,7 @@ router.get('/resendOtp' ,UserController.ResendOtp);
 router.get('/pwd-resendOtp' ,UserController.PwdResendOtp);
 router.post('/login', UserController.UserLogin );
 router.get('/logout' , UserController.UserLogout);
+router.post('/refresh-token' , UserController.createRefreshToken)
 router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/reset-password' , UserController.ResetUserPassword)

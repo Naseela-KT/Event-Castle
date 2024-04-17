@@ -55,6 +55,8 @@ const UserLogin = () => {
         .post("/login", values)
         .then((response) => {
           console.log(response);
+          localStorage.setItem("userToken", response.data.token)
+          localStorage.setItem("userRefresh", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
           navigate("/home");
         })

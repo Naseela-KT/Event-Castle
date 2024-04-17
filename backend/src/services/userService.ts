@@ -10,9 +10,10 @@ import { Response } from 'express';
 
 
 interface LoginResponse {
-  token: string;
   userData: UserDocument; 
   message: string;
+  token:string;
+  refreshToken:string;
 }
 
 export const signup = async (email:string ,password:string, name:string , phone:number,res:Response): Promise<object> => {
@@ -74,11 +75,43 @@ export const gLogin=async (email: string, password: string): Promise<LoginRespon
       throw new CustomError('Blocked by Admin..',404);
     }
 
-    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    return { token: token, userData: existingUser, message: 'Successfully logged in..' };
+   
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    
+    let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    existingUser.refreshToken = refreshToken;
+    
+    await existingUser.save();
+    return { refreshToken,token, userData: existingUser, message: 'Successfully logged in..' };
 
   } catch (error) {
     throw error; 
+  }
+}
+
+export const createRefreshToken = async (refreshToken:string)=>{
+  try {
+    
+    
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+ 
+
+    const user = await User.findById(decoded._id);
+    console.log("user",user)
+      
+  
+
+    if (!user || user.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    
+    return accessToken;
+
+
+  } catch (error) {
+   throw error 
   }
 }
   
@@ -101,8 +134,13 @@ export const login = async (email: string, password: string): Promise<LoginRespo
       throw new CustomError('Blocked by Admin..',404);
     }
 
-    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-    return { token: token, userData: existingUser, message: 'Successfully logged in..' };
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    
+    let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    existingUser.refreshToken = refreshToken;
+    
+    await existingUser.save();
+    return { refreshToken,token, userData: existingUser, message: 'Successfully logged in..' };
 
   } catch (error) {
     throw error; 

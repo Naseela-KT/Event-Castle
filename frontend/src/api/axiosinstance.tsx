@@ -101,3 +101,51 @@ axiosInstanceVendor.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('userToken'); 
+      
+        
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+axiosInstance.interceptors.response.use(
+    (response) => {
+      
+        return response;
+    },
+    async (error) => {
+     
+        if (error.response.status === 401 && error.response.data.message === 'Invalid token') {
+            try {
+                console.log("token expired and error received at axiosinstance");
+                const refreshToken = localStorage.getItem('userRefresh');
+               
+                const response = await axiosInstance.post('/refresh-token', { refreshToken });
+               
+                const newToken = response.data.token;
+                
+                localStorage.setItem('userToken', newToken);
+
+              
+                error.config.headers.Authorization = `Bearer ${newToken}`;
+                return axios(error.config);
+            } catch (refreshError) {
+
+                console.error('Error refreshing token:', refreshError);
+              
+                return Promise.reject(refreshError);
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);

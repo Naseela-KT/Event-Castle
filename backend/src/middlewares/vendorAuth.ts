@@ -9,7 +9,7 @@ interface AuthenticatedRequest extends Request {
   Vendor?: any;
 }
 
-export default function authenticate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export default function vendorAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   
   const token = req.headers.authorization;
   
