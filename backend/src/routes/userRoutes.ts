@@ -4,6 +4,7 @@ import { VendorController } from '../controllers/vendorController';
 import multer from 'multer';
 import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
+import { PaymentController } from '../controllers/paymentController';
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -40,8 +41,12 @@ router.delete('/delete-favorite-vendor' , UserController.deleteFavoriteVendor)
 
 router.post('/book-an-event',BookingController.bookAnEvent)
 router.get('/get-bookings',BookingController.getBookingsByUser)
+router.get('/single-booking',BookingController.getBookingsById);
 
 
+router.post('/create-checkout-session',PaymentController.makePayment);
+router.post('/add-payment',PaymentController.addPayment);
 
+router.put('/cancel-booking',BookingController.cancelBookingByUser)
 
 export default router;

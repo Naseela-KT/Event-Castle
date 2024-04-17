@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from '../../common/Loader';
-import PageTitle from '../../components/vendor/PageTitle';
-import Profile from './Profile/Profile';
-import { ToastContainer } from 'react-toastify';
 import EditProfile from './Profile/EditProfile';
 import Posts from './Posts/Posts';
 import CreatePost from './Posts/CreatePost';
@@ -18,6 +15,12 @@ import VendorPrivateRoute from '../../components/vendor/VendorPrivateRoute';
 import Dashboard from './Dashboard';
 import CustomDatePicker from './Booking/Dates';
 import VerifyEmail from '../../components/VerifyEmail';
+import ViewBooking from './Booking/ViewBooking';
+import ResetPassword from '../../components/ResetPassword';
+import ForgotPassword from '../../components/ForgotPassword';
+import Profile from './Profile/Profile';
+import { ToastContainer } from 'react-toastify';
+
 
 function VendorApp() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,13 +67,31 @@ function VendorApp() {
             </>
           }
         />
+          <Route
+          path="/vendor/reset-password"
+          element={
+            <>
+              
+              <ResetPassword/>
+            </>
+          }
+        />
+          <Route
+          path="/vendor/forgot-password"
+          element={
+            <>
+              
+              <ForgotPassword/>
+            </>
+          }
+        />
             <Route path="" element={<VendorPrivateRoute />}>
             <Route
           index
           path="/vendor"
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+
               <Dashboard />
             </>
           }
@@ -80,7 +101,7 @@ function VendorApp() {
           path="/vendor/dashboard"
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+          
               <Dashboard />
             </>
           }
@@ -90,7 +111,7 @@ function VendorApp() {
           path="/vendor/view-profile"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <Profile />
             </>
           }
@@ -100,7 +121,7 @@ function VendorApp() {
           path="/vendor/edit-profile"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <EditProfile />
             </>
           }
@@ -110,7 +131,7 @@ function VendorApp() {
           path="/vendor/change-password"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <ChangePassword />
             </>
           }
@@ -120,7 +141,7 @@ function VendorApp() {
           path="/vendor/view-posts"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <Posts />
             </>
           }
@@ -130,7 +151,7 @@ function VendorApp() {
           path="/vendor/add-post"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <CreatePost />
             </>
           }
@@ -140,8 +161,20 @@ function VendorApp() {
           path="/vendor/booking-history"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <BookingHistory      
+              
+              />
+            </>
+          }
+        />
+        <Route
+          index
+          path="/vendor/view-booking"
+          element={
+            <>
+             
+              <ViewBooking
               
               />
             </>
@@ -163,7 +196,7 @@ function VendorApp() {
           path="/vendor/reviews"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
               <Reviews />
             </>
           }
@@ -174,7 +207,7 @@ function VendorApp() {
           path="/vendor/notifications"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              
              <Notifications/>
             </>
           }

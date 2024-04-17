@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { connectDB } from './config/db.config';
+import { connectDB } from './db/connectToMongoDB';
 import adminRoutes from "../src/routes/adminRoutes";
 import userRoutes from "./routes/userRoutes";
 import vendorRoutes from "./routes/vendorRoutes";

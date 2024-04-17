@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Vendor , {VendorDocument,Review} from "../models/vendor";
 import { CustomError } from "../controllers/vendorController";
+import vendor from "../models/vendor";
+
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
     try {
@@ -144,4 +146,62 @@ export async function addReviewReplyById(vendorId: string, content: string, revi
   }
 }
 
+export async function requestForVerification(vendorId:string){
+  try {
+    const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
+    return data;
+  } catch (error) {
+    
+  }
+}
+
+export async function updateVerificationStatus(vendorId:string,status:string){
+  try {
+    const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
+    return data;
+  } catch (error) {
+    
+  }
+}
+
+export async function findAllReviews(vendorId:string){
+  try {
+    const data=await vendor.findById(vendorId)
+    const reviews = data?.reviews; 
+    return reviews;
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export async function changeDateAvailability(vendorId:string,status:string,date:string){
+  try {
+    const Vendor=await vendor.findOne({_id:vendorId});
+    let bookedDates=Vendor?.bookedDates;
+    if(status==="Available"){
+      if(bookedDates?.includes(date)){
+        bookedDates = bookedDates.filter((bookedDate) => bookedDate !== date);
+      }
+    } else if (status === "Unavailable"){
+      if (!bookedDates?.includes(date)) {
+        bookedDates?.push(date);
+      }
+    }
+    await Vendor?.updateOne({ bookedDates });
+    return bookedDates
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export async function findAllDatesById(vendorId:string){
+  try {
+    const Vendor=await vendor.findOne({_id:vendorId});
+    return Vendor?.bookedDates;
+  } catch (error) {
+    throw error
+  }
+}
 

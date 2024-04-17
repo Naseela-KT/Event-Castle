@@ -19,6 +19,7 @@ export interface VendorData{
     coverpicUrl:string;
     logoUrl:string;
     reviews:Array<Review>
+    bookedDates:Array<string>
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

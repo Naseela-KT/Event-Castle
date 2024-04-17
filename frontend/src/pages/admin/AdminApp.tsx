@@ -17,11 +17,10 @@ const AdminApp: React.FC = () => {
         <ToastContainer/>
         <div className="flex">
           {isAdminSignedIn && <Sidebar />}
-          <div className="mainContent flex-1">
+          <div className="mainContent flex-1 ml-50">
             <Outlet />
           </div>
         </div>
-  
     </>
   );
 };

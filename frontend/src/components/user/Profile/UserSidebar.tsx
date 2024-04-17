@@ -20,6 +20,7 @@ import {
   BookmarkIcon,
   HeartIcon,
   LockClosedIcon,
+  WalletIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
@@ -89,9 +90,18 @@ export default function Sidebar() {
             <Link to="/profile/booking-details">
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+             
                 <BookmarkIcon className="h-5 w-5" />
               </ListItemPrefix>
               Booking Details
+            </ListItem>
+            </Link>
+            <Link to="/profile/wallet">
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <WalletIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Wallet
             </ListItem>
             </Link>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -109,7 +119,7 @@ export default function Sidebar() {
                 />
               </ListItemSuffix>
             </ListItem>
-        
+            
            
             <hr className="my-2 border-blue-gray-50" />
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
