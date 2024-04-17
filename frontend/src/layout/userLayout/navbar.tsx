@@ -119,8 +119,9 @@ const Navbar = () => {
   return (
     
     <MTNavbar
+    style={{borderRadius:"0"}}
       color="transparent"
-      className={path.pathname.includes('/profile') || path.pathname.includes('/book-event') || path.pathname.includes('/chat')||path.pathname.includes('/payment-success')?'z-50 px-3 bg-black h-18 -mt-5':'z-50 px-3'}
+      className={path.pathname.includes('/profile') || path.pathname.includes('/live') || path.pathname.includes('/room/')|| path.pathname.includes('/book-event') || path.pathname.includes('/chat')||path.pathname.includes('/payment-success')?'z-50 px-3 bg-black h-18 -mt-5 fixed':'z-50 px-3'}
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}

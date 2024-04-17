@@ -17,6 +17,8 @@ import VerifyEmail from './components/VerifyEmail';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import Chat from './pages/user/Chat';
+import LiveStreaming from './pages/user/LiveStreaming';
+import Room from './components/Live/Room';
 
 
 
@@ -48,6 +50,8 @@ const App: React.FC = () => {
             <Route path="/book-event" element={<BookEventForm/>}/>
             <Route path="/payment-success" element={<PaymentSuccess/>}/>
             <Route path="/chat" element={<Chat/>}/>
+            <Route path="/live" element={<LiveStreaming/>}/>
+            <Route path="/room/:roomId/:role_str" element={<Room/>}/>
         </Route>
       </Routes>
     </>
