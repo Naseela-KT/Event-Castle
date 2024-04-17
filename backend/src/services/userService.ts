@@ -5,6 +5,7 @@ import User , { UserDocument } from '../models/user';
 import generateOtp from '../utils/generateOtp';
 import generateUserTokenAndSetCookie from '../utils/generateUserToken';
 import { CustomError } from '../error/customError';
+import { Response } from 'express';
 
 
 

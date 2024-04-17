@@ -49,6 +49,8 @@ const VendorLoginForm = () => {
         .post("/login", values)
         .then((response) => {
           console.log(response);
+          localStorage.setItem("vendorToken",response.data.token);
+          localStorage.setItem("vendorRefresh",response.data.refreshToken);
           dispatch(setVendorInfo(response.data.vendorData));
           navigate("/Vendor/dashboard");
         })

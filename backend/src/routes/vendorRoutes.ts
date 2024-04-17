@@ -24,6 +24,7 @@ router.post('/verify' ,VendorController.verifyOtp)
 router.get('/resendOtp' ,VendorController.ResendOtp);
 router.get('/pwd-resendOtp' ,VendorController.PwdResendOtp);
 router.post('/login' , VendorController.VendorLogin)
+router.post('/refresh-token' , VendorController.createRefreshToken)
 router.get('/logout' , VendorController.VendorLogout)
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 router.post('/vendor-getotp' , VendorController.VendorForgotPassword)

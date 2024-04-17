@@ -1,20 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-import Vendor , {VendorDocument} from "../models/vendor";
-=======
+
+
 import mongoose from "mongoose";
 import Vendor , {VendorDocument,Review} from "../models/vendor";
 import vendor from "../models/vendor";
 import { CustomError } from "../error/customError";
 
->>>>>>> Stashed changes
-=======
-import mongoose from "mongoose";
-import Vendor , {VendorDocument,Review} from "../models/vendor";
-import { CustomError } from "../controllers/vendorController";
-import vendor from "../models/vendor";
-
->>>>>>> 4e6cb704a761a883846130ba00827a66247c2bb7
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
     try {

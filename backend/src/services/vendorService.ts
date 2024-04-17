@@ -19,6 +19,7 @@ interface LoginResponse {
   token: string;
   vendorData: object; 
   message: string;
+  refreshToken:string;
 }
 
 export const signup = async (email:string ,password:string, name:string , phone:number, city:string,vendor_type:string): Promise<string> => {
@@ -48,6 +49,25 @@ export const signup = async (email:string ,password:string, name:string , phone:
     }
   };
 
+  
+export const createRefreshToken = async (refreshToken:string)=>{
+  try {
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+    const Vendor = await vendor.findById(decoded._id);
+
+    if (!Vendor || Vendor.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: Vendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return accessToken;
+
+  } catch (error) {
+    
+  }
+}
+
 
 
 
@@ -71,8 +91,20 @@ export const signup = async (email:string ,password:string, name:string , phone:
         const vendorData = await findvendorByEmail(email);
 
         // If the password matches, generate and return a JWT token
-        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-        return {token,vendorData:existingVendor,message:"Successfully logged in.."};
+        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+
+        let refreshToken = existingVendor.refreshToken;
+
+   
+        if (!refreshToken) {
+         
+          refreshToken = jwt.sign({ _id: existingVendor._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+        }
+    
+    
+        existingVendor.refreshToken = refreshToken;
+        await existingVendor.save();
+        return {refreshToken,token,vendorData:existingVendor,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;

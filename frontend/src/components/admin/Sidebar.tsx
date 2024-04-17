@@ -5,7 +5,7 @@ import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
-import { SetStateAction } from "react";
+// import { SetStateAction } from "react";
 import { PowerIcon } from "@heroicons/react/24/outline";
 
 const Sidebar = () => {
@@ -13,9 +13,9 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOpen = (value: SetStateAction<boolean> | "") => {
-    setOpen(open === value ? 0 : value);
-  };
+  // const handleOpen = (value: SetStateAction<boolean> | "") => {
+  //   setOpen(open === value ? 0 : value);
+  // };
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ const Sidebar = () => {
     <div className="sidebar fixed">
       <div className={`sidebar ${
           open ? "open" : "closed"
-        } bg-blue-900 h-screen p-5 pt-8 relative duration-300 fixed top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+        } bg-blue-900 h-screen p-5 pt-8 relative duration-30 top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: open ? "250px" : "80px" }}>

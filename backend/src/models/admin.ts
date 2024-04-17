@@ -23,10 +23,6 @@ const adminSchema=new Schema<AdminDocument>({
         type:Date,
         default:Date.now()
     },
-    isAdmin:{
-        type:Boolean,
-        required:true
-    },
     wallet:{
         type:Number,
         default:0

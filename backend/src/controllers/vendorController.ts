@@ -17,6 +17,7 @@ import {
   getAllReviews,
   addDateAvailability,
   getAllDates,
+  createRefreshToken,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
@@ -106,6 +107,21 @@ export const VendorController = {
     }
   },
 
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
+
+      const token = await createRefreshToken(refreshToken);
+      
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
+
   async ResendOtp(req: Request, res: Response): Promise<void> {
     try {
       const vendorData: VendorSession | undefined = req.session.vendorData;
@@ -169,7 +185,7 @@ export const VendorController = {
   async VendorLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, vendorData, message } = await login(email, password);
+      const { refreshToken,token, vendorData, message } = await login(email, password);
       res.cookie("jwtToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

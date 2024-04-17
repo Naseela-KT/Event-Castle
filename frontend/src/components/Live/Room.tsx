@@ -24,15 +24,13 @@ const Room = () => {
   const role =
     role_str === 'Host'
       ? ZegoUIKitPrebuilt.Host
-      : role_str === 'Cohost'
-        ? ZegoUIKitPrebuilt.Cohost
         : ZegoUIKitPrebuilt.Audience;
 
   const sharedLinks: { name: string; url: string; }[] = [];
-  if (role === ZegoUIKitPrebuilt.Host || role === ZegoUIKitPrebuilt.Cohost) {
+  if (role === ZegoUIKitPrebuilt.Host) {
     sharedLinks.push({
       name: 'Join as co-host',
-      url:`http://localhost:5000/room/${roomId}/Cohost`
+      url:`http://localhost:5000/room/${roomId}/Host`
     });
   }
 
@@ -63,8 +61,7 @@ const Room = () => {
             role,
           },
         },
-        sharedLinks:sharedLinks,
-        
+        sharedLinks:sharedLinks,   
     });
    
   };
