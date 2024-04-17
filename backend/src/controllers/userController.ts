@@ -3,8 +3,18 @@ import { signup , login, getUsers,toggleUserBlock, CheckExistingUSer, generateOt
 import generateOtp from "../utils/generateOtp";
 import user from "../models/user";
 import Jwt from "jsonwebtoken";
+<<<<<<< Updated upstream
 
 
+=======
+import sharp from "sharp";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+import crypto from "crypto";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import generateUserTokenAndSetCookie from "../utils/generateUserToken";
+import { CustomError } from "../error/customError";
+>>>>>>> Stashed changes
 
 interface DecodedData {
   name: string;
@@ -351,12 +361,12 @@ export const  UserController = {
 
 
 
-// Define a custom error class
-export class CustomError extends Error {
-  statusCode: number;
 
+<<<<<<< Updated upstream
   constructor(message: string, statusCode: number) {
     super(message);
     this.statusCode = statusCode;
   }
 }
+=======
+>>>>>>> Stashed changes

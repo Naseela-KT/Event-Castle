@@ -1,5 +1,6 @@
 import { Request , Response } from "express";
 import { addType, deleteType, getSingleType, getTypes, updateVendorType } from "../services/vendorTypeService";
+import { CustomError } from "../error/customError";
 
 
 export const VendorTypeController = {
@@ -80,4 +81,8 @@ export const VendorTypeController = {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 

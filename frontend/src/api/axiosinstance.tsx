@@ -25,6 +25,7 @@ export const axiosInstance = axios.create({
 //     return config;
 // })
 
+<<<<<<< Updated upstream
 // axiosInstance.interceptors.response.use(
 //     (response) => response,
 //     (error) => {
@@ -39,3 +40,45 @@ export const axiosInstance = axios.create({
 //         return Promise.reject(error);
 //     }
 // )
+=======
+export const axiosInstanceMsg = axios.create({
+    baseURL:'http://localhost:3000/api/messages'
+})
+
+
+axiosInstanceAdmin.interceptors.request.use((config) =>{
+    const token = localStorage.getItem('adminToken'); 
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+},
+(error) => {
+    return Promise.reject(error);
+}
+);
+
+
+axiosInstanceAdmin.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+        if (error.response.status === 401 && error.response.data.message === 'Invalid token') {
+            try {
+                const refreshToken = localStorage.getItem('refreshToken');
+                const response = await axiosInstanceAdmin.post('/refresh-token', { refreshToken });
+                const newToken = response.data.token;
+                localStorage.setItem('adminToken', newToken);
+                error.config.headers.Authorization = `Bearer ${newToken}`;
+                return axios(error.config);
+            } catch (refreshError) {
+                console.error('Error refreshing token:', refreshError);
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
+>>>>>>> Stashed changes

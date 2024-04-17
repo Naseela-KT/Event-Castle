@@ -47,7 +47,13 @@ const AdminLogin = () => {
       axiosInstanceAdmin
         .post("/login", values)
         .then((response) => {
+<<<<<<< Updated upstream
           console.log(response);
+=======
+          console.log(response.data);
+          localStorage.setItem("adminToken",response.data.token);
+          localStorage.setItem("refreshToken",response.data.refreshToken);
+>>>>>>> Stashed changes
           dispatch(setAdminInfo(response.data.adminData));
           navigate("/admin/dashboard");
         })

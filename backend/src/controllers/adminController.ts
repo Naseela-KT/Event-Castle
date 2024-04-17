@@ -1,14 +1,25 @@
 import { Request, Response } from "express";
+<<<<<<< Updated upstream
 import { login } from "../services/adminService";
+=======
+import { createRefreshTokenAdmin, getDatas, login } from "../services/adminService";
+import { CustomError } from "../error/customError";
+import dotenv from 'dotenv';
+dotenv.config();
+>>>>>>> Stashed changes
 
 export const AdminController = {
   async Adminlogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, adminData, message } = await login(email, password);
+      const {refreshToken, token, adminData, message } = await login(email, password);
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+<<<<<<< Updated upstream
       
       res.status(200).json({token, adminData, message });
+=======
+      res.status(200).json({refreshToken,token, adminData, message });
+>>>>>>> Stashed changes
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -29,14 +40,36 @@ export const AdminController = {
     }
   },
 
+<<<<<<< Updated upstream
   
+=======
+
+  async getAdminData(req: Request, res: Response): Promise<void> {
+    try {
+      const adminId:string=req.query.adminId as string
+      console.log(adminId)
+      const adminData=await getDatas(adminId);
+      res.status(200).json({adminData});
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "server error..." });
+    }
+  },
+
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+      const { refreshToken } = req.body;
+      const token = await createRefreshTokenAdmin(refreshToken);
+      res.status(200).json({ token });
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
+
+>>>>>>> Stashed changes
 };
 
-export class CustomError extends Error {
-  statusCode: number;
 
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
+
+

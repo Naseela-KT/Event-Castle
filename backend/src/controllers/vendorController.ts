@@ -2,7 +2,18 @@ import { Request , Response } from "express";
 import { signup , login, CheckExistingVendor, getVendors, toggleVendorBlock, getSingleVendor, ResetVendorPasswordService } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendor";
+<<<<<<< Updated upstream
 import { SessionData } from "express-session";
+=======
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { CustomError } from "../error/customError";
+>>>>>>> Stashed changes
 
 
 interface VendorSession {
@@ -295,6 +306,7 @@ export const VendorController = {
 }
 
 
+<<<<<<< Updated upstream
 export class CustomError extends Error {
   statusCode: number;
   constructor(message: string, statusCode: number) {
@@ -302,3 +314,6 @@ export class CustomError extends Error {
     this.statusCode = statusCode;
   }
 }
+=======
+
+>>>>>>> Stashed changes

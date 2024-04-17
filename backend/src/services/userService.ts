@@ -2,8 +2,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UpdatePassword, createUser , findAllUsers, findUserByEmail, findUsersCount } from '../repositories/userRepository';
 import User , { UserDocument } from '../models/user';
-import { CustomError } from '../controllers/userController';
 import generateOtp from '../utils/generateOtp';
+<<<<<<< Updated upstream
+=======
+import generateUserTokenAndSetCookie from '../utils/generateUserToken';
+import { Response } from 'express';
+import { CustomError } from '../error/customError';
+>>>>>>> Stashed changes
 
 interface LoginResponse {
   token: string;
