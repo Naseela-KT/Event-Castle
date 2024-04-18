@@ -31,7 +31,6 @@ import dotenv from "dotenv";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CustomError } from "../error/customError";
 
-
 dotenv.config();
 
 const s3 = new S3Client({
@@ -87,19 +86,15 @@ export const VendorController = {
 
         console.log("vendor signup..Before");
         console.log(req.session);
-        res
-          .status(200)
-          .json({
-            message: "OTP send to vendor's email for verification..",
-            email: email,
-          });
+        res.status(200).json({
+          message: "OTP send to vendor's email for verification..",
+          email: email,
+        });
       } else {
         console.log("couldn't generate otp, error occcured ,please fix !!");
-        res
-          .status(500)
-          .json({
-            message: `Server Error couldn't generate otp, error occcured ,please fix !!`,
-          });
+        res.status(500).json({
+          message: `Server Error couldn't generate otp, error occcured ,please fix !!`,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -107,18 +102,16 @@ export const VendorController = {
     }
   },
 
-  async createRefreshToken(req: Request, res: Response):Promise<void>{
+  async createRefreshToken(req: Request, res: Response): Promise<void> {
     try {
-     
       const { refreshToken } = req.body;
 
       const token = await createRefreshToken(refreshToken);
-      
-      res.status(200).json({ token });
 
+      res.status(200).json({ token });
     } catch (error) {
-      console.error('Error refreshing token:', error);
-      res.status(401).json({ message: 'Failed to refresh token' });
+      console.error("Error refreshing token:", error);
+      res.status(401).json({ message: "Failed to refresh token" });
     }
   },
 
@@ -137,12 +130,9 @@ export const VendorController = {
         req.session.vendorData.otpCode = newOtp;
       } else {
         console.error("Session user data is unexpectedly undefined.");
-        res
-          .status(500)
-          .json({
-            message:
-              "Server Error: Session user data is unexpectedly undefined.",
-          });
+        res.status(500).json({
+          message: "Server Error: Session user data is unexpectedly undefined.",
+        });
         return;
       }
       res.status(200).json({ message: "New OTP sent to email" });
@@ -167,12 +157,9 @@ export const VendorController = {
         req.session.otp.otp = newOtp;
       } else {
         console.error("Session user data is unexpectedly undefined.");
-        res
-          .status(500)
-          .json({
-            message:
-              "Server Error: Session user data is unexpectedly undefined.",
-          });
+        res.status(500).json({
+          message: "Server Error: Session user data is unexpectedly undefined.",
+        });
         return;
       }
       res.status(200).json({ message: "New OTP sent to email" });
@@ -185,7 +172,10 @@ export const VendorController = {
   async VendorLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { refreshToken,token, vendorData, message } = await login(email, password);
+      const { refreshToken, token, vendorData, message } = await login(
+        email,
+        password
+      );
       res.cookie("jwtToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -257,12 +247,10 @@ export const VendorController = {
         const otp = await generateOtp(email);
         (req.session as any).vendorotp = { otp: otp, email: email };
         console.log(req.session);
-        res
-          .status(200)
-          .json({
-            message: "otp sent to vendor email for password updation request ",
-            email: email,
-          });
+        res.status(200).json({
+          message: "otp sent to vendor email for password updation request ",
+          email: email,
+        });
       } else {
         res.status(400).json({ error: "Email not Registered with us !!" });
       }
@@ -304,9 +292,13 @@ export const VendorController = {
 
   async getAllVendors(req: Request, res: Response): Promise<void> {
     try {
-      const vendors = await getVendors();
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
+      const { vendors, totalVendorsCount } = await getVendors(page, pageSize);
+      const totalPages = Math.ceil(totalVendorsCount / pageSize);
+
       console.log(vendors);
-      res.status(200).json(vendors);
+      res.status(200).json({ vendorData: vendors, totalPages: totalPages });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "server error..." });
@@ -324,12 +316,10 @@ export const VendorController = {
 
       await toggleVendorBlock(VendorId);
       let process = await vendor.findOne({ _id: VendorId });
-      res
-        .status(200)
-        .json({
-          message: "User block status toggled successfully.",
-          process: !process?.isActive ? "block" : "unblock",
-        });
+      res.status(200).json({
+        message: "User block status toggled successfully.",
+        process: !process?.isActive ? "block" : "unblock",
+      });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Server Error" });
@@ -441,8 +431,8 @@ export const VendorController = {
       const vendorId: string = req.query.vendorid as string; // Assuming vendorId is sent in the request body
       const formData = req.body;
 
-      let coverpicFile,coverpicUrl;
-      let logoFile,logoUrl;
+      let coverpicFile, coverpicUrl;
+      let logoFile, logoUrl;
 
       if (req.files) {
         if (
@@ -519,12 +509,16 @@ export const VendorController = {
 
   async addReviewReply(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.query.vendorId as string;
-      const reviewId:string=req.query.reviewId as string;
-      const content=req.body.content
-      console.log(vendorId,reviewId,content)
-      const result=await addReviewReplyController(vendorId,content,reviewId)
-      res.status(200).json({vendorData:result});
+      const vendorId: string = req.query.vendorId as string;
+      const reviewId: string = req.query.reviewId as string;
+      const content = req.body.content;
+      console.log(vendorId, reviewId, content);
+      const result = await addReviewReplyController(
+        vendorId,
+        content,
+        reviewId
+      );
+      res.status(200).json({ vendorData: result });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -537,9 +531,9 @@ export const VendorController = {
 
   async sendVerifyRequest(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.body.vendorId as string;
-      const result=await verificationRequest(vendorId);
-      res.status(200).json(result)
+      const vendorId: string = req.body.vendorId as string;
+      const result = await verificationRequest(vendorId);
+      res.status(200).json(result);
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -552,10 +546,10 @@ export const VendorController = {
 
   async updateVerifyStatus(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.body.vendorId as string;
-      const status=req.body.status;
-      const result=await changeVerifyStatus(vendorId,status)
-      res.status(200).json({result,message:"Status updated successfully!"})
+      const vendorId: string = req.body.vendorId as string;
+      const status = req.body.status;
+      const result = await changeVerifyStatus(vendorId, status);
+      res.status(200).json({ result, message: "Status updated successfully!" });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -568,9 +562,9 @@ export const VendorController = {
 
   async loadAllReviews(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.query.vendorId as string;
-      const reviews=await getAllReviews(vendorId)
-      res.status(200).json({reviews})
+      const vendorId: string = req.query.vendorId as string;
+      const reviews = await getAllReviews(vendorId);
+      res.status(200).json({ reviews });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -583,12 +577,12 @@ export const VendorController = {
 
   async addDates(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.body.vendorId as string;
-      const status=req.body.status;
-      const date=req.body.date;
-      console.log(vendorId,status,date)
-      const bookedDates=await addDateAvailability(vendorId,status,date)
-      res.status(200).json({bookedDates,message:"Date status updated!"})
+      const vendorId: string = req.body.vendorId as string;
+      const status = req.body.status;
+      const date = req.body.date;
+      console.log(vendorId, status, date);
+      const bookedDates = await addDateAvailability(vendorId, status, date);
+      res.status(200).json({ bookedDates, message: "Date status updated!" });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -598,13 +592,12 @@ export const VendorController = {
       }
     }
   },
-
 
   async loadDates(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string=req.query.vendorId as string;
-      const bookedDates=await getAllDates(vendorId)
-      res.status(200).json({bookedDates})
+      const vendorId: string = req.query.vendorId as string;
+      const bookedDates = await getAllDates(vendorId);
+      res.status(200).json({ bookedDates });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -614,10 +607,4 @@ export const VendorController = {
       }
     }
   },
-
-
 };
-
-
-
-

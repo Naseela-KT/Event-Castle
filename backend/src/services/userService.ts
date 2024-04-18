@@ -290,10 +290,10 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
 }
 };
 
-export const FavoriteVendors=async(userid:string)=>{
+export const FavoriteVendors=async(userid:string,page: number, pageSize: number)=>{
   try {
-    const data = await getfavVendors(userid);
-    return data;
+    const {favoriteVendors:result,count:totalFavsCount} = await getfavVendors(userid,page,pageSize);
+    return {result,totalFavsCount};
   } catch (error) {
     throw error;
   }

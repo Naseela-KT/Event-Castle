@@ -153,7 +153,7 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
   };
 
 
-  export const getfavVendors=async( userid:string)=>{
+  export const getfavVendors=async( userid:string,page:number,pageSize:number)=>{
     try {
       const userData = await User.findById(userid);
       if (!userData) {
@@ -165,15 +165,17 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       if (!favoriteVendorIds || favoriteVendorIds.length === 0) {
         throw new Error('No favorite vendors found for this user');
       }
-    
-      const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } });
-    
-      return favoriteVendors;
+      const skip = (page - 1) * pageSize;
+      const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } }).skip(skip).limit(pageSize).exec();;
+      const count=await vendor.countDocuments({ _id: { $in: favoriteVendorIds } });
+      return {favoriteVendors,count};
       
     } catch (error) {
      throw error; 
     }
     }
+
+   
 
 
     export const deletefavVendor=async( userId:string,vendorId:string)=>{

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendor';
 import {
@@ -126,10 +126,11 @@ export const CheckExistingVendor = async(email:string)=>{
 
 
 
-export const getVendors=async()=>{
+export const getVendors=async(page: number, pageSize: number)=>{
   try {
-    const vendors=await findAllVendors();
-    return vendors;
+    const vendors=await findAllVendors(page,pageSize);
+    const totalVendorsCount = await getTotalVendorsCount();
+    return { vendors, totalVendorsCount };
   } catch (error) {
     throw error;
   }

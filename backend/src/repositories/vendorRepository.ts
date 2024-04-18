@@ -23,9 +23,20 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
     }
 };
 
-export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number): Promise<VendorDocument[] | null> => {
   try {
-    return await Vendor.find({});
+    const skip = (page - 1) * pageSize;
+    const sortBy = 'overallRating';
+    const sortOrder = 'desc';
+    return await Vendor.find({}).skip(skip).limit(pageSize).exec();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTotalVendorsCount = async (): Promise<number> => {
+  try {
+    return await Vendor.countDocuments({});
   } catch (error) {
     throw error;
   }

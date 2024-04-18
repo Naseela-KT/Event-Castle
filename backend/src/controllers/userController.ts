@@ -496,13 +496,16 @@ export const UserController = {
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
       const userId: string = req.query.userid as string;
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
 
       if (!userId) {
         res.status(400).json({ error: "Invalid user id." });
       }
-      const result = await FavoriteVendors( userId);
+      const {result,totalFavsCount} = await FavoriteVendors( userId,page,pageSize);
+      const totalPages = Math.ceil(totalFavsCount / pageSize);
       if (result) {
-        res.status(200).json({ data:result});
+        res.status(200).json({ data:result,totalPages: totalPages});
       } else {
         res.status(400).json({ message: "No vendors in favorites." });
       }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import Loader from '../../common/Loader';
+import Loader from '../../components/common/Loader';
 import EditProfile from './Profile/EditProfile';
 import Posts from './Posts/Posts';
 import CreatePost from './Posts/CreatePost';
