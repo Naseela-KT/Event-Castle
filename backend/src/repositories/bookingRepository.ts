@@ -111,8 +111,9 @@ export const updateBookingStatusById = async (
       }
     }
     const result = await Booking.findByIdAndUpdate(bookingId, {
-      $set: { status: status },
+      $set: { status: status}
     });
+    await vendor.findByIdAndUpdate(booking.vendorId, {$inc: { totalBooking: 1 }})
     return result;
   } catch (error) {
     throw error;
