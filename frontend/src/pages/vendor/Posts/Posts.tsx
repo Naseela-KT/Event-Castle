@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { axiosInstanceVendor } from '../../../api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import Pagination from '../../../components/common/Pagination';
 
 interface Post {
   imageUrl: string;
@@ -21,19 +22,30 @@ export default function Posts() {
   );
   const [posts, setPosts] = useState<Post[]>([]);
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstanceVendor
-      .get(`/posts?vendorid=${vendorData?._id}`, { withCredentials: true })
-      .then((response) => {
-        setPosts(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log('here', error);
-      });
-  }, [fetchTrigger]);
+    fetchPosts(currentPage);
+  }, [currentPage]);
+
+  const fetchPosts = async (page: number) => {
+    try {
+      const response = await axiosInstanceVendor.get(
+        `/posts?vendorid=${vendorData?._id}&page=${page}`,
+        { withCredentials: true },
+      );
+      setPosts(response.data.posts);
+      const totalPagesFromResponse = response.data.totalPages;
+      setTotalPages(totalPagesFromResponse);
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+    }
+  };
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleDelete = (postId: string) => {
     axiosInstanceVendor
@@ -52,7 +64,7 @@ export default function Posts() {
   return (
     <>
       <DefaultLayout>
-        <Breadcrumb pageName="Posts" folderName=""/>
+        <Breadcrumb pageName="Posts" folderName="" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 m-2">
           {posts.map(({ imageUrl, caption, _id }, index) => (
             <div key={index} className="card shadow-lg rounded-lg relative">
@@ -73,6 +85,14 @@ export default function Posts() {
             </div>
           ))}
         </div>
+        {posts.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            isTable={false}
+          />
+        )}
       </DefaultLayout>
     </>
   );

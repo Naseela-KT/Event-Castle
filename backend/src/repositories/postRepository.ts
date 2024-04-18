@@ -11,10 +11,12 @@ export const createNewPost=async (postData: Partial<PostDocument>): Promise<Post
   }
 
 
-export const findPostsByVendorId=async(vendor_id: string):Promise<PostDocument[]>=>{
+export const findPostsByVendorId=async(vendor_id: string,page:number,pageSize:number)=>{
   try {
-    const result = await Post.find({vendor_id:vendor_id});
-    return result;
+    const skip = (page - 1) * pageSize;
+    const posts = await Post.find({vendor_id:vendor_id}).skip(skip).limit(pageSize).exec();
+    const totalPosts=await Post.countDocuments({ vendor_id:vendor_id })
+    return {posts,totalPosts};
   } catch (error) {
     throw error;
   }

@@ -13,10 +13,10 @@ export const createPost=async(caption:string,imageName:string,vendor_id:string,i
     }
   }
 
-export const getAllPostsByVendor=async(vendor_id:string):Promise<PostDocument[]>=>{
+export const getAllPostsByVendor=async(vendor_id:string,page:number,pageSize:number)=>{
   try{
-    const posts=await findPostsByVendorId(vendor_id)
-    return posts;
+    const {posts,totalPosts}=await findPostsByVendorId(vendor_id,page,pageSize)
+    return {posts,totalPosts};
   } catch (error) {
     throw error;
   }

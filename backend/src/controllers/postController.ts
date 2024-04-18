@@ -75,8 +75,11 @@ export const PostController = {
   async getPosts(req: Request, res: Response): Promise<void> {
     try {
       const vendor_id:string=req.query.vendorid as string;
-      const posts=await getAllPostsByVendor(vendor_id)
-      res.status(201).json(posts);
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
+      const {posts,totalPosts}=await getAllPostsByVendor(vendor_id,page,pageSize)
+      const totalPages = Math.ceil(totalPosts / pageSize);
+      res.status(201).json({posts,totalPages: totalPages});
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });

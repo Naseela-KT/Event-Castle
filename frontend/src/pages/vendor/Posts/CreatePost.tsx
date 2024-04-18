@@ -9,7 +9,7 @@ import { Card, CardHeader, CardBody, Typography, Input, Button } from "@material
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { fileURLToPath } from "url";
+
 
 
  

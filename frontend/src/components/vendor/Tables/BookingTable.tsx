@@ -3,7 +3,7 @@ import { axiosInstanceVendor } from '../../../api/axiosinstance';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { Link } from 'react-router-dom';
-import { Button, IconButton } from '@material-tailwind/react';
+import Pagination from '../../common/Pagination';
 
 interface Booking {
   _id: string;
@@ -129,50 +129,12 @@ const BookingTable = () => {
           </tbody>
         </table>
         {bookings.length > 0 && (
-          <div className="flex items-center justify-end border-t border-blue-gray-50 p-4 gap-1">
-            {currentPage > 1 && (
-              <Button
-                variant="outlined"
-                size="sm"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-                onClick={() => handlePageChange(currentPage - 1)}
-              >
-                Previous
-              </Button>
-            )}
-
-            <div className="flex items-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <IconButton
-                    variant={currentPage == page ? 'gradient' : 'outlined'}
-                    size="sm"
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    {page}
-                  </IconButton>
-                ),
-              )}
-            </div>
-            {currentPage < totalPages && (
-              <Button
-                variant="outlined"
-                size="sm"
-                onClick={() => handlePageChange(currentPage + 1)}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                Next
-              </Button>
-            )}
-          </div>
+            <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePageChange={handlePageChange}
+            isTable={true}
+          />
         )}
       </div>
     </div>
