@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { addABooking, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, updateStatusById } from "../services/bookingService";
+import { acquireLockForDate, addABooking, checkIfDatePresent, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, releaseLockForDate, updateStatusById } from "../services/bookingService";
+import { CustomError } from "../error/customError";
 
 
 
@@ -16,13 +17,29 @@ export const BookingController = {
         const date=req.body.date;
         const pin=parseInt(req.body.pin);
         const mobile=parseInt(req.body.mobile);
-        console.log(req.body)
-  
-        const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
-        res.status(201).json({booking:booking,message:"Booking done Successfully! Check profile for updates!"});
+        const DateAlreadyBooked  = await checkIfDatePresent(vendorId , date );
+            
+            if(DateAlreadyBooked){
+              throw new CustomError("Sorry this date is not available!",404)
+            }else{
+              try {
+                    await acquireLockForDate(vendorId, date);
+                    const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
+                    await releaseLockForDate(vendorId, date);
+                    res.status(201).json({booking:booking,message:"Booking done Successfully"});
+              } catch (error) {
+                    console.error("Error acquiring lock:", error);
+                    res.status(400).json({ message: "Sorry, this date is currently not available." });
+              }
+         
+            }
       } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        if (error instanceof CustomError) {
+          res.status(error.statusCode).json({ message: error.message });
+        } else {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
       }
     },
 

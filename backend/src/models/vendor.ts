@@ -10,6 +10,11 @@ export interface Review {
     reply:Array<string>
 }
 
+interface Lock {
+    date: string;
+    isLocked: boolean;
+}
+
 export interface Vendor {
     email : string;
     password : string;
@@ -29,6 +34,9 @@ export interface Vendor {
     logoUrl:string;
     bookedDates:Array<string>;
     refreshToken:string;
+    totalRating:number;
+    locks: Lock[];
+    
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -51,7 +59,19 @@ const VendorSchema: Schema = new Schema({
     coverpicUrl:{type:String},
     logoUrl:{type:String},
     bookedDates:{type:Array<String>},
-    refreshToken:{type:String}
+    refreshToken:{type:String},
+    totalRating:{type:Number},
+    locks: [{
+        date: {
+          type: String,
+          required: true
+        },
+        isLocked: {
+          type: Boolean,
+          default: false
+        }
+      }]
+
 });
 
 export default mongoose.model<VendorDocument>('Vendor', VendorSchema);

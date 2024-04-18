@@ -30,6 +30,8 @@ const initialValues: FormValues = {
   mobile: '',
 };
 
+
+
 const BookEventForm: React.FC = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const navigate=useNavigate()
@@ -45,6 +47,7 @@ const BookEventForm: React.FC = () => {
     pin: '',
     mobile: '',
   });
+
 
 
   const handleChange = (e: { target: { name: string; value: string; }; }) => {
@@ -69,6 +72,7 @@ const BookEventForm: React.FC = () => {
           navigate("/profile/booking-details")
         })
         .catch((error) => {
+          toast.error(error.response.data.message)
           console.log("here", error);
         });
     }
@@ -104,6 +108,7 @@ const BookEventForm: React.FC = () => {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                     crossOrigin={undefined}
+                    
                   />
                  
                 </div>
