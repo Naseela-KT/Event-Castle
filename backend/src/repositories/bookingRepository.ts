@@ -39,11 +39,15 @@ export const createNewBooking = async (
 };
 
 export const findBookingsByVendorId = async (
-  vendorId: string
-): Promise<bookingDocument[]> => {
+  vendorId: string,
+  page: number, 
+  pageSize: number
+)=> {
   try {
-    const result = await Booking.find({ vendorId: vendorId });
-    return result;
+    const skip = (page - 1) * pageSize;
+    const bookings = await Booking.find({ vendorId: vendorId }).skip(skip).limit(pageSize).exec();
+    const totalBookings=await Booking.countDocuments({ vendorId: vendorId })
+    return {bookings,totalBookings};
   } catch (error) {
     throw error;
   }

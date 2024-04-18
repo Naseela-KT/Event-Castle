@@ -71,10 +71,10 @@ export const addABooking=async(eventName:string, name:string, city:string,date:s
     }
 }
 
-export const getAllBookingsByVendor=async(vendorId:string):Promise<bookingDocument[]>=>{
+export const getAllBookingsByVendor=async(vendorId:string,page: number, pageSize: number)=>{
   try{
-    const bookings=await findBookingsByVendorId(vendorId)
-    return bookings;
+    const {bookings,totalBookings}=await findBookingsByVendorId(vendorId,page,pageSize)
+    return {bookings,totalBookings};
   } catch (error) {
     throw error;
   }

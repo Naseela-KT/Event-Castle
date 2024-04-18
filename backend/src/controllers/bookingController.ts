@@ -46,8 +46,11 @@ export const BookingController = {
     async getBookingsByVendor(req: Request, res: Response): Promise<void> {
       try {
         const vendorId: string = req.query.vendorId as string;
-        const bookings = await getAllBookingsByVendor(vendorId);
-        res.status(201).json({bookings});
+        const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
+        const {bookings,totalBookings} = await getAllBookingsByVendor(vendorId,page,pageSize);
+        const totalPages = Math.ceil(totalBookings / pageSize);
+        res.status(201).json({bookings,totalPages: totalPages});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
