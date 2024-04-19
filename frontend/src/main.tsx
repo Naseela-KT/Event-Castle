@@ -21,6 +21,7 @@ import UsersList from './pages/admin/UsersList';
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute';
 import VendorProfile from './components/admin/vendorList/VendorProfile';
 import Wallet from './pages/admin/Wallet';
+import Notifications from './pages/admin/Notifications';
 
 
 
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
           <Route path="/admin/users" element={<UsersList />} />
           <Route path="/admin/vendor" element={<VendorProfile />} />
           <Route path="/admin/wallet" element={<Wallet />} />
+          <Route path="/admin/inbox" element={<Notifications />} />
         </Route>
       </Route>
 

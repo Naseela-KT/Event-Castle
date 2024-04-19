@@ -21,11 +21,15 @@ export const createNewPaymnet = async (
       })
       await vendorNotification.save();
       
-      await admin.updateMany({}, {$inc: {wallet: paymentData.amount}});
+      let AdminData=await admin.findOne({});
+      if (AdminData !== null && paymentData.amount !== undefined) {
+        AdminData.wallet += paymentData.amount;
+        await AdminData.save();
+      }
 
       const adminNotification=new notification({
         sender:paymentData.userId,
-        recipient: paymentData.vendorId,
+        recipient:AdminData?._id,
         message:`${paymentData.amount} got credited to wallet`
       })
       await adminNotification.save();

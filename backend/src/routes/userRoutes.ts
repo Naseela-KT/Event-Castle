@@ -64,7 +64,7 @@ router.get('/user-notifications',NotificationController.getUserNotifications)
 router.get('/get-live',LiveController.getLive)
 router.post('/add-live',LiveController.addLive)
 router.patch('/change-live-status',LiveController.changeLiveStatus)
-
+router.patch('/toggle-read',NotificationController.toggleRead)
 
 
 

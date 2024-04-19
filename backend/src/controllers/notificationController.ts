@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { changeReadStatus, getNotificationForUser, getNotificationForVendor } from "../services/notificationService";
+import { changeReadStatus, getNotificationForAdmin, getNotificationForUser, getNotificationForVendor } from "../services/notificationService";
 
 
 
@@ -19,6 +19,15 @@ export const NotificationController = {
     try {
       const vendorId:string=req.query.vendorId as string
       const data=await getNotificationForVendor(vendorId)
+      res.status(201).json({notification:data})
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getAdminNotifications(req: Request, res: Response){
+    try {
+      const adminId:string=req.query.adminId as string
+      const data=await getNotificationForAdmin(adminId)
       res.status(201).json({notification:data})
     } catch (error) {
       console.log(error)

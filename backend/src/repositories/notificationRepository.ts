@@ -21,6 +21,14 @@ export const findNotificationsByVendorId = async (vendorId: string)=> {
     }
   };
 
+export const findNotificationsByAdminId=async (adminId: string)=> {
+  try {
+    return await notification.find({recipient:adminId});
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const changeStatusById=async(id: string,recipient:string)=>{
     try {
         const notificationItem = await notification.findById(id); 

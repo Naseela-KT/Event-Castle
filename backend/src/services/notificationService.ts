@@ -1,5 +1,5 @@
 
-import { changeStatusById, findNotificationsByUserId, findNotificationsByVendorId } from "../repositories/notificationRepository";
+import { changeStatusById, findNotificationsByAdminId, findNotificationsByUserId, findNotificationsByVendorId } from "../repositories/notificationRepository";
 
 
 
@@ -22,6 +22,17 @@ export const getNotificationForVendor = async (vendorId:string) => {
       throw error;
     }
   };
+
+
+export const getNotificationForAdmin= async (adminId:string) => {
+  try {
+    const data = await findNotificationsByAdminId(adminId);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export const changeReadStatus = async (id:string,recipient:string) => {
     try {

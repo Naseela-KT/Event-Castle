@@ -5,6 +5,7 @@ import { VendorTypeController } from "../controllers/vendorTypeController";
 import { VendorController } from "../controllers/vendorController";
 import { PaymentController } from "../controllers/paymentController";
 import adminAuth from "../middlewares/adminAuth";
+import { NotificationController } from "../controllers/notificationController";
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router.get('/all-payment-details',PaymentController.getAllPayments);
 
 router.put('/update-verify-status',VendorController.updateVerifyStatus);
 router.get('/load-admin-data',AdminController.getAdminData)
+
+
+router.get('/admin-notifications',NotificationController.getAdminNotifications);
+router.patch('/toggle-read',NotificationController.toggleRead)
 
 export default router;
 

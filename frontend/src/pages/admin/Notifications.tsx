@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import UserRootState from "../../../redux/rootstate/UserState";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { format } from "timeago.js";
+import AdminRootState from "../../redux/rootstate/AdminState";
+import { axiosInstanceAdmin } from "../../api/axiosinstance";
 
 interface chat {
   _id:string;
@@ -14,12 +14,12 @@ interface chat {
 
 const Notifications = () => {
   const [notifications, setNotification] = useState<chat[]>([]);
-  const user = useSelector(
-    (state: UserRootState) => state.user.userdata,
+  const admin = useSelector(
+    (state: AdminRootState) => state.admin.admindata,
   );
   useEffect(() => {
-    axiosInstance
-      .get(`/user-notifications?userId=${user?._id}`, {
+    axiosInstanceAdmin
+      .get(`/admin-notifications?adminId=${admin?._id}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -29,13 +29,13 @@ const Notifications = () => {
       .catch((error) => {
         console.log('here', error);
       });
-  }, [notifications]);
+  }, []);
 
 
   const handleRead = async (e: React.MouseEvent<HTMLButtonElement>,id: string) => {
     e.preventDefault();
-    axiosInstance
-      .patch(`/toggle-read`,{id,recipient:user?._id}, {
+    axiosInstanceAdmin
+      .patch(`/toggle-read`,{id,recipient:admin?._id}, {
         withCredentials: true,
       })
       .then((response) => {
@@ -49,7 +49,7 @@ const Notifications = () => {
   };
 
   return (
-    <div className="col-span-6 xl:col-span-4 mx-50">
+    <div className="col-span-6 xl:col-span-4 mx-50 mt-20">
       {notifications?.map((data, key) => (
         <div
           className="block rounded-sm border border-warning border-stroke bg-white mb-4 shadow-default dark:border-strokedark dark:bg-boxdark hover:shadow-lg"
