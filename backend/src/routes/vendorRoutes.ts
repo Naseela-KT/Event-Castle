@@ -7,6 +7,7 @@ import { S3Client,PutObjectCommand} from "@aws-sdk/client-s3";
 import multer from 'multer';
 import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
+import { NotificationController } from '../controllers/notificationController';
 const router = express.Router();
 
 
@@ -53,6 +54,11 @@ router.put('/update-booking-status',BookingController.updateStatus)
 router.post('/verification-request',VendorController.sendVerifyRequest)
 router.post('/add-dates',VendorController.addDates)
 router.get('/load-dates',VendorController.loadDates)
+
+
+router.get('/vendor-notifications',NotificationController.getVendorNotifications)
+
+router.patch('/toggle-read',NotificationController.toggleRead)
 
 
 export default router;

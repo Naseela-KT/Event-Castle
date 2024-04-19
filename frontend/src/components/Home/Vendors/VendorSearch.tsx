@@ -1,6 +1,6 @@
 import { Button, Input } from '@material-tailwind/react'
 
-const VendorSearch = () => {
+const VendorSearch = ({onChange}) => {
   return (
     <>
      <Input
@@ -11,6 +11,8 @@ const VendorSearch = () => {
               containerProps={{
                 className: 'min-w-[288px]',
               }}
+              onChange={(e) =>setSearch(e.target.value)}  
+              onKeyUp={onChange}  
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
               crossOrigin={undefined}

@@ -1,5 +1,6 @@
 import admin from "../models/admin";
 import booking from "../models/booking";
+import notification from "../models/notification";
 import payment, { paymentDocument } from "../models/payment";
 
 export const createNewPaymnet = async (
@@ -13,7 +14,21 @@ export const createNewPaymnet = async (
       }
       const result = await payment.create(paymentData);
       await booking.findByIdAndUpdate(paymentData.bookingId,{$set:{payment_status:"Completed"}})
+      const vendorNotification=new notification({
+        sender:paymentData.userId,
+        recipient: paymentData.vendorId,
+        message:"Payment completed!"
+      })
+      await vendorNotification.save();
+      
       await admin.updateMany({}, {$inc: {wallet: paymentData.amount}});
+
+      const adminNotification=new notification({
+        sender:paymentData.userId,
+        recipient: paymentData.vendorId,
+        message:`${paymentData.amount} got credited to wallet`
+      })
+      await adminNotification.save();
       return result;
     } catch (error) {
       throw error;

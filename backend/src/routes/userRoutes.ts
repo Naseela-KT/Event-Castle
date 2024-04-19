@@ -5,6 +5,9 @@ import multer from 'multer';
 import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
 import { PaymentController } from '../controllers/paymentController';
+import { VendorTypeController } from '../controllers/vendorTypeController';
+import { NotificationController } from '../controllers/notificationController';
+import { LiveController } from '../controllers/liveController';
 
 
 
@@ -51,6 +54,16 @@ router.post('/create-checkout-session',PaymentController.makePayment);
 router.post('/add-payment',PaymentController.addPayment);
 
 router.put('/cancel-booking',BookingController.cancelBookingByUser)
+
+router.get('/vendor-types' , VendorTypeController.getVendorTypes);
+
+router.get('/user-notifications',NotificationController.getUserNotifications)
+
+
+// Live
+router.get('/get-live',LiveController.getLive)
+router.post('/add-live',LiveController.addLive)
+router.patch('/change-live-status',LiveController.changeLiveStatus)
 
 
 

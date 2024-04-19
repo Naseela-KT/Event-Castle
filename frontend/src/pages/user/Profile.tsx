@@ -7,11 +7,11 @@ import Footer from "../../layout/userLayout/footer";
 import BookingDetails from "../../components/user/Profile/BookingDetails";
 import SingleBooking from "../../components/user/Profile/SingleBooking";
 import Wallet from "../../components/user/Profile/Wallet";
+import Notifications from "../../components/user/Profile/Notifications";
 
 
 
 const Profile: React.FC = () => {
-
   return (
     <>
     <div className="flex bg-gray-100">
@@ -24,6 +24,7 @@ const Profile: React.FC = () => {
           <Route path="/booking-details" element={<BookingDetails />} />
           <Route path="/booking" element={<SingleBooking />} />
           <Route path="/wallet" element={<Wallet/>} />
+          <Route path="/notifications" element={<Notifications/>}/>
         </Routes>
       </div>
     </div>

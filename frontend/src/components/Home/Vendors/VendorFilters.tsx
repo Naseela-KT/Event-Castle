@@ -35,7 +35,7 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = () => {
+const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>
@@ -63,64 +63,32 @@ const VendorFilters = () => {
         <AccordionBody>
         <Card  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-react"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-react"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
-
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              React.js
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-vue"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-vue"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              Vue.js
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-svelte"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              Svelte.js
-            </Typography>
-          </label>
-        </ListItem>
+        
+      {vendorTypeData.map((vendorType, index) => (
+                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onClick={() => onCategorySelect(vendorType._id)}>
+                  <label
+                    htmlFor={`vertical-list-react-${index}`}
+                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                  >
+                    <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                      <Checkbox
+                        id={`vertical-list-react-${index}`}
+                        ripple={false}
+                        className="hover:before:opacity-0"
+                        containerProps={{
+                          className: "p-0",
+                        }}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined}              
+                      />
+                    </ListItemPrefix>
+                    <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                      {vendorType.type}
+                    </Typography>
+                  </label>
+                </ListItem>
+              ))}
       </List>
     </Card>
         </AccordionBody>

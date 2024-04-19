@@ -126,16 +126,16 @@ export const CheckExistingVendor = async(email:string)=>{
 
 
 
-export const getVendors=async(page: number, pageSize: number)=>{
+
+export const getVendors=async(page: number, pageSize: number, search:string , sortBy: string | null , category:string | null)=>{
   try {
-    const vendors=await findAllVendors(page,pageSize);
+    const vendors=await findAllVendors(page ,pageSize , search ,sortBy ,category);
     const totalVendorsCount = await getTotalVendorsCount();
     return { vendors, totalVendorsCount };
   } catch (error) {
     throw error;
   }
 }
-
 
 
 export const toggleVendorBlock = async(vendorId:string): Promise<void> =>{

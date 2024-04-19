@@ -73,7 +73,7 @@ export function VendorProfile() {
       .post(`/add-favorite-vendor?vendorId=${id}&userId=${user?._id}`, { withCredentials: true })
       .then((response) => {
         console.log(response)
-        setFavourite(true);
+        setFavourite(response.data.fav);
         toast.success(response.data.message)
         console.log(response.data);
       })

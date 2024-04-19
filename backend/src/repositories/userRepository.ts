@@ -1,10 +1,20 @@
 import User , {UserDocument} from "../models/user";
 import { Document } from 'mongoose';
 import vendor from "../models/vendor";
+import notification from "../models/notification";
+import admin from "../models/admin";
 
 export const createUser = async (userData: Partial<UserDocument>): Promise<UserDocument> => {
     try {
-      return await User.create(userData);
+      const Admin=await admin.findOne({})
+     const newUser=await User.create(userData);
+      const adminNotification=new notification({
+        sender:newUser._id,
+        recipient: Admin?._id,
+        message:`New user registered!`
+      })
+      await adminNotification.save();
+      return newUser;
     } catch (error) {
       throw error;
     }
@@ -139,6 +149,9 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       }
   
       if (user.favourite.includes(vendorId)) {
+        const index = user.favourite.indexOf(vendorId);
+        user.favourite.splice(index, 1);
+        await user.save();
         return false; // Vendor already in favorites
       }
   

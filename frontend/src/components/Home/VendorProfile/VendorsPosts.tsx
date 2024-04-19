@@ -35,7 +35,7 @@ const VendorPosts= () => {
  useEffect(() => {
     if(path=="/view-vendor"){
       axiosInstance.get(`/posts?vendorid=${id}`,{withCredentials:true}).then((response) => {
-        setPosts(response.data);
+        setPosts(response.data.posts);
         console.log(response.data)
       }).catch((error) => {
         console.log("here", error);

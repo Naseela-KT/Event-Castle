@@ -4,16 +4,25 @@ import mongoose from "mongoose";
 import Vendor , {VendorDocument,Review} from "../models/vendor";
 import vendor from "../models/vendor";
 import { CustomError } from "../error/customError";
+import admin from "../models/admin";
+import notification from "../models/notification";
 
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
     try {
-      return await Vendor.create(vendorData);
+      const Admin=await admin.findOne({})
+     const newVendor=await vendor.create(vendorData);
+      const adminNotification=new notification({
+        sender:newVendor._id,
+        recipient: Admin?._id,
+        message:`New vendor registered!`
+      })
+      await adminNotification.save();
+      return newVendor;
     } catch (error) {
       throw error;
     }
-  };
-
+};
 
 export const findvendorByEmail = async (email: string): Promise<VendorDocument | null> => {
     try {
@@ -23,16 +32,39 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
     }
 };
 
-export const findAllVendors = async (page: number, pageSize: number): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number, search: string, sortBy: string | null, category: string | null) => {
   try {
+    let query: any = {};
+
+    // Apply category filter
+    if (category) {
+      query.vendor_type = category;
+    }
+
+    // Apply search criteria
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { city: { $regex: search, $options: "i" } },
+      ];
+    }
+
     const skip = (page - 1) * pageSize;
-    const sortBy = 'overallRating';
-    const sortOrder = 'desc';
-    return await Vendor.find({}).skip(skip).limit(pageSize).exec();
+    let cursor = vendor.find(query).skip(skip).limit(pageSize);
+
+    if (sortBy) {
+      cursor = cursor.sort(sortBy); 
+    }
+
+    return await cursor.exec();
   } catch (error) {
     throw error;
   }
 };
+
+
+
 
 export const getTotalVendorsCount = async (): Promise<number> => {
   try {

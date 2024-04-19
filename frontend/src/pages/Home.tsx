@@ -14,6 +14,7 @@ import {
   FingerPrintIcon,
 } from '@heroicons/react/24/outline';
 import SubsribeCard from '../components/Home/SubsribeCard';
+import LiveEvents from '../components/Home/LiveEvents';
 function Home() {
   return (
     <>
@@ -104,6 +105,12 @@ function Home() {
             </Card>
           </div>
         </div>
+      </section>
+      <section className="mt-10 mb-30 mx-20 items-center">
+      <h1 style={{ fontFamily: 'playfair display', fontSize: '30px' }} className="text-center mb-10">
+      EXPLORE &nbsp;LIVE &nbsp;EVENTS
+    </h1>
+        <LiveEvents />
       </section>
       <section className="mt-10 mb-20 mx-20 items-center">
       <h1 style={{ fontFamily: 'playfair display', fontSize: '30px' }} className="text-center mb-10">

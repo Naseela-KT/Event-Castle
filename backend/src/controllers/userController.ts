@@ -483,9 +483,9 @@ export const UserController = {
       const data = await FavoriteVendor(vendorId, userId);
 
       if (data) {
-        res.status(200).json({ message: "vendor added to Favorite list.." });
+        res.status(200).json({ message: "vendor added to Favorite list..",fav:true });
       } else {
-        res.status(400).json({ message: "vendor already present in favorites." });
+        res.status(200).json({ message: "vendor removed from favorites",fav:false });
       }
     } catch (error) {
       console.error(error);

@@ -4,6 +4,7 @@ import vendor, { VendorDocument } from "../models/vendor";
 import user, { UserDocument } from "../models/user";
 import admin from "../models/admin";
 import payment from "../models/payment";
+import notification from "../models/notification";
 
 export const checkDate = async (
   vendorId: string,
@@ -31,6 +32,14 @@ export const createNewBooking = async (
     await vendor.findByIdAndUpdate(vendorId, {
       $push: { bookedDates: bookingData.date },
     });
+
+    const newNotification=new notification({
+      sender:bookingData.userId,
+      recipient: bookingData.vendorId,
+      message:"New event Booked!"
+    })
+
+    await newNotification.save();
 
     return result;
   } catch (error) {
@@ -101,6 +110,14 @@ export const updateBookingStatusById = async (
 
       const Payment = await payment.findOne({ bookingId: bookingId });
 
+      const newNotification=new notification({
+        sender:booking.vendorId,
+        recipient: booking.userId,
+        message:"Booking is rejected By Vendor"
+      })
+  
+      await newNotification.save();
+
       if (status == "Cancelled" && Payment) {
         const { userId } = booking;
         const User = await user.findById(userId);
@@ -116,12 +133,28 @@ export const updateBookingStatusById = async (
 
         booking.refundAmount += 500;
         await booking.save();
+
+        const newNotification=new notification({
+          sender:booking.userId,
+          recipient: booking.vendorId,
+          message:"Booking Cancelled by user"
+        })
+    
+        await newNotification.save();
       }
     }
     const result = await Booking.findByIdAndUpdate(bookingId, {
       $set: { status: status}
     });
     await vendor.findByIdAndUpdate(booking.vendorId, {$inc: { totalBooking: 1 }})
+    const newNotification=new notification({
+      sender:booking.vendorId,
+      recipient: booking.userId,
+      message:"Booking Accepted by vendor"
+    })
+
+    await newNotification.save();
+    
     return result;
   } catch (error) {
     throw error;

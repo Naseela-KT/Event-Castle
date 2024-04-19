@@ -24,7 +24,7 @@ const adminSchema=new Schema<AdminDocument>({
         default:Date.now()
     },
     wallet:{
-        type:Number,
+        type:Number, 
         default:0
     },
     refreshToken:{
