@@ -8,6 +8,7 @@ import { PaymentController } from '../controllers/paymentController';
 import { VendorTypeController } from '../controllers/vendorTypeController';
 import { NotificationController } from '../controllers/notificationController';
 import { LiveController } from '../controllers/liveController';
+import { changeViewMessage, deleteAMessage } from '../controllers/messageController';
 
 
 
@@ -66,6 +67,10 @@ router.post('/add-live',LiveController.addLive)
 router.patch('/change-live-status',LiveController.changeLiveStatus)
 router.patch('/toggle-read',NotificationController.toggleRead)
 
+
+
+router.patch('/delete-for-everyone',deleteAMessage)
+router.patch('/delete-for-me',changeViewMessage)
 
 
 export default router;

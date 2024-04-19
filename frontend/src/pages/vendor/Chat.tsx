@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import ChatProfile from '../../components/chat/vendor/profile/ChatProfile';
 import SearchInput from '../../components/chat/vendor/sidebar/SearchInput';
 import Conversation from '../../components/chat/vendor/sidebar/Conversation';
-import UserRootState from '../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
@@ -15,7 +14,7 @@ import VendorRootState from '../../redux/rootstate/VendorState';
 const Chat = () => {
   // const user = useSelector((state: UserRootState) => state.user.userdata);
   const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
-
+  const [isUpdated,setIsUpdated]=useState(false)
 
   const [conversation, setconversation] = useState([]);
   const [currentchat, setcurrentchat] = useState(null);
@@ -99,7 +98,7 @@ const Chat = () => {
       }
     };
     getmessages();
-  }, [currentchat]);
+  }, [currentchat,isUpdated]);
 
 
 
@@ -299,7 +298,7 @@ const Chat = () => {
               
                       {messages.map((m) => (
                         <div ref={scrollRef}>
-                          <Message message={m} own={m.senderId === vendor?._id} />
+                          <Message message={m} own={m.senderId === vendor?._id} setIsUpdated={setIsUpdated}/>
                         </div>
                       ))}
                       {typing && <div className="userTyping">Typing...</div>}

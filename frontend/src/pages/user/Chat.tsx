@@ -13,7 +13,7 @@ import MessageInput from '../../components/chat/user/messages/MessageInput';
 
 const Chat = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
-
+  const [isUpdated,setIsUpdated]=useState(false)
   const [conversation, setconversation] = useState([]);
   const [currentchat, setcurrentchat] = useState(null);
   const [messages, setmessages] = useState([]);
@@ -88,12 +88,13 @@ const Chat = () => {
           `/?conversationId=${currentchat?._id}`,
         );
         setmessages(res.data);
+        setIsUpdated(false)
       } catch (error) {
         console.log(error);
       }
     };
     getmessages();
-  }, [currentchat]);
+  }, [currentchat,isUpdated]);
 
 
 
@@ -149,6 +150,8 @@ const Chat = () => {
       setActiveUsers(users);
     });
   }, []);
+
+
   return (
     <div>
       <div>
@@ -294,7 +297,7 @@ const Chat = () => {
               
                       {messages.map((m) => (
                         <div ref={scrollRef}>
-                          <Message message={m} own={m.senderId === user?._id} />
+                          <Message message={m} own={m.senderId === user?._id} setIsUpdated={setIsUpdated}/>
                         </div>
                       ))}
                       {typing && <div className="userTyping">Typing...</div>}

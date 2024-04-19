@@ -4,6 +4,8 @@ export interface messageDocument extends Document{
     conversationId:String;
     senderId:String;
     text:string;
+    isDeleted:boolean;
+    deletedIds:String[]
 }
 
 const messageSchema=new Schema<messageDocument>({
@@ -18,7 +20,14 @@ const messageSchema=new Schema<messageDocument>({
     text:{
         type:String,
         required:true
-    }
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
+    },
+    deletedIds:[{
+        type:String
+    }]
 },{timestamps:true})
 
 

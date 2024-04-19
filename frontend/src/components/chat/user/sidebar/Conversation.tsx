@@ -19,8 +19,6 @@ const Conversation=({conversation , currentUser , active}) => {
        await axiosInstanceVendor.get(`/getvendor?vendorid=${friendId}`)
        .then((res)=>{
         setVendor(res.data.data)
-   
-        
        })       
       } catch (error) {
         console.log(error)

@@ -8,6 +8,7 @@ import multer from 'multer';
 import { PostController } from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
 import { NotificationController } from '../controllers/notificationController';
+import { changeViewMessage, deleteAMessage } from '../controllers/messageController';
 const router = express.Router();
 
 
@@ -59,6 +60,9 @@ router.get('/load-dates',VendorController.loadDates)
 router.get('/vendor-notifications',NotificationController.getVendorNotifications)
 
 router.patch('/toggle-read',NotificationController.toggleRead)
+
+router.patch('/delete-for-everyone',deleteAMessage)
+router.patch('/delete-for-me',changeViewMessage)
 
 
 export default router;
