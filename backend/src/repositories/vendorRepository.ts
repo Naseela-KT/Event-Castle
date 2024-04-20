@@ -32,30 +32,10 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
     }
 };
 
-export const findAllVendors = async (page: number, pageSize: number, search: string, sortBy: string | null, category: string | null) => {
-  try {
-    let query: any = {};
-
-    // Apply category filter
-    if (category) {
-      query.vendor_type = category;
-    }
-
-    // Apply search criteria
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { city: { $regex: search, $options: "i" } },
-      ];
-    }
-
+export const findAllVendors = async (page: number,pageSize:number) => {
+  try{
     const skip = (page - 1) * pageSize;
-    let cursor = vendor.find(query).skip(skip).limit(pageSize);
-
-    if (sortBy) {
-      cursor = cursor.sort(sortBy); 
-    }
+    let cursor = vendor.find({}).skip(skip).limit(pageSize);
 
     return await cursor.exec();
   } catch (error) {
@@ -124,13 +104,20 @@ export const AddVendorReview = async(content: string, rating: number, username: 
        date: new Date(),
        reply: []
      });
- 
-     await vendorData.save();
+     const ratings = vendorData.reviews.map((review) => review.rating)
+    vendorData.totalRating = calculateOverallRating(ratings);
+    await vendorData.save();
+
      return true;
   } catch (error) {
     throw error;
   }
  }
+
+ const calculateOverallRating = (ratings: any[]) => {
+  const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
+  return ratings.length > 0 ? totalRating / ratings.length : 0;
+};
 
  export async function updateVendorData(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<void> {
   try {

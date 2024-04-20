@@ -12,10 +12,14 @@ import { useNavigate } from 'react-router-dom';
 const LiveStreaming = () => {
   const [roomId, setRoomId] = useState('');
   const navigate=useNavigate()
+  const [error,setError]=useState('')
   const role_str="Host"
 
   const handleJoin=()=>{
-    
+    if(roomId.length<6){
+      setError("Enter a string having atleast 6 characters")
+      return 
+    }
     navigate(`/room/${roomId}/${role_str}`)
   }
 
@@ -52,6 +56,7 @@ const LiveStreaming = () => {
               onPointerLeaveCapture={undefined}
               crossOrigin={undefined}
             />
+            {error?<p className='text-sm text-red-400'>{error}</p>:""}
           </CardBody>
           <CardFooter
             className="pt-0"

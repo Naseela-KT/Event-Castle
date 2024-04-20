@@ -106,12 +106,9 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="mt-10 mb-30 mx-20 items-center">
-      <h1 style={{ fontFamily: 'playfair display', fontSize: '30px' }} className="text-center mb-10">
-      EXPLORE &nbsp;LIVE &nbsp;EVENTS
-    </h1>
+      
         <LiveEvents />
-      </section>
+    
       <section className="mt-10 mb-20 mx-20 items-center">
       <h1 style={{ fontFamily: 'playfair display', fontSize: '30px' }} className="text-center mb-10">
       POPULAR &nbsp;VENDOR &nbsp;TYPES

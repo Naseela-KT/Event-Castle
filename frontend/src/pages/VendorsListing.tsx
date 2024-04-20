@@ -1,4 +1,4 @@
-import { Card, CardBody, Input, Typography } from '@material-tailwind/react';
+import { Card, CardBody, Typography } from '@material-tailwind/react';
 import VendorFilters from '../components/Home/Vendors/VendorFilters';
 import VendorSort from '../components/Home/Vendors/VendorSort';
 import VendorCard from '../components/Home/Vendors/VendorCard';
@@ -6,8 +6,6 @@ import Footer from '../layout/userLayout/footer';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../api/axiosinstance';
 import Pagination from '../components/common/Pagination';
-import debounce from 'lodash/debounce';
-import { useLocation } from 'react-router-dom';
 
 interface Vendors {
   _id: string;
@@ -24,39 +22,28 @@ const VendorsListing = () => {
   const [vendors, setVendors] = useState<Vendors[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [sortBy, setSortBy] = useState<string | null>(null);
-  const [noResults, setNoResults] = useState(false);
-  const [search, setSearch] = useState<string>("");
-  const location = useLocation();
   const [vendorTypeData, setVendorTypeData] = useState([]);
-  const [categoryData, setCategoryData] = useState("");
+  
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const searchParam = queryParams.get("search");
-    fetchVendors(currentPage,searchParam);
+    fetchVendors(currentPage);
     fetchVendorTypes();
-  }, [currentPage, search, location.search, sortBy, categoryData]);
+  }, [currentPage]);
 
 
   useEffect(() => {
     fetchVendors(currentPage);
   }, [currentPage]);
 
-  const fetchVendors = async (page: number , search?: string | null) => {
+  const fetchVendors = async (page: number) => {
     try {
-      const response = await axiosInstance.get(`/getvendors?page=${page}&search=${search}&sortBy=${sortBy}&category=${categoryData}`, {
+      const response = await axiosInstance.get(`/getvendors?page=${page}`, {
         withCredentials: true,
       });
-      if (response.data.vendorData.length === 0) {
-        setNoResults(true);
-      } else {
-        setNoResults(false);
-      }
+      
       console.log(response.data.vendorData)
       setVendors(response.data.vendorData);
-      const totalPagesFromResponse = response.data.totalPages;
-      setTotalPages(totalPagesFromResponse);
+      setTotalPages(totalPages);
     } catch (error) {
       console.error('Error fetching vendors:', error);
     }
@@ -74,28 +61,10 @@ const VendorsListing = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  const handleSearch=()=>{
-    console.log(search)
-    debouncedFetchVendors(currentPage, search);
-  }
+ 
   
 
-const handleSortChange = (value: string) => {
-  setSortBy(value);
-};
 
-
-// implemented debouncing
-const debouncedFetchVendors = debounce(fetchVendors, 300);
-
-const handleCategorySelection = async (categoryId:string) => {
-  if (categoryData.includes(categoryId)) {
-    setCategoryData(categoryData.filter(_id => _id !== categoryId));
-  } else {
-    setCategoryData([...categoryData, categoryId]);
-  }
-  setCategoryData(category);
-}
 
   return (
     <>
@@ -145,29 +114,26 @@ const handleCategorySelection = async (categoryId:string) => {
               type="text"
               name="search"
               placeholder="Search vendors..."
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyUp={handleSearch}
+          
               className="px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
           <h3>Sort By:</h3>
           <div>
-            <VendorSort onChange={handleSortChange}/>
+            <VendorSort/>
           </div>
         </div>
         <div className="flex md:flex-row flex-col">
           <div>
             <h3 className="-mt-10 mb-5">Filter By</h3>
-            <VendorFilters vendorTypeData={vendorTypeData} onCategorySelect={handleCategorySelection}/>
+            <VendorFilters vendorTypeData={vendorTypeData}/>
           </div>
-          {search &&noResults ? (
-        <p className="text-center w-full text-red-500 font-bold">Sorry, no search results found.</p>
-      ) : (
+         
           <div className="md:ml-15 mx-5 flex md:flex-row flex-col gap-4">
             {vendors.map((vendor, index) => (
               <VendorCard {...vendor} key={index} />
             ))}
-          </div>)}
+          </div>
         </div>
       </section>
       {/* pagination */}

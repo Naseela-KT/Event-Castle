@@ -173,9 +173,15 @@ const Chat = () => {
     <div>
       <div>
         <div className="relative min-h-screen flex flex-col bg-gray-50">
-          <nav className="flex-shrink-0 bg-[#565656]">
+          <nav className="flex-shrink-0 bg-black">
+      
             <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
+              <div>
+                <Link to="/vendor/dashboard">
+                <i className="fa-solid fa-arrow-left text-gray-300"></i>
+                </Link>
+                </div>
                 <div></div>
                 <div className="flex lg:hidden">
                   <button className="bg-red-600 inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-600 focus:ring-white">
@@ -196,21 +202,24 @@ const Chat = () => {
                     </svg>
                   </button>
                 </div>
+                
+               
                 <div className="hidden lg:block lg:w-80">
+                  
                   <div className="flex items-center justify-end">
                     <div className="flex">
                       <Link
                         to="/chat"
                         className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white"
                       >
-                        Chat
+                        {vendor?.name}
                       </Link>
                     </div>
                     <div className="ml-4 relative flex-shrink-0">
                       <button className="bg-red-700 text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-700 focus:ring-white">
                         <img
                           className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                          src={vendor?.logoUrl}
                           alt=""
                         />
                       </button>
@@ -288,24 +297,7 @@ const Chat = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <button className="inline-flex items-center justify-center rounded-full h-1@ w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-500">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                  
                 </div>
 
                 {/* message */}

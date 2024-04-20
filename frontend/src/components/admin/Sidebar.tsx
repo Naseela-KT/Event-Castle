@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { axiosInstanceAdmin } from "../../api/axiosinstance";
 import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import { PowerIcon } from "@heroicons/react/24/outline";
 const Sidebar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const path=useLocation()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const handleOpen = (value: SetStateAction<boolean> | "") => {
@@ -51,7 +52,7 @@ const Sidebar = () => {
     <div className="sidebar fixed">
       <div className={`sidebar ${
           open ? "open" : "closed"
-        } bg-blue-900 h-screen p-5 pt-8 relative duration-30 top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
+        } bg-gray-900 h-screen p-5 pt-8 relative duration-30 top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: open ? "250px" : "80px" }}>
@@ -63,12 +64,7 @@ const Sidebar = () => {
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
-          {/* <img
-            src="/public/imgs/logo.png"
-            className={`cursor-pointer duration-500 ${
-              open && "rotate-[360deg]"
-            }`}
-          /> */}
+       
           <h1
             className={`text-white origin-left font-medium text-xl duration-200 ${
               !open && "scale-0"
@@ -80,11 +76,11 @@ const Sidebar = () => {
         <ul className="pt-6">
           <Link to="/admin/dashboard">
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`${path.pathname=="/admin/dashboard"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
               mt-9 bg-light-white
               `}
             >
-              <img src={`/public/imgs/Chart_fill.png`} />
+              <img src={`/public/imgs/Chart_fill.png`}  />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
                 Dashboard
               </span>
@@ -92,7 +88,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/admin/users">
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`${path.pathname=="/admin/users"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -104,7 +100,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/admin/vendors">
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`${path.pathname=="/admin/vendors"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -116,7 +112,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/admin/wallet">
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`${path.pathname=="/admin/wallet"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -128,7 +124,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/admin/inbox">
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`${path.pathname=="/admin/inbox"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -138,9 +134,9 @@ const Sidebar = () => {
               </span>
             </li>
           </Link>
-          <Link to="/admin/wallet">
+       
             <li
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              className={`text-gray-300 flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-6
               `}
             >
@@ -152,7 +148,7 @@ const Sidebar = () => {
                 Logout
               </span>
             </li>
-          </Link>
+   
         </ul>
       </div>
     </div>

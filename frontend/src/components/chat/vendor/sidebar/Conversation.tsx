@@ -43,7 +43,7 @@ const Conversation=({conversation , currentUser , active,currentchat}) => {
           <Link to="" className="focus:outline-none">
             <div className="flex items-center justify-between">
               <p className="text-sm font-bold text-gray-700">{user?.name}</p>
-              <div className="text-gray-400 text-xs">12:34 AM</div>
+              {/* <div className="text-gray-400 text-xs">12:34 AM</div> */}
             
             </div>
             <div className="flex items-center justify-end">

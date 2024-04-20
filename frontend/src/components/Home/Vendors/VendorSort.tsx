@@ -1,6 +1,6 @@
 import { Select, Option } from '@material-tailwind/react';
 
-const VendorSort = ({ onChange }) => {
+const VendorSort = () => {
   return (
     <Select
       placeholder="Sort by "
@@ -11,7 +11,7 @@ const VendorSort = ({ onChange }) => {
       menuProps={{ className: 'h-20' }}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
-      onChange={(value) => onChange(value === 'rating' ? '-rating' : 'rating')}
+   
     >
       <Option value="rating">High rating</Option>
       <Option value="-rating">Low rating</Option>

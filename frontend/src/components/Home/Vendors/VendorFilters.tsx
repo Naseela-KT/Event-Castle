@@ -35,7 +35,7 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
+const VendorFilters = ({vendorTypeData }) => {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>

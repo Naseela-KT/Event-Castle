@@ -127,9 +127,9 @@ export const CheckExistingVendor = async(email:string)=>{
 
 
 
-export const getVendors=async(page: number, pageSize: number, search:string , sortBy: string | null , category:string | null)=>{
+export const getVendors=async(page: number,pageSize:number)=>{
   try {
-    const vendors=await findAllVendors(page ,pageSize , search ,sortBy ,category);
+    const vendors=await findAllVendors(page,pageSize);
     const totalVendorsCount = await getTotalVendorsCount();
     return { vendors, totalVendorsCount };
   } catch (error) {

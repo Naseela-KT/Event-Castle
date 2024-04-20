@@ -20,6 +20,8 @@ export interface VendorData{
     logoUrl:string;
     reviews:Array<Review>
     bookedDates:Array<string>
+    totalBooking:number;
+    totalRating:number;
 }
 export interface VendorState{
     isVendorSignedIn: boolean;

@@ -51,59 +51,73 @@ const LiveEvents = () => {
       });
   }, []);
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        width: '70%',
-        margin: 'auto',
-      }}
-    >
-      <Accordion
-        open={alwaysOpen}
-        icon={<Icon open={handleAlwaysOpen} />}
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
+  return live?.length > 0 ? (
+    <section className="mt-10 mb-30 mx-20 items-center">
+      <h1
+        style={{ fontFamily: 'playfair display', fontSize: '30px' }}
+        className="text-center mb-10"
       >
-        <AccordionHeader
-          style={{ fontFamily: 'playfair', fontSize: '18px' }}
-          onClick={handleAlwaysOpen}
+        EXPLORE &nbsp;LIVE &nbsp;EVENTS
+      </h1>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: '70%',
+          margin: 'auto',
+        }}
+      >
+        <Accordion
+          open={alwaysOpen}
+          icon={<Icon open={handleAlwaysOpen} />}
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          Experience the Buzz of Live Events Directly from Your Screen
-        </AccordionHeader>
-        <AccordionBody>
-          {live?.map((data) => {
-            return (
-              <Card
-                className="w-full h-15 shadow-lg"
-                key={data._id}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                <CardBody
+          <AccordionHeader
+            style={{ fontFamily: 'playfair', fontSize: '18px' }}
+            onClick={handleAlwaysOpen}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            Experience the Buzz of Live Events Directly from Your Screen
+          </AccordionHeader>
+          <AccordionBody>
+            {live?.map((data) => {
+              return (
+                <Card
+                  className="w-full h-15 shadow-lg"
+                  key={data._id}
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  <Link to={data.url} className="text-blue-300">
-                    {data.url}
-                  </Link>
-                </CardBody>
-                <svg className="absolute top-7 right-8" width="20" height="20">
-                  <circle cx="15" cy="5" r="5" fill="red" />
-                </svg>
-              </Card>
-            );
-          })}
-        </AccordionBody>
-      </Accordion>
-    </div>
+                  <CardBody
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    <Link to={data.url} className="text-blue-300">
+                      {data.url}
+                    </Link>
+                  </CardBody>
+                  <svg
+                    className="absolute top-7 right-8"
+                    width="20"
+                    height="20"
+                  >
+                    <circle cx="15" cy="5" r="5" fill="red" />
+                  </svg>
+                </Card>
+              );
+            })}
+          </AccordionBody>
+        </Accordion>
+      </div>
+    </section>
+  ) : (
+    <></>
   );
 };
 
