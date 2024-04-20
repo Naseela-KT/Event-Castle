@@ -80,14 +80,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-65 flex-col bg-[#C39587] overflow-y-hidden black duration-300 ease-linear bg-dark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen border-b w-65 flex-col bg-white overflow-y-hidden black duration-300 ease-linear bg-dark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/vendor/dashboard">
-        <Typography variant="h4" className="font-medium" color='white'  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h4" className="font-medium" color='black'  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Event Castle
           </Typography>
           {/* <img src={Logo} alt="Logo" /> */}
@@ -131,7 +131,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/vendor/dashboard"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  className={`group relative ${pathname.includes("/vendor/dashboard")?"bg-gray-300 border-1 rounded-lg":""} flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.includes('reviews') &&
                     'bg-graydark dark:bg-meta-4'
                   }`}
@@ -180,7 +180,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                        className={`group relative  flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === '/profile' ||
                             pathname.includes('profile')) &&
                           'bg-graydark dark:bg-meta-4'
@@ -239,8 +239,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/view-profile"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `group ${pathname.includes("/vendor/view-profile")?"bg-gray-300 border-1 rounded-lg":""} relative flex items-center  gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ` +
+                                (isActive && '!text-black')
                               }
                             >
                               View Profile
@@ -250,8 +250,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/edit-profile"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `group relative flex items-center ${pathname.includes("/vendor/edit-profile")?"bg-gray-300 border-1 rounded-lg":""} gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white` +
+                                (isActive && '!text-black')
                               }
                             >
                               Edit Profile
@@ -261,8 +261,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/change-password"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                ` ${pathname.includes("/vendor/change-password")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white` +
+                                (isActive && '!text-black')
                               }
                             >
                               Change Password
@@ -347,8 +347,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/view-posts"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `${pathname.includes("/vendor/view-posts")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white` +
+                                (isActive && '!text-black')
                               }
                             >
                               View Posts
@@ -358,8 +358,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/add-post"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `${pathname.includes("/vendor/add-post")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white` +
+                                (isActive && '!text-black')
                               }
                             >
                               Create Post
@@ -453,8 +453,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/booking-history"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `${pathname.includes("/vendor/booking-history")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white` +
+                                (isActive && '!text-black')
                               }
                             >
                               Booking History
@@ -464,8 +464,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <NavLink
                               to="/vendor/add-date"
                               className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
+                                `${pathname.includes("/vendor/add-date")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ` +
+                                (isActive && '!text-black')
                               }
                             >
                               Add Date
@@ -485,7 +485,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                 <NavLink
                   to="/vendor/reviews"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  className={`${pathname.includes("/vendor/reviews")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.includes('reviews') &&
                     'bg-graydark dark:bg-meta-4'
                   }`}
@@ -530,7 +530,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/vendor/notifications"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  className={`${pathname.includes("/vendor/notifications")?"bg-gray-300 border-1 rounded-lg":""} group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.includes('tables') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >

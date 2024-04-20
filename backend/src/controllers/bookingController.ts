@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { acquireLockForDate, addABooking, checkIfDatePresent, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, releaseLockForDate, updateStatusById } from "../services/bookingService";
+import { acquireLockForDate, addABooking, checkIfDatePresent, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, getAllRefunds, releaseLockForDate, updateStatusById } from "../services/bookingService";
 import { CustomError } from "../error/customError";
 
 
@@ -57,11 +57,26 @@ export const BookingController = {
       }
     },
 
+    async getRefundDetails(req: Request, res: Response): Promise<void> {
+      try {
+        const userId: string = req.query.userId as string;
+        const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 4;
+        const {refund,totalRefund} = await getAllRefunds(userId,page,pageSize);
+        const totalPages = Math.ceil(totalRefund / pageSize);
+        res.status(201).json({transaction:refund,totalPages: totalPages});
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    },
+
+
     async getBookingsByUser(req: Request, res: Response): Promise<void> {
       try {
         const userId: string = req.query.userId as string;
         const page: number = parseInt(req.query.page as string) || 1;
-      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 4;
         const { bookings, totalBookings } = await getAllBookingsByUser(userId,page,pageSize);
         const totalPages = Math.ceil(totalBookings / pageSize);
         res.status(201).json({bookings,totalPages: totalPages});
@@ -108,3 +123,5 @@ export const BookingController = {
     
   
   };
+
+

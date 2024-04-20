@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Booking,{bookingDocument} from "../models/booking";
-import { checkDate, createNewBooking, findBookingsByBookingId, findBookingsByUserId, findBookingsByVendorId, updateBookingStatusById } from "../repositories/bookingRepository";
+import { checkDate, createNewBooking, findBookingsByBookingId, findBookingsByUserId, findBookingsByVendorId, findRefundForUser, updateBookingStatusById } from "../repositories/bookingRepository";
 import vendor from "../models/vendor";
 
 
@@ -75,6 +75,15 @@ export const getAllBookingsByVendor=async(vendorId:string,page: number, pageSize
   try{
     const {bookings,totalBookings}=await findBookingsByVendorId(vendorId,page,pageSize)
     return {bookings,totalBookings};
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getAllRefunds=async(userId:string,page: number, pageSize: number)=>{
+  try{
+    const {refund,totalRefund}=await findRefundForUser(userId,page,pageSize)
+    return {refund,totalRefund};
   } catch (error) {
     throw error;
   }

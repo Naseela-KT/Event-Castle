@@ -156,9 +156,9 @@ const UserNavbar=()=> {
               fill="#90A4AE"
             />
           </svg>
-          <Link to="/profile">
+          <Link to="/chat">
           <Typography variant="small" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            Edit Profile
+            Chat
           </Typography>
           </Link>
         </MenuItem>

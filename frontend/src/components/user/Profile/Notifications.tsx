@@ -49,7 +49,7 @@ const Notifications = () => {
   };
 
   return (
-    <div className="col-span-6 xl:col-span-4 mx-50">
+    <div className="col-span-6 xl:col-span-4 mx-20">
       {notifications?.map((data, key) => (
         <div
           className="block rounded-sm border border-warning border-stroke bg-white mb-4 shadow-default dark:border-strokedark dark:bg-boxdark hover:shadow-lg"

@@ -17,6 +17,7 @@ const Profile: React.FC = () => {
     <div className="flex bg-gray-100">
     <Sidebar/>
       <div className="flex-1 bg-gray-100 my-20 mt-30">
+      <div className="overflow-y-scroll" style={{ maxHeight: "calc(100vh - 120px)" }}> 
       <Routes>
           <Route path="/" element={<ProfileCard />} />
           <Route path="/change-password" element={<ChangePassword />} />
@@ -28,9 +29,8 @@ const Profile: React.FC = () => {
         </Routes>
       </div>
     </div>
-    <div className="bg-white">
-    <Footer />
-  </div>
+    </div>
+   
 </>
   );
 };

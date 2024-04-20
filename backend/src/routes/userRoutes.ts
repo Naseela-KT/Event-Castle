@@ -73,4 +73,7 @@ router.patch('/delete-for-everyone',deleteAMessage)
 router.patch('/delete-for-me',changeViewMessage)
 
 
+router.get('/all-transaction-details',BookingController.getRefundDetails)
+
+
 export default router;

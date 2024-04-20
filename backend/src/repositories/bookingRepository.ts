@@ -62,6 +62,26 @@ export const findBookingsByVendorId = async (
   }
 };
 
+
+export const findRefundForUser=async (
+  userId: string,
+  page: number, 
+  pageSize: number
+)=> {
+  try {
+    const skip = (page - 1) * pageSize;
+    const bookings = await Booking.find({ userId: userId, refundAmount: { $ne: 0 } }) // Filtering where refundAmount is not equal to "0"
+      .skip(skip)
+      .limit(pageSize)
+      .exec();
+    const totalBookings=await Booking.countDocuments({ userId: userId, refundAmount: { $ne: 0 } })
+    return {refund:bookings,totalRefund:totalBookings};
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const findBookingsByUserId = async (
   userId: string,
   page: number, 

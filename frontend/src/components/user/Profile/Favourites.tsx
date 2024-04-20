@@ -79,18 +79,18 @@ export default function Favourites() {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 m-20">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 m-10">
         {favourites.map(({ coverpicUrl, name, _id }, index) => (
           <div key={index}>
             <Card
-              className="mt-6 w-96"
+              className="mt-2 w-70"
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
               <CardHeader
                 color="blue-gray"
-                className="relative h-56"
+                className="relative h-40"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}

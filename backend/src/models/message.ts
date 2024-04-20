@@ -5,7 +5,8 @@ export interface messageDocument extends Document{
     senderId:String;
     text:string;
     isDeleted:boolean;
-    deletedIds:String[]
+    deletedIds:String[];
+    emoji:String;
 }
 
 const messageSchema=new Schema<messageDocument>({
@@ -27,7 +28,10 @@ const messageSchema=new Schema<messageDocument>({
     },
     deletedIds:[{
         type:String
-    }]
+    }],
+    emoji:{
+        type:String
+    }
 },{timestamps:true})
 
 

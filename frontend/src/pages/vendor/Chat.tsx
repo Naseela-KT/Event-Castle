@@ -1,20 +1,23 @@
 import { Link } from 'react-router-dom';
-import ChatProfile from '../../components/chat/vendor/profile/ChatProfile';
-import SearchInput from '../../components/chat/vendor/sidebar/SearchInput';
 import Conversation from '../../components/chat/vendor/sidebar/Conversation';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
-import { axiosInstanceChat, axiosInstanceMsg } from '../../api/axiosinstance';
+import {
+  axiosInstance,
+  axiosInstanceChat,
+  axiosInstanceMsg,
+} from '../../api/axiosinstance';
 import Message from '../../components/chat/vendor/messages/Message';
 import MessageInput from '../../components/chat/vendor/messages/MessageInput';
 import VendorRootState from '../../redux/rootstate/VendorState';
 
-
 const Chat = () => {
   // const user = useSelector((state: UserRootState) => state.user.userdata);
-  const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
-  const [isUpdated,setIsUpdated]=useState(false)
+  const vendor = useSelector(
+    (state: VendorRootState) => state.vendor.vendordata,
+  );
+  const [isUpdated, setIsUpdated] = useState(false);
 
   const [conversation, setconversation] = useState([]);
   const [currentchat, setcurrentchat] = useState(null);
@@ -22,11 +25,26 @@ const Chat = () => {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newMessage, setnewMessage] = useState('');
   const [activeUsers, setActiveUsers] = useState([]);
-
+  const [user, setUser] = useState({});
 
   const scrollRef = useRef();
   const socket = useRef(io('ws://localhost:8900'));
   const [typing, setTyping] = useState(false);
+
+  const handleConversationSelect = (selectedConversation) => {
+    setcurrentchat(selectedConversation);
+    const friendId = selectedConversation.members.find((m) => m !== user?._id);
+    // Fetch vendor data based on friendId
+    axiosInstance
+      .get(`/getUser?userId=${friendId}`)
+
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const sendHeartbeat = () => {
     socket.current.emit('heartbeat');
@@ -34,13 +52,13 @@ const Chat = () => {
 
   setInterval(sendHeartbeat, 60000);
 
-  useEffect(()=>{
-    console.log(vendor)
-    socket.current.emit("adduser" , vendor?._id);
-    socket.current.on("getUsers" , (users)=>{
-        console.log(users)
-    })
-},[vendor])
+  useEffect(() => {
+    console.log(vendor);
+    socket.current.emit('adduser', vendor?._id);
+    socket.current.on('getUsers', (users) => {
+      console.log(users);
+    });
+  }, [vendor]);
 
   useEffect(() => {
     socket.current = io('ws://localhost:8900');
@@ -63,8 +81,6 @@ const Chat = () => {
     });
   }, []);
 
-
-
   useEffect(() => {
     arrivalMessage &&
       currentchat?.members.includes(arrivalMessage.sender) &&
@@ -76,8 +92,8 @@ const Chat = () => {
     const getconversation = async () => {
       try {
         const res = await axiosInstanceChat.get(`/?userId=${vendor?._id}`);
-        console.log(res.data)
-        setconversation(res.data)
+        console.log(res.data);
+        setconversation(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -93,14 +109,13 @@ const Chat = () => {
           `/?conversationId=${currentchat?._id}`,
         );
         setmessages(res.data);
+        setIsUpdated(false);
       } catch (error) {
         console.log(error);
       }
     };
     getmessages();
-  }, [currentchat,isUpdated]);
-
-
+  }, [currentchat, isUpdated]);
 
   const receiverId = currentchat?.members.find(
     (member) => member !== vendor?._id,
@@ -108,7 +123,7 @@ const Chat = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
+
     const message = {
       senderId: vendor?._id,
       text: newMessage,
@@ -209,36 +224,29 @@ const Chat = () => {
           {/* chat layout starts here */}
           <div className="flex-grow w-full max-w-7xl mx-auto lg:flex ">
             <div className="flex-1 min-w-0 bg-white xl:flex">
-              <div className="border-b border-gray-500 xl:border-b-0 xl:flex-shrink-0 xl:w-64 xl:border-r xl:border-gray-200 bg-gray-50">
-                <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-gray-300">
+              <div className="border-b border-black xl:border-b-0 xl:flex-shrink-0 xl:w-64 xl:border-r xl:border-gray-400 bg-gray-50">
+                <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-white">
                   <div className="h-full relative ml-2">
-                    <div className="relative rounded-lg px-2 py-2 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-12 w-12 rounded-full"
-                          src={vendor?.logoUrl}
-                          alt=""
-                        />
-                      </div>
+                    <div className="relative border-b px-2 py-3 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
                       <div className="flex-1 min-w-0">
                         <Link to="" className="focus:outline-none">
                           <span className="absolute inset-0" />
-                          <p className="text-sm font-bold text-red-600">
-                            {vendor?.name}
+                          <p className="text-lg font-bold text-gray-900 pb-1">
+                            Chats
                           </p>
                         </Link>
                       </div>
                     </div>
-                    <SearchInput />
+
                     {conversation.map((c) => (
-                      <div onClick={() => setcurrentchat(c)}>
+                      <div onClick={() => handleConversationSelect(c)}>
                         <Conversation
                           conversation={c}
                           currentUser={vendor}
+                          currentchat={currentchat}
                           active={activeUsers.some(
                             (u) => u.userId === receiverId && u.active,
                           )}
-                         
                         />
                       </div>
                     ))}
@@ -251,23 +259,31 @@ const Chat = () => {
                 <div className="flex sm:items-center  justify-between py-3 border-b border-gray-200 p-3">
                   <div className="flex items-center space-x-4">
                     <img
-                      src=""
+                      src={user ? user?.imageUrl : ''}
                       alt=""
                       className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer"
                     />
                     <div className="flex flex-col leading-tight">
                       <div className="text-1xl mt-1 flex items-center">
-                        <span className="text-gray-700 mr-3">""</span>
-                        <span className="text-green-500">
-                          <svg width={10} height={10}>
-                            <circle
-                              cx={5}
-                              cy={5}
-                              r={5}
-                              fill="currentColor"
-                            ></circle>
-                          </svg>
+                        <span className="text-gray-700 mr-3">
+                          {user ? user?.name : ''}
                         </span>
+                        {activeUsers.some(
+                          (u) => u.userId === receiverId && u.active,
+                        ) ? (
+                          <span className="text-green-500">
+                            <svg width={10} height={10}>
+                              <circle
+                                cx={5}
+                                cy={5}
+                                r={5}
+                                fill="currentColor"
+                              ></circle>
+                            </svg>
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     </div>
                   </div>
@@ -295,37 +311,38 @@ const Chat = () => {
                 {/* message */}
                 {currentchat ? (
                   <>
-              
-                      {messages.map((m) => (
-                        <div ref={scrollRef}>
-                          <Message message={m} own={m.senderId === vendor?._id} setIsUpdated={setIsUpdated}/>
-                        </div>
-                      ))}
-                      {typing && <div className="userTyping">Typing...</div>}
-                 
-                    
-                     <MessageInput onChange={handleInputChange}
-                        value={newMessage}
-                        onBlur={handleStopTyping} onClick={handleSubmit}/>
+                    {messages.map((m) => (
+                      <div ref={scrollRef}>
+                        <Message
+                          message={m}
+                          own={m.senderId === vendor?._id}
+                          setIsUpdated={setIsUpdated}
+                        />
+                      </div>
+                    ))}
+                    {typing && <div className="userTyping">Typing...</div>}
+
+                    <MessageInput
+                      onChange={handleInputChange}
+                      value={newMessage}
+                      onBlur={handleStopTyping}
+                      onClick={handleSubmit}
+                    />
                   </>
                 ) : (
                   <>
-                  <p className='text-center'>Send a message to start the conversation</p>
+                    <p className="text-center">
+                      Send a message to start the conversation
+                    </p>
                     <div className="border-t-2 border-gray-200 px-4 pt-4">
-                    {/* <MessageInput onChange={handleInputChange}
+                      {/* <MessageInput onChange={handleInputChange}
                         value={newMessage}
                         onBlur={handleStopTyping} onClick={handleSubmit}/> */}
-                </div>
+                    </div>
                   </>
                 )}
-        
+
                 {/*message ends here*/}
-              
-              </div>
-            </div>
-            <div className="bg-gray-200 pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0 hidden xl:block">
-              <div className="h-full pl-6 py-6 lg:w-80">
-                <ChatProfile />
               </div>
             </div>
           </div>

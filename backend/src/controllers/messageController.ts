@@ -65,3 +65,15 @@ export const changeViewMessage=async(req: Request, res: Response):Promise<any> =
         
     }
 }
+
+export const addEmoji=async(req: Request, res: Response):Promise<any> =>{
+    try {
+        const {msgId,emoji}=req.body;
+        const messages = await Message.findByIdAndUpdate(msgId,{$set:{emoji:emoji}});
+        res.status(200).json({messages});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+   
+}
