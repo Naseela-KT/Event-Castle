@@ -1,11 +1,8 @@
 // DialogWithImage.js
 
 import {
-
  Dialog,
-
  DialogBody,
-
  Typography,
 
 

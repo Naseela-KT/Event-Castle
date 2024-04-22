@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import DefaultLayout from '../../../layout/VendorLayout';
+import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,

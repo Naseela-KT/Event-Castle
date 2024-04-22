@@ -1,6 +1,6 @@
 import React from 'react';
 import CardDataStats from '../../components/vendor/CardDataStats';
-import DefaultLayout from '../../layout/VendorLayout';
+import DefaultLayout from '../../layout/vendor/VendorLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../redux/rootstate/VendorState';
 

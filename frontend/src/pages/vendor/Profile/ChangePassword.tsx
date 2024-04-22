@@ -12,7 +12,7 @@ import {
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { validate } from "../../../validations/common/changePwdValidation";
 import { axiosInstanceVendor } from "../../../api/axiosinstance";
-import DefaultLayout from "../../../layout/VendorLayout";
+import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 
   

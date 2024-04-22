@@ -1,4 +1,4 @@
-import DefaultLayout from '../../../layout/VendorLayout';
+import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,

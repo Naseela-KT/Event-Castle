@@ -5,7 +5,7 @@ import VendorRootState from "../../../redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import DefaultLayout from "../../../layout/VendorLayout";
+import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 
 

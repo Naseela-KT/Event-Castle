@@ -47,7 +47,7 @@ export function VendorProfile() {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get('id');
+  const id = queryParams.get('id') || '';
   const [vendor, setVendor] = useState<Vendor>();
   const [favourite,setFavourite]=useState(false);
 
