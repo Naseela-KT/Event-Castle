@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UpdatePassword, addVendorToFavorites, createUser , deletefavVendor, findAllUsers, findUserByEmail, findUserById, findUserByIdAndUpdate, findUsersCount, getfavVendors } from '../repositories/userRepository';
-import User , { UserDocument } from '../models/user';
+import User , { UserDocument } from '../models/userModel';
 import generateOtp from '../utils/generateOtp';
 import generateUserTokenAndSetCookie from '../utils/generateUserToken';
 import { CustomError } from '../error/customError';

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { axiosInstanceVendor } from "../../../api/axiosinstance";
-import DefaultLayout from "../../../layout/DefaultLayout";
+import DefaultLayout from "../../../layout/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 import { Card, CardHeader, CardBody, Typography, Input, Button } from "@material-tailwind/react";
 import VendorRootState from "../../../redux/rootstate/VendorState";

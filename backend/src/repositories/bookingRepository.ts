@@ -1,10 +1,10 @@
 import { Document } from "mongoose";
-import Booking, { bookingDocument } from "../models/booking";
-import vendor, { VendorDocument } from "../models/vendor";
-import user, { UserDocument } from "../models/user";
-import admin from "../models/admin";
-import payment from "../models/payment";
-import notification from "../models/notification";
+import Booking, { bookingDocument } from "../models/bookingModel";
+import vendor, { VendorDocument } from "../models/vendorModel";
+import user, { UserDocument } from "../models/userModel";
+import admin from "../models/adminModel";
+import payment from "../models/paymentModel";
+import notification from "../models/notificationModel";
 
 export const checkDate = async (
   vendorId: string,

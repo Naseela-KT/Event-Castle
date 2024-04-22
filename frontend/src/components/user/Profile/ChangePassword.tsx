@@ -8,7 +8,7 @@ import {
 import { axiosInstance } from "../../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { validate } from "../../../validations/changePwdValidation";
+import { validate } from "../../../validations/common/changePwdValidation";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useState } from "react";

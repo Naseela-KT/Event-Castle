@@ -18,7 +18,7 @@ const upload = multer({ storage: storage })
 
 const router = express.Router();
 
-router.get('/getUser', UserController.getUser)
+//Auth
 router.post('/signup', UserController.UserSignup );
 router.post('/verify' ,UserController.verifyOtp);
 router.get('/resendOtp' ,UserController.ResendOtp);
@@ -29,36 +29,35 @@ router.post('/refresh-token' , UserController.createRefreshToken)
 router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/reset-password' , UserController.ResetUserPassword)
-router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/google/login',UserController.googleLogin)
 router.post('/google/register',UserController.googleRegister)
 
-router.post('/update-password' , UserController.updatePasswordController)
-router.put('/update-profile',upload.single('image'),UserController.updateProfile)
 
+//Home
+router.get('/getvendors' ,VendorController.getAllVendors )
 router.get('/getvendor', VendorController.getVendor)
 router.post('/addVendorReview' , VendorController.addVendorReview)
+router.get('/vendor-types' , VendorTypeController.getVendorTypes);
+
+
+//Profile
+router.post('/update-password' , UserController.updatePasswordController)
+router.put('/update-profile',upload.single('image'),UserController.updateProfile)
 router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
-
 router.post('/add-favorite-vendor' , UserController.AddFavVendor)
 router.get('/get-favorite-vendor' , UserController.getFavoriteVendors)
 router.delete('/delete-favorite-vendor' , UserController.deleteFavoriteVendor)
-
-
 router.post('/book-an-event',BookingController.bookAnEvent)
 router.get('/get-bookings',BookingController.getBookingsByUser)
 router.get('/single-booking',BookingController.getBookingsById);
-
-
 router.post('/create-checkout-session',PaymentController.makePayment);
 router.post('/add-payment',PaymentController.addPayment);
-
 router.put('/cancel-booking',BookingController.cancelBookingByUser)
-
-router.get('/vendor-types' , VendorTypeController.getVendorTypes);
-
+router.get('/all-transaction-details',BookingController.getRefundDetails)
 router.get('/user-notifications',NotificationController.getUserNotifications)
+
+
 
 
 // Live
@@ -68,12 +67,12 @@ router.patch('/change-live-status',LiveController.changeLiveStatus)
 router.patch('/toggle-read',NotificationController.toggleRead)
 
 
-
+//Chat
 router.patch('/delete-for-everyone',deleteAMessage)
 router.patch('/delete-for-me',changeViewMessage)
+router.get('/getUser', UserController.getUser)
 
 
-router.get('/all-transaction-details',BookingController.getRefundDetails)
 
 
 export default router;

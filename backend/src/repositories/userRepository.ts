@@ -1,8 +1,8 @@
-import User , {UserDocument} from "../models/user";
+import User , {UserDocument} from "../models/userModel";
 import { Document } from 'mongoose';
-import vendor from "../models/vendor";
-import notification from "../models/notification";
-import admin from "../models/admin";
+import vendor from "../models/vendorModel";
+import notification from "../models/notificationModel";
+import admin from "../models/adminModel";
 
 export const createUser = async (userData: Partial<UserDocument>): Promise<UserDocument> => {
     try {

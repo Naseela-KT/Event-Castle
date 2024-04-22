@@ -1,4 +1,4 @@
-import Post , {PostDocument} from "../models/post";
+import Post , {PostDocument} from "../models/postModel";
 
 
 export const createNewPost=async (postData: Partial<PostDocument>): Promise<PostDocument> => {

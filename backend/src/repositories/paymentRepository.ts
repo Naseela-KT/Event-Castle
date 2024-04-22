@@ -1,7 +1,7 @@
-import admin from "../models/admin";
-import booking from "../models/booking";
-import notification from "../models/notification";
-import payment, { paymentDocument } from "../models/payment";
+import admin from "../models/adminModel";
+import booking from "../models/bookingModel";
+import notification from "../models/notificationModel";
+import payment, { paymentDocument } from "../models/paymentModel";
 
 export const createNewPaymnet = async (
     paymentData: Partial<paymentDocument>

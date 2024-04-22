@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import live from "../models/live";
+import live from "../models/liveModel";
 
 
 

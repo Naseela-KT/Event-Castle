@@ -13,15 +13,15 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import VendorApp from './pages/vendor/VendorApp';
 import AdminApp from './pages/admin/AdminApp';
-import Dashboard from './pages/admin/Dahboard';
-import AdminLogin from './components/admin/Login';
-import VendorsList from './pages/admin/VendorsList';
-import VendorTypes from './pages/admin/VendorTypes';
-import UsersList from './pages/admin/UsersList';
-import AdminPrivateRoute from './components/admin/AdminPrivateRoute';
+import Dashboard from './pages/admin/profile/Dahboard';
+import AdminLogin from './pages/admin/auth/Login';
+import VendorsList from './pages/admin/profile/VendorsList';
+import VendorTypes from './pages/admin/profile/VendorTypes';
+import UsersList from './pages/admin/profile/UsersList';
+import AdminPrivateRoute from './pages/admin/AdminPrivateRoute';
 import VendorProfile from './components/admin/vendorList/VendorProfile';
-import Wallet from './pages/admin/Wallet';
-import Notifications from './pages/admin/Notifications';
+import Wallet from './pages/admin/profile/Wallet';
+import Notifications from './pages/admin/profile/Notifications';
 
 
 

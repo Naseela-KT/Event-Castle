@@ -1,5 +1,5 @@
 import { ObjectId } from "mongoose";
-import VendorType , {VendorTypeDocument} from "../models/vendorType";
+import VendorType , {VendorTypeDocument} from "../models/vendorTypeModel";
 
 export const createVendorType = async (vendorData : Partial<VendorTypeDocument>): Promise<VendorTypeDocument> => {
     try {

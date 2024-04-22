@@ -1,5 +1,5 @@
-import Admin , { AdminDocument } from "../models/admin";
-import notification from "../models/notification";
+import Admin , { AdminDocument } from "../models/adminModel";
+import notification from "../models/notificationModel";
 
 
 export const findNotificationsByUserId = async (userId: string)=> {

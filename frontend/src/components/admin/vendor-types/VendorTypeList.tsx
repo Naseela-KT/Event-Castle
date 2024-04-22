@@ -1,9 +1,9 @@
-import { Button } from "@material-tailwind/react";
-import { useState, useEffect } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
-import { useNavigate } from "react-router-dom";
-import EditTypeModal from "./EditTypeModal";
-import DeleteTypeModal from "./DeleteTypeModal";
+import { Button } from '@material-tailwind/react';
+import { useState, useEffect } from 'react';
+import { axiosInstanceAdmin } from '../../../api/axiosinstance';
+import { useNavigate } from 'react-router-dom';
+import EditTypeModal from './EditTypeModal';
+import DeleteTypeModal from './DeleteTypeModal';
 
 interface VendorType {
   _id: string;
@@ -14,21 +14,21 @@ interface VendorType {
 const VendorTypeList = () => {
   const [vendorType, setVendorType] = useState<VendorType[]>([]);
   const navigate = useNavigate();
-  const [editId, setEditId] = useState<string>(""); // State to store the id of the type being edited
-  const [deleteId, setDeleteId] = useState<string>(""); // State to store the id of the type being deleted
+  const [editId, setEditId] = useState<string>(''); // State to store the id of the type being edited
+  const [deleteId, setDeleteId] = useState<string>(''); // State to store the id of the type being deleted
   const [openEditModal, setOpenEditModal] = useState(false); // State to track whether the edit modal is open
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     axiosInstanceAdmin
-      .get("/vendor-types")
+      .get('/vendor-types')
       .then((response) => {
         console.log(response);
         setVendorType(response.data);
-        navigate("/admin/vendor-types");
+        navigate('/admin/vendor-types');
       })
       .catch((error) => {
-        console.error("Error fetching users:", error);
+        console.error('Error fetching users:', error);
       });
   }, [openEditModal, openDeleteModal]);
 
@@ -40,12 +40,12 @@ const VendorTypeList = () => {
       .then((response) => {
         console.log(response);
         setVendorType((prevVendorTypes) =>
-          prevVendorTypes.filter((type) => type._id !== vendorTypeId)
+          prevVendorTypes.filter((type) => type._id !== vendorTypeId),
         );
-        navigate("/admin/vendor-types");
+        navigate('/admin/vendor-types');
       })
       .catch((error) => {
-        console.log("here", error);
+        console.log('here', error);
       });
   };
 
@@ -165,6 +165,8 @@ const VendorTypeList = () => {
                         onClick={() => handleEdit(type._id)}
                         className="mr-2"
                         placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
                       >
                         Edit
                       </Button>
@@ -173,6 +175,8 @@ const VendorTypeList = () => {
                         placeholder={undefined}
                         variant="outlined"
                         onClick={() => handleDeleteModal(type._id)}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
                       >
                         Delete
                       </Button>

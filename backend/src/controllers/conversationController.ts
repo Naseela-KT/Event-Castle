@@ -1,4 +1,4 @@
-import Conversation from '../models/conversation'
+import Conversation from '../models/conversationModel'
 import { Request, Response } from "express";
 
 //create chat 

@@ -1,6 +1,6 @@
 import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
 import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
+import DefaultLayout from '../../layout/VendorLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../redux/rootstate/VendorState';
 import React, { FormEvent, useEffect, useState } from 'react';

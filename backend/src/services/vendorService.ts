@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
-import vendor,{VendorDocument} from '../models/vendor';
+import vendor,{VendorDocument} from '../models/vendorModel';
 import {
   GetObjectCommand,
   PutObjectCommand,

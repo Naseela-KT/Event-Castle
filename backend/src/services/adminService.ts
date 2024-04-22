@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { findAdminByEmail, findAdminById} from "../repositories/adminRepository";
-import admin, { AdminDocument } from "../models/admin";
+import admin, { AdminDocument } from "../models/adminModel";
 import { CustomError } from "../error/customError";
 
 

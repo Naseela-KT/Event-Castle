@@ -20,7 +20,7 @@ import {
   createRefreshToken,
 } from "../services/userService";
 import generateOtp from "../utils/generateOtp";
-import user, { User } from "../models/user";
+import user, { User } from "../models/userModel";
 import Jwt from "jsonwebtoken";
 import sharp from "sharp";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";

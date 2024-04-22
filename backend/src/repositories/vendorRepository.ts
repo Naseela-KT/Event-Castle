@@ -1,11 +1,11 @@
 
 
 import mongoose from "mongoose";
-import Vendor , {VendorDocument,Review} from "../models/vendor";
-import vendor from "../models/vendor";
+import Vendor , {VendorDocument,Review} from "../models/vendorModel";
+import vendor from "../models/vendorModel";
 import { CustomError } from "../error/customError";
-import admin from "../models/admin";
-import notification from "../models/notification";
+import admin from "../models/adminModel";
+import notification from "../models/notificationModel";
 
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {

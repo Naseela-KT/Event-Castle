@@ -10,9 +10,9 @@ import {
   import { useSelector } from "react-redux";
   import { useState } from "react";
 import VendorRootState from "../../../redux/rootstate/VendorState";
-import { validate } from "../../../validations/changePwdValidation";
+import { validate } from "../../../validations/common/changePwdValidation";
 import { axiosInstanceVendor } from "../../../api/axiosinstance";
-import DefaultLayout from "../../../layout/DefaultLayout";
+import DefaultLayout from "../../../layout/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 
   

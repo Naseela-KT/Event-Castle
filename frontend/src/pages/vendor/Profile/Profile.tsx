@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../../layout/DefaultLayout';
+import DefaultLayout from '../../../layout/VendorLayout';
 import { useLocation } from 'react-router-dom';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { useEffect, useState } from 'react';

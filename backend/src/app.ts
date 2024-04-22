@@ -7,7 +7,7 @@ import vendorRoutes from "./routes/vendorRoutes";
 import cors from 'cors';
 import session from 'express-session';
 import { RequestHandler } from 'express';
-import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpiration'
+import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middlewares/otpExpirationMiddleware'
 import cookieParser = require('cookie-parser');
 import messageRoutes from './routes/messageRoutes';
 import chatRoute from './routes/conversationRoutes'

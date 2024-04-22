@@ -1,6 +1,5 @@
-import { Button, Dialog } from "@material-tailwind/react";
-import { useState } from "react";
-
+import { Button, Dialog } from '@material-tailwind/react';
+import { useState } from 'react';
 
 interface Props {
   open: boolean;
@@ -26,9 +25,14 @@ const DeleteTypeModal: React.FC<Props> = ({
 
   return (
     <Dialog
-          size="sm"
-          open={open}
-          className="shadow-none p-4"  placeholder={undefined} handler={onClose}    >
+      size="sm"
+      open={open}
+      className="shadow-none p-4"
+      placeholder={undefined}
+      handler={onClose}
+      onPointerEnterCapture={undefined}
+      onPointerLeaveCapture={undefined}
+    >
       <div className="flex flex-col gap-4">
         <h3 className="text-xl font-bold">Confirm Deletion</h3>
         <p className="text-sm">
@@ -42,6 +46,8 @@ const DeleteTypeModal: React.FC<Props> = ({
             variant="outlined"
             size="sm"
             placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
             Cancel
           </Button>
@@ -51,8 +57,10 @@ const DeleteTypeModal: React.FC<Props> = ({
             size="sm"
             disabled={loading}
             placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
-            {loading ? "Deleting..." : "Delete"}
+            {loading ? 'Deleting...' : 'Delete'}
           </Button>
         </div>
       </div>

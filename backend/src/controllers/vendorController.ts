@@ -20,7 +20,7 @@ import {
   createRefreshToken,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
-import vendor from "../models/vendor";
+import vendor from "../models/vendorModel";
 import { SessionData } from "express-session";
 import {
   GetObjectCommand,

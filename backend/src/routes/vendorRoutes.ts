@@ -19,8 +19,7 @@ const coverpicUpload = multer({ storage: multer.memoryStorage() });
 const logoUpload = multer({ storage: multer.memoryStorage() });
 
 
-
-
+//Auth
 router.post('/signup' , VendorController.vendorSignup);
 router.post('/verify' ,VendorController.verifyOtp)
 router.get('/resendOtp' ,VendorController.ResendOtp);
@@ -31,36 +30,31 @@ router.get('/logout' , VendorController.VendorLogout)
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 router.post('/vendor-getotp' , VendorController.VendorForgotPassword)
 router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword)
-router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/reset-password' , VendorController.ResetVendorPassword)
 
+
+//Profile
+
+router.get('/getvendors' ,VendorController.getAllVendors )
 router.post("/add-post",upload.single('image'),PostController.addNewPost)
 router.get("/posts",PostController.getPosts)
 router.delete("/posts/:id",PostController.deletePost)
-
-
 router.get('/getvendor',VendorController.getVendor)
 router.patch('/update-password',VendorController.updatePassword)
 router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
-
 router.get('/get-all-reviews',VendorController.loadAllReviews)
 router.put('/add-review-reply',VendorController.addReviewReply)
-
-
 router.get('/booking-details',BookingController.getBookingsByVendor);
 router.get('/single-booking-details',BookingController.getBookingsById);
 router.put('/update-booking-status',BookingController.updateStatus)
-
-
 router.post('/verification-request',VendorController.sendVerifyRequest)
 router.post('/add-dates',VendorController.addDates)
 router.get('/load-dates',VendorController.loadDates)
-
-
 router.get('/vendor-notifications',NotificationController.getVendorNotifications)
-
 router.patch('/toggle-read',NotificationController.toggleRead)
 
+
+//message
 router.patch('/delete-for-everyone',deleteAMessage)
 router.patch('/delete-for-me',changeViewMessage)
 

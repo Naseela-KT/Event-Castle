@@ -1,4 +1,4 @@
-import DefaultLayout from '../../layout/DefaultLayout'
+import DefaultLayout from '../../layout/VendorLayout'
 import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb'
 import ChatCard from '../../components/vendor/Chat/ChatCard'
 

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Booking,{bookingDocument} from "../models/booking";
+import Booking,{bookingDocument} from "../models/bookingModel";
 import { checkDate, createNewBooking, findBookingsByBookingId, findBookingsByUserId, findBookingsByVendorId, findRefundForUser, updateBookingStatusById } from "../repositories/bookingRepository";
-import vendor from "../models/vendor";
+import vendor from "../models/vendorModel";
 
 
 export const checkIfDatePresent = async(vendorId:string , date:string):Promise<boolean>=>{
