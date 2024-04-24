@@ -1,4 +1,5 @@
 import { Breadcrumbs } from "@material-tailwind/react";
+import { VENDOR } from "../../../config/constants/constants";
 
 interface BreadcrumbProps {
   pageName: string;
@@ -12,7 +13,7 @@ const Breadcrumb = ({ pageName ,folderName}: BreadcrumbProps) => {
       </h2>
 
     <Breadcrumbs placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <a href="/vendor/dashboard" className="opacity-60">
+      <a href={VENDOR.DASHBOARD} className="opacity-60">
         Dashboard
       </a>
       {folderName&& <a href="#" className="opacity-60">

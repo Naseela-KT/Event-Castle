@@ -7,7 +7,7 @@ interface Review {
     content: string;
     date:Date;
     reply:Array<string>
-  }
+}
 //represents the structure of user data
 export interface VendorData{
     name: string;

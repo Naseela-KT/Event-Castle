@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useParams } from 'react-router-dom';
-import { ZegoUIKitPrebuilt, ZegoUser } from '@zegocloud/zego-uikit-prebuilt';
-import { axiosInstance } from '../../../api/axiosinstance';
-import { useState } from 'react';
+import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { axiosInstance } from '../../../config/api/axiosinstance';
+import { USER } from '../../../config/constants/constants';
+const CLIENT_URL = import.meta.env.VITE_CLIENT_URL || '';
 
 function randomID(len: number) {
   let result = '';
@@ -30,13 +31,13 @@ const Room = () => {
   if (role === ZegoUIKitPrebuilt.Host) {
     sharedLinks.push({
       name: 'Join as co-host',
-      url: `http://localhost:5000/room/${roomId}/Host`,
+      url: `${CLIENT_URL}${USER.LIVE_ROOM}/${roomId}/Host`,
     });
   }
 
   sharedLinks.push({
     name: 'Join as audience',
-    url: `http://localhost:5000/room/${roomId}/Audience`,
+    url: `${CLIENT_URL}${USER.LIVE_ROOM}/${roomId}/Audience`,
   });
 
   const handleLiveStart = (url: string) => {
@@ -56,7 +57,7 @@ const Room = () => {
     axiosInstance
       .patch(
         `/change-live-status`,
-        { url:`http://localhost:5000/room/${roomId}/Audience`},
+        { url:`${CLIENT_URL}${USER.LIVE_ROOM}/${roomId}/Audience`},
         { withCredentials: true },
       )
       .then((response) => {
@@ -84,7 +85,7 @@ const Room = () => {
     zp.joinRoom({
       container: element,
       onLiveStart: () => {
-        handleLiveStart(`http://localhost:5000/room/${roomId}/Audience`);
+        handleLiveStart(`${CLIENT_URL}${USER.LIVE_ROOM}/${roomId}/Audience`);
       },
       onLiveEnd: () => {
         handleLiveEnd();

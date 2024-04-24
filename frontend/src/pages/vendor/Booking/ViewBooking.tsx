@@ -8,7 +8,7 @@ import {
 } from '@material-tailwind/react';
 import UpdateStatus from './UpdateStatus';
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 
 interface Booking {

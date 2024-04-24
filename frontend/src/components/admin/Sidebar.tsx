@@ -1,12 +1,13 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { axiosInstanceAdmin } from "../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../config/api/axiosinstance";
 import { logout } from "../../redux/slices/AdminSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 // import { SetStateAction } from "react";
 import { PowerIcon } from "@heroicons/react/24/outline";
+import { ADMIN } from "../../config/constants/constants";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Sidebar = () => {
       .get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
-        navigate("/admin/login");
+        navigate(ADMIN.LOGIN);
       })
       .catch((error) => {
         console.log("here", error);
@@ -74,9 +75,9 @@ const Sidebar = () => {
           </h1>
         </div>
         <ul className="pt-6">
-          <Link to="/admin/dashboard">
+          <Link to={ADMIN.DASHBOARD}>
             <li
-              className={`${path.pathname=="/admin/dashboard"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.DASHBOARD?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
               mt-9 bg-light-white
               `}
             >
@@ -86,9 +87,9 @@ const Sidebar = () => {
               </span>
             </li>
           </Link>
-          <Link to="/admin/users">
+          <Link to={ADMIN.USERS}>
             <li
-              className={`${path.pathname=="/admin/users"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.USERS?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -98,9 +99,9 @@ const Sidebar = () => {
               </span>
             </li>
           </Link>
-          <Link to="/admin/vendors">
+          <Link to={ADMIN.VENDORS}>
             <li
-              className={`${path.pathname=="/admin/vendors"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.VENDORS?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -110,9 +111,9 @@ const Sidebar = () => {
               </span>
             </li>
           </Link>
-          <Link to="/admin/wallet">
+          <Link to={ADMIN.WALLET}>
             <li
-              className={`${path.pathname=="/admin/wallet"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.WALLET?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -122,9 +123,9 @@ const Sidebar = () => {
               </span>
             </li>
           </Link>
-          <Link to="/admin/inbox">
+          <Link to={ADMIN.INBOX}>
             <li
-              className={`${path.pathname=="/admin/inbox"?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.INBOX?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >

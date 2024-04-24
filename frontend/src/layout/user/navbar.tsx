@@ -15,9 +15,10 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import UserState from '../../redux/rootstate/UserState';
 import { useSelector,useDispatch } from 'react-redux';
-import { axiosInstance } from '../../api/axiosinstance';
+import { axiosInstance } from '../../config/api/axiosinstance';
 import { logout } from '../../redux/slices/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import { USER } from '../../config/constants/constants';
 
 
 
@@ -33,7 +34,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
-      if (scrollTop > 0 && location.pathname !== "/profile") {
+      if (scrollTop > 0 && location.pathname !== USER.PROFILE) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -62,7 +63,7 @@ const Navbar = () => {
     axiosInstance.get("/logout")
       .then(() => {
         dispatch(logout());
-        navigate("/login");
+        navigate(USER.LOGIN);
       })
       .catch((error) => {
         console.log('here', error);
@@ -75,27 +76,27 @@ const Navbar = () => {
         key="Home"
         as="li"
         variant="small"
-        color={location.pathname === "/home" ? "pink" : "inherit"}
+        color={location.pathname === USER.HOME ? "pink" : "inherit"}
         className="capitalize"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        <Link to="/home" className="flex items-center gap-1 p-1 font-bold">
+        <Link to={USER.HOME} className="flex items-center gap-1 p-1 font-bold">
           Home
         </Link>
       </Typography>
       <Typography
         key="Vendors"
         as="li"
-        color={location.pathname === "/vendors" ? "pink" : "inherit"}
+        color={location.pathname === USER.VENDORS ? "pink" : "inherit"}
         variant="small"
         className="capitalize"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        <Link to="/vendors" className="flex items-center gap-1 p-1 font-bold">
+        <Link to={USER.VENDORS} className="flex items-center gap-1 p-1 font-bold">
           Vendors
         </Link>
       </Typography>
@@ -103,13 +104,13 @@ const Navbar = () => {
         key="About"
         as="li"
         variant="small"
-        color={location.pathname === "/about" ? "pink" : "inherit"}
+        color={location.pathname === USER.ABOUT ? "pink" : "inherit"}
         className="capitalize"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        <Link to="/vendors" className="flex items-center gap-1 p-1 font-bold">
+        <Link to={USER.ABOUT} className="flex items-center gap-1 p-1 font-bold">
           About
         </Link>
       </Typography>
@@ -128,7 +129,7 @@ const Navbar = () => {
     >
    <div className={`navbar mx-auto flex items-center justify-between ${isScrolled && (!location.pathname.includes('/profile') || !location.pathname.includes('/chat')) ? 'bg-black -mt-5 rounded-lg p-5 shadow-lg text-white m-0' : 'm-0'}`}>
 
-        <Link to="/home">
+        <Link to={USER.HOME}>
           <Typography
             className="mr-4 ml-2 cursor-pointer py-1.5 font-bold"
             placeholder={undefined}
@@ -165,7 +166,7 @@ const Navbar = () => {
               fill="#90A4AE"
             />
           </svg>
-            <Link to="/profile">
+            <Link to={USER.PROFILE}>
           <Typography variant="small" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             My Profile
           </Typography>
@@ -173,7 +174,7 @@ const Navbar = () => {
         </MenuItem>
         <MenuItem className="flex items-center gap-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <i className="fa-regular fa-message"></i>
-          <Link to="/chat">
+          <Link to={USER.CHAT}>
           <Typography variant="small" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             Chat
           </Typography>
@@ -181,7 +182,7 @@ const Navbar = () => {
         </MenuItem>
         <MenuItem className="flex items-center gap-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <i className="fa-solid fa-tower-broadcast"></i>
-          <Link to="/live">
+          <Link to={USER.LIVE}>
           <Typography variant="small" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             Live
           </Typography>
@@ -211,7 +212,7 @@ const Navbar = () => {
         
         </MenuItem>
       </MenuList>
-    </Menu>:<><Link to={'/login'}>
+    </Menu>:<><Link to={USER.LOGIN}>
             <Button
               variant="text"
               size="sm"
@@ -225,7 +226,7 @@ const Navbar = () => {
             </Button>
             </Link>
        
-          <Link to={'/signup'}>
+          <Link to={USER.SIGNUP}>
             <Button
               variant="gradient"
               size="sm"

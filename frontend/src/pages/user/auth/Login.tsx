@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../../../redux/slices/UserSlice";
 import UserRootState from "../../../redux/rootstate/UserState";
@@ -17,6 +17,7 @@ import { validate } from "../../../validations/common/loginVal";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import {GoogleLogin , GoogleOAuthProvider} from '@react-oauth/google';
+import { USER,VENDOR } from "../../../config/constants/constants";
 
 
 const client_id = import.meta.env.VITE_CLIENT_ID || '';
@@ -40,7 +41,7 @@ const UserLogin = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate(USER.HOME);
     }
   }, []);
 
@@ -58,7 +59,7 @@ const UserLogin = () => {
           localStorage.setItem("userToken", response.data.token)
           localStorage.setItem("userRefresh", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
-          navigate("/home");
+          navigate(USER.HOME);
         })
         .catch((error) => {
           toast.error(error.response)
@@ -113,7 +114,7 @@ const UserLogin = () => {
               type="password" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
           {formik.errors.password ? <p className="text-sm" style={{color:"red",padding:0,marginTop:-10}}>{formik.errors.password}</p> : null}
           <div className="ml-2.5">
-            <Link to="/forgot-password">
+            <Link to={USER.FORGOT_PWD}>
               <Typography
                   variant="small"
                   color="black"
@@ -146,7 +147,7 @@ const UserLogin = () => {
               // localStorage.setItem("studentToken",res.data.token)//for setting token in local storage
               dispatch(setUserInfo(res.data.userData));
               toast.success(res.data.message);
-              navigate('/home');
+              navigate(USER.HOME);
             }
           })
           .catch((error) => {
@@ -164,7 +165,7 @@ const UserLogin = () => {
             className="mt-6 flex justify-center "
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Don&apos;t have an account?
-          <Link to="/signup">
+          <Link to={USER.SIGNUP}>
             <Typography
                 as="a"
                 href="#signup"
@@ -183,7 +184,7 @@ const UserLogin = () => {
             className="mt-3 flex justify-center"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
-          <Link to="/vendor/login">
+          <Link to={VENDOR.LOGIN}>
             <Typography
                 as="a"
                 href="#signup"

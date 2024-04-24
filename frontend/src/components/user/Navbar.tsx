@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { useSelector,useDispatch } from 'react-redux';
 import UserState  from '../../redux/rootstate/UserState';
-import {axiosInstance} from '../../api/axiosinstance';
+import {axiosInstance} from '../../config/api/axiosinstance';
 import { logout } from "../../redux/slices/UserSlice";
 import '../../../public/imgs/event_castle.png'
 

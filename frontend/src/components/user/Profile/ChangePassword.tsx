@@ -5,13 +5,14 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../../validations/common/changePwdValidation";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useState } from "react";
+import { USER } from "../../../config/constants/constants";
 
 interface FormValues {
   current_password: string;
@@ -56,7 +57,7 @@ const ChangePassword = () => {
         .then((response) => {
           console.log(response);
           toast.success("Password updated Successfully!")
-          navigate("/profile/change-password");
+          navigate(`${USER.PROFILE}${USER.CHANGE_PWD}`);
         })
         .catch((error) => {
           // localStorage.removeItem("userToken");

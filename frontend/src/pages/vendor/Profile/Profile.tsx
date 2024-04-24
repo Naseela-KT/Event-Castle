@@ -4,7 +4,7 @@ import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import { useLocation } from 'react-router-dom';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { Button } from '@material-tailwind/react';
 import { toast } from 'react-toastify';
 

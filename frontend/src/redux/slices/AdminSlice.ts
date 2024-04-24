@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { AdminData } from "../../types/adminTypes";
 //represents the structure of user data
-export interface AdminData{
-    email:string ,
-    wallet:number,
-    _id : string,
-}
+// export interface AdminData{
+//     email:string ,
+//     wallet:number,
+//     _id : string,
+// }
+
 export interface AdminState{
     admindata : AdminData | null;
     isAdminSignedIn: boolean;

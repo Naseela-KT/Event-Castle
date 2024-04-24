@@ -2,13 +2,14 @@ import React, { useState, useRef ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 import { Card, CardHeader, CardBody, Typography, Input, Button } from "@material-tailwind/react";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import { VENDOR } from "../../../config/constants/constants";
 
 
 
@@ -90,7 +91,7 @@ const CreatePost = () => {
           .then((response) => {
             console.log(response);
             toast.success("Post added successfully...!");
-            navigate("/Vendor/view-posts");
+            navigate(VENDOR.VIEW_POSTS);
           })
           .catch((error) => {
             toast.error(error.response.data.message);

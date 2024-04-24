@@ -16,7 +16,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
 import { setVendorInfo } from '../../../redux/slices/VendorSlice';
 

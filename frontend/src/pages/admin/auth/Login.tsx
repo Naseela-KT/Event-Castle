@@ -8,11 +8,12 @@ import {
 } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
 import { useSelector, useDispatch } from "react-redux";
 import { setAdminInfo } from "../../../redux/slices/AdminSlice";
 import AdminRootState from "../../../redux/rootstate/AdminState";
 import { validate } from "../../../validations/common/loginVal";
+import { ADMIN} from "../../../config/constants/constants";
 import { useFormik } from "formik";
 import {toast} from "react-toastify"
 
@@ -36,7 +37,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (admin) {
-      navigate("/admin/dashboard");
+      navigate(ADMIN.DASHBOARD);
     }
   }, []);
 
@@ -45,7 +46,7 @@ const AdminLogin = () => {
     validate,
     onSubmit: (values) => {
       axiosInstanceAdmin
-        .post("/login", values)
+        .post('/login', values)
         .then((response) => {
           console.log(response);
 
@@ -56,7 +57,7 @@ const AdminLogin = () => {
           console.log(response.data.adminData);
 
           dispatch(setAdminInfo(response.data.adminData));
-          navigate("/admin/dashboard");
+          navigate(ADMIN.DASHBOARD);
         })
         .catch((error) => {
           toast.error(error.response.data.message)

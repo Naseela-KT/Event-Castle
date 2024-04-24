@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../redux/rootstate/UserState';
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 import Pagination from '../../common/Pagination';
 
 const Wallet = () => {

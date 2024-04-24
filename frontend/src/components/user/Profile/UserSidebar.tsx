@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IconButton,
   Typography,
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
   Drawer,
   Card,
 } from "@material-tailwind/react";
@@ -26,6 +24,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
+import { USER } from "../../../config/constants/constants";
  
 export default function Sidebar() {
   const user = useSelector((state: UserRootState) => state.user.userdata);
@@ -64,7 +63,7 @@ export default function Sidebar() {
       <div className="mb-2 flex items-center gap-4 p-4">
        
         <Typography variant="h5" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          {user.name}
+          {user?.name}
         </Typography>
       </div>
       
@@ -72,32 +71,32 @@ export default function Sidebar() {
             
          
             <hr className="my-2 border-blue-gray-50" />
-            <Link to="/profile">
-            <ListItem className={`${path.pathname=="/profile"?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={USER.PROFILE}>
+            <ListItem className={`${path.pathname==USER.PROFILE?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
               Profile
             </ListItem>
             </Link>
-            <Link to="/profile/change-password">
-            <ListItem className={`${path.pathname=="/profile/change-password"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.CHANGE_PWD}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.CHANGE_PWD}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <LockClosedIcon className="h-5 w-5" />
               </ListItemPrefix>
               Change Password
             </ListItem>
             </Link>
-            <Link to="/profile/favourites">
-            <ListItem className={`${path.pathname=="/profile/favourites"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.FAV}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.FAV}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <HeartIcon className="h-5 w-5" />
               </ListItemPrefix>
               Favourites
             </ListItem>
             </Link>
-            <Link to="/profile/booking-details">
-            <ListItem className={`${path.pathname=="/profile/booking-details"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.BOOKING_DETAILS}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.BOOKING_DETAILS}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
              
                 <BookmarkIcon className="h-5 w-5" />
@@ -105,16 +104,16 @@ export default function Sidebar() {
               Booking Details
             </ListItem>
             </Link>
-            <Link to="/profile/wallet">
-            <ListItem className={`${path.pathname=="/profile/wallet"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.WALLET}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.WALLET}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <WalletIcon className="h-5 w-5" />
               </ListItemPrefix>
               Wallet
             </ListItem>
             </Link>
-            <Link to="/profile/notifications">
-            <ListItem className={`${path.pathname=="/profile/notifications"?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.INBOX}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.INBOX}`?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -141,47 +140,47 @@ export default function Sidebar() {
           </List>
   
     </Card>
-  </Drawer></>:<><Card
-          color="transparent"
-          shadow={false}
-          className="h-700 w-70 bg-white p-4 mt-17"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          <div className=" flex items-center gap-4 p-4">
-            
-            <Typography variant="h5" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              {user?.name}
-            </Typography>
-          </div>
-          
-          <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+  </Drawer></>:<> <Card
+      color="transparent"
+      shadow={false}
+      className="h-[calc(100vh-2rem)] w-200 p-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
+      <div className="mb-2 flex items-center gap-4 p-4">
+       
+        <Typography variant="h5" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          {user?.name}
+        </Typography>
+      </div>
+      
+      <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             
          
             <hr className="my-2 border-blue-gray-50" />
-            <Link to="/profile">
-            <ListItem className={`${path.pathname=="/profile"?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={USER.PROFILE}>
+            <ListItem className={`${path.pathname==USER.PROFILE?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
               Profile
             </ListItem>
             </Link>
-            <Link to="/profile/change-password">
-            <ListItem className={`${path.pathname=="/profile/change-password"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.CHANGE_PWD}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.CHANGE_PWD}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <LockClosedIcon className="h-5 w-5" />
               </ListItemPrefix>
               Change Password
             </ListItem>
             </Link>
-            <Link to="/profile/favourites">
-            <ListItem className={`${path.pathname=="/profile/favourites"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.FAV}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.FAV}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <HeartIcon className="h-5 w-5" />
               </ListItemPrefix>
               Favourites
             </ListItem>
             </Link>
-            <Link to="/profile/booking-details">
-            <ListItem className={`${path.pathname=="/profile/booking-details"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.BOOKING_DETAILS}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.BOOKING_DETAILS}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
              
                 <BookmarkIcon className="h-5 w-5" />
@@ -189,16 +188,16 @@ export default function Sidebar() {
               Booking Details
             </ListItem>
             </Link>
-            <Link to="/profile/wallet">
-            <ListItem className={`${path.pathname=="/profile/wallet"?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.WALLET}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.WALLET}`?'bg-gray-300':""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <WalletIcon className="h-5 w-5" />
               </ListItemPrefix>
               Wallet
             </ListItem>
             </Link>
-            <Link to="/profile/notifications">
-            <ListItem className={`${path.pathname=="/profile/notifications"?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to={`${USER.PROFILE}${USER.INBOX}`}>
+            <ListItem className={`${path.pathname==`${USER.PROFILE}${USER.INBOX}`?'bg-gray-300':""}`}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <InboxIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -223,8 +222,8 @@ export default function Sidebar() {
               Log Out
             </ListItem>
           </List>
-      
-        </Card></>}
+  
+    </Card></>}
       
       
     </>

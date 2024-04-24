@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { format } from 'timeago.js';
 import { toast } from 'react-toastify';
 

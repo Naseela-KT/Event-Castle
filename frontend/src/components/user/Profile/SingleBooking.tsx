@@ -11,7 +11,7 @@ import {
   DialogHeader,
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import PaymentCard from './PaymentCard';
 import { toast } from 'react-toastify';

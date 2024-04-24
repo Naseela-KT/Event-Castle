@@ -4,7 +4,7 @@ import VendorSort from '../../components/home/Vendors/VendorSort';
 import VendorCard from '../../components/home/Vendors/VendorCard';
 import Footer from '../../layout/user/footer';
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../api/axiosinstance';
+import { axiosInstance } from '../../config/api/axiosinstance';
 import Pagination from '../../components/common/Pagination';
 
 interface Vendors {

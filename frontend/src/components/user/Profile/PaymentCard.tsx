@@ -1,5 +1,5 @@
 import { Card, CardHeader, Typography, Button, CardBody, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 import { useState } from "react";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";

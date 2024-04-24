@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
+import { VENDOR } from '../../../config/constants/constants';
 
 interface Booking {
   _id: string;
@@ -101,7 +102,7 @@ const BookingTable = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <Link to={`/vendor/view-booking?id=${item._id}`}>
+                    <Link to={`${VENDOR.VIEW_BOOKING}?id=${item._id}`}>
                       <button className="hover:text-primary">
                         <svg
                           className="fill-current"

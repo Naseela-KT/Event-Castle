@@ -1,16 +1,17 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { UserData } from '../../types/userTypes';
 
 //represents the structure of user data
-export interface UserData{
-    name:string,
-    email:string,
-    _id:string,
-    isActive:boolean,
-    image:string,
-    phone:string,
-    imageUrl:string,
-    favourite:Array<string>
-}
+// export interface UserData{
+//     name:string,
+//     email:string,
+//     _id:string,
+//     isActive:boolean,
+//     image:string,
+//     phone:string,
+//     imageUrl:string,
+//     favourite:Array<string>
+// }
 
 export interface UserState{
     userdata : UserData | null;

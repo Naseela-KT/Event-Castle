@@ -8,6 +8,7 @@ import {
 } from '@material-tailwind/react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { USER} from '../../../config/constants/constants';
 
 const LiveStreaming = () => {
   const [roomId, setRoomId] = useState('');
@@ -20,7 +21,7 @@ const LiveStreaming = () => {
       setError("Enter a string having atleast 6 characters")
       return 
     }
-    navigate(`/room/${roomId}/${role_str}`)
+    navigate(`${USER.LIVE_ROOM}/${roomId}/${role_str}`)
   }
 
   return (

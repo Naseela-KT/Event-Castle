@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Input, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../../redux/rootstate/VendorState";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import { VENDOR } from "../../../config/constants/constants";
 
 
 const initialFormState = {
@@ -89,7 +90,7 @@ const EditProfile: React.FC = () => {
           console.log(response);
           setFormState(initialFormState); // Reset form state after successful submission
           toast.success("Profile updated successfully!");
-          navigate("/vendor/view-profile");
+          navigate(VENDOR.VIEW_PROFILE);
         })
         .catch((error) => {
           toast.error(error.response.data.message);

@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Link ,useNavigate} from 'react-router-dom';
 import {
@@ -11,8 +9,9 @@ import {
 } from "@material-tailwind/react";
 import { useSelector,useDispatch } from 'react-redux';
 import AdminState  from '../../redux/rootstate/AdminState';
-import {axiosInstanceAdmin} from '../../api/axiosinstance';
+import {axiosInstanceAdmin} from '../../config/api/axiosinstance';
 import { logout } from "../../redux/slices/AdminSlice";
+import { ADMIN } from "../../config/constants/constants";
 
 
 const AdminNavbar=()=> {
@@ -34,7 +33,7 @@ const AdminNavbar=()=> {
     axiosInstanceAdmin.get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
-        navigate("/admin/login");
+        navigate(ADMIN.LOGIN);
       })
       .catch((error) => {
         console.log('here', error);
@@ -64,7 +63,7 @@ const AdminNavbar=()=> {
         </Button>
         
       :
-      <Link to="/admin/login">
+      <Link to={ADMIN.LOGIN}>
         <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <span>Login</span>
         </Button>

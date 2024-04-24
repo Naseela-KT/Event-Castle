@@ -1,20 +1,16 @@
 import Admin , { AdminDocument } from "../models/adminModel";
+import { BaseRepository } from "./baseRepository";
 
 
-export const findAdminByEmail = async (email: string): Promise<AdminDocument | null> => {
-  try {
+export class AdminRepository extends BaseRepository<AdminDocument>{
+  constructor(){
+    super(Admin)
+  }
+  async findByEmail(email:string): Promise<AdminDocument | null> {
     return await Admin.findOne({ email });
-  } catch (error) {
-    throw error;
   }
-};
+}
 
-export const findAdminById= async (adminId: string): Promise<AdminDocument | null> => {
-  try {
-    const result=await Admin.findOne({ _id:adminId });
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
+
+
 

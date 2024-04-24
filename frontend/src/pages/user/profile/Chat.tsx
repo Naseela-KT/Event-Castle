@@ -4,7 +4,7 @@ import UserRootState from '../../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
-import { axiosInstance, axiosInstanceChat, axiosInstanceMsg } from '../../../api/axiosinstance';
+import { axiosInstance, axiosInstanceChat, axiosInstanceMsg } from '../../../config/api/axiosinstance';
 import Message from '../../../components/chat/user/messages/Message';
 import MessageInput from '../../../components/chat/user/messages/MessageInput';
 import {

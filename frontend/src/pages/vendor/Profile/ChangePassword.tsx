@@ -11,9 +11,10 @@ import {
   import { useState } from "react";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { validate } from "../../../validations/common/changePwdValidation";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import { VENDOR } from "../../../config/constants/constants";
 
   
   interface FormValues {
@@ -61,7 +62,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
           .then((response) => {
             console.log(response);
             toast.success("Password updated Successfully!")
-            navigate("/vendor/profile");
+            navigate(VENDOR.VIEW_PROFILE);
           })
           .catch((error) => {
             // localStorage.removeItem("userToken");

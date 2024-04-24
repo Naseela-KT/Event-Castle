@@ -1,7 +1,7 @@
 
 
 import { Link } from 'react-router-dom'
-import { axiosInstanceVendor } from '../../../../api/axiosinstance'
+import { axiosInstanceVendor } from '../../../../config/api/axiosinstance'
 import { useEffect, useState } from 'react'
 
 

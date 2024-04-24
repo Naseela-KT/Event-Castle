@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogFooter,
 } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
 
 

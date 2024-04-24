@@ -7,7 +7,7 @@ import {
   axiosInstance,
   axiosInstanceChat,
   axiosInstanceMsg,
-} from '../../api/axiosinstance';
+} from '../../config/api/axiosinstance';
 import Message from '../../components/chat/vendor/messages/Message';
 import MessageInput from '../../components/chat/vendor/messages/MessageInput';
 import VendorRootState from '../../redux/rootstate/VendorState';

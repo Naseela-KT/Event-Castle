@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {CreateAxiosInstance } from '../types/axiosTypes'
+import {CreateAxiosInstance } from '../../types/axiosTypes'
 
 // Base URLs
 const BASE_URL = import.meta.env.VITE_BASE_URL || '';

@@ -1,7 +1,7 @@
 
 
 import { Link } from 'react-router-dom'
-import { axiosInstance} from '../../../../api/axiosinstance'
+import { axiosInstance} from '../../../../config/api/axiosinstance'
 import { useEffect, useState } from 'react'
 
 

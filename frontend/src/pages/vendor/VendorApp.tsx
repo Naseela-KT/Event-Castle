@@ -24,6 +24,7 @@ import Chat from './Chat';
 
 
 
+
 function VendorApp() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
@@ -44,7 +45,7 @@ function VendorApp() {
       <Toaster />
       <Routes>
       <Route
-          path="/vendor/signup"
+          path="/signup"
           element={
             <>
               <VendorSignupForm />
@@ -52,7 +53,7 @@ function VendorApp() {
           }
         />
         <Route
-          path="/vendor/login"
+          path="/login"
           element={
             <>
               
@@ -61,7 +62,7 @@ function VendorApp() {
           }
         />
         <Route
-          path="/vendor/chat"
+          path="/chat"
           element={
             <>
               
@@ -70,7 +71,7 @@ function VendorApp() {
           }
         />
          <Route
-          path="/vendor/verify"
+          path="/verify"
           element={
             <>
               
@@ -79,7 +80,7 @@ function VendorApp() {
           }
         />
           <Route
-          path="/vendor/reset-password"
+          path="/reset-password"
           element={
             <>
               
@@ -88,7 +89,7 @@ function VendorApp() {
           }
         />
           <Route
-          path="/vendor/forgot-password"
+          path="/forgot-password"
           element={
             <>
               
@@ -98,8 +99,8 @@ function VendorApp() {
         />
             <Route path="" element={<VendorPrivateRoute />}>
             <Route
-          index
-          path="/vendor"
+          
+          path="/dashboard"
           element={
             <>
 
@@ -110,7 +111,7 @@ function VendorApp() {
          
         <Route
           index
-          path="/vendor/dashboard"
+          path="/dashboard"
           element={
             <>
           
@@ -120,7 +121,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/view-profile"
+          path="/view-profile"
           element={
             <>
               
@@ -130,7 +131,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/edit-profile"
+          path="/edit-profile"
           element={
             <>
               
@@ -140,7 +141,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/change-password"
+          path="/change-password"
           element={
             <>
               
@@ -150,7 +151,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/view-posts"
+          path="/view-posts"
           element={
             <>
               
@@ -160,7 +161,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/add-post"
+          path="/add-post"
           element={
             <>
               
@@ -170,7 +171,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/booking-history"
+          path="/booking-history"
           element={
             <>
               
@@ -182,7 +183,7 @@ function VendorApp() {
         />
         <Route
           index
-          path="/vendor/view-booking"
+          path="/view-booking"
           element={
             <>
              
@@ -194,7 +195,7 @@ function VendorApp() {
         />
          <Route
           index
-          path="/vendor/add-date"
+          path="/add-date"
           element={
             <>
              
@@ -205,7 +206,7 @@ function VendorApp() {
 
         <Route
           index
-          path="/vendor/reviews"
+          path="/reviews"
           element={
             <>
               
@@ -216,7 +217,7 @@ function VendorApp() {
 
         <Route
           index
-          path="/vendor/notifications"
+          path="/notifications"
           element={
             <>
               

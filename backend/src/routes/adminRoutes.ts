@@ -1,5 +1,5 @@
 import express from "express";
-import { AdminController } from "../controllers/adminController";
+import  AdminController  from "../controllers/adminController";
 import { UserController } from "../controllers/userController";
 import { VendorTypeController } from "../controllers/vendorTypeController";
 import { VendorController } from "../controllers/vendorController";
@@ -12,9 +12,8 @@ const router = express.Router();
 
 //Auth
 router.post('/login' , AdminController.Adminlogin);
-router.get('/logout' ,adminAuth,AdminController.Adminlogout);
+router.get('/logout' ,AdminController.Adminlogout);
 router.post('/refresh-token' , AdminController.createRefreshToken)
-
 
 //user
 router.get('/users' ,adminAuth, UserController.allUsers);

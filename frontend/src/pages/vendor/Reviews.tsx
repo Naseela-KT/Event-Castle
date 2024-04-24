@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import VendorRootState from '../../redux/rootstate/VendorState';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
 import {
   Accordion,

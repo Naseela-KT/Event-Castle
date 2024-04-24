@@ -9,10 +9,11 @@ import {
   Option,
 } from '@material-tailwind/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { axiosInstanceAdmin } from '../../../api/axiosinstance';
+import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
 import { validate } from '../../../validations/admin/vendorTypeValidation';
 import { toast } from 'react-toastify';
+import { ADMIN} from '../../../config/constants/constants';
 
 interface FormValues {
   type: string;
@@ -57,7 +58,7 @@ export default function AddVendorType() {
         .then((response) => {
           console.log(response);
           setFormValues(initialValues);
-          navigate('/admin/vendor-types', { replace: true });
+          navigate(ADMIN.VENDOR_TYPES, { replace: true });
         })
         .catch((error) => {
           toast.error(error.response.data.message);

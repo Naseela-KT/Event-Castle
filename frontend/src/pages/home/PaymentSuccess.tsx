@@ -2,7 +2,8 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Card, CardBody, Typography, CardFooter, Button } from '@material-tailwind/react'
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { axiosInstance } from '../../api/axiosinstance'
+import { axiosInstance } from '../../config/api/axiosinstance'
+import { USER } from '../../config/constants/constants'
 
 
 export default function PaymentSuccess() {
@@ -37,7 +38,7 @@ export default function PaymentSuccess() {
         </Typography>
       </CardBody>
       <CardFooter className="pt-0 flex justify-center"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <Link to={`/profile/booking?id=${id}`}>
+        <Link to={`${USER.PROFILE}${USER.BOOKING}?id=${id}`}>
           <Button size="sm" variant="text" className="flex justify-center gap-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             View Details
             <svg

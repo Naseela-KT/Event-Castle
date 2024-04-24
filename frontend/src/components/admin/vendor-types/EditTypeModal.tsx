@@ -10,9 +10,10 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../../validations/admin/vendorTypeValidation";
+import { ADMIN } from "../../../config/constants/constants";
 
 interface Props {
   open: boolean;
@@ -103,7 +104,7 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
 
   useEffect(() => {
     if (open) {
-      navigate("/admin/vendor-types", { replace: true });
+      navigate(ADMIN.VENDOR_TYPES, { replace: true });
     }
   }, [open, navigate]);
 

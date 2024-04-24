@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 import UserRootState from '../../../redux/rootstate/UserState';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../../common/Pagination';
+import { USER } from '../../../config/constants/constants';
 
 export default function Favourites() {
   const [open, setOpen] = useState(false);
@@ -108,7 +109,7 @@ export default function Favourites() {
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                <Link to={`/view-vendor?id=${_id}`}>
+                <Link to={`${USER.VIEW_VENDOR}?id=${_id}`}>
                   <Typography
                     variant="h5"
                     color="blue-gray"

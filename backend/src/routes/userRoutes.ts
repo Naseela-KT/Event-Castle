@@ -2,7 +2,7 @@ import express from 'express';
 import { UserController } from '../controllers/userController';
 import { VendorController } from '../controllers/vendorController';
 import multer from 'multer';
-import { PostController } from '../controllers/postController';
+import PostController from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
 import { PaymentController } from '../controllers/paymentController';
 import { VendorTypeController } from '../controllers/vendorTypeController';

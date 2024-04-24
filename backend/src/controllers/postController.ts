@@ -8,10 +8,11 @@ import {
 import dotenv from "dotenv";
 import crypto from "crypto";
 import sharp from "sharp";
-import { createPost, deletePostService, getAllPostsByVendor, getPostById } from "../services/postService";
+
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { CustomError } from "../error/customError";
+import postService from "../services/postService";
 
 
 
@@ -27,7 +28,7 @@ const s3 = new S3Client({
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
-export const PostController = {
+class PostController  {
   async addNewPost(req: Request, res: Response): Promise<void> {
     try {
       const caption = req.body.caption;
@@ -63,13 +64,13 @@ export const PostController = {
       const url = await getSignedUrl(s3, command2,{expiresIn: 86400 * 3});
       let imageUrl=url;
 
-      const post = await createPost(caption, imageName, vendor_id,imageUrl);
+      const post = await postService.createPost(caption, imageName, vendor_id,imageUrl);
       res.status(201).json(post);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
   
 
   async getPosts(req: Request, res: Response): Promise<void> {
@@ -77,19 +78,19 @@ export const PostController = {
       const vendor_id:string=req.query.vendorid as string;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 8;
-      const {posts,totalPosts}=await getAllPostsByVendor(vendor_id,page,pageSize)
+      const {posts,totalPosts}=await postService.getAllPostsByVendor(vendor_id,page,pageSize)
       const totalPages = Math.ceil(totalPosts / pageSize);
       res.status(201).json({posts,totalPages: totalPages});
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async deletePost(req: Request, res: Response): Promise<void> {
     try {
       const id=req.params.id;
-      const post=await getPostById(id);
+      const post=await postService.getPostById(id);
 
       if(!post){
         throw new CustomError('Post not found!',404)
@@ -102,7 +103,7 @@ export const PostController = {
       const command=new DeleteObjectCommand(params);
       await s3.send(command);
       
-      await deletePostService(id);
+      await postService.deletePostService(id);
       res.status(200).json({message:"Post deleted successfully"});
 
 
@@ -110,7 +111,10 @@ export const PostController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 };
+
+
+export default new PostController();
 
 

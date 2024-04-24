@@ -9,13 +9,14 @@ import {
 } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { useSelector, useDispatch } from "react-redux";
 import { setVendorInfo } from "../../../redux/slices/VendorSlice";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { useFormik } from "formik";
 import { validate } from "../../../validations/common/loginVal";
 import { toast } from "react-toastify";
+import { USER, VENDOR } from "../../../config/constants/constants";
 
 interface FormValues {
   email: string;
@@ -37,7 +38,7 @@ const VendorLoginForm = () => {
 
   useEffect(() => {
     if (vendor) {
-      navigate("/vendor");
+      navigate(VENDOR.VENDOR);
     }
   }, []);
 
@@ -52,7 +53,7 @@ const VendorLoginForm = () => {
           localStorage.setItem("vendorToken",response.data.token);
           localStorage.setItem("vendorRefresh",response.data.refreshToken);
           dispatch(setVendorInfo(response.data.vendorData));
-          navigate("/Vendor/dashboard");
+          navigate(VENDOR.DASHBOARD);
         })
         .catch((error) => {
           toast.error(error.response.data.message);
@@ -156,7 +157,7 @@ const VendorLoginForm = () => {
                 </p>
               ) : null}
               <div className="ml-2.5">
-                <Link to="/vendor/forgot-password">
+                <Link to={VENDOR.FORGOT_PWD}>
                   <Typography
                     variant="small"
                     color="black"
@@ -197,7 +198,7 @@ const VendorLoginForm = () => {
               onPointerLeaveCapture={undefined}
             >
               Don&apos;t have an account?
-              <Link to="/vendor/signup">
+              <Link to={VENDOR.SIGNUP}>
                 <Typography
                   as="a"
                   href="#signup"
@@ -221,7 +222,7 @@ const VendorLoginForm = () => {
               onPointerLeaveCapture={undefined}
             >
               Are you a user?
-              <Link to="/login">
+              <Link to={USER.LOGIN}>
                 <Typography
                   as="a"
                   href="#signup"

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../redux/rootstate/UserState';
 import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
+import { USER } from '../../../config/constants/constants';
 
 interface Booking {
   _id: string;
@@ -77,7 +78,7 @@ const BookingDetails = () => {
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
-                    <Link to={`/view-vendor?id=${item.vendorId}`}>View</Link>
+                    <Link to={`${USER.VIEW_VENDOR}?id=${item.vendorId}`}>View</Link>
                   </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -115,7 +116,7 @@ const BookingDetails = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <Link to={`/profile/booking?id=${item._id}`}>
+                    <Link to={`${USER.PROFILE}${USER.BOOKING}?id=${item._id}`}>
                       <button className="hover:text-primary">
                         <svg
                           className="fill-current"

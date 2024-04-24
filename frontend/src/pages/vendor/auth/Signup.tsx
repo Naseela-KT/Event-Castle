@@ -11,9 +11,10 @@ import {
 } from "@material-tailwind/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../validations/vendor/registerVal";
+import { VENDOR } from "../../../config/constants/constants";
 
 interface VendorType {
   _id: string;
@@ -100,7 +101,7 @@ const VendorSignupForm = () => {
           console.log(response);
           if (response.data.email) {
             toast.warn(response.data.message);
-            navigate("/vendor/verify");
+            navigate(VENDOR.VERIFY);
           }
         })
         .catch((error) => {
@@ -280,7 +281,7 @@ const VendorSignupForm = () => {
               color="black"
               placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Already have an account?
-          <Link to="/vendor/login">
+          <Link to={VENDOR.LOGIN}>
             <Typography
                   as="a"
                   href="#"
@@ -298,7 +299,7 @@ const VendorSignupForm = () => {
               color="black"
               placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a user?
-          <Link to="/signup">
+          <Link to={VENDOR.SIGNUP}>
             <Typography
                   as="a"
                   href="#signup"

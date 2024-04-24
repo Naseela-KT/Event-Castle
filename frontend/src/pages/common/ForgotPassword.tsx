@@ -7,12 +7,13 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { axiosInstance, axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstance, axiosInstanceVendor } from "../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { validateEmailValue, validateOTP } from "../../validations/common/forgotPassword";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { USER,VENDOR } from "../../config/constants/constants";
 
 interface EmailValue {
   email: string;
@@ -55,7 +56,7 @@ const ForgotPassword = () => {
     validate: validateEmailValue,
     onSubmit: (values) => {
       {
-        location.pathname === "/vendor/forgot-password"
+        location.pathname === VENDOR.FORGOT_PWD
           ? axiosInstanceVendor
               .post("/vendor-getotp", values, { withCredentials: true })
               .then((response) => {
@@ -89,13 +90,13 @@ const ForgotPassword = () => {
     validate: validateOTP,
     onSubmit: (values) => {
       {
-        location.pathname === "/vendor/forgot-password"
+        location.pathname === VENDOR.FORGOT_PWD
           ? axiosInstanceVendor
               .post("/verifyVendorotp", values, { withCredentials: true })
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate("/vendor/reset-password");
+                navigate(VENDOR.RESET_PWD);
               })
               .catch((error) => {
                 toast.error(error.response.data.error);
@@ -106,7 +107,7 @@ const ForgotPassword = () => {
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate("/reset-password");
+                navigate(USER.RESET_PWD);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
@@ -118,7 +119,7 @@ const ForgotPassword = () => {
 
 
   const handleResendOtp=async()=>{
-    location.pathname === "/vendor/verify"
+    location.pathname === VENDOR.VERIFY
           ? axiosInstanceVendor
               .get("/pwd-resendOtp",{ withCredentials: true })
               .then((response) => {

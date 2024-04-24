@@ -5,10 +5,11 @@ import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Pagination from '../../../components/common/Pagination';
+import { VENDOR } from '../../../config/constants/constants';
 
 interface Post {
   imageUrl: string;
@@ -53,7 +54,7 @@ export default function Posts() {
       .then((response) => {
         toast.success(response.data.message);
         setFetchTrigger(!fetchTrigger);
-        navigate('/Vendor/view-posts');
+        navigate(VENDOR.VIEW_POSTS);
       })
       .catch((error) => {
         toast.error(error.response.data.message);

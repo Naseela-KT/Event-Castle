@@ -9,8 +9,9 @@ import {
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { validate } from "../../validations/common/resetPassword";
-import { axiosInstance, axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstance, axiosInstanceVendor } from "../../config/api/axiosinstance";
 import { useLocation,useNavigate } from 'react-router-dom';
+import { USER,VENDOR } from "../../config/constants/constants";
 
 
 interface FormValues {
@@ -33,13 +34,13 @@ const ResetPassword = () => {
     onSubmit: (values: unknown) => {
       console.log(values);
       {
-        location.pathname === "/vendor/reset-password"
+        location.pathname === VENDOR.RESET_PWD
           ? axiosInstanceVendor
               .post("/reset-password", values, { withCredentials: true })
               .then((response) => {
                 
                 toast.success(response.data.message);
-                navigate("/vendor/login");
+                navigate(VENDOR.LOGIN);
               })
               .catch((error) => {
                 toast.error(error.response.data.error);
@@ -50,7 +51,7 @@ const ResetPassword = () => {
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate("/login");
+                navigate(USER.LOGIN);
               })
               .catch((error) => {
                 toast.error(error.response.data.error);

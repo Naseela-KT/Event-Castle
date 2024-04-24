@@ -10,8 +10,9 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link} from 'react-router-dom';
-import { axiosInstanceChat } from '../../../api/axiosinstance';
+import { axiosInstanceChat } from '../../../config/api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
+import { USER } from '../../../config/constants/constants';
 
 interface ProfileButtonsProps {
   vendorId: string | undefined; 
@@ -33,7 +34,7 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,us
     }
     try {
       await axiosInstanceChat.post('/' , body).then(()=>{
-        navigate('/chat')
+        navigate(USER.CHAT)
       })
     } catch(error) {
       console.log(error)

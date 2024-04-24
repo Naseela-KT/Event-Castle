@@ -3,12 +3,13 @@ import { Button, Input, Typography } from '@material-tailwind/react';
 import Footer from '../../layout/user/footer';
 import 'react-datepicker/dist/react-datepicker.css';
 import { validate} from '../../validations/home/BookingValidation';
-import { axiosInstance } from '../../api/axiosinstance';
+import { axiosInstance } from '../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import UserRootState from '../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
+import { USER } from '../../config/constants/constants';
 
 
 
@@ -65,11 +66,11 @@ const BookEventForm: React.FC = () => {
     if (Object.values(errors).every((error) => error === "")) {
       console.log(formValues);
       axiosInstance
-        .post(`/book-an-event?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
+        .post(`${USER.BOOK_EVENT}?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
         .then((response) =>{
           console.log(response);
           toast.success(response.data.message);
-          navigate("/profile/booking-details")
+          navigate(`${USER.PROFILE}${USER.BOOKING_DETAILS}`)
         })
         .catch((error) => {
           toast.error(error.response.data.message)

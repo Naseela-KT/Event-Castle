@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { format } from "timeago.js";
 import AdminRootState from "../../../redux/rootstate/AdminState";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
 
 interface chat {
   _id:string;

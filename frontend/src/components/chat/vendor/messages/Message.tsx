@@ -2,7 +2,7 @@ import { format } from 'timeago.js';
 import {
   axiosInstanceMsg,
   axiosInstanceVendor,
-} from '../../../../api/axiosinstance';
+} from '../../../../config/api/axiosinstance';
 import React, { useState } from 'react';
 import VendorRootState from '../../../../redux/rootstate/VendorState';
 import { useSelector } from 'react-redux';

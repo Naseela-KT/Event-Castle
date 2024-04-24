@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
-import { axiosInstanceAdmin } from '../../../api/axiosinstance';
+import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';

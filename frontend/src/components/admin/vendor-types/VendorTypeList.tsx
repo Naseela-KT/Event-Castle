@@ -1,9 +1,10 @@
 import { Button } from '@material-tailwind/react';
 import { useState, useEffect } from 'react';
-import { axiosInstanceAdmin } from '../../../api/axiosinstance';
+import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
 import EditTypeModal from './EditTypeModal';
 import DeleteTypeModal from './DeleteTypeModal';
+import { ADMIN } from '../../../config/constants/constants';
 
 interface VendorType {
   _id: string;
@@ -42,7 +43,7 @@ const VendorTypeList = () => {
         setVendorType((prevVendorTypes) =>
           prevVendorTypes.filter((type) => type._id !== vendorTypeId),
         );
-        navigate('/admin/vendor-types');
+        navigate(ADMIN.VENDOR_TYPES);
       })
       .catch((error) => {
         console.log('here', error);

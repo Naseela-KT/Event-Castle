@@ -10,7 +10,7 @@ import {
 import Footer from '../../layout/user/footer';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../api/axiosinstance';
+import { axiosInstance } from '../../config/api/axiosinstance';
 import VendorTabs from '../../components/home/VendorProfile/VendorTabs';
 import { toast } from 'react-toastify';
 import UserRootState from '../../redux/rootstate/UserState';

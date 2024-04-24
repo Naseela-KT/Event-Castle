@@ -1,9 +1,9 @@
 import { Card, CardHeader, Typography } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 import AdminRootState from '../../../redux/rootstate/AdminState';
-import { axiosInstanceAdmin } from '../../../api/axiosinstance';
+import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useEffect, useState } from 'react';
-import { AdminData } from '../../../redux/slices/AdminSlice';
+import { AdminData } from '../../../types/adminTypes';
 
 interface User {
   _id: string;

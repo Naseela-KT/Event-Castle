@@ -9,12 +9,13 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { axiosInstance, axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstance, axiosInstanceVendor } from "../../config/api/axiosinstance";
 import { setUserInfo } from "../../redux/slices/UserSlice";
 import { setVendorInfo } from "../../redux/slices/VendorSlice";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { validate } from "../../validations/common/otpValidation";
+import { USER, VENDOR } from "../../config/constants/constants";
 
 interface FormValues {
   otp: string;
@@ -57,14 +58,14 @@ const VerifyEmail = () => {
     validate,
     onSubmit: (values) => {
       {
-        location.pathname === "/vendor/verify"
+        location.pathname === VENDOR.VERIFY
           ? axiosInstanceVendor
               .post("/verify", values, { withCredentials: true })
               .then((response) => {
                 console.log(response);
                 dispatch(setVendorInfo(response.data.vendor));
                 toast.success("Successfully registered..!");
-                navigate("/vendor");
+                navigate(VENDOR.VENDOR);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
@@ -76,7 +77,7 @@ const VerifyEmail = () => {
                 console.log(response);
                 dispatch(setUserInfo(response.data.user));
                 toast.success("Successfully registered..!");
-                navigate("/");
+                navigate(USER.HOME);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
@@ -88,7 +89,7 @@ const VerifyEmail = () => {
 
 
   const handleResendOtp=async()=>{
-    location.pathname === "/vendor/verify"
+    location.pathname === VENDOR.VERIFY
           ? axiosInstanceVendor
               .get("/resendOtp",{ withCredentials: true })
               .then((response) => {

@@ -2,8 +2,9 @@ import VendorCard from "../../../components/admin/vendorList/VendorCard"
 import { Button } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosInstanceAdmin} from "../../../api/axiosinstance";
+import { axiosInstanceAdmin} from "../../../config/api/axiosinstance";
 import Pagination from "../../../components/common/Pagination";
+import { ADMIN } from "../../../config/constants/constants";
 
 interface Vendor {
   _id: string;
@@ -55,12 +56,12 @@ function VendorsList() {
            Vendors List
          </h3>
          <Button variant="gradient" className="rounded-full"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-           <Link to="/admin/vendor-types">View Vendor Types</Link>
+           <Link to={ADMIN.VENDOR_TYPES}>View Vendor Types</Link>
          </Button>
        </div>
        <div className="flex flex-wrap  gap-4">
          {vendors.map((vendor, index) => (
-           <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+           <Link key={index} to={`${ADMIN.VENDOR}?Id=${vendor._id}`} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
              <VendorCard {...vendor} />
            </Link>
          ))}

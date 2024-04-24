@@ -7,7 +7,7 @@ import {
   DialogBody,
   DialogFooter,
 } from '@material-tailwind/react';
-import { axiosInstance, axiosInstanceMsg } from '../../../../api/axiosinstance';
+import { axiosInstance, axiosInstanceMsg } from '../../../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
 import UserRootState from '../../../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';

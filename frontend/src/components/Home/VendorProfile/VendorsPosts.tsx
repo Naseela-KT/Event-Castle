@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
-import {axiosInstance, axiosInstanceVendor} from "../../../api/axiosinstance";
+import {axiosInstance, axiosInstanceVendor} from "../../../config/api/axiosinstance";
 import { DialogWithImage } from "./DialogWithImage";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../../redux/rootstate/VendorState";
+import { USER } from "../../../config/constants/constants";
 
 
 // Define the interface for your response data
@@ -75,7 +76,7 @@ const VendorPosts= () => {
             src={imageUrl}
             alt="gallery-photo"
           />
-          {path=="/view-vendor"?"":<button
+          {path==USER.VIEW_VENDOR?"":<button
             onClick={() => handleDelete(_id)}
             className="absolute top-0 right-0 m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >

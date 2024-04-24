@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Rating } from "@material-tailwind/react";
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UserRootState from '../../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
+import { USER } from '../../../config/constants/constants';
 
 
 interface VendorReviewProps {
@@ -47,7 +48,7 @@ const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
     .then((response) => {
       console.log(response);
       toast.success(response.data.message)
-      navigate(`/view-vendor?id=${id}`);
+      navigate(`${USER.VIEW_VENDOR}?id=${id}`);
     })
     .catch((error) => {
       toast.error(error.response.data.message)

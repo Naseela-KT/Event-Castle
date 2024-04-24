@@ -5,7 +5,7 @@ import { S3Client,PutObjectCommand} from "@aws-sdk/client-s3";
 
 
 import multer from 'multer';
-import { PostController } from '../controllers/postController';
+import  PostController  from '../controllers/postController';
 import { BookingController } from '../controllers/bookingController';
 import { NotificationController } from '../controllers/notificationController';
 import { changeViewMessage, deleteAMessage } from '../controllers/messageController';

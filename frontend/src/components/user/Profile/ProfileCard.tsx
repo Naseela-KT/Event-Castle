@@ -8,10 +8,11 @@ import {
 } from "@material-tailwind/react";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector,useDispatch } from "react-redux";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { setUserInfo } from "../../../redux/slices/UserSlice";
+import { USER } from "../../../config/constants/constants";
 
 interface FormInputs {
   name: string;
@@ -68,7 +69,7 @@ const ProfileCard = () => {
         console.log(response);
         toast.success("Profile updated successfully...!");
         dispatch(setUserInfo(response.data));
-        navigate("/profile");
+        navigate(USER.PROFILE);
       })
       .catch((error) => {
         toast.error(error.response.data.message);

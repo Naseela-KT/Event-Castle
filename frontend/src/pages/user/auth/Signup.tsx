@@ -11,10 +11,11 @@ import { Link,useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../validations/user/userRegisterVal";
 import { GoogleOAuthProvider , GoogleLogin } from "@react-oauth/google";
+import { USER,VENDOR } from "../../../config/constants/constants";
 
 const client_id = import.meta.env.VITE_CLIENT_ID || '';
 
@@ -44,7 +45,7 @@ const UserSignup= () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/home");
+      navigate(USER.HOME);
     }
   }, []);
 
@@ -67,7 +68,7 @@ const UserSignup= () => {
           console.log(response);
           if (response.data.email) {
             toast.warn(response.data.message);
-            navigate("/verify");
+            navigate(USER.VERIFY);
           }
         })
         .catch((error) => {
@@ -207,7 +208,7 @@ const UserSignup= () => {
                   console.log(res)
                   if(res.data.message) {
                     toast.success(res.data.message);
-                    navigate('/login');
+                    navigate(USER.LOGIN);
                   }
                 })
                 .catch((error) => {
@@ -224,7 +225,7 @@ const UserSignup= () => {
             color="black"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Already have an account?
-          <Link to="/login">
+          <Link to={USER.LOGIN}>
             <Typography
                 as="a"
                 href="#"
@@ -242,7 +243,7 @@ const UserSignup= () => {
             color="black"
             placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           Are you a vendor?
-          <Link to="/vendor/signup">
+          <Link to={VENDOR.SIGNUP}>
             <Typography
                 as="a"
                 href="#signup"
