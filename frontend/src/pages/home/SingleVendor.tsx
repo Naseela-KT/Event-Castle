@@ -17,12 +17,14 @@ import UserRootState from '../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import AddReview from '../../components/home/VendorProfile/AddReview';
 import ProfileButtons from '../../components/home/VendorProfile/ProfileButtons';
+import { UserData } from '../../types/userTypes';
 
 interface Review {
-  username: string;
+  _id:string;
+  userId: UserData;
   rating: number;
   content: string;
-  // Add any other properties of a review here
+  reply:Array<string>
 }
 
 interface Vendor {
@@ -50,6 +52,7 @@ export function VendorProfile() {
   const id = queryParams.get('id') || '';
   const [vendor, setVendor] = useState<Vendor>();
   const [favourite,setFavourite]=useState(false);
+  const [review,setReview]=useState<Review[]>([]);
 
   useEffect(() => {
     if (user?.favourite.includes(id)) { 
@@ -65,6 +68,18 @@ export function VendorProfile() {
         console.log('here', error);
       });
   }, []);
+
+  useEffect(()=>{
+    axiosInstance
+    .get(`/getReviews?vendorId=${id}`, { withCredentials: true })
+    .then((response) => {
+      setReview(response.data.reviews);
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
+  })
 
 
   const handleFavourite=async()=>{
@@ -214,7 +229,7 @@ export function VendorProfile() {
         </div>
       </section>
       <section>
-        <VendorTabs reviews={vendor?.reviews}/>
+        <VendorTabs reviews={review}/>
       </section>
       <section className='mb-20'>
         <AddReview id={vendor?._id}/>

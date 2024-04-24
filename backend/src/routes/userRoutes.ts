@@ -9,6 +9,7 @@ import  VendorTypeController  from "../controllers/vendorTypeController";
 import NotificationController from "../controllers/notificationController";
 import LiveController from "../controllers/liveController";
 import MessageController from "../controllers/messageController";
+import ReviewController from "../controllers/reviewController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -32,8 +33,11 @@ router.post("/google/register", UserController.googleRegister);
 //Home
 router.get("/getvendors", VendorController.getAllVendors);
 router.get("/getvendor", VendorController.getVendor);
-router.post("/addVendorReview", VendorController.addVendorReview);
+
+router.post("/addVendorReview", ReviewController.addReview);
+router.get("/getReviews",ReviewController.getReviews)
 router.get("/vendor-types", VendorTypeController.getVendorTypes);
+
 
 //Profile
 router.post("/update-password", UserController.updatePasswordController);

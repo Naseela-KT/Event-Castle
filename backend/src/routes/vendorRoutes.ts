@@ -8,6 +8,7 @@ import  PostController  from '../controllers/postController';
 import BookingController from '../controllers/bookingController';
 import  NotificationController from '../controllers/notificationController';
 import MessageController from '../controllers/messageController';
+import reviewController from '../controllers/reviewController';
 const router = express.Router();
 
 
@@ -42,7 +43,10 @@ router.get('/getvendor',VendorController.getVendor)
 router.patch('/update-password',VendorController.updatePassword)
 router.put('/update-profile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]),VendorController.updateProfile)
 router.get('/get-all-reviews',VendorController.loadAllReviews)
-router.put('/add-review-reply',VendorController.addReviewReply)
+
+router.get("/getReviews",reviewController.getReviews)
+router.put('/add-review-reply',reviewController.addReviewReply)
+
 router.get('/booking-details',BookingController.getBookingsByVendor);
 router.get('/single-booking-details',BookingController.getBookingsById);
 router.put('/update-booking-status',BookingController.updateStatus)

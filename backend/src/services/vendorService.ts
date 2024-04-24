@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { UpdatePassword, UpdateVendorPassword, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import verndorTypeRepository from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendorModel';
 import {
@@ -226,14 +226,7 @@ export const UpdatePasswordService = async(newPassword:string , vendorId:string)
   }
 }
 
-export const PushFavoriteVendor = async(content:string , rating:number , username:string , vendorid:string)=>{
-  try {
-    const data = await AddVendorReview(content , rating, username , vendorid)
-    return  data;
-  } catch (error) {
-    throw error;
-  }
-}
+
 
 
 
@@ -253,14 +246,7 @@ export async function updateVendor(vendorId: string, formData: any, coverpicUrl:
 }
 
 
-export async function addReviewReplyController(vendorId:string,content:string,reviewId:string): Promise<any> {
-  try {
-    const data=await addReviewReplyById(vendorId,content,reviewId)
-    return data;
-  } catch (error) {
-    
-  }
-}
+
 
 
 export async function verificationRequest(vendorId:string){

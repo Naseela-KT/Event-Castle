@@ -10,12 +10,13 @@ import {
   } from "@material-tailwind/react";
 import { useState } from "react";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa";
+import { UserData } from "../../../types/userTypes";
    
    
 
   interface Review {
     _id:string;
-    username: string;
+    userId: UserData;
     rating: number;
     content: string;
     reply:Array<string>;
@@ -23,7 +24,7 @@ import { FaAngleUp, FaAngleDown } from "react-icons/fa";
   }
 
 
-  const ReviewCard: React.FC<Review> = ({ username,rating,content,reply,key }) => {
+  const ReviewCard: React.FC<Review> = ({ userId,rating,content,reply,key }) => {
     const [openAccordions, setOpenAccordions] = useState<number[]>([]);
     const handleToggleAccordion = (index: number) => {
       const isOpen = openAccordions.includes(key);
@@ -46,7 +47,7 @@ import { FaAngleUp, FaAngleDown } from "react-icons/fa";
           <div className="flex w-full flex-col gap-0.5">
             <div className="flex items-center justify-between">
               <Typography variant="h6" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                {username}
+                {userId.name}
               </Typography>
               <Rating value={rating} readonly placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
             </div>

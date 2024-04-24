@@ -91,33 +91,7 @@ export const UpdatePassword = async(password:string , mail:string) =>{
   }
 }
 
-export const AddVendorReview = async(content: string, rating: number, username: string, vendorId: string)=>{
-  try {
-     const vendorData = await Vendor.findById(vendorId);
-       if (!vendorData) {
-         throw new Error('Vendor not found');
-       }
-       const reviewId = new mongoose.Types.ObjectId();
-     vendorData.reviews.push({
-      _id: reviewId,
-       content, rating, username,
-       date: new Date(),
-       reply: []
-     });
-     const ratings = vendorData.reviews.map((review) => review.rating)
-    vendorData.totalRating = calculateOverallRating(ratings);
-    await vendorData.save();
 
-     return true;
-  } catch (error) {
-    throw error;
-  }
- }
-
- const calculateOverallRating = (ratings: any[]) => {
-  const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
-  return ratings.length > 0 ? totalRating / ratings.length : 0;
-};
 
  export async function updateVendorData(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<void> {
   try {
@@ -148,35 +122,7 @@ export const AddVendorReview = async(content: string, rating: number, username: 
 }
 
 
-export async function addReviewReplyById(vendorId: string, content: string, reviewId: string) {
-  try {
-    console.log("here in repository")
-    const vendorData = await Vendor.findById(vendorId);
-    if (!vendorData) {
-      console.log('Vendor not found')
-      throw new CustomError('Vendor not found', 404);
-    }
-    const review = vendorData.reviews.find((review: Review) => review._id.toString() === reviewId);
-    console.log(review)
-    if (!review) {
-      console.log('Review not found')
-      throw new CustomError('Review not found', 404);
-    }
-    const result = await Vendor.findByIdAndUpdate(
-      vendorId,
-      { $push: { 'reviews.$[review].reply': content } },
-      {
-        arrayFilters: [{ 'review._id': { $eq: new mongoose.Types.ObjectId(reviewId) } }],
-        new: true 
-      }
-    );
-    console.log(result)
-    return result
-   
-  } catch (error) {
-    throw new Error('Failed to add reply');
-  }
-}
+
 
 export async function requestForVerification(vendorId:string){
   try {

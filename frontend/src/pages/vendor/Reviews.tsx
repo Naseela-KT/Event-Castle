@@ -38,15 +38,15 @@ export const Reviews = () => {
 
   useEffect(()=>{
     axiosInstanceVendor
-      .get(`/get-all-reviews?vendorId=${vendor?._id}`, { withCredentials: true })
-      .then((response) => {
-        setReviews(response.data.reviews);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log('here', error);
-      });
-  },[content])
+    .get(`/getReviews?vendorId=${vendor?._id}`, { withCredentials: true })
+    .then((response) => {
+      setReviews(response.data.reviews);
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log('here', error);
+    });
+  },[reviews])
 
   const handleOpen = (reviewId: string) => {
     setCurrentReviewId(reviewId); // Set the current review ID
@@ -71,7 +71,7 @@ export const Reviews = () => {
     console.log(reviewId);
     axiosInstanceVendor
       .put(
-        `/add-review-reply?vendorId=${vendor?._id}&reviewId=${reviewId}`,
+        `/add-review-reply?&reviewId=${reviewId}`,
         { content },
         { withCredentials: true },
       )
