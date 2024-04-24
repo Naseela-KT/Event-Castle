@@ -1,30 +1,33 @@
-import { changeStatusById, createLive, findAllLive } from "../repositories/liveRepository";
+import LiveRepository from "../repositories/liveRepository";
 
-
-export const addNewLive = async (url:string) => {
+class LiveService {
+  async addNewLive(url: string) {
     try {
-      const data = await createLive(url);
+      const data = await LiveRepository.create({ url });
       return data;
     } catch (error) {
       throw error;
     }
-  };
+  }
 
-export const changeStatus=async (url:string) => {
+  async changeStatus(url: string) {
     try {
-      const data = await changeStatusById(url);
+      const data = await LiveRepository.changeStatusById(url);
       return data;
     } catch (error) {
       throw error;
     }
-  };
+  }
 
-
-export const getAllLive= async() => {
+  async getAllLive() {
     try {
-      const data = await findAllLive();
+      const data = await LiveRepository.findByCondition({ finished: false });
       return data;
     } catch (error) {
       throw error;
     }
-  };
+  }
+}
+
+
+export default new LiveService()

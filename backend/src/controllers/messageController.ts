@@ -1,79 +1,68 @@
 import { Request, Response } from "express";
-import Message from '../models/messageModel'
+import Message from "../models/messageModel";
+import messageService from "../services/messageService";
 
-
-
-
-
-export const createMessage = async (req: Request, res: Response):Promise<any> =>{
-
-    const {conversationId , senderId , text } = req.body;
-
-    const message = new Message({
+class MessageController {
+  async createMessage(req: Request, res: Response): Promise<any> {
+    try {
+      const { conversationId, senderId, text } = req.body;
+      const response = await messageService.createMessage(
         conversationId,
         senderId,
         text
-    })
-
-    try {
-        const response = await message.save();
-        res.status(200).json(response);
+      );
+      res.status(200).json(response);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Server Error" });
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
     }
+  }
+
+  async getMessages(req: Request, res: Response): Promise<any> {
+    const conversationId: string = req.query.conversationId as string;
+    try {
+      const messages = await messageService.findMessages(conversationId);
+      res.status(200).json(messages);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+
+  async deleteAMessage(req: Request, res: Response): Promise<any> {
+    try {
+      const msgId = req.body.msgId;
+      const messages = await messageService.updateStatus(msgId);
+      res.status(200).json({ messages });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+
+  async changeViewMessage(req: Request, res: Response): Promise<any> {
+    try {
+      const { msgId, id } = req.body;
+      const messages = await messageService.changeMessageView(msgId,id);
+      res.status(200).json({ messages });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+
+  async addEmoji(req: Request, res: Response): Promise<any> {
+    try {
+      const { msgId, emoji } = req.body;
+      const messages = await Message.findByIdAndUpdate(msgId, {
+        $set: { emoji: emoji },
+      });
+      res.status(200).json({ messages });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
 }
 
-
-
-export const getMessages = async (req: Request, res: Response):Promise<any> =>{
-    const conversationId = req.query.conversationId;
-    try {
-        const messages = await Message.find({conversationId: conversationId});
-        res.status(200).json(messages);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });
-        
-    }
-}
-
-
-export const deleteAMessage=async(req: Request, res: Response):Promise<any> =>{
-    const msgId = req.body.msgId;
-    console.log(msgId)
-    try {
-        const messages = await Message.findByIdAndUpdate(msgId,{$set:{isDeleted:true}});
-        res.status(200).json({messages});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });
-        
-    }
-}
-
-export const changeViewMessage=async(req: Request, res: Response):Promise<any> =>{
-    const msgId = req.body.msgId;
-    const id=req.body.id
-    console.log(msgId,)
-    try {
-        const messages = await Message.findByIdAndUpdate(msgId,{$push:{deletedIds:id}});
-        res.status(200).json({messages});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });
-        
-    }
-}
-
-export const addEmoji=async(req: Request, res: Response):Promise<any> =>{
-    try {
-        const {msgId,emoji}=req.body;
-        const messages = await Message.findByIdAndUpdate(msgId,{$set:{emoji:emoji}});
-        res.status(200).json({messages});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });
-    }
-   
-}
+export default new MessageController();

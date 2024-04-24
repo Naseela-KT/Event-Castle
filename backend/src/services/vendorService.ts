@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AddVendorReview, UpdatePassword, UpdateVendorPassword, addReviewReplyById, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
-import { findVerndorIdByType, getVendorById } from '../repositories/vendorTypeRepository';
+import verndorTypeRepository from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendorModel';
 import {
   GetObjectCommand,
@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 import { CustomError } from '../error/customError';
+import vendorTypeModel from '../models/vendorTypeModel';
 
 
 
@@ -35,7 +36,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
       const verificationRequest:boolean=false;
       const totalBooking:number=0;
 
-      const vendorType=await findVerndorIdByType(vendor_type);
+      const vendorType=await vendorTypeModel.findOne({type:vendor_type});
       console.log("vendorTypeData"+vendorType)
 
       const newVendor = await createVendor({ email , password: hashedPassword , name , phone , city , isActive , isVerified , verificationRequest , totalBooking ,vendor_type:vendorType?._id});
@@ -243,7 +244,7 @@ export async function updateVendor(vendorId: string, formData: any, coverpicUrl:
     try {
         console.log(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic)
         await updateVendorData(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic);
-        const updatedVendor = await getVendorById(vendorId);
+        const updatedVendor = await findVendorById(vendorId);
 
         return updatedVendor;
     } catch (error) {

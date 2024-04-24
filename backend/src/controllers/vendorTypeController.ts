@@ -1,15 +1,15 @@
 import { Request , Response } from "express";
-import { addType, deleteType, getSingleType, getTypes, updateVendorType } from "../services/vendorTypeService";
+import vendorTypeService from "../services/vendorTypeService";
 import { CustomError } from "../error/customError";
 
 
-export const VendorTypeController = {
+class VendorTypeController{
 
     async addVendorType(req: Request, res: Response): Promise<void> {
         try {
           const {type , status } = req.body;
           console.log(req.body)
-          const vendor = await addType(type,status);
+          const vendor = await vendorTypeService.addType(type,status);
           res.status(201).json(vendor);
         } catch (error) {
           if (error instanceof CustomError) {
@@ -18,17 +18,17 @@ export const VendorTypeController = {
             console.error(error);
             res.status(500).json({ message: "Server Error" });
           }}
-      },
+      }
 
       async getVendorTypes(req:Request,res:Response):Promise<void>{
         try{
-          const vendorTypes=await getTypes();
+          const vendorTypes=await vendorTypeService.getTypes();
           res.status(200).json(vendorTypes)
         }catch(error){
           console.error(error);
           res.status(500).json({ message: 'Server Error' });
         }
-      },
+      }
 
       async deleteVendorType(req: Request, res: Response): Promise<void> {
         try {
@@ -39,13 +39,13 @@ export const VendorTypeController = {
             return;
           }
       
-          const result = await deleteType(vendorTypeId);
+          const result = await vendorTypeService.deleteType(vendorTypeId);
           res.status(200).json({ message: 'Vendor deleted successfully' });
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: 'Server Error' });
         }
-      },
+      }
 
 
       async LoadSingleType(req: Request, res: Response): Promise<void> {
@@ -57,13 +57,13 @@ export const VendorTypeController = {
             return;
           }
       
-          const result = await getSingleType(vendorTypeId);
+          const result = await vendorTypeService.getSingleType(vendorTypeId);
           res.status(200).json(result);
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: 'Server Error' });
         }
-      },
+      }
 
       async updateType(req: Request, res: Response): Promise<void> {
         try {
@@ -75,7 +75,7 @@ export const VendorTypeController = {
             }
             const { type, status } = req.body;
     
-            const result = await updateVendorType(vendorTypeId, type, status);
+            const result = await vendorTypeService.updateVendorType(vendorTypeId, type, status);
             res.status(200).json(result);
         } catch (error) {
             console.error(error);
@@ -83,6 +83,8 @@ export const VendorTypeController = {
         }
     }
 }
+
+export default new VendorTypeController()
 
 
 

@@ -1,7 +1,7 @@
 import {Document,Schema,model} from "mongoose";
 
 
-export interface paymentDocument extends Document{
+export interface PaymentDocument extends Document{
     amount:number;
     vendorId:Schema.Types.ObjectId;
     userId:Schema.Types.ObjectId;
@@ -9,7 +9,7 @@ export interface paymentDocument extends Document{
     createdAt:Date;
 }
 
-const paymentSchema=new Schema<paymentDocument>({
+const paymentSchema=new Schema<PaymentDocument>({
     vendorId:{
         type:Schema.Types.ObjectId,
         ref: 'Vendor',
@@ -35,5 +35,5 @@ const paymentSchema=new Schema<paymentDocument>({
     }
 })
 
-export default model<paymentDocument>('Payment',paymentSchema)
+export default model<PaymentDocument>('Payment',paymentSchema)
 

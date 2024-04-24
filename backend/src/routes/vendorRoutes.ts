@@ -1,14 +1,13 @@
 import express from 'express';
 import { VendorController } from '../controllers/vendorController';
-import { VendorTypeController } from '../controllers/vendorTypeController';
-import { S3Client,PutObjectCommand} from "@aws-sdk/client-s3";
+import  VendorTypeController  from '../controllers/vendorTypeController';
 
 
 import multer from 'multer';
 import  PostController  from '../controllers/postController';
-import { BookingController } from '../controllers/bookingController';
-import { NotificationController } from '../controllers/notificationController';
-import { changeViewMessage, deleteAMessage } from '../controllers/messageController';
+import BookingController from '../controllers/bookingController';
+import  NotificationController from '../controllers/notificationController';
+import MessageController from '../controllers/messageController';
 const router = express.Router();
 
 
@@ -55,8 +54,8 @@ router.patch('/toggle-read',NotificationController.toggleRead)
 
 
 //message
-router.patch('/delete-for-everyone',deleteAMessage)
-router.patch('/delete-for-me',changeViewMessage)
+router.patch('/delete-for-everyone',MessageController.deleteAMessage)
+router.patch('/delete-for-me',MessageController.changeViewMessage)
 
 
 export default router;

@@ -1,30 +1,18 @@
-import mongoose, { Types } from "mongoose";
-import live from "../models/liveModel";
+import Live, { LiveDocument } from "../models/liveModel";
+import { BaseRepository } from "./baseRepository";
 
-
-
-export const createLive = async (url: string) => {
-  try {
-    return await live.create({ url });
-  } catch (error) {
-    throw error;
+class LiveRepository extends BaseRepository<LiveDocument> {
+  constructor() {
+    super(Live);
   }
-};
 
-export const changeStatusById=async(url:string)=>{
+  async changeStatusById(url: string) {
     try {
-        return await live.updateOne({url:url},{$set:{finished:true}});
-      } catch (error) {
-        throw error;
-      }
+      return await Live.updateOne({ url: url }, { $set: { finished: true } });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-export const findAllLive=async()=>{
-    try {
-        return await live.find({finished:false});
-      } catch (error) {
-        throw error;
-      }
-}
-
-
+export default new LiveRepository();

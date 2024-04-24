@@ -1,13 +1,13 @@
 import { Document, Schema, model } from "mongoose";
 
-export interface notificationDocument extends Document {
+export interface NotificationDocument extends Document {
   sender: Schema.Types.ObjectId;
   recipient: Schema.Types.ObjectId;
   message: string;
   read: boolean;
 }
 
-const notificationSchema = new Schema<notificationDocument>(
+const notificationSchema = new Schema<NotificationDocument>(
   {
     sender: {
       type: Schema.Types.ObjectId,
@@ -29,4 +29,4 @@ const notificationSchema = new Schema<notificationDocument>(
   { timestamps: true }
 );
 
-export default model<notificationDocument>("Notification", notificationSchema);
+export default model<NotificationDocument>("Notification", notificationSchema);

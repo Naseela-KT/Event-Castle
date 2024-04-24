@@ -1,11 +1,11 @@
 import express from "express";
 import  AdminController  from "../controllers/adminController";
 import { UserController } from "../controllers/userController";
-import { VendorTypeController } from "../controllers/vendorTypeController";
+import  VendorTypeController  from "../controllers/vendorTypeController";
 import { VendorController } from "../controllers/vendorController";
-import { PaymentController } from "../controllers/paymentController";
+import  PaymentController  from "../controllers/paymentController";
 import adminAuth from "../middlewares/adminAuthMiddleware";
-import { NotificationController } from "../controllers/notificationController";
+import NotificationController  from "../controllers/notificationController";
 
 const router = express.Router();
 

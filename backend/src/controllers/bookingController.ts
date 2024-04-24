@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { acquireLockForDate, addABooking, checkIfDatePresent, getAllBookingsById, getAllBookingsByUser, getAllBookingsByVendor, getAllRefunds, releaseLockForDate, updateStatusById } from "../services/bookingService";
+import BookingService from "../services/bookingService";
 import { CustomError } from "../error/customError";
 
 
 
 
 
-export const BookingController = {
+class BookingController{
     async bookAnEvent(req: Request, res: Response): Promise<void> {
       try {
         const vendorId: string = req.query.vendorId as string;
@@ -17,15 +17,15 @@ export const BookingController = {
         const date=req.body.date;
         const pin=parseInt(req.body.pin);
         const mobile=parseInt(req.body.mobile);
-        const DateAlreadyBooked  = await checkIfDatePresent(vendorId , date );
+        const DateAlreadyBooked  = await BookingService.checkIfDatePresent(vendorId , date );
             
             if(DateAlreadyBooked){
               throw new CustomError("Sorry this date is not available!",404)
             }else{
               try {
-                    await acquireLockForDate(vendorId, date);
-                    const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
-                    await releaseLockForDate(vendorId, date);
+                    await BookingService.acquireLockForDate(vendorId, date);
+                    const booking = await BookingService.addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
+                    await BookingService.releaseLockForDate(vendorId, date);
                     res.status(201).json({booking:booking,message:"Booking done Successfully"});
               } catch (error) {
                     console.error("Error acquiring lock:", error);
@@ -41,35 +41,35 @@ export const BookingController = {
           res.status(500).json({ message: "Server Error" });
         }
       }
-    },
+    }
 
     async getBookingsByVendor(req: Request, res: Response): Promise<void> {
       try {
         const vendorId: string = req.query.vendorId as string;
         const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 8;
-        const {bookings,totalBookings} = await getAllBookingsByVendor(vendorId,page,pageSize);
+        const {bookings,totalBookings} = await BookingService.getAllBookingsByVendor(vendorId,page,pageSize);
         const totalPages = Math.ceil(totalBookings / pageSize);
         res.status(201).json({bookings,totalPages: totalPages});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
 
     async getRefundDetails(req: Request, res: Response): Promise<void> {
       try {
         const userId: string = req.query.userId as string;
         const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 4;
-        const {refund,totalRefund} = await getAllRefunds(userId,page,pageSize);
+        const {refund,totalRefund} = await BookingService.getAllRefunds(userId,page,pageSize);
         const totalPages = Math.ceil(totalRefund / pageSize);
         res.status(201).json({transaction:refund,totalPages: totalPages});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
 
 
     async getBookingsByUser(req: Request, res: Response): Promise<void> {
@@ -77,51 +77,52 @@ export const BookingController = {
         const userId: string = req.query.userId as string;
         const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 4;
-        const { bookings, totalBookings } = await getAllBookingsByUser(userId,page,pageSize);
+        const { bookings, totalBookings } = await BookingService.getAllBookingsByUser(userId,page,pageSize);
         const totalPages = Math.ceil(totalBookings / pageSize);
         res.status(201).json({bookings,totalPages: totalPages});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
 
     async getBookingsById(req: Request, res: Response): Promise<void> {
       try {
         const bookingId: string = req.query.bookingId as string;
-        const bookings = await getAllBookingsById(bookingId);
+        const bookings = await BookingService.getAllBookingsById(bookingId);
         res.status(201).json({bookings});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
 
     async updateStatus(req: Request, res: Response): Promise<void> {
       try {
         const bookingId: string = req.query.bookingId as string;
         const status=req.body.status
-        const bookings = await updateStatusById(bookingId,status);
+        const bookings = await BookingService.updateStatusById(bookingId,status);
         res.status(201).json({bookings});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
 
     async cancelBookingByUser(req: Request, res: Response): Promise<void> {
       try {
         const bookingId: string = req.query.bookingId as string;
         const status="Cancelled"
-        const bookings = await updateStatusById(bookingId,status);
+        const bookings = await BookingService.updateStatusById(bookingId,status);
         res.status(201).json({bookings});
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
       }
-    },
+    }
     
   
   };
 
+  export default new BookingController()
 

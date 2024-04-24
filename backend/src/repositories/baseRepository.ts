@@ -24,11 +24,19 @@ export class BaseRepository<T extends mongoose.Document>{
         return await this.model.findByIdAndUpdate(id,data)
     }
 
+
     async delete(id:string):Promise<T|null>{
         return await this.model.findByIdAndDelete(id);
     }
 
     async countDocuments(condition?:Record<string,unknown>):Promise<number>{
         return await this.model.countDocuments(condition||{})
+    }
+
+    async findOne(condition: Record<string, unknown>): Promise<T | null> {
+        return await this.model.findOne(condition);
+    }
+    async findByCondition(condition: Record<string, unknown>): Promise<T[]> {
+        return await this.model.find(condition);
     }
 }

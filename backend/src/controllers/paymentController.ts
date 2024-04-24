@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { addNewPayment, getPayments } from "../services/paymentService";
 const Stripe = require("stripe");
+import PaymentService from '../services/paymentService'
 
 require("dotenv").config();
 
@@ -17,7 +17,7 @@ declare module "express-session" {
   }
 }
 
-export const PaymentController = {
+class PaymentController {
   async makePayment(req: Request, res: Response) {
     const stripeSecretKey = process.env.STRIPE_KEY as string;
     const stripe = new Stripe(stripeSecretKey, {
@@ -58,7 +58,7 @@ export const PaymentController = {
 
     console.log(req.session)
     res.send({ url: session.url });
-  },
+  }
 
 
   async addPayment(req: Request, res: Response){
@@ -69,21 +69,24 @@ export const PaymentController = {
       const userId=paymentData.userId;
       const vendorId=paymentData.vendorId;
       const bookingId=paymentData.bookingId;
-      const payment=await addNewPayment(amount,userId,vendorId,bookingId);
+      const payment=await PaymentService.addNewPayment(amount,userId,vendorId,bookingId);
       res.status(201).json({payment})
     } catch (error) {
       console.log(error)
     }
-  },
+  }
 
   async getAllPayments(req: Request, res: Response){
     try {
-      const payment=await getPayments()
+      const payment=await PaymentService.getPayments()
       res.status(200).json({payment})
     } catch (error) {
       console.log(error)
     }
-  },
+  }
 };
+
+
+export default new PaymentController();
 
 
