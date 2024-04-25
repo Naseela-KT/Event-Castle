@@ -5,12 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import EditTypeModal from './EditTypeModal';
 import DeleteTypeModal from './DeleteTypeModal';
 import { ADMIN } from '../../../config/constants/constants';
+import { VendorType } from '../../../types/commonTypes';
 
-interface VendorType {
-  _id: string;
-  type: string;
-  status: boolean;
-}
 
 const VendorTypeList = () => {
   const [vendorType, setVendorType] = useState<VendorType[]>([]);

@@ -5,26 +5,14 @@ import { Link } from "react-router-dom";
 import { axiosInstanceAdmin} from "../../../config/api/axiosinstance";
 import Pagination from "../../../components/common/Pagination";
 import { ADMIN } from "../../../config/constants/constants";
+import { VendorData } from "../../../types/vendorTypes";
 
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: number;
-  city:string;
-  password:string;
-  isActive: boolean;
-  isVerified:boolean;
-  verificationRequest:boolean;
-  totalBooking:number;
-  coverpicUrl:string;
-  logoUrl:string;
-}
+
 
 // VendorCard component remains unchanged
 
 function VendorsList() {
-  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [vendors, setVendors] = useState<VendorData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 

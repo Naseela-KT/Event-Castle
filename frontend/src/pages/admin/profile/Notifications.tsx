@@ -4,16 +4,12 @@ import { toast } from "react-toastify";
 import { format } from "timeago.js";
 import AdminRootState from "../../../redux/rootstate/AdminState";
 import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
+import { Notification } from "../../../types/commonTypes";
 
-interface chat {
-  _id:string;
-  message: string;
-  read: boolean;
-  createdAt: string;
-}
+
 
 const Notifications = () => {
-  const [notifications, setNotification] = useState<chat[]>([]);
+  const [notifications, setNotification] = useState<Notification[]>([]);
   const admin = useSelector(
     (state: AdminRootState) => state.admin.admindata,
   );

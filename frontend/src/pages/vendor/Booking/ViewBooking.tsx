@@ -10,18 +10,8 @@ import UpdateStatus from './UpdateStatus';
 import { useEffect, useState } from 'react';
 import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
+import { Booking } from '../../../types/commonTypes';
 
-interface Booking {
-  _id: string;
-  date: string;
-  name: string;
-  eventName: string;
-  city: string;
-  pin: number;
-  mobile: number;
-  status: string;
-  payment_status: string;
-}
 
 const ViewBooking = () => {
   const [bookings, setBookings] = useState<Booking>({});

@@ -4,16 +4,11 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { format } from "timeago.js";
+import { Notification } from "../../../types/commonTypes";
 
-interface chat {
-  _id:string;
-  message: string;
-  read: boolean;
-  createdAt: string;
-}
 
 const Notifications = () => {
-  const [notifications, setNotification] = useState<chat[]>([]);
+  const [notifications, setNotification] = useState<Notification[]>([]);
   const user = useSelector(
     (state: UserRootState) => state.user.userdata,
   );

@@ -8,14 +8,11 @@ import { DialogWithImage } from "./DialogWithImage";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { USER } from "../../../config/constants/constants";
+import { Post } from "../../../types/vendorTypes";
 
 
 // Define the interface for your response data
-interface Post {
- imageUrl: string;
- _id: string;
- caption:string;
-}
+
 
 
 

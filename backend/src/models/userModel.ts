@@ -27,6 +27,6 @@ const UserSchema: Schema = new Schema({
     favourite:{type:Array},
     wallet:{type:Number,default:0},
     refreshToken: { type: String }
-});
+},{timestamps:true});
 
 export default mongoose.model<UserDocument>('User', UserSchema);

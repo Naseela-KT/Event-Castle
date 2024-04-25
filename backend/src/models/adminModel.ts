@@ -19,10 +19,6 @@ const adminSchema=new Schema<AdminDocument>({
         type:String,
         required:true
     },
-    createdAt:{
-        type:Date,
-        default:Date.now()
-    },
     wallet:{
         type:Number, 
         default:0

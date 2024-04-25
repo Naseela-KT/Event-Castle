@@ -1,15 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 
-export interface Review {
-    _id: mongoose.Types.ObjectId;
-    username: string;
-    rating: number;
-    content: string;
-    date:Date;
-    reply:Array<string>
-}
-
 interface Lock {
     date: string;
     isLocked: boolean;
@@ -24,7 +15,6 @@ export interface Vendor {
     phone:number;
     logo:string;
     coverpic:string;
-    reviews:Array<Review>;
     isVerified:boolean;
     verificationRequest:boolean;
     totalBooking:number;
@@ -50,7 +40,6 @@ const VendorSchema: Schema = new Schema({
     about:{type:String},
     logo:{type:String},
     coverpic:{type:String},
-    reviews:{type:Array<Review>},
     isVerified:{type:Boolean},
     verificationRequest:{type:Boolean},
     totalBooking:{type:Number},
@@ -72,6 +61,6 @@ const VendorSchema: Schema = new Schema({
         }
       }]
 
-});
+},{timestamps:true});
 
 export default mongoose.model<VendorDocument>('Vendor', VendorSchema);

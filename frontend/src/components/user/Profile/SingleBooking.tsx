@@ -15,21 +15,9 @@ import { axiosInstance } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import PaymentCard from './PaymentCard';
 import { toast } from 'react-toastify';
+import { VendorData } from '../../../types/vendorTypes';
 
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  isActive: boolean;
-  totalBooking: number;
-  coverpic: string;
-  logo: string;
-  logoUrl: string;
-  coverpicUrl: string;
-  about: string;
-}
+
 
 interface Booking {
   _id: string;
@@ -39,7 +27,7 @@ interface Booking {
   city: string;
   pin: number;
   mobile: number;
-  vendorId: Vendor;
+  vendorId: VendorData;
   status: string;
   payment_status: string;
 }

@@ -20,19 +20,14 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/slices/UserSlice";
 import { ADMIN } from "../../../config/constants/constants";
+import { UserData } from "../../../types/userTypes";
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-}
+
 
 const UsersTable = () => {
   const dispatch = useDispatch();
 
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserData[]>([]);
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [totalPages, setTotalPages] = useState<number>();

@@ -13,15 +13,9 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { Review } from '../../types/commonTypes';
 
-interface Review {
-  _id:string;
-  username: string;
-  rating: number;
-  content: string;
-  date:Date;
-  reply:Array<string>
-}
+
 
 export const Reviews = () => {
   const vendor = useSelector(
@@ -243,7 +237,7 @@ export const Reviews = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 />
-                <h2 className="text-lg font-bold">{val.username}</h2>
+                <h2 className="text-lg font-bold">{val.userId.name}</h2>
                 <p className="text-sm text-gray-500">March 14, 2021</p>
               </div>
             </div>

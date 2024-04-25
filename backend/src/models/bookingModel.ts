@@ -60,10 +60,6 @@ const bookingSchema=new Schema<bookingDocument>({
         type:String,
         default:"Pending"
     },
-    createdAt:{
-        type:Date,
-        default:Date.now()
-    },
     amount:{
         type:Number,
         default:0
@@ -72,7 +68,7 @@ const bookingSchema=new Schema<bookingDocument>({
         type:Number,
         default:0
     }
-})
+},{timestamps:true})
 
 export default model<bookingDocument>('Booking',bookingSchema)
 

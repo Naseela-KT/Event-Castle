@@ -6,20 +6,10 @@ import Footer from '../../layout/user/footer';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../config/api/axiosinstance';
 import Pagination from '../../components/common/Pagination';
-
-interface Vendors {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  isActive: boolean;
-  totalBooking: number;
-  coverpicUrl: string;
-}
+import { VendorData } from '../../types/vendorTypes';
 
 const VendorsListing = () => {
-  const [vendors, setVendors] = useState<Vendors[]>([]);
+  const [vendors, setVendors] = useState<VendorData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [vendorTypeData, setVendorTypeData] = useState([]);

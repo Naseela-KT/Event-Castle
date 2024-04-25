@@ -9,15 +9,9 @@ import {
 } from '@material-tailwind/react';
 import VendorPosts from './VendorsPosts';
 import ReviewCard from './ReviewCard';
-import { UserData } from '../../../types/userTypes';
+import { Review } from '../../../types/commonTypes';
 
-interface Review {
-  _id:string;
-  userId: UserData;
-  rating: number;
-  content: string;
-  reply:Array<string>
-}
+
 
 interface VendorReviewProps {
   reviews: Review[] | undefined;

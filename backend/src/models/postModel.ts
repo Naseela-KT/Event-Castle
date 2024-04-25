@@ -14,10 +14,6 @@ const postSchema=new Schema<PostDocument>({
         type:String,
         required:true
     },
-    createdAt:{
-        type:Date,
-        default:Date.now()
-    },
     vendor_id:{
         type:Schema.Types.ObjectId,
         ref: 'Vendor',
@@ -30,7 +26,7 @@ const postSchema=new Schema<PostDocument>({
     imageUrl:{
         type:String
     }
-})
+},{timestamps:true})
 
 export default model<PostDocument>('Post',postSchema)
 

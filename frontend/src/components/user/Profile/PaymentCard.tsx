@@ -3,6 +3,7 @@ import { axiosInstance } from "../../../config/api/axiosinstance";
 import { useState } from "react";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
+import { VendorData } from "../../../types/vendorTypes";
 
 interface Booking {
     _id:string;
@@ -12,25 +13,12 @@ interface Booking {
     city: string;
     pin: number;
     mobile: number;
-    vendorId: Vendor;
+    vendorId: VendorData;
     status: string;
     payment_status: string;
   }
 
-  interface Vendor {
-    _id: string;
-    name: string;
-    email: string;
-    phone: string;
-    city: string;
-    isActive: boolean;
-    totalBooking: number;
-    coverpic: string;
-    logo: string;
-    logoUrl: string;
-    coverpicUrl: string;
-    about: string;
-  }
+
 
 interface PaymentCardProps{
     booking:Booking;

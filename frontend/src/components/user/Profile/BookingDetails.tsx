@@ -5,19 +5,8 @@ import UserRootState from '../../../redux/rootstate/UserState';
 import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
 import { USER } from '../../../config/constants/constants';
+import { Booking } from '../../../types/commonTypes';
 
-interface Booking {
-  _id: string;
-  date: string;
-  name: string;
-  eventName: string;
-  city: string;
-  pin: number;
-  mobile: number;
-  vendorId: string;
-  status: string;
-  payment_status: string;
-}
 
 const BookingDetails = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);

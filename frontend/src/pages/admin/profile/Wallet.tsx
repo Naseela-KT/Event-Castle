@@ -4,56 +4,13 @@ import AdminRootState from '../../../redux/rootstate/AdminState';
 import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useEffect, useState } from 'react';
 import { AdminData } from '../../../types/adminTypes';
+import { Payment } from '../../../types/commonTypes';
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-}
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: number;
-  city: string;
-  password: string;
-  isActive: boolean;
-  isVerified: boolean;
-  verificationRequest: boolean;
-  totalBooking: number;
-  coverpicUrl: string;
-  logoUrl: string;
-}
 
-interface booking {
-  date: string;
-  name: string;
-  eventName: string;
-  city: string;
-  pin: number;
-  mobile: number;
-  createdAt: Date;
-  vendorId: string;
-  userId: string;
-  status: string;
-  payment_status: string;
-  amount: number;
-}
-
-interface payment {
-  _id: string;
-  amount: number;
-  vendorId: Vendor;
-  userId: User;
-  bookingId: booking;
-  createdAt: Date;
-}
 
 function Wallet() {
   const admin = useSelector((state: AdminRootState) => state.admin.admindata);
-  const [payments, setPayments] = useState<payment[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [adminData,setAdminData]=useState<AdminData>({})
 
   const formatDate = (createdAt: Date) => {

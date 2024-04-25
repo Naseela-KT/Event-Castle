@@ -7,30 +7,8 @@ import { useEffect, useState } from 'react';
 import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { Button } from '@material-tailwind/react';
 import { toast } from 'react-toastify';
+import { VendorData } from '../../../types/vendorTypes';
 
-interface Review {
-  username: string;
-  rating: number;
-  content: string;
-}
-
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  isActive: boolean;
-  totalBooking: number;
-  coverpic: string;
-  logo: string;
-  reviews: Review[] | undefined;
-  logoUrl: string;
-  coverpicUrl: string;
-  about: string;
-  isVerified: boolean;
-  verificationRequest: boolean;
-}
 
 const Profile = () => {
   const vendorData = useSelector(
@@ -39,7 +17,7 @@ const Profile = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
-  const [vendor, setVendor] = useState<Vendor>();
+  const [vendor, setVendor] = useState<VendorData>();
 
   useEffect(() => {
     axiosInstanceVendor

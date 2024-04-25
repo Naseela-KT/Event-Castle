@@ -8,17 +8,9 @@ import {
    
   } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-
-  interface VendorCardProps {
-    name: string;
-    email: string;
-    phone: string;
-    city: string;
-    _id:string;
-    coverpicUrl:string;
-  }
+import { VendorData } from "../../../types/vendorTypes";
    
-  const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl}) =>{
+  const VendorCard:React.FC<VendorData>=({name,city,_id,coverpicUrl}) =>{
     return (
       <Card className="w-full max-w-[20rem] shadow-lg"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <CardHeader floated={false} color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

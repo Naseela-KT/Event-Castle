@@ -10,12 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Pagination from '../../../components/common/Pagination';
 import { VENDOR } from '../../../config/constants/constants';
+import { Post } from '../../../types/vendorTypes';
 
-interface Post {
-  imageUrl: string;
-  _id: string;
-  caption: string;
-}
+
 
 export default function Posts() {
   const vendorData = useSelector(

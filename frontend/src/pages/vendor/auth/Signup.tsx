@@ -15,12 +15,9 @@ import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../validations/vendor/registerVal";
 import { VENDOR } from "../../../config/constants/constants";
+import { VendorType } from "../../../types/commonTypes";
 
-interface VendorType {
-  _id: string;
-  type: string;
-  status: boolean;
-}
+
 
 interface VendorFormValues {
   name: string;
@@ -31,13 +28,7 @@ interface VendorFormValues {
   phone: string;
 }
 
-// interface VendorFormErrors {
-//   name: string;
-//   email: string;
-//   password: string;
-//   city: string;
-//   phone: string;
-// }
+
 
 const initialValues: VendorFormValues = {
   name: "",

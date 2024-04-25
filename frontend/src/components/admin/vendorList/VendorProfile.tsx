@@ -16,20 +16,9 @@ import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../redux/slices/VendorSlice';
+import { VendorData } from '../../../types/vendorTypes';
 
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  isActive: boolean;
-  totalBooking: number;
-  logoUrl: string;
-  coverpicUrl: string;
-  verificationRequest: boolean;
-  isVerified:boolean;
-}
+
 
 const VendorProfile = () => {
   const [open, setOpen] = useState(false);
@@ -38,7 +27,7 @@ const VendorProfile = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const Id = queryParams.get('Id');
-  const [vendor, setVendor] = useState<Vendor>();
+  const [vendor, setVendor] = useState<VendorData>();
 
   useEffect(() => {
     axiosInstanceAdmin

@@ -25,15 +25,11 @@ const paymentSchema=new Schema<PaymentDocument>({
         ref: 'Booking',
         required:true
     },
-    createdAt:{
-        type:Date,
-        default:Date.now()
-    },
     amount:{
         type:Number,
         default:0
     }
-})
+},{timestamps:true})
 
 export default model<PaymentDocument>('Payment',paymentSchema)
 

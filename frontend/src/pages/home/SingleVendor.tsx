@@ -17,40 +17,19 @@ import UserRootState from '../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import AddReview from '../../components/home/VendorProfile/AddReview';
 import ProfileButtons from '../../components/home/VendorProfile/ProfileButtons';
-import { UserData } from '../../types/userTypes';
+import { Review } from '../../types/commonTypes';
+import { VendorData } from '../../types/vendorTypes';
 
-interface Review {
-  _id:string;
-  userId: UserData;
-  rating: number;
-  content: string;
-  reply:Array<string>
-}
 
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  isActive: boolean;
-  totalBooking: number;
-  coverpic: string;
-  logo: string;
-  reviews: Review[] | undefined;
-  logoUrl: string;
-  coverpicUrl: string;
-  favourite:Array<string>
-  bookedDates:Array<string>
-  isVerified:boolean;
-}
+
+
 
 export function VendorProfile() {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id') || '';
-  const [vendor, setVendor] = useState<Vendor>();
+  const [vendor, setVendor] = useState<VendorData>();
   const [favourite,setFavourite]=useState(false);
   const [review,setReview]=useState<Review[]>([]);
 
