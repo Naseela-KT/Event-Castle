@@ -66,7 +66,7 @@ const BookEventForm: React.FC = () => {
     if (Object.values(errors).every((error) => error === "")) {
       console.log(formValues);
       axiosInstance
-        .post(`${USER.BOOK_EVENT}?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
+        .post(`/book-an-event?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
         .then((response) =>{
           console.log(response);
           toast.success(response.data.message);

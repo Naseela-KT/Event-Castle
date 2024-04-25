@@ -131,7 +131,7 @@ const Sidebar = () => {
             >
               <i className="fa-solid fa-bell"></i>
               <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Inbox
+                Notifications
               </span>
             </li>
           </Link>

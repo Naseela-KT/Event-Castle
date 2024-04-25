@@ -12,7 +12,6 @@ import {
   updateVendor,
   verificationRequest,
   changeVerifyStatus,
-  getAllReviews,
   addDateAvailability,
   getAllDates,
   createRefreshToken,
@@ -288,34 +287,6 @@ export const VendorController = {
     }
   },
 
-  // async getAllVendors(req: Request, res: Response): Promise<void> {
-  //   try {
-  //     const page: number = parseInt(req.query.page as string) || 1; 
-  //         const search = req.query.search || ""; 
-  //         const sortBy: string | null = req.query.sortBy as string | null;
-  //         const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
-  //         let sortCriteria: string | null = null; 
-  //         const category: string | null = req.query.category as string | null
-  //         switch (sortBy) {
-  //           case 'rating':
-  //             sortCriteria = 'OverallRating'; 
-  //             break;
-  //           case '-rating':
-  //             sortCriteria = '-OverallRating'; 
-  //             break;
-  //           default:
-  //             break;
-  //         }
-  //     const { vendors, totalVendorsCount } = await getVendors(page, pageSize, search.toString(),sortCriteria ,category);
-  //     const totalPages = Math.ceil(totalVendorsCount / pageSize);
-
-  //     console.log(vendors);
-  //     res.status(200).json({ vendorData: vendors, totalPages: totalPages });
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.status(500).json({ message: "server error..." });
-  //   }
-  // },
   async getAllVendors(req: Request, res: Response): Promise<void>{
     try{
       
@@ -537,20 +508,7 @@ export const VendorController = {
     }
   },
 
-  async loadAllReviews(req: Request, res: Response): Promise<void> {
-    try {
-      const vendorId: string = req.query.vendorId as string;
-      const reviews = await getAllReviews(vendorId);
-      res.status(200).json({ reviews });
-    } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
-    }
-  },
+
 
   async addDates(req: Request, res: Response): Promise<void> {
     try {

@@ -22,7 +22,6 @@ class ConversationController{
     req: Request,
     res: Response
   ): Promise<any>{
-    
     try {
       let userId:string= req.query.userId as string;
       const chats = await conversationService.findChat(userId);

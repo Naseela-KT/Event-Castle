@@ -182,8 +182,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         to="#"
                         className={`group relative  flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === '/profile' ||
-                            pathname.includes('profile')) &&
-                          'bg-graydark dark:bg-meta-4'
+                            pathname.includes('profile') || pathname.includes('vendor/change-password')) &&
+                          'bg-gray-300 dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -280,7 +280,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                {/* POSTS */}
                <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/posts' || pathname.includes('posts')
+                  pathname === '/posts' || pathname.includes('post')
                 }
               >
                 {(handleClick, open) => {
@@ -290,8 +290,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === '/posts' ||
-                            pathname.includes('posts')) &&
-                          'bg-graydark dark:bg-meta-4'
+                            pathname.includes('post')) &&
+                          'bg-gray-300 dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -372,8 +372,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === '/booking' ||
-                            pathname.includes('booking')) &&
-                          'bg-graydark dark:bg-meta-4'
+                            pathname.includes('booking') || pathname.includes('date') ) &&
+                          'bg-gray-300 dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();

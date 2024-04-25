@@ -30,7 +30,7 @@ export const USER = {
   BOOKING_DETAILS: "/booking-details",
   BOOKING: "/booking",
   WALLET: "/wallet",
-  INBOX: "/inbox",
+  INBOX: "/notifications",
  
 
   //home

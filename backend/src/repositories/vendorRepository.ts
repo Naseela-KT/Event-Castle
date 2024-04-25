@@ -1,7 +1,5 @@
 
-
-import mongoose from "mongoose";
-import Vendor , {VendorDocument,Review} from "../models/vendorModel";
+import Vendor , {VendorDocument} from "../models/vendorModel";
 import vendor from "../models/vendorModel";
 import { CustomError } from "../error/customError";
 import admin from "../models/adminModel";
@@ -142,15 +140,7 @@ export async function updateVerificationStatus(vendorId:string,status:string){
   }
 }
 
-export async function findAllReviews(vendorId:string){
-  try {
-    const data=await vendor.findById(vendorId)
-    const reviews = data?.reviews; 
-    return reviews;
-  } catch (error) {
-    throw error
-  }
-}
+
 
 
 export async function changeDateAvailability(vendorId:string,status:string,date:string){

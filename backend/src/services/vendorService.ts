@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, UpdateVendorPassword, changeDateAvailability, createVendor , findAllDatesById, findAllReviews, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { UpdatePassword, UpdateVendorPassword, changeDateAvailability, createVendor , findAllDatesById, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import verndorTypeRepository from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendorModel';
 import {
@@ -268,14 +268,7 @@ export async function changeVerifyStatus(vendorId:string,status:string){
   }
 }
 
-export async function getAllReviews(vendorId:string){
-  try {
-    const data=await findAllReviews(vendorId)
-    return data
-  } catch (error) {
-    
-  }
-}
+
 
 export async function addDateAvailability(vendorId:string,status:string,date:string){
   try {
