@@ -10,9 +10,9 @@ import {
 import { Link } from "react-router-dom";
 import { VendorData } from "../../../types/vendorTypes";
    
-  const VendorCard:React.FC<VendorData>=({name,city,_id,coverpicUrl}) =>{
+  const VendorCard:React.FC<VendorData>=({name,city,_id,coverpicUrl,totalRating}) =>{
     return (
-      <Card className="w-full max-w-[20rem] shadow-lg"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <Card className="w-full max-w-[16rem] shadow-lg h-80"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <CardHeader floated={false} color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <img
             src={coverpicUrl}
@@ -41,7 +41,7 @@ import { VendorData } from "../../../types/vendorTypes";
                   clipRule="evenodd"
                 />
               </svg>
-              5.0
+              {totalRating?totalRating:0}
             </Typography>
           </div>
           <Typography color="gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

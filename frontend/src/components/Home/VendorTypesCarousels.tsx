@@ -7,46 +7,47 @@ export default function VendorTypesCarousels() {
           color="black"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
       <div className="relative flex justify-between flex-wrap">
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400 relative md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
       </div>
       <div className="relative flex justify-between">
         <img
-          className="h-20 md:h-50  w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50  w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
+        />
+       
+        <img
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
         <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
-        />
-        <img
-          className="h-20 md:h-50 w-20 md:w-50 rounded-full object-cover object-center"
-          src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="nature image"
+          className="bg-gray-400  md:bg-gray-400 h-50 w-20 md:w-50 rounded-full object-cover object-center"
+          src=""
+          alt=""
         />
       </div>
     </Carousel>

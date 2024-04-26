@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Booking, { bookingDocument } from "../models/bookingModel";
 import BookingRepository from "../repositories/bookingRepository";
 import vendor from "../models/vendorModel";
-import notification from "../models/notificationModel";
+import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 import payment from "../models/paymentModel";
 import user from "../models/userModel";
 import admin from "../models/adminModel";
@@ -100,9 +100,9 @@ class BookingService {
       });
 
       const newNotification = new notification({
-        sender: userId,
         recipient: vendorId,
         message: "New event Booked!",
+        type:NOTIFICATION_TYPES.BOOKING
       });
 
       await newNotification.save();
@@ -182,9 +182,9 @@ class BookingService {
         const Payment = await payment.findOne({ bookingId: bookingId });
   
         const newNotification=new notification({
-          sender:booking.vendorId,
           recipient: booking.userId,
-          message:"Booking is rejected By Vendor"
+          message:"Booking is rejected By Vendor",
+          type:NOTIFICATION_TYPES.STATUS
         })
     
         await newNotification.save();
@@ -206,9 +206,9 @@ class BookingService {
           await booking.save();
   
           const newNotification=new notification({
-            sender:booking.userId,
             recipient: booking.vendorId,
-            message:"Booking Cancelled by user"
+            message:"Booking Cancelled by user",
+            type:NOTIFICATION_TYPES.STATUS
           })
       
           await newNotification.save();
@@ -219,9 +219,9 @@ class BookingService {
       });
       await vendor.findByIdAndUpdate(booking.vendorId, {$inc: { totalBooking: 1 }})
       const newNotification=new notification({
-        sender:booking.vendorId,
         recipient: booking.userId,
-        message:"Booking Accepted by vendor"
+        message:"Booking Accepted by vendor",
+        type:NOTIFICATION_TYPES.STATUS
       })
   
       await newNotification.save();

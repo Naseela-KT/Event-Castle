@@ -1,18 +1,24 @@
 import { Document, Schema, model } from "mongoose";
 
+export const NOTIFICATION_TYPES = {
+  BOOKING: "BOOKING",
+  STATUS: "STATUS",
+  PAYMENT: "PAYMENT",
+  WALLET: "WALLET",
+  REVIEW:"REVIEW",
+  NEW_USER:"NEW_USER",
+  NEW_VENDOR:"NEW_VENDOR"
+};
+
 export interface NotificationDocument extends Document {
-  sender: Schema.Types.ObjectId;
   recipient: Schema.Types.ObjectId;
   message: string;
   read: boolean;
+  type:string;
 }
 
 const notificationSchema = new Schema<NotificationDocument>(
   {
-    sender: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
     recipient: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -25,6 +31,11 @@ const notificationSchema = new Schema<NotificationDocument>(
       type: Boolean,
       default: false,
     },
+    type:{
+      type:String,
+      required:true,
+      enum: Object.values(NOTIFICATION_TYPES),
+    }
   },
   { timestamps: true }
 );

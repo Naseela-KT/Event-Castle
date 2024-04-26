@@ -65,7 +65,7 @@ const VerifyEmail = () => {
                 console.log(response);
                 dispatch(setVendorInfo(response.data.vendor));
                 toast.success("Successfully registered..!");
-                navigate(VENDOR.VENDOR);
+                navigate(VENDOR.DASHBOARD);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);

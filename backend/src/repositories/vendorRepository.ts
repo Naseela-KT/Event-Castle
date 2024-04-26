@@ -3,7 +3,7 @@ import Vendor , {VendorDocument} from "../models/vendorModel";
 import vendor from "../models/vendorModel";
 import { CustomError } from "../error/customError";
 import admin from "../models/adminModel";
-import notification from "../models/notificationModel";
+import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 
 
 export const createVendor = async (vendorData : Partial<VendorDocument>): Promise<VendorDocument> => {
@@ -11,9 +11,9 @@ export const createVendor = async (vendorData : Partial<VendorDocument>): Promis
       const Admin=await admin.findOne({})
      const newVendor=await vendor.create(vendorData);
       const adminNotification=new notification({
-        sender:newVendor._id,
         recipient: Admin?._id,
-        message:`New vendor registered!`
+        message:`New vendor registered!`,
+        type:NOTIFICATION_TYPES.NEW_VENDOR
       })
       await adminNotification.save();
       return newVendor;
@@ -30,12 +30,51 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
     }
 };
 
-export const findAllVendors = async (page: number,pageSize:number) => {
-  try{
-    const skip = (page - 1) * pageSize;
-    let cursor = vendor.find({}).skip(skip).limit(pageSize);
+// export const findAllVendors = async (page: number,pageSize:number) => {
+//   try{
+//     const skip = (page - 1) * pageSize;
+//     let cursor = vendor.find({}).skip(skip).limit(pageSize);
 
-    return await cursor.exec();
+//     return await cursor.exec();
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+  
+export const findAllVendors = async (
+  page: number,
+  limit: number,
+  search: string,
+  category:string,
+  location:string,
+  sortValue:number
+) => {
+  try {
+    let query: any = {};
+
+    if (search && search.trim()) {
+      query.name = { $regex: new RegExp(search, 'i') };
+    }
+
+    if (category && category.trim()) {
+      const categories = category.split(',').map(c => c.trim());
+      query.vendor_type = { $in: categories };
+    }
+
+    if (location && location.trim()) {
+      const locations = location.split(',').map(l => l.trim());
+      query.city = { $in: locations };
+    }
+
+    const validSortValue = sortValue === 1 || sortValue === -1 ? sortValue : 1;
+
+    const vendors = await vendor.find(query).sort({totalRating:validSortValue})
+      .skip((page - 1) * limit)
+      .limit(limit);
+    console.log(vendors);
+
+    return vendors;
   } catch (error) {
     throw error;
   }
@@ -170,6 +209,14 @@ export async function findAllDatesById(vendorId:string){
     return Vendor?.bookedDates;
   } catch (error) {
     throw error
+  }
+}
+
+export async function findAllLocations(){
+  try {
+    return await vendor.distinct('city');
+  } catch (error) {
+    
   }
 }
 

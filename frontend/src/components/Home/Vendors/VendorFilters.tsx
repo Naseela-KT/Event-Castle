@@ -1,15 +1,11 @@
-import React from 'react';
+import React from "react";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  Card,
   Checkbox,
-  List,
-  ListItem,
-  ListItemPrefix,
-  Typography,
-} from '@material-tailwind/react';
+
+} from "@material-tailwind/react";
 
 interface IconProps {
   id: number;
@@ -24,7 +20,7 @@ function Icon({ id, open }: IconProps) {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className={`${id === open ? 'rotate-180' : ''} h-5 w-5 transition-transform`}
+      className={`${id === open ? "rotate-180" : ""} h-5 w-5 transition-transform`}
     >
       <path
         strokeLinecap="round"
@@ -35,11 +31,35 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = ({vendorTypeData }) => {
+const VendorFilters = ({
+  setSelectLocation,
+  vendorTypeData,
+  locations,
+  setCategory
+}) => {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>
     setOpen(open === value ? 0 : value);
+
+
+  const handleCategoryChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setCategory(prevCategories => [...prevCategories, value]);
+    } else {
+      setCategory(prevCategories => prevCategories.filter(category => category !== value));
+    }
+  };
+
+  const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setSelectLocation(prevLocation => [...prevLocation, value]);
+    } else {
+      setSelectLocation(prevLocation => prevLocation.filter(location => location !== value));
+    }
+  };
 
   return (
     <>
@@ -49,48 +69,29 @@ const VendorFilters = ({vendorTypeData }) => {
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
-        className='w-50'
+        className="w-45"
       >
         <AccordionHeader
           onClick={() => handleOpen(1)}
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
-          className="text-md md:text-md" 
+          className="text-md md:text-md"
         >
           Category
         </AccordionHeader>
         <AccordionBody>
-        <Card  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        
-      {vendorTypeData.map((vendorType, index) => (
-                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onClick={() => onCategorySelect(vendorType._id)}>
-                  <label
-                    htmlFor={`vertical-list-react-${index}`}
-                    className="flex w-full cursor-pointer items-center px-3 py-2"
-                  >
-                    <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                      <Checkbox
-                        id={`vertical-list-react-${index}`}
-                        ripple={false}
-                        className="hover:before:opacity-0"
-                        containerProps={{
-                          className: "p-0",
-                        }}
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}              
-                      />
-                    </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                      {vendorType.type}
-                    </Typography>
-                  </label>
-                </ListItem>
-              ))}
-      </List>
-    </Card>
+          {vendorTypeData.map((category) => (
+            <Checkbox
+              key={category._id}
+              label={category.type}
+              onChange={handleCategoryChange}
+              value={category._id}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              crossOrigin={undefined}
+            />
+          ))}
         </AccordionBody>
       </Accordion>
       <Accordion
@@ -99,23 +100,31 @@ const VendorFilters = ({vendorTypeData }) => {
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
-        className='w-50'
+        className="w-45"
       >
         <AccordionHeader
           onClick={() => handleOpen(2)}
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
-          className="text-md md:text-md" 
-        >Location</AccordionHeader>
+          className="text-md md:text-md"
+        >
+          Location
+        </AccordionHeader>
         <AccordionBody>
-          We&apos;re not always in the position that we want to be at.
-          We&apos;re constantly growing. We&apos;re constantly making mistakes.
-          We&apos;re constantly trying to express ourselves and actualize our
-          dreams.
+          {locations?.map((location,index) => (
+            <Checkbox
+              key={index}
+              label={location}
+              value={location}
+              onChange={handleLocationChange}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+              crossOrigin={undefined}
+            />
+          ))}
         </AccordionBody>
       </Accordion>
-     
     </>
   );
 };

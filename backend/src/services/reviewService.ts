@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Vendor from "../models/vendorModel";
 import reviewRepository from "../repositories/reviewRepository";
 import { CustomError } from "../error/customError";
-
+import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 
 class ReviewService{
   async addNewReview(content:string,rating:number,user_Id:string,vendor_Id:string){
@@ -18,6 +18,13 @@ class ReviewService{
         throw new Error('Vendor not found');
       }
       const data = await reviewRepository.create({content,rating,userId,vendorId})
+      const newNotification=new notification({
+        recipient: vendorId,
+        message:"New review added!",
+        type:NOTIFICATION_TYPES.REVIEW
+      })
+  
+      await newNotification.save();
       const vendorReview=await reviewRepository.findByCondition({vendorId:vendorId})
       const vendorRatings = vendorReview.map((review) => review.rating)
       vendorData.totalRating = calculateOverallRating(vendorRatings);

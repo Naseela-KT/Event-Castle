@@ -15,6 +15,8 @@ import {
   addDateAvailability,
   getAllDates,
   createRefreshToken,
+  getAllLocations,
+  getVendorsCount,
 } from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendorModel";
@@ -222,7 +224,7 @@ export const VendorController = {
           city,
           vendor_type
         );
-        res.status(201).json(vendor);
+        res.status(201).json({vendor});
       } else {
         throw new CustomError("Invalid otp !!", 400);
       }
@@ -288,18 +290,32 @@ export const VendorController = {
   },
 
   async getAllVendors(req: Request, res: Response): Promise<void>{
-    try{
+    // try{
       
-      const page: number = parseInt(req.query.page as string) || 1; 
-      const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
-      const { vendors, totalVendorsCount } = await getVendors(page,pageSize);
-      const totalPages = Math.ceil(totalVendorsCount / pageSize);
-      res.status(200).json({ vendorData:vendors, totalPages:totalPages });
-    }catch(error){
-      console.log(error);
-      res.status(500).json({ message: "server error..." });
+    //   const page: number = parseInt(req.query.page as string) || 1; 
+    //   const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
+    //   const { vendors, totalVendorsCount } = await getVendors(page,pageSize);
+    //   const totalPages = Math.ceil(totalVendorsCount / pageSize);
+    //   res.status(200).json({ vendorData:vendors, totalPages:totalPages });
+    // }catch(error){
+    //   console.log(error);
+    //   res.status(500).json({ message: "server error..." });
+    // }
+    try {
+      const { page = 1, limit = 6, search = "" ,category='',location='',sort} = req.query;
+      console.log(req.query)
+      const pageNumber = parseInt(page as string, 10);
+      const limitNumber = parseInt(limit as string, 10);
+      const sortValue = parseInt(sort as string, 10);
+      const vendorData = await getVendors(pageNumber,limitNumber,search.toString(),category.toString(),location.toString(),sortValue);
+      const totalVendors = await getVendorsCount();
+      res.status(200).json({ vendorData, totalVendors });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error..." });
     }
   } ,
+ 
   async Toggleblock(req: Request, res: Response): Promise<void> {
     try {
       const VendorId: string | undefined = req.query.VendorId as
@@ -533,6 +549,20 @@ export const VendorController = {
       const vendorId: string = req.query.vendorId as string;
       const bookedDates = await getAllDates(vendorId);
       res.status(200).json({ bookedDates });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
+
+  async getLocations(req: Request, res: Response): Promise<void> {
+    try {
+      const Locations = await getAllLocations();
+      res.status(200).json({ locations:Locations });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });

@@ -1,60 +1,86 @@
-import { Card, CardBody, Typography } from '@material-tailwind/react';
-import VendorFilters from '../../components/home/Vendors/VendorFilters';
-import VendorSort from '../../components/home/Vendors/VendorSort';
-import VendorCard from '../../components/home/Vendors/VendorCard';
-import Footer from '../../layout/user/footer';
-import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../config/api/axiosinstance';
-import Pagination from '../../components/common/Pagination';
-import { VendorData } from '../../types/vendorTypes';
+import { Card, CardBody, Typography } from "@material-tailwind/react";
+import VendorFilters from "../../components/home/Vendors/VendorFilters";
+import VendorSort from "../../components/home/Vendors/VendorSort";
+import VendorCard from "../../components/home/Vendors/VendorCard";
+import Footer from "../../layout/user/footer";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../config/api/axiosinstance";
+import { VendorData } from "../../types/vendorTypes";
+import { USER } from "../../config/constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const VendorsListing = () => {
   const [vendors, setVendors] = useState<VendorData[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const [vendorTypeData, setVendorTypeData] = useState([]);
-  
+  const [locations, setLocations] = useState<string[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>();
+  const [search, setSearch] = useState<string>("");
+  const [category, setCategory] = useState<string[]>([]);
+  const [selectLocation, setSelectLocation] = useState<string[]>([]);
+  const [sort,setSort]=useState<number>();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchVendors(currentPage);
+    const queryParams = new URLSearchParams(location.search);
+    const pageParam = queryParams.get("page");
+    setPage(pageParam ? parseInt(pageParam, 10) : 1);
+    fetchVendors();
     fetchVendorTypes();
-  }, [currentPage]);
-
+  }, [location.search]);
 
   useEffect(() => {
-    fetchVendors(currentPage);
-  }, [currentPage]);
+    fetchVendors();
+  }, [category,search,selectLocation,sort]);
 
-  const fetchVendors = async (page: number) => {
-    try {
-      const response = await axiosInstance.get(`/getvendors?page=${page}`, {
+  useEffect(() => {
+    axiosInstance
+      .get(`/get-locations`, {
         withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.locations);
+        setLocations(res.data.locations);
+      })
+      .catch((error) => {
+        console.error("Error fetching locations:", error);
       });
-      
-      console.log(response.data.vendorData)
+  }, []);
+
+  const fetchVendors = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/getvendors?page=${page}&search=${search}&category=${category.join(",")}&location=${selectLocation.join(",")}&sort=${sort}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data.vendorData);
       setVendors(response.data.vendorData);
-      setTotalPages(totalPages);
+      setTotalPages(() => {
+        return Math.ceil(response.data.totalUsers / 6);
+      });
     } catch (error) {
-      console.error('Error fetching vendors:', error);
+      console.error("Error fetching vendors:", error);
     }
   };
 
   const fetchVendorTypes = async () => {
     try {
-      const response = await axiosInstance.get('/vendor-types', { withCredentials: true });
+      const response = await axiosInstance.get("/vendor-types", {
+        withCredentials: true,
+      });
       setVendorTypeData(response.data);
     } catch (error) {
-      console.error('Error fetching vendor types:', error);
+      console.error("Error fetching vendor types:", error);
     }
-   }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
- 
-  
 
-
+  const handleSearch = () => {
+    // navigate(`${USER.VENDORS}?page=${page}&search=${search}`);
+    setSearch()
+  };
 
   return (
     <>
@@ -72,16 +98,7 @@ const VendorsListing = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <Typography
-              variant="h5"
-              color="blue-gray"
-              className="mb-2"
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            >
-              Find Vendor
-            </Typography>
+         
             <Typography
               placeholder={undefined}
               onPointerEnterCapture={undefined}
@@ -100,25 +117,32 @@ const VendorsListing = () => {
           </div>
 
           <div className="relative flex w-full gap-2 md:w-max">
-          <input
+            <input
               type="text"
               name="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              // onKeyUp={handleSearch}
               placeholder="Search vendors..."
-          
               className="px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
           <h3>Sort By:</h3>
           <div>
-            <VendorSort/>
+            <VendorSort setSort={setSort}/>
           </div>
         </div>
         <div className="flex md:flex-row flex-col">
           <div>
             <h3 className="-mt-10 mb-5">Filter By</h3>
-            <VendorFilters vendorTypeData={vendorTypeData}/>
+            <VendorFilters
+              vendorTypeData={vendorTypeData}
+              locations={locations}
+              setSelectLocation={setSelectLocation}
+              setCategory={setCategory}
+            />
           </div>
-         
+
           <div className="md:ml-15 mx-5 flex md:flex-row flex-col gap-4">
             {vendors.map((vendor, index) => (
               <VendorCard {...vendor} key={index} />
@@ -127,14 +151,14 @@ const VendorsListing = () => {
         </div>
       </section>
       {/* pagination */}
-      {vendors.length > 0 && (
+      {/* {vendors.length > 0 && (
          <Pagination
          currentPage={currentPage}
          totalPages={totalPages}
          handlePageChange={handlePageChange}
          isTable={false}
        />
-      )}
+      )} */}
       <div className="bg-white">
         <Footer />
       </div>

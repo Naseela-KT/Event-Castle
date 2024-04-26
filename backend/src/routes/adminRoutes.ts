@@ -15,6 +15,7 @@ router.post('/login' , AdminController.Adminlogin);
 router.get('/logout' ,AdminController.Adminlogout);
 router.post('/refresh-token' , AdminController.createRefreshToken)
 
+
 //user
 router.get('/users' ,adminAuth, UserController.allUsers);
 router.patch('/block-unblock' , UserController.Toggleblock)

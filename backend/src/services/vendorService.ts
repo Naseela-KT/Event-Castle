@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UpdatePassword, UpdateVendorPassword, changeDateAvailability, createVendor , findAllDatesById, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
+import { UpdatePassword, UpdateVendorPassword, changeDateAvailability, createVendor , findAllDatesById, findAllLocations, findAllVendors, findVendorById, findvendorByEmail, getTotalVendorsCount, requestForVerification, updateVendorData, updateVerificationStatus } from '../repositories/vendorRepository';
 import verndorTypeRepository from '../repositories/vendorTypeRepository';
 import vendor,{VendorDocument} from '../models/vendorModel';
 import {
@@ -128,13 +128,30 @@ export const CheckExistingVendor = async(email:string)=>{
 
 
 
-export const getVendors=async(page: number,pageSize:number)=>{
+export const getVendors=async(page: number, limit: number, search: string,category:string,location:string,sortValue:number)=>{
+  // try {
+  //   const vendors=await findAllVendors(page,pageSize);
+  //   const totalVendorsCount = await getTotalVendorsCount();
+  //   return { vendors, totalVendorsCount };
+  // } catch (error) {
+  //   throw error;
+  // }
+ 
+    try {
+      const vendors = await findAllVendors(page, limit, search,category,location,sortValue);
+      return vendors;
+    } catch (error) {
+      throw error;
+    }
+
+}
+
+export const getVendorsCount=async()=>{
   try {
-    const vendors=await findAllVendors(page,pageSize);
-    const totalVendorsCount = await getTotalVendorsCount();
-    return { vendors, totalVendorsCount };
+    const total=await getTotalVendorsCount();
+    return total;
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
@@ -283,6 +300,15 @@ export async function getAllDates(vendorId:string){
   try {
     const data=await findAllDatesById(vendorId)
     return data
+  } catch (error) {
+    
+  }
+}
+
+export async function getAllLocations(){
+  try {
+    const data=await findAllLocations();
+    return data;
   } catch (error) {
     
   }

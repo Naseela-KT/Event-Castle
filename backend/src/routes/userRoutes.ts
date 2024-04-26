@@ -32,11 +32,14 @@ router.post("/google/register", UserController.googleRegister);
 
 //Home
 router.get("/getvendors", VendorController.getAllVendors);
+router.get("/vendor-types", VendorTypeController.getVendorTypes);
+router.get("/get-locations",VendorController.getLocations);
+
 router.get("/getvendor", VendorController.getVendor);
 
 router.post("/addVendorReview", ReviewController.addReview);
 router.get("/getReviews",ReviewController.getReviews)
-router.get("/vendor-types", VendorTypeController.getVendorTypes);
+
 
 
 //Profile

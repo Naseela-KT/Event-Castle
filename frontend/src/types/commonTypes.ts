@@ -13,6 +13,7 @@ export interface Notification{
     _id:string;
     message: string;
     read: boolean;
+    type:string;
     createdAt: string;
 }
 

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import PaymentRepository from "../repositories/paymentRepository";
 import Admin from "../models/adminModel";
 import Booking from "../models/bookingModel";
-import Notification from "../models/notificationModel";
+import Notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 
 
 class PaymentService{
@@ -39,9 +39,9 @@ class PaymentService{
   
         await Booking.findByIdAndUpdate(bookingId,{$set:{payment_status:"Completed"}})
         const vendorNotification=new Notification({
-          sender:userId,
           recipient: vendorId,
-          message:"Payment completed!"
+          message:"Payment completed!",
+          type:NOTIFICATION_TYPES.PAYMENT
         })
         await vendorNotification.save();
         
@@ -52,9 +52,9 @@ class PaymentService{
         }
   
         const adminNotification=new Notification({
-          sender:userId,
           recipient:AdminData?._id,
-          message:`${amount} got credited to wallet`
+          message:`${amount} got credited to wallet`,
+          type:NOTIFICATION_TYPES.WALLET
         })
         await adminNotification.save();
       return bookingData;

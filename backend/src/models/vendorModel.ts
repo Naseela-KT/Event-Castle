@@ -49,7 +49,7 @@ const VendorSchema: Schema = new Schema({
     logoUrl:{type:String},
     bookedDates:{type:Array<String>},
     refreshToken:{type:String},
-    totalRating:{type:Number},
+    totalRating:{type:Number,default:0},
     locks: [{
         date: {
           type: String,

@@ -1,7 +1,7 @@
 import User , {UserDocument} from "../models/userModel";
 import { Document } from 'mongoose';
 import vendor from "../models/vendorModel";
-import notification from "../models/notificationModel";
+import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 import admin from "../models/adminModel";
 
 export const createUser = async (userData: Partial<UserDocument>): Promise<UserDocument> => {
@@ -9,9 +9,9 @@ export const createUser = async (userData: Partial<UserDocument>): Promise<UserD
       const Admin=await admin.findOne({})
      const newUser=await User.create(userData);
       const adminNotification=new notification({
-        sender:newUser._id,
         recipient: Admin?._id,
-        message:`New user registered!`
+        message:`New user registered!`,
+        type:NOTIFICATION_TYPES.NEW_USER
       })
       await adminNotification.save();
       return newUser;
