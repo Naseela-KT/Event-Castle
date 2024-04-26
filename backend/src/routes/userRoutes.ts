@@ -61,7 +61,11 @@ router.post("/create-checkout-session", PaymentController.makePayment);
 router.post("/add-payment", PaymentController.addPayment);
 router.put("/cancel-booking", BookingController.cancelBookingByUser);
 router.get("/all-transaction-details", BookingController.getRefundDetails);
-router.get("/user-notifications", NotificationController.getUserNotifications);
+
+router.get("/user-notifications", NotificationController.getAllNotifications);
+router.delete("/notification",NotificationController.deleteNotification)
+router.get("/notification-count", NotificationController.getCount);
+
 
 // Live
 router.get("/get-live", LiveController.getLive);

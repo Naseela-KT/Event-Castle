@@ -5,7 +5,6 @@ import {
   AccordionBody,
   Card,
   CardBody,
-  Typography,
 } from '@material-tailwind/react';
 import { axiosInstance } from '../../config/api/axiosinstance';
 import { Link } from 'react-router-dom';

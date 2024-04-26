@@ -53,8 +53,9 @@ router.put('/update-booking-status',BookingController.updateStatus)
 router.post('/verification-request',VendorController.sendVerifyRequest)
 router.post('/add-dates',VendorController.addDates)
 router.get('/load-dates',VendorController.loadDates)
-router.get('/vendor-notifications',NotificationController.getVendorNotifications)
+router.get('/vendor-notifications',NotificationController.getAllNotifications)
 router.patch('/toggle-read',NotificationController.toggleRead)
+router.delete("/notification",NotificationController.deleteNotification)
 
 
 //message

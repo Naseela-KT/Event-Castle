@@ -15,6 +15,7 @@ export interface NotificationDocument extends Document {
   message: string;
   read: boolean;
   type:string;
+  createdAt:Date;
 }
 
 const notificationSchema = new Schema<NotificationDocument>(
@@ -35,6 +36,9 @@ const notificationSchema = new Schema<NotificationDocument>(
       type:String,
       required:true,
       enum: Object.values(NOTIFICATION_TYPES),
+    },
+    createdAt:{
+      type:Date
     }
   },
   { timestamps: true }

@@ -1,25 +1,27 @@
 
+import mongoose from "mongoose";
 import NotificationRepository from "../repositories/notificationRepository";
 
 
 class NotificationService{
-  async getNotificationForUser(userId:string){
+  async getNotifications(recipient:string){
     try {
-      const data = await NotificationRepository.findByCondition({recipient:userId});
+      const data = await NotificationRepository.findAllNotifications(recipient)
       return data;
     } catch (error) {
       throw error;
     }
   }
 
-  async getNotificationForVendor(vendorId:string){
+  async getUnreadNotifications(recipient:string){
     try {
-      const data = await NotificationRepository.findByCondition({recipient:vendorId});
+      const data = await NotificationRepository.findUnreadNotifications(recipient)
       return data;
     } catch (error) {
       throw error;
     }
   }
+
 
   async getNotificationForAdmin(adminId:string){
     try {
@@ -43,7 +45,20 @@ class NotificationService{
     } catch (error) {
       throw error;
     }
-  };
+  }
+
+  async delete(_id:string){
+    try {
+      const notificationItem = await NotificationRepository.getById(_id); 
+      if (!notificationItem) {
+        throw new Error('Notification not found');
+    }
+ 
+      return await NotificationRepository.delete(_id)
+    } catch (error) {
+      throw error;
+    }
+  }
   
 }
 

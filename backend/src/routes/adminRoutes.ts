@@ -40,8 +40,9 @@ router.get('/all-payment-details',adminAuth,PaymentController.getAllPayments);
 router.get('/all-payment-details',PaymentController.getAllPayments);
 
 //Notification
-router.get('/admin-notifications',NotificationController.getAdminNotifications);
+router.get('/admin-notifications',NotificationController.getAllNotifications);
 router.patch('/toggle-read',NotificationController.toggleRead)
+router.delete("/notification",NotificationController.deleteNotification)
 
 export default router;
 
