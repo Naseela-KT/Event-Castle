@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import NotificationService from "../services/notificationService";
-import mongoose from "mongoose";
+import { handleError } from "../utils/handleError";
 
 
 class NotificationController {
@@ -10,7 +10,7 @@ class NotificationController {
       const data=await NotificationService.getNotifications(recipient)
       res.status(201).json({notification:data})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "getAllNotifications");
     }
   }
 
@@ -23,7 +23,7 @@ class NotificationController {
       const data=await NotificationService.getNotificationForAdmin(adminId)
       res.status(201).json({notification:data})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "getAdminNotifications");
     }
   }
 
@@ -34,7 +34,7 @@ class NotificationController {
       const data=await NotificationService.changeReadStatus(id,recipient)
       res.status(201).json({notification:data})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "toggleRead");
     }
   }
 
@@ -47,7 +47,7 @@ class NotificationController {
       const data=await NotificationService.getNotifications(recipient)
       res.status(201).json({notification:data})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "deleteNotification");
     }
   }
 
@@ -57,7 +57,7 @@ class NotificationController {
       const data=await NotificationService.getUnreadNotifications(recipient)
       res.status(201).json({count:data?.length})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "getCount");
     }
   }
 

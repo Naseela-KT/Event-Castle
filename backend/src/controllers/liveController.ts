@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CustomError } from "../error/customError";
 import LiveService from "../services/liveService";
+import { handleError } from "../utils/handleError";
 
 class LiveController{
   async getLive(req: Request, res: Response): Promise<void> {
@@ -8,12 +8,7 @@ class LiveController{
       const data = await LiveService.getAllLive();
       res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "getLive"); 
     }
   }
 
@@ -23,12 +18,7 @@ class LiveController{
       const data = await LiveService.addNewLive(url);
       res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "addLive"); 
     }
   }
   async changeLiveStatus(req: Request, res: Response): Promise<void> {
@@ -37,12 +27,7 @@ class LiveController{
       const data = await LiveService.changeStatus(url);
       res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "changeLiveStatus"); 
     }
   }
 };

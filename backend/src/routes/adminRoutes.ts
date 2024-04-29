@@ -1,11 +1,12 @@
 import express from "express";
 import  AdminController  from "../controllers/adminController";
-import { UserController } from "../controllers/userController";
+import  UserController  from "../controllers/userController";
 import  VendorTypeController  from "../controllers/vendorTypeController";
-import { VendorController } from "../controllers/vendorController";
+import VendorController  from "../controllers/vendorController";
 import  PaymentController  from "../controllers/paymentController";
 import adminAuth from "../middlewares/adminAuthMiddleware";
 import NotificationController  from "../controllers/notificationController";
+import adminController from "../controllers/adminController";
 
 const router = express.Router();
 
@@ -43,6 +44,10 @@ router.get('/all-payment-details',PaymentController.getAllPayments);
 router.get('/admin-notifications',NotificationController.getAllNotifications);
 router.patch('/toggle-read',NotificationController.toggleRead)
 router.delete("/notification",NotificationController.deleteNotification)
+
+//dashboard
+router.get("/revenue",adminController.getRevenue)
+router.get("/dashboard-stats",adminController.getCounts);
 
 export default router;
 

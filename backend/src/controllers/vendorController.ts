@@ -1,26 +1,9 @@
 import { Request, Response } from "express";
-import {
-  signup,
-  login,
-  CheckExistingVendor,
-  getVendors,
-  toggleVendorBlock,
-  getSingleVendor,
-  ResetVendorPasswordService,
-  UpdatePasswordService,
-  checkCurrentPassword,
-  updateVendor,
-  verificationRequest,
-  changeVerifyStatus,
-  addDateAvailability,
-  getAllDates,
-  createRefreshToken,
-  getAllLocations,
-  getVendorsCount,
-} from "../services/vendorService";
+import moment from 'moment';
+import VendorService from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendorModel";
-import { SessionData } from "express-session";
+
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -29,6 +12,9 @@ import {
 import dotenv from "dotenv";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { CustomError } from "../error/customError";
+import { Types } from "mongoose";
+import payment from "../models/paymentModel";
+import { handleError } from "../utils/handleError";
 
 dotenv.config();
 
@@ -64,7 +50,28 @@ declare module "express-session" {
   }
 }
 
-export const VendorController = {
+function getCurrentWeekRange() {
+  const startOfWeek = moment().startOf('isoWeek').toDate();
+  const endOfWeek = moment().endOf('isoWeek').toDate();
+  return { startOfWeek, endOfWeek };
+}
+
+// Function to get current year range
+function getCurrentYearRange() {
+  const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+  const endOfYear = new Date(new Date().getFullYear() + 1, 0, 1);
+  return { startOfYear, endOfYear };
+}
+
+// Function to calculate the last five years' range
+function getLastFiveYearsRange() {
+  const currentYear = new Date().getFullYear();
+  const startOfFiveYearsAgo = new Date(currentYear - 5, 0, 1);
+  const endOfCurrentYear = new Date(currentYear + 1, 0, 1);
+  return { startOfFiveYearsAgo, endOfCurrentYear };
+}
+
+class VendorController{
   async vendorSignup(req: Request, res: Response): Promise<void> {
     try {
       const { email, password, name, phone, city, vendor_type } = req.body;
@@ -96,23 +103,21 @@ export const VendorController = {
         });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "vendorSignup");
     }
-  },
+  }
 
   async createRefreshToken(req: Request, res: Response): Promise<void> {
     try {
       const { refreshToken } = req.body;
 
-      const token = await createRefreshToken(refreshToken);
+      const token = await VendorService.createRefreshToken(refreshToken);
 
       res.status(200).json({ token });
     } catch (error) {
-      console.error("Error refreshing token:", error);
-      res.status(401).json({ message: "Failed to refresh token" });
+      handleError(res, error, "createRefreshToken");
     }
-  },
+  }
 
   async ResendOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -136,10 +141,9 @@ export const VendorController = {
       }
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "ResendOtp");
     }
-  },
+  }
 
   async PwdResendOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -163,15 +167,14 @@ export const VendorController = {
       }
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "PwdResendOtp");
     }
-  },
+  }
 
   async VendorLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { refreshToken, token, vendorData, message } = await login(
+      const { refreshToken, token, vendorData, message } = await VendorService.login(
         email,
         password
       );
@@ -181,24 +184,18 @@ export const VendorController = {
       });
       res.status(200).json({ token, vendorData, message });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "VendorLogin");
     }
-  },
+  }
 
   async VendorLogout(req: Request, res: Response): Promise<void> {
     try {
       res.clearCookie("jwtToken");
       res.status(200).json({ message: "vendor logged out successfully" });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "VendorLogout");
     }
-  },
+  }
 
   async verifyOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -216,7 +213,7 @@ export const VendorController = {
         throw new CustomError("OTP Expired...Try to resend OTP !!", 400);
       }
       if (otp === otpCode) {
-        const vendor = await signup(
+        const vendor = await VendorService.signup(
           email,
           password,
           name,
@@ -229,19 +226,14 @@ export const VendorController = {
         throw new CustomError("Invalid otp !!", 400);
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "verifyOtp");
     }
-  },
+  }
 
   async VendorForgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const email = req.body.email;
-      const vendor = await CheckExistingVendor(email);
+      const vendor = await VendorService.CheckExistingVendor(email);
       if (vendor) {
         const otp = await generateOtp(email);
         (req.session as any).vendorotp = { otp: otp, email: email };
@@ -254,14 +246,9 @@ export const VendorController = {
         res.status(400).json({ error: "Email not Registered with us !!" });
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "VendorForgotPassword");
     }
-  },
+  }
 
   async VerifyOtpForPassword(req: Request, res: Response): Promise<void> {
     try {
@@ -280,41 +267,24 @@ export const VendorController = {
         res.status(400).json({ Error: `otp's didn't matched..` });
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "VerifyOtpForPassword");
     }
-  },
+  }
 
   async getAllVendors(req: Request, res: Response): Promise<void>{
-    // try{
-      
-    //   const page: number = parseInt(req.query.page as string) || 1; 
-    //   const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
-    //   const { vendors, totalVendorsCount } = await getVendors(page,pageSize);
-    //   const totalPages = Math.ceil(totalVendorsCount / pageSize);
-    //   res.status(200).json({ vendorData:vendors, totalPages:totalPages });
-    // }catch(error){
-    //   console.log(error);
-    //   res.status(500).json({ message: "server error..." });
-    // }
     try {
       const { page = 1, limit = 6, search = "" ,category='',location='',sort} = req.query;
       console.log(req.query)
       const pageNumber = parseInt(page as string, 10);
       const limitNumber = parseInt(limit as string, 10);
       const sortValue = parseInt(sort as string, 10);
-      const vendorData = await getVendors(pageNumber,limitNumber,search.toString(),category.toString(),location.toString(),sortValue);
-      const totalVendors = await getVendorsCount();
+      const vendorData = await VendorService.getVendors(pageNumber,limitNumber,search.toString(),category.toString(),location.toString(),sortValue);
+      const totalVendors = await VendorService.getVendorsCount();
       res.status(200).json({ vendorData, totalVendors });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error..." });
+      handleError(res, error, "getAllVendors");
     }
-  } ,
+  } 
  
   async Toggleblock(req: Request, res: Response): Promise<void> {
     try {
@@ -325,17 +295,16 @@ export const VendorController = {
         throw new Error("Vendor ID is missing or invalid.");
       }
 
-      await toggleVendorBlock(VendorId);
+      await VendorService.toggleVendorBlock(VendorId);
       let process = await vendor.findOne({ _id: VendorId });
       res.status(200).json({
         message: "User block status toggled successfully.",
         process: !process?.isActive ? "block" : "unblock",
       });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "Toggleblock");
     }
-  },
+  }
 
   async getVendor(req: Request, res: Response): Promise<void> {
     try {
@@ -346,17 +315,16 @@ export const VendorController = {
         return;
       }
 
-      const data = await getSingleVendor(vendorId);
+      const data = await VendorService.getSingleVendor(vendorId);
       if (!data) {
         res.status(400).json({ error: "Vendor not found , error occured" });
       } else {
         res.status(200).json({ data: data });
       }
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "getVendor");
     }
-  },
+  }
 
   async ResetVendorPassword(req: Request, res: Response): Promise<void> {
     try {
@@ -364,16 +332,15 @@ export const VendorController = {
       const confirmPassword = req.body.confirm_password;
       if (password === confirmPassword) {
         const email = (req.session as any).vendorotp.email;
-        const status = await ResetVendorPasswordService(password, email);
+        const status = await VendorService.ResetVendorPasswordService(password, email);
         res.status(200).json({ message: "Password reset successfully." });
       } else {
         res.status(400).json({ error: "Passwords do not match." });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "ResetVendorPassword");
     }
-  },
+  }
 
   //Profile-Changepassword
   async updatePassword(req: Request, res: Response): Promise<void> {
@@ -385,13 +352,13 @@ export const VendorController = {
       const vendorId: string = req.query.vendorid as string;
       console.log(vendorId);
 
-      let status = await checkCurrentPassword(currentPassword, vendorId);
+      let status = await VendorService.checkCurrentPassword(currentPassword, vendorId);
 
       if (!status) {
         throw new CustomError(`Current password is wrong!`, 400);
       }
 
-      const data = await UpdatePasswordService(newPassword, vendorId);
+      const data = await VendorService.UpdatePasswordService(newPassword, vendorId);
 
       if (!data) {
         res
@@ -400,14 +367,9 @@ export const VendorController = {
       }
       res.status(200).json({ message: "password updated successfully.." });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "updatePassword");
     }
-  },
+  }
 
  
   async updateProfile(req: Request, res: Response): Promise<void> {
@@ -475,7 +437,7 @@ export const VendorController = {
         });
       }
 
-      const updatedVendor = await updateVendor(
+      const updatedVendor = await VendorService.updateVendor(
         vendorId,
         formData,
         coverpicUrl,
@@ -486,43 +448,32 @@ export const VendorController = {
 
       res.status(200).json(updatedVendor);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "updateProfile");
     }
-  },
+  }
 
 
 
   async sendVerifyRequest(req: Request, res: Response): Promise<void> {
     try {
       const vendorId: string = req.body.vendorId as string;
-      const result = await verificationRequest(vendorId);
+      const result = await VendorService.verificationRequest(vendorId);
       res.status(200).json(result);
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "sendVerifyRequest");
     }
-  },
+  }
 
   async updateVerifyStatus(req: Request, res: Response): Promise<void> {
     try {
       const vendorId: string = req.body.vendorId as string;
       const status = req.body.status;
-      const result = await changeVerifyStatus(vendorId, status);
+      const result = await VendorService.changeVerifyStatus(vendorId, status);
       res.status(200).json({ result, message: "Status updated successfully!" });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "updateVerifyStatus");
     }
-  },
+  }
 
 
 
@@ -532,44 +483,121 @@ export const VendorController = {
       const status = req.body.status;
       const date = req.body.date;
       console.log(vendorId, status, date);
-      const bookedDates = await addDateAvailability(vendorId, status, date);
+      const bookedDates = await VendorService.addDateAvailability(vendorId, status, date);
       res.status(200).json({ bookedDates, message: "Date status updated!" });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "addDates");
     }
-  },
+  }
 
   async loadDates(req: Request, res: Response): Promise<void> {
     try {
       const vendorId: string = req.query.vendorId as string;
-      const bookedDates = await getAllDates(vendorId);
+      const bookedDates = await VendorService.getAllDates(vendorId);
       res.status(200).json({ bookedDates });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "loadDates");
     }
-  },
+  }
 
   async getLocations(req: Request, res: Response): Promise<void> {
     try {
-      const Locations = await getAllLocations();
+      const Locations = await VendorService.getAllLocations();
       res.status(200).json({ locations:Locations });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "getLocations");
     }
-  },
-};
+  }
+
+ 
+
+
+  async getRevenue(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId = req.query.vendorId as string;
+      const dateType = req.query.date as string;
+  
+      if (!vendorId || !Types.ObjectId.isValid(vendorId)) {
+        res.status(400).json({ message: 'Invalid or missing vendorId' });
+        return;
+      }
+  
+      let start, end, groupBy, sortField, arrayLength=0;
+  
+      switch (dateType) {
+        case 'week':
+          const { startOfWeek, endOfWeek } = getCurrentWeekRange();
+          start = startOfWeek;
+          end = endOfWeek;
+          groupBy = { day: { $dayOfMonth: '$createdAt' } }; // Group by day
+          sortField = 'day';// Sort by day
+          arrayLength = 7;
+          break;
+        case 'month':
+          const { startOfYear, endOfYear } = getCurrentYearRange();
+          start = startOfYear;
+          end = endOfYear;
+          groupBy = { month: { $month: '$createdAt' } }; // Group by month
+          sortField = 'month'; // Sort by month
+          arrayLength = 12;
+          break;
+        case 'year':
+          const { startOfFiveYearsAgo, endOfCurrentYear } = getLastFiveYearsRange();
+          start = startOfFiveYearsAgo;
+          end = endOfCurrentYear;
+          groupBy = { year: { $year: '$createdAt' } }; // Group by year
+          sortField = 'year';// Sort by year
+          arrayLength = 5;
+          break;
+        default:
+          res.status(400).json({ message: 'Invalid date parameter' });
+          return;
+      }
+  
+      const revenueData = await payment.aggregate([
+        {
+          $match: {
+            vendorId: new Types.ObjectId(vendorId),
+            createdAt: {
+              $gte: start,
+              $lt: end,
+            },
+          },
+        },
+        {
+          $group: {
+            _id: groupBy,
+            totalRevenue: { $sum: '$amount' },
+          },
+        },
+        {
+          $sort: { [`_id.${sortField}`]: 1 },
+        },
+      ]);
+      const revenueArray = Array.from({ length: arrayLength }, (_, index) => {
+        const item = revenueData.find((r) => {
+          if (dateType === 'week') {
+            return r._id.day === index + 1;
+          } else if (dateType === 'month') {
+            return r._id.month === index + 1;
+          } else if (dateType === 'year') {
+            return r._id.year === new Date().getFullYear() - (arrayLength - 1) + index;
+          }
+          return false;
+        });
+        return item ? item.totalRevenue : 0; // Default to 0 if no data for the expected index
+      });
+  
+      res.status(200).json({ revenue: revenueArray }); 
+    } catch (error) {
+      handleError(res, error, "getRevenue");
+    }
+  }
+  
+
+
+}
+
+export default new VendorController()
+
+

@@ -68,6 +68,8 @@ const ChatCard = () => {
   };
 
   return (
+    <div>
+      {notifications?.length > 0 ? (
     <Card
       className="pt-2 w-full h-full"
       placeholder={undefined}
@@ -145,7 +147,14 @@ const ChatCard = () => {
         </div>
       </CardBody>
     </Card>
-  );
+  ) : (
+    <Typography variant="h6" color="red" className="text-center mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      No notifications yet
+    </Typography>
+  )}
+</div>
+);
+
 };
 
 export default ChatCard;

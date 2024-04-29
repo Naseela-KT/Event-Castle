@@ -1,34 +1,15 @@
 import { Request, Response } from "express";
-import {
-  signup,
-  login,
-  getUsers,
-  toggleUserBlock,
-  CheckExistingUSer,
-  generateOtpForPassword,
-  ResetPassword,
-  getUsersCount,
-  googleSignup,
-  gLogin,
-  checkCurrentPassword,
-  UpdatePasswordService,
-  updateProfileService,
-  FavoriteVendor,
-  FavoriteVendors,
-  deleteFromFavorite,
-  findUser,
-  createRefreshToken,
-} from "../services/userService";
+import userService from "../services/userService";
 import generateOtp from "../utils/generateOtp";
-import user, { User } from "../models/userModel";
+import user from "../models/userModel";
 import Jwt from "jsonwebtoken";
 import sharp from "sharp";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import generateUserTokenAndSetCookie from "../utils/generateUserToken";
 import { CustomError } from "../error/customError";
+import { handleError } from "../utils/handleError";
 
 
 interface DecodedData {
@@ -72,7 +53,7 @@ const s3 = new S3Client({
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
-export const UserController = {
+class UserController{
   async UserSignup(req: Request, res: Response): Promise<void> {
     try {
       const { email, password, name, phone } = req.body;
@@ -103,10 +84,9 @@ export const UserController = {
         });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "UserSignup");
     }
-  },
+  }
 
   async verifyOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -123,44 +103,34 @@ export const UserController = {
       }
       const otpCode = userData.otpCode;
       if (otp === otpCode) {
-        const user= await signup(email, password, name, phone,res);
+        const user= await userService.signup(email, password, name, phone,res);
         
         res.status(201).json(user);
       } else {
         throw new CustomError("Invalid otp !!", 400);
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "verifyOtp");
     }
-  },
+  }
 
   async UserLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const {  token,refreshToken,userData, message } = await login(email, password);
+      const {  token,refreshToken,userData, message } = await userService.login(email, password);
       res.cookie("jwtToken", token, { httpOnly: true });
       res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "UserLogin");
     }
-  },
+  }
 
   async createRefreshToken(req: Request, res: Response):Promise<void>{
     try {
      
       const { refreshToken } = req.body;
       
-      const token = await createRefreshToken(refreshToken);
+      const token = await userService.createRefreshToken(refreshToken);
     
       res.status(200).json({ token });
 
@@ -168,17 +138,16 @@ export const UserController = {
       console.error('Error refreshing token:', error);
       res.status(401).json({ message: 'Failed to refresh token' });
     }
-  },
+  }
 
   async UserLogout(req: Request, res: Response): Promise<void> {
     try {
       res.cookie("jwtUser","",{maxAge:0});
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "UserLogout");
     }
-  },
+  }
 
   async allUsers(req: Request, res: Response): Promise<void> {
     try {
@@ -186,15 +155,14 @@ export const UserController = {
       const pageNumber = parseInt(page as string, 10);
       const limitNumber = parseInt(limit as string, 10);
 
-      const users = await getUsers(pageNumber, limitNumber, search.toString());
-      const totalUsers = await getUsersCount();
+      const users = await userService.getUsers(pageNumber, limitNumber, search.toString());
+      const totalUsers = await userService.getUsersCount();
 
       res.status(200).json({ users, totalUsers });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error..." });
+      handleError(res, error, "allUsers");
     }
-  },
+  }
 
   async Toggleblock(req: Request, res: Response): Promise<void> {
     try {
@@ -203,25 +171,24 @@ export const UserController = {
         res.status(400).json({ message: "User ID is missing or invalid." });
         return;
       }
-      await toggleUserBlock(userId);
+      await userService.toggleUserBlock(userId);
       let process = await user.findOne({ _id: userId });
       res.status(200).json({
         message: "User block status toggled successfully.",
         process: !process?.isActive ? "block" : "unblock",
       });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "Toggleblock");
     }
-  },
+  }
 
   async UserForgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const email = req.body.email;
       console.log(email);
-      const user = await CheckExistingUSer(email);
+      const user = await userService.CheckExistingUSer(email);
       if (user) {
-        const otp = await generateOtpForPassword(email);
+        const otp = await userService.generateOtpForPassword(email);
         req.session.otp = {
           otp: otp,
           email: email,
@@ -236,10 +203,9 @@ export const UserController = {
         res.status(400).json({ error: "User not found !!" });
       }
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "UserForgotPassword");
     }
-  },
+  }
 
   async VerifyOtpForPassword(req: Request, res: Response): Promise<void> {
     try {
@@ -256,14 +222,9 @@ export const UserController = {
         throw new CustomError("Invalid OTP !!", 400);
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "VerifyOtpForPassword");
     }
-  },
+  }
 
   async ResetUserPassword(req: Request, res: Response): Promise<void> {
     try {
@@ -272,17 +233,16 @@ export const UserController = {
       if (password === confirmPassword) {
         const email = req.session.otp?.email;
         console.log("email " + email);
-        const status = await ResetPassword(password, email!);
+        const status = await userService.ResetPassword(password, email!);
         req.session.otp = undefined;
         res.status(200).json({ message: "Password reset successfully." });
       } else {
         res.status(400).json({ error: "Passwords do not match." });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "ResetUserPassword");
     }
-  },
+  }
 
   async ResendOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -306,10 +266,9 @@ export const UserController = {
       }
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "ResendOtp");
     }
-  },
+  }
 
   async PwdResendOtp(req: Request, res: Response): Promise<void> {
     try {
@@ -333,10 +292,9 @@ export const UserController = {
       }
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "PwdResendOtp");
     }
-  },
+  }
 
   async googleRegister(req: Request, res: Response) {
     try {
@@ -347,14 +305,14 @@ export const UserController = {
 
       console.log("Decoded data: ", decodedData);
       const { name, email, jti }: DecodedData = decodedData as DecodedData;
-      const user = await googleSignup(email, jti, name);
+      const user = await userService.googleSignup(email, jti, name);
       if (user) {
         res.status(200).json({ message: "user saved successfully" });
       }
     } catch (error) {
       res.status(400).json({ error: "User already exists" });
     }
-  },
+  }
 
   async googleLogin(req: Request, res: Response) {
     try {
@@ -367,7 +325,7 @@ export const UserController = {
 
       const { email, jti } = decodedData;
       const password = jti;
-      const { refreshToken,token, userData, message } = await gLogin(email, password);
+      const { refreshToken,token, userData, message } = await userService.gLogin(email, password);
 
       req.session.user = userData._id;
       res.cookie("jwtToken", token, {
@@ -377,14 +335,9 @@ export const UserController = {
 
       res.status(200).json({ refreshToken,token, userData, message });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "googleLogin");
     }
-  },
+  }
 
   async updatePasswordController(req: Request, res: Response): Promise<void> {
     try {
@@ -393,13 +346,13 @@ export const UserController = {
       const newPassword = req.body.new_password;
       const userId: string = req.query.userid as string;
 
-      let status = await checkCurrentPassword(currentPassword, userId);
+      let status = await userService.checkCurrentPassword(currentPassword, userId);
 
       if (!status) {
         throw new CustomError(`Current password is wrong!`, 400);
       }
 
-      const data = await UpdatePasswordService(newPassword, userId);
+      const data = await userService.UpdatePasswordService(newPassword, userId);
 
       if (!data) {
         res
@@ -408,14 +361,9 @@ export const UserController = {
       }
       res.status(200).json({ message: "password updated successfully.." });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "updatePasswordController");
     }
-  },
+  }
 
   async updateProfile(req: Request, res: Response): Promise<void> {
     try {
@@ -454,17 +402,12 @@ export const UserController = {
         
       }
 
-      const user = await updateProfileService(name, phone, imageName, userId,imageUrl);
+      const user = await userService.updateProfileService(name, phone, imageName, userId,imageUrl);
       res.status(201).json(user);
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "updateProfile");
     }
-  },
+  }
 
   async AddFavVendor(req: Request, res: Response): Promise<void> {
     try {
@@ -480,7 +423,7 @@ export const UserController = {
       console.log("Userid: " + userId);
       console.log("vendorId: ", vendorId);
       
-      const data = await FavoriteVendor(vendorId, userId);
+      const data = await userService.FavoriteVendor(vendorId, userId);
 
       if (data) {
         res.status(200).json({ message: "vendor added to Favorite list..",fav:true });
@@ -488,10 +431,9 @@ export const UserController = {
         res.status(200).json({ message: "vendor removed from favorites",fav:false });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "AddFavVendor");
     }
-  },
+  }
 
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
@@ -502,7 +444,7 @@ export const UserController = {
       if (!userId) {
         res.status(400).json({ error: "Invalid user id." });
       }
-      const {result,totalFavsCount} = await FavoriteVendors( userId,page,pageSize);
+      const {result,totalFavsCount} = await userService.FavoriteVendors( userId,page,pageSize);
       const totalPages = Math.ceil(totalFavsCount / pageSize);
       if (result) {
         res.status(200).json({ data:result,totalPages: totalPages});
@@ -511,10 +453,9 @@ export const UserController = {
       }
 
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "getFavoriteVendors");
     }
-  },
+  }
 
 
   async deleteFavoriteVendor(req: Request, res: Response): Promise<void>{
@@ -525,7 +466,7 @@ export const UserController = {
       if (!userId) {
         res.status(400).json({ error: "Invalid user id." });
       }
-      const result = await deleteFromFavorite(userId,vendorId);
+      const result = await userService.deleteFromFavorite(userId,vendorId);
       if (result) {
         res.status(200).json({userData:result});
       } else {
@@ -533,10 +474,9 @@ export const UserController = {
       }
 
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "deleteFavoriteVendor");
     }
-  },
+  }
 
   async getUsersForSidebar(req: Request, res: Response) {
     try {
@@ -544,10 +484,9 @@ export const UserController = {
   
       res.status(200).json(filteredUsers);
     } catch (error) {
-      console.error("Error in getUsersForSidebar: ", error);
-      res.status(500).json({ error: "Internal server error" });
+      handleError(res, error, "getUsersForSidebar");
     }
-  },
+  }
 
 
   async getUser(req: Request, res: Response): Promise<void>{
@@ -555,16 +494,19 @@ export const UserController = {
       
       const userId:string = req.query.userId as string;
 
-      const data = await findUser(userId);
+      const data = await userService.findUser(userId);
       res.status(200).json(data);
       
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "getUser");
     }
-  },
+  }
 
-};
+}
+
+export default new UserController()
+
+
 
 
 

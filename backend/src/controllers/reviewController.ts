@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ReviewService from "../services/reviewService";
 import { CustomError } from "../error/customError";
+import { handleError } from "../utils/handleError";
 
 class ReviewController{
     async addReview(req: Request, res: Response): Promise<void> {
@@ -23,8 +24,7 @@ class ReviewController{
           }
           res.status(200).json({ message: "review added for vendor.." });
         } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          handleError(res, error, "addReview");
         }
       }
 
@@ -41,8 +41,7 @@ class ReviewController{
           if (error instanceof CustomError) {
             res.status(error.statusCode).json({ message: error.message });
           } else {
-            console.error(error);
-            res.status(500).json({ message: "Server Error" });
+            handleError(res, error, "addReviewReply");
           }
         }
       }
@@ -56,11 +55,37 @@ class ReviewController{
           if (error instanceof CustomError) {
             res.status(error.statusCode).json({ message: error.message });
           } else {
-            console.error(error);
-            res.status(500).json({ message: "Server Error" });
+            handleError(res, error, "getReviews");
           }
         }
       }
+
+      async updateReview(req: Request, res: Response): Promise<void> {
+        try {
+          const {reviewId,review}= req.body as {reviewId:string,review:string};
+          const updateReview=await ReviewService.updateReviewContent(reviewId,review)
+          res.status(200).json({updateReview});
+        } catch (error) {
+          if (error instanceof CustomError) {
+            res.status(error.statusCode).json({ message: error.message });
+          } else {
+            handleError(res, error, "updateReview");
+          }
+        }
+      }
+
+      async getReviewStatistics(req: Request, res: Response) {
+        const { vendorId } = req.query as {vendorId:string}; 
+        try {
+          const percentages = await ReviewService.getReviewStatisticsByVendorId(
+            vendorId
+          );
+          res.status(200).json({ percentages }); // Return the percentages
+        } catch (error) {
+          handleError(res, error, "getReviewStatistics");
+        }
+      }
+
 
 };
 

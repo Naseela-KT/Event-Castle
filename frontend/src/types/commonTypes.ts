@@ -48,3 +48,7 @@ export interface VendorType {
   status: boolean;
 }
 
+
+export interface Chat{
+  members:string[];
+}

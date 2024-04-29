@@ -1,21 +1,38 @@
 import { ApexOptions } from "apexcharts";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
-import { useSelector } from "react-redux";
-import VendorRootState from "../../../redux/rootstate/VendorState";
+import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
 
 const getCategories = (date: string) => {
   if (date === "month") {
-    return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
   } else if (date === "week") {
-    return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    return [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
   } else {
     return ["2020", "2021", "2022", "2023", "2024"];
   }
 };
-
-
 
 interface ChartOneState {
   series: {
@@ -24,7 +41,7 @@ interface ChartOneState {
   }[];
 }
 
-const ChartOne: React.FC = () => {
+const RevenueChart: React.FC = () => {
   const [monthlyData, setMonthlyData] = useState<number[]>([]);
   const [date, setDate] = useState<string>("month");
   const [chartOptions, setChartOptions] = useState<ApexOptions>({
@@ -47,7 +64,7 @@ const ChartOne: React.FC = () => {
         left: 0,
         opacity: 0.1,
       },
-  
+
       toolbar: {
         show: false,
       },
@@ -109,17 +126,17 @@ const ChartOne: React.FC = () => {
     },
     xaxis: {
       type: "category",
-      categories:getCategories(date)
+      categories: getCategories(date),
+    },
+    yaxis: {
+      title: {
+        style: {
+          fontSize: "0px",
         },
-          yaxis: {
-            title: {
-              style: {
-                fontSize: "0px",
-              },
-            },
-            min: 1000,
-            max: 10000,
-          }
+      },
+      min: 1000,
+      max: 10000,
+    },
   });
   const [state, setState] = useState<ChartOneState>({
     series: [
@@ -137,12 +154,9 @@ const ChartOne: React.FC = () => {
   };
   handleReset;
 
-  const vendor = useSelector(
-    (state: VendorRootState) => state.vendor.vendordata
-  );
   useEffect(() => {
-    axiosInstanceVendor
-      .get(`/revenue?vendorId=${vendor?._id}&date=${date}`)
+    axiosInstanceAdmin
+      .get(`/revenue?date=${date}`)
       .then((res) => {
         console.log(res.data.revenue);
         const revenueData = res.data.revenue;
@@ -163,13 +177,13 @@ const ChartOne: React.FC = () => {
       .catch((error) => {
         console.error("Error fetching revenue:", error);
       });
-      setChartOptions((prevOptions) => ({
-        ...prevOptions,
-        xaxis: {
-          ...prevOptions.xaxis,
-          categories: getCategories(date), // Ensure x-axis is updated
-        },
-      }));
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      xaxis: {
+        ...prevOptions.xaxis,
+        categories: getCategories(date), // Ensure x-axis is updated
+      },
+    }));
   }, [date]);
 
   return (
@@ -223,4 +237,4 @@ const ChartOne: React.FC = () => {
   );
 };
 
-export default ChartOne;
+export default RevenueChart;

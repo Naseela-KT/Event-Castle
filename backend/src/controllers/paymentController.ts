@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 const Stripe = require("stripe");
 import PaymentService from '../services/paymentService'
+import { handleError } from "../utils/handleError";
 
 require("dotenv").config();
 
@@ -72,7 +73,7 @@ class PaymentController {
       const payment=await PaymentService.addNewPayment(amount,userId,vendorId,bookingId);
       res.status(201).json({payment})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "addPayment");
     }
   }
 
@@ -81,7 +82,7 @@ class PaymentController {
       const payment=await PaymentService.getPayments()
       res.status(200).json({payment})
     } catch (error) {
-      console.log(error)
+      handleError(res, error, "getAllPayments");
     }
   }
 };

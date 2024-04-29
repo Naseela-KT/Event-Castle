@@ -1,6 +1,6 @@
 import express from "express";
-import { UserController } from "../controllers/userController";
-import { VendorController } from "../controllers/vendorController";
+import UserController from "../controllers/userController";
+import VendorController  from "../controllers/vendorController";
 import multer from "multer";
 import PostController from "../controllers/postController";
 import BookingController  from "../controllers/bookingController";
@@ -77,5 +77,9 @@ router.patch("/toggle-read", NotificationController.toggleRead);
 router.patch("/delete-for-everyone", MessageController.deleteAMessage);
 router.patch("/delete-for-me", MessageController.changeViewMessage);
 router.get("/getUser", UserController.getUser);
+
+
+//Review
+router.patch("/update-review",ReviewController.updateReview)
 
 export default router;

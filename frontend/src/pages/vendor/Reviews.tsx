@@ -28,7 +28,7 @@ export const Reviews = () => {
   const [open, setOpen] = useState(false);
   const [currentReviewId, setCurrentReviewId] = useState('');
   const [reviews,setReviews]=useState<Review[]>([])
-
+  const [stats,setStats]=useState<number[]>([])
 
   useEffect(()=>{
     axiosInstanceVendor
@@ -40,7 +40,18 @@ export const Reviews = () => {
     .catch((error) => {
       console.log('here', error);
     });
-  },[reviews])
+
+    axiosInstanceVendor.get(`/reviews/statistics?vendorId=${vendor?._id}`)
+    .then((res)=>{
+      console.log(res.data.percentages)
+      setStats(res.data.percentages)
+    }).catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+
+  
 
   const handleOpen = (reviewId: string) => {
     setCurrentReviewId(reviewId); // Set the current review ID
@@ -92,7 +103,7 @@ export const Reviews = () => {
               <h2 className="text-2xl font-bold">Customer reviews & ratings</h2>
               <div className="flex">
                 <Rating
-                  value={4}
+                  value={Math.ceil(vendor?.totalRating ?? 0)}
                   ratedColor="amber"
                   readonly
                   placeholder={undefined}
@@ -102,7 +113,7 @@ export const Reviews = () => {
               </div>
               <div className="flex">
                 <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-                  4.95
+                {Math.ceil(vendor?.totalRating ?? 0)}
                 </p>
                 <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                   out of
@@ -111,9 +122,7 @@ export const Reviews = () => {
                   5
                 </p>
               </div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                1,745 global ratings
-              </p>
+           
             </div>
           </div>
         </div>
@@ -128,7 +137,7 @@ export const Reviews = () => {
             </a>
             <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
               <Progress
-                value={70}
+                value={stats[4]}
                 color="amber"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -136,7 +145,7 @@ export const Reviews = () => {
               />
             </div>
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              70%
+            {stats[4]}
             </span>
           </div>
           <div className="flex items-center mt-4">
@@ -148,7 +157,7 @@ export const Reviews = () => {
             </a>
             <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
               <Progress
-                value={17}
+                value={stats[3]}
                 color="amber"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -156,7 +165,7 @@ export const Reviews = () => {
               />
             </div>
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              17%
+            {stats[3]}%
             </span>
           </div>
           <div className="flex items-center mt-4">
@@ -168,7 +177,7 @@ export const Reviews = () => {
             </a>
             <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
               <Progress
-                value={8}
+                value={stats[2]}
                 color="amber"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -176,7 +185,7 @@ export const Reviews = () => {
               />
             </div>
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              8%
+            {stats[2]}%
             </span>
           </div>
           <div className="flex items-center mt-4">
@@ -188,7 +197,7 @@ export const Reviews = () => {
             </a>
             <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded ">
               <Progress
-                value={4}
+                value={stats[1]}
                 color="amber"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -196,7 +205,7 @@ export const Reviews = () => {
               />
             </div>
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              4%
+            {stats[1]}%
             </span>
           </div>
           <div className="flex items-center mt-4">
@@ -208,7 +217,7 @@ export const Reviews = () => {
             </a>
             <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
               <Progress
-                value={1}
+                value={stats[0]}
                 color="amber"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -216,7 +225,7 @@ export const Reviews = () => {
               />
             </div>
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              1%
+            {stats[0]}%
             </span>
           </div>
         </div>

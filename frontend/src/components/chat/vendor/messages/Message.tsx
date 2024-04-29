@@ -110,7 +110,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   >
                     You deleted this message
                   </span>
-                ) : message?.deletedIds.includes(vendor?._id) ? (
+                ) : message?.deletedIds?.includes(vendor?._id) ? (
                   ''
                 ) : (
                   <>
@@ -130,7 +130,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </>
                 )}
               </div>
-              {message?.deletedIds.includes(vendor?._id) ? (
+              {message?.deletedIds?.includes(vendor?._id) ? (
                 ''
               ) : (
                 <div style={{ fontSize: '16px' }}>{message?.emoji}</div>
@@ -150,7 +150,7 @@ const Message = ({ message, own, setIsUpdated }) => {
               )}
             </div>
           </div>
-          {message?.deletedIds.includes(vendor?._id) ? (
+          {message?.deletedIds?.includes(vendor?._id) ? (
             ''
           ) : (
             <p className="flex items-end justify-end text-xs text-gray-500 mr-2">
@@ -170,7 +170,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   >
                     This message was deleted
                   </span>
-                ) : message?.deletedIds.includes(vendor?._id) ? (
+                ) : message?.deletedIds?.includes(vendor?._id) ? (
                   ''
                 ) : (
                   <>
@@ -190,7 +190,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </>
                 )}
               </div>
-              {message?.deletedIds.includes(vendor?._id) ? (
+              {message?.deletedIds?.includes(vendor?._id) ? (
                 ''
               ) : (
                 <div style={{ fontSize: '16px' }}>{message?.emoji}</div>
@@ -210,7 +210,7 @@ const Message = ({ message, own, setIsUpdated }) => {
               )}
             </div>
           </div>
-          {message?.deletedIds.includes(vendor?._id) ? (
+          {message?.deletedIds?.includes(vendor?._id) ? (
             ''
           ) : (
             <p className="text-xs text-gray-500 ml-2">

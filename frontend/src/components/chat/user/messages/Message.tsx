@@ -94,7 +94,7 @@ const Message = ({ message, own, setIsUpdated }) => {
   return (
     <>
       {own ? (
-        <div>
+        <div style={{maxHeight:"400px",overflowY:"auto"}}>
           <div className="flex items-end justify-end">
             <div className="relative flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-end">
               <div>

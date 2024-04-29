@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import Footer from '../../layout/user/footer';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -35,6 +35,7 @@ const initialValues: FormValues = {
 
 const BookEventForm: React.FC = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
+  const [minDate, setMinDate] = useState('');
   const navigate=useNavigate()
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -48,6 +49,15 @@ const BookEventForm: React.FC = () => {
     pin: '',
     mobile: '',
   });
+
+  useEffect(() => {
+    // Get tomorrow's date in the required format
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+    const tomorrowDate = currentDate.toISOString().split("T")[0];
+    
+    setMinDate(tomorrowDate);
+  }, []);
 
 
 
@@ -78,7 +88,7 @@ const BookEventForm: React.FC = () => {
         });
     }
   };
-
+ 
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -99,6 +109,7 @@ const BookEventForm: React.FC = () => {
                 onSubmit={submitHandler}
                 className="border border-gray-300 shadow-lg p-10 w-full"
               >
+                
                 <div className="mb-4">
                   <Input
                     label="Date"
@@ -109,7 +120,7 @@ const BookEventForm: React.FC = () => {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                     crossOrigin={undefined}
-                    
+                    min={minDate}
                   />
                  
                 </div>

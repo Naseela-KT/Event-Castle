@@ -1,8 +1,7 @@
 import Admin , { AdminDocument } from "../models/adminModel";
 import { BaseRepository } from "./baseRepository";
 
-
-export class AdminRepository extends BaseRepository<AdminDocument>{
+class AdminRepository extends BaseRepository<AdminDocument>{
   constructor(){
     super(Admin)
   }
@@ -10,6 +9,8 @@ export class AdminRepository extends BaseRepository<AdminDocument>{
     return await Admin.findOne({ email });
   }
 }
+
+export default new AdminRepository()
 
 
 

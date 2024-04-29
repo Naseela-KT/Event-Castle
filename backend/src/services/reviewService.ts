@@ -3,6 +3,7 @@ import Vendor from "../models/vendorModel";
 import reviewRepository from "../repositories/reviewRepository";
 import { CustomError } from "../error/customError";
 import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
+import { ReviewDocument } from "../models/reviewModel";
 
 class ReviewService{
   async addNewReview(content:string,rating:number,user_Id:string,vendor_Id:string){
@@ -52,6 +53,31 @@ class ReviewService{
     } catch (error) {
       
     }
+  }
+
+  async updateReviewContent(reviewId:string,review:string): Promise<any> {
+    try {
+      const reviews=await reviewRepository.update(reviewId,{content:review})
+      return reviews;
+    } catch (error) {
+      
+    }
+  }
+
+
+  async getReviewStatisticsByVendorId(vendorId: string): Promise<number[]> {
+    const reviews = await reviewRepository.getReviewsByVendorId(vendorId);
+    console.log(reviews)
+    const ratingCounts = [0, 0, 0, 0, 0]; 
+    reviews?.forEach((review: ReviewDocument) => {
+      if (review.rating >= 1 && review.rating <= 5) {
+        ratingCounts[review.rating - 1] += 1;
+      }
+    });
+    const totalReviews = reviews?.length;
+    const ratingPercentages = ratingCounts.map((count) => (totalReviews! > 0 ? (count / totalReviews!) * 100 : 0));
+
+    return ratingPercentages; 
   }
 }
 

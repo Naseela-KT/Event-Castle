@@ -242,7 +242,7 @@ export default function Sidebar() {
           <Card
             color="transparent"
             shadow={false}
-            className="h-[calc(100vh-2rem)] w-200 p-4"
+            className="h-[calc(100vh-2rem)] w-200 p-4 bg-white mt-18"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}

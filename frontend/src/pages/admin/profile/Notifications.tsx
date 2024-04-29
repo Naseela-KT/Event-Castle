@@ -66,7 +66,10 @@ const Notifications = () => {
       });
   };
 
+  
   return (
+    <div>
+      {notifications?.length > 0 ? (
     <Card
       className="m-20 pt-2 h-screen bg-gray-50"
       placeholder={undefined}
@@ -144,7 +147,13 @@ const Notifications = () => {
         </div>
       </CardBody>
     </Card>
-  );
+     ) : (
+      <Typography variant="h6" color="red" className="text-center mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        No notifications yet
+      </Typography>
+    )}
+  </div>
+);
 }
 
 export default Notifications

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { validate } from "../../../validations/common/changePwdValidation";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { USER } from "../../../config/constants/constants";
 
 interface FormValues {
@@ -57,7 +57,9 @@ const ChangePassword = () => {
         .then((response) => {
           console.log(response);
           toast.success("Password updated Successfully!")
-          navigate(`${USER.PROFILE}${USER.CHANGE_PWD}`);
+          setFormValues(initialValues);
+          setFormErrors(initialValues);
+          navigate(`${USER.PROFILE}`);
         })
         .catch((error) => {
           // localStorage.removeItem("userToken");

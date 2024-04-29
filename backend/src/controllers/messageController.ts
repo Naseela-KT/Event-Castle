@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Message from "../models/messageModel";
 import messageService from "../services/messageService";
+import { handleError } from "../utils/handleError";
 
 class MessageController {
   async createMessage(req: Request, res: Response): Promise<any> {
@@ -13,8 +14,7 @@ class MessageController {
       );
       res.status(200).json(response);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "createMessage");
     }
   }
 
@@ -24,8 +24,7 @@ class MessageController {
       const messages = await messageService.findMessages(conversationId);
       res.status(200).json(messages);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "getMessages");
     }
   }
 
@@ -35,8 +34,7 @@ class MessageController {
       const messages = await messageService.updateStatus(msgId);
       res.status(200).json({ messages });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "deleteAMessage");
     }
   }
 
@@ -46,8 +44,7 @@ class MessageController {
       const messages = await messageService.changeMessageView(msgId,id);
       res.status(200).json({ messages });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "changeViewMessage");
     }
   }
 
@@ -59,8 +56,7 @@ class MessageController {
       });
       res.status(200).json({ messages });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "addEmoji");
     }
   }
 }

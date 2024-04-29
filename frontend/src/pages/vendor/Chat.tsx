@@ -1,21 +1,22 @@
-import { Link } from 'react-router-dom';
-import Conversation from '../../components/chat/vendor/sidebar/Conversation';
-import { useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
-import { io } from 'socket.io-client';
+import { Link } from "react-router-dom";
+import Conversation from "../../components/chat/vendor/sidebar/Conversation";
+import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import {
   axiosInstance,
   axiosInstanceChat,
   axiosInstanceMsg,
-} from '../../config/api/axiosinstance';
-import Message from '../../components/chat/vendor/messages/Message';
-import MessageInput from '../../components/chat/vendor/messages/MessageInput';
-import VendorRootState from '../../redux/rootstate/VendorState';
+} from "../../config/api/axiosinstance";
+import Message from "../../components/chat/vendor/messages/Message";
+
+import VendorRootState from "../../redux/rootstate/VendorState";
+import { Textarea, IconButton } from "@material-tailwind/react";
 
 const Chat = () => {
   // const user = useSelector((state: UserRootState) => state.user.userdata);
   const vendor = useSelector(
-    (state: VendorRootState) => state.vendor.vendordata,
+    (state: VendorRootState) => state.vendor.vendordata
   );
   const [isUpdated, setIsUpdated] = useState(false);
 
@@ -23,13 +24,14 @@ const Chat = () => {
   const [currentchat, setcurrentchat] = useState(null);
   const [messages, setmessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  const [newMessage, setnewMessage] = useState('');
+  const [newMessage, setnewMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState([]);
   const [user, setUser] = useState({});
 
   const scrollRef = useRef();
-  const socket = useRef(io('ws://localhost:8900'));
-  const [typing, setTyping] = useState(false);
+  const socket = useRef<Socket>();
+
+  // const socket = useRef(io('ws://localhost:8900'));
 
   const handleConversationSelect = (selectedConversation) => {
     setcurrentchat(selectedConversation);
@@ -37,7 +39,6 @@ const Chat = () => {
     // Fetch vendor data based on friendId
     axiosInstance
       .get(`/getUser?userId=${friendId}`)
-
       .then((res) => {
         setUser(res.data);
       })
@@ -46,38 +47,14 @@ const Chat = () => {
       });
   };
 
-  const sendHeartbeat = () => {
-    socket.current.emit('heartbeat');
-  };
-
-  setInterval(sendHeartbeat, 60000);
-
   useEffect(() => {
-    console.log(vendor);
-    socket.current.emit('adduser', vendor?._id);
-    socket.current.on('getUsers', (users) => {
-      console.log(users);
-    });
-  }, [vendor]);
-
-  useEffect(() => {
-    socket.current = io('ws://localhost:8900');
-    socket.current.on('getMessage', (data) => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
         createdAt: Date.now(),
       });
-    });
-
-    socket.current.on('typingsent', (senderId) => {
-      setTyping(true);
-      console.log('vendor typing');
-    });
-
-    socket.current.on('stopTypingsent', (senderId) => {
-      setTyping(false);
-      console.log('vendor stopped typing');
     });
   }, []);
 
@@ -86,6 +63,14 @@ const Chat = () => {
       currentchat?.members.includes(arrivalMessage.sender) &&
       setmessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentchat]);
+
+  useEffect(() => {
+    console.log(vendor);
+    socket.current?.emit("adduser", vendor?._id);
+    socket.current?.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [vendor]);
 
   //getting conversations
   useEffect(() => {
@@ -106,7 +91,7 @@ const Chat = () => {
     const getmessages = async () => {
       try {
         const res = await axiosInstanceMsg.get(
-          `/?conversationId=${currentchat?._id}`,
+          `/?conversationId=${currentchat?._id}`
         );
         setmessages(res.data);
         setIsUpdated(false);
@@ -118,7 +103,7 @@ const Chat = () => {
   }, [currentchat, isUpdated]);
 
   const receiverId = currentchat?.members.find(
-    (member) => member !== vendor?._id,
+    (member) => member !== vendor?._id
   );
 
   const handleSubmit = async (e) => {
@@ -129,58 +114,53 @@ const Chat = () => {
       text: newMessage,
       conversationId: currentchat?._id,
     };
-    socket.current.emit('sendMessage', {
+    socket.current?.emit("sendMessage", {
       senderId: vendor?._id,
       receiverId,
       text: newMessage,
     });
 
-    axiosInstanceMsg
-      .post('/', message)
-      .then((res) => {
-        setmessages([...messages, res.data]);
-        setnewMessage('');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      axiosInstanceMsg
+        .post("/", message)
+        .then((res) => {
+          setmessages([...messages, res.data]);
+          setnewMessage("");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //scrolling to bottom when new msg arrives
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  const handleTyping = () => {
-    socket.current.emit('typing', { receiverId: receiverId });
-  };
-
-  const handleStopTyping = () => {
-    socket.current.emit('stopTyping', { receiverId: receiverId });
-  };
 
   const handleInputChange = (e) => {
     setnewMessage(e.target.value);
-    handleTyping();
   };
 
   useEffect(() => {
-    socket.current.on('activeStatus', (users) => {
+    socket.current?.on("activeStatus", (users) => {
       setActiveUsers(users);
     });
   }, []);
+
   return (
     <div>
       <div>
         <div className="relative min-h-screen flex flex-col bg-gray-50">
           <nav className="flex-shrink-0 bg-black">
-      
             <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
-              <div>
-                <Link to="/vendor/dashboard">
-                <i className="fa-solid fa-arrow-left text-gray-300"></i>
-                </Link>
+                <div>
+                  <Link to="/vendor/dashboard">
+                    <i className="fa-solid fa-arrow-left text-gray-300"></i>
+                  </Link>
                 </div>
                 <div></div>
                 <div className="flex lg:hidden">
@@ -202,10 +182,8 @@ const Chat = () => {
                     </svg>
                   </button>
                 </div>
-                
-               
+
                 <div className="hidden lg:block lg:w-80">
-                  
                   <div className="flex items-center justify-end">
                     <div className="flex">
                       <Link
@@ -254,13 +232,13 @@ const Chat = () => {
                           currentUser={vendor}
                           currentchat={currentchat}
                           active={activeUsers.some(
-                            (u) => u.userId === receiverId && u.active,
+                            (u) => u.userId === receiverId && u.active
                           )}
                         />
                       </div>
                     ))}
                   </div>
-                </div>{' '}
+                </div>{" "}
               </div>
               {/* 
               middle content start */}
@@ -268,17 +246,17 @@ const Chat = () => {
                 <div className="flex sm:items-center  justify-between py-3 border-b border-gray-200 p-3">
                   <div className="flex items-center space-x-4">
                     <img
-                      src={user ? user?.imageUrl : ''}
+                      src={user ? user?.imageUrl : ""}
                       alt=""
                       className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer"
                     />
                     <div className="flex flex-col leading-tight">
                       <div className="text-1xl mt-1 flex items-center">
                         <span className="text-gray-700 mr-3">
-                          {user ? user?.name : ''}
+                          {user ? user?.name : ""}
                         </span>
                         {activeUsers.some(
-                          (u) => u.userId === receiverId && u.active,
+                          (u) => u.userId === receiverId && u.active
                         ) ? (
                           <span className="text-green-500">
                             <svg width={10} height={10}>
@@ -291,40 +269,83 @@ const Chat = () => {
                             </svg>
                           </span>
                         ) : (
-                          ''
+                          ""
                         )}
                       </div>
                     </div>
                   </div>
-
-                  
                 </div>
 
                 {/* message */}
                 {currentchat ? (
                   <>
-                    {messages.map((m) => (
-                      <div ref={scrollRef}>
-                        <Message
-                          message={m}
-                          own={m.senderId === vendor?._id}
-                          setIsUpdated={setIsUpdated}
-                        />
-                      </div>
-                    ))}
-                    {typing && <div className="userTyping">Typing...</div>}
+                    <div
+                      className="message-container"
+                      style={{ maxHeight: "500px", overflowY: "auto" }}
+                    >
+                      {messages.map((m) => (
+                        <div ref={scrollRef}>
+                          <Message
+                            message={m}
+                            own={m.senderId === vendor?._id}
+                            setIsUpdated={setIsUpdated}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                   
+                    <div className="relative flex">
+                      <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-1">
+                        <div className="flex"></div>
 
-                    <MessageInput
-                      onChange={handleInputChange}
-                      value={newMessage}
-                      onBlur={handleStopTyping}
-                      onClick={handleSubmit}
-                    />
+                        <Textarea
+                          rows={1}
+                          resize={true}
+                          placeholder="Your Message"
+                          className="min-h-full !border-0 focus:border-transparent"
+                          containerProps={{
+                            className: "grid h-full",
+                          }}
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                          value={newMessage}
+                          onChange={handleInputChange}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        />
+                        <div>
+                          <IconButton
+                            variant="text"
+                            className="rounded-full"
+                            placeholder={undefined}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
+                            onClick={handleSubmit}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                              />
+                            </svg>
+                          </IconButton>
+                        </div>
+                      </div>
+                    </div>
                   </>
                 ) : (
                   <>
                     <p className="text-center">
-                      Send a message to start the conversation
+                      Select a conversation 
                     </p>
                     <div className="border-t-2 border-gray-200 px-4 pt-4">
                       {/* <MessageInput onChange={handleInputChange}

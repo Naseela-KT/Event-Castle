@@ -1,8 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { AdminRepository } from "../repositories/adminRepository";
-import admin, { AdminDocument } from "../models/adminModel";
+import AdminRepository  from "../repositories/adminRepository";
 import { CustomError } from "../error/customError";
+import userModel from "../models/userModel";
+import vendorModel from "../models/vendorModel";
+import bookingModel from "../models/bookingModel";
 
 interface LoginResponse {
   refreshToken: string;
@@ -12,15 +14,11 @@ interface LoginResponse {
 }
 
 class AdminService {
-  private adminRepository: AdminRepository;
-
-  constructor() {
-    this.adminRepository = new AdminRepository();
-  }
+  
 
   async login(email: string, password: string): Promise<LoginResponse> {
     try {
-      const existingAdmin = await this.adminRepository.findByEmail(email);
+      const existingAdmin = await AdminRepository.findByEmail(email);
       if (!existingAdmin) {
         throw new CustomError("Admin not exist", 400);
       }
@@ -63,9 +61,9 @@ class AdminService {
     }
   }
 
-  async getDatas(adminId: string): Promise<AdminDocument | null> {
+  async getDatas(adminId: string){
     try {
-      const result = await this.adminRepository.getById(adminId);
+      const result = await AdminRepository.getById(adminId);
       return result;
     } catch (error) {
       throw error;
@@ -78,7 +76,7 @@ class AdminService {
         refreshToken,
         process.env.JWT_REFRESH_SECRET!
       ) as { _id: string };
-      const Admin = await this.adminRepository.getById(decoded._id);
+      const Admin = await AdminRepository.getById(decoded._id);
 
       if (!Admin || Admin.refreshToken !== refreshToken) {
         throw new Error("Invalid refresh token");
@@ -92,6 +90,24 @@ class AdminService {
         }
       );
       return accessToken;
+    } catch (error) {}
+  }
+
+  async findUsersCount() {
+    try {
+      return await userModel.find({}).countDocuments()
+    } catch (error) {}
+  }
+
+  async findVendorsCount() {
+    try {
+      return await vendorModel.find({}).countDocuments()
+    } catch (error) {}
+  }
+
+  async findBookingCount() {
+    try {
+      return await bookingModel.find({}).countDocuments()
     } catch (error) {}
   }
 }

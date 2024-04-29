@@ -13,6 +13,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { CustomError } from "../error/customError";
 import postService from "../services/postService";
+import { handleError } from "../utils/handleError";
 
 
 
@@ -67,8 +68,7 @@ class PostController  {
       const post = await postService.createPost(caption, imageName, vendor_id,imageUrl);
       res.status(201).json(post);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "addNewPost");
     }
   }
   
@@ -82,8 +82,7 @@ class PostController  {
       const totalPages = Math.ceil(totalPosts / pageSize);
       res.status(201).json({posts,totalPages: totalPages});
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "getPosts");
     }
   }
 
@@ -108,8 +107,7 @@ class PostController  {
 
 
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "deletePost");
     }
   }
 };

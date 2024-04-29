@@ -21,13 +21,18 @@ const VendorsListing = () => {
   const [sort,setSort]=useState<number>();
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
+    const searchParam = queryParams.get("search");
     const pageParam = queryParams.get("page");
     setPage(pageParam ? parseInt(pageParam, 10) : 1);
     fetchVendors();
     fetchVendorTypes();
-  }, [location.search]);
+    if (searchParam) {
+      setSearch(searchParam); // Update search state if a search parameter is found
+    }
+  }, [search]);
 
   useEffect(() => {
     fetchVendors();
@@ -50,7 +55,7 @@ const VendorsListing = () => {
   const fetchVendors = async () => {
     try {
       const response = await axiosInstance.get(
-        `/getvendors?page=${page}&search=${search}&category=${category.join(",")}&location=${selectLocation.join(",")}&sort=${sort}`,
+        `/getvendors?search=${search}&page=${page}&category=${category.join(",")}&location=${selectLocation.join(",")}&sort=${sort}`,
         {
           withCredentials: true,
         }
@@ -77,10 +82,7 @@ const VendorsListing = () => {
     }
   };
 
-  const handleSearch = () => {
-    // navigate(`${USER.VENDORS}?page=${page}&search=${search}`);
-    setSearch()
-  };
+
 
   return (
     <>

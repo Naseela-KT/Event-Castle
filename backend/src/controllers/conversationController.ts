@@ -1,6 +1,6 @@
-import Conversation from "../models/conversationModel";
 import { Request, Response } from "express";
 import conversationService from "../services/conversationService";
+import { handleError } from "../utils/handleError";
 
 
 class ConversationController{
@@ -13,8 +13,7 @@ class ConversationController{
       const chat=await conversationService.createConversation(senderId,receiverId)
       res.status(200).json(chat);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "createChat"); 
     }
   }
 
@@ -27,8 +26,7 @@ class ConversationController{
       const chats = await conversationService.findChat(userId);
       res.status(200).json(chats);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      handleError(res, error, "findUserchats"); 
     }
   }
 }

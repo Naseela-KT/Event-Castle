@@ -59,18 +59,22 @@ const SingleBooking = () => {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
 
-  useEffect(() => {
-    console.log(id);
-    axiosInstance
-      .get(`/single-booking?bookingId=${id}`, { withCredentials: true })
-      .then((response) => {
-        setBooking(response.data.bookings[0]);
-        console.log(response.data.bookings[0]);
-      })
-      .catch((error) => {
-        console.log('here', error);
+  const fetchBooking = async () => {
+    try {
+      const response = await axiosInstance.get(`/single-booking?bookingId=${id}`, {
+        withCredentials: true,
       });
-  }, [id]);
+      setBooking(response.data.bookings[0]);
+    } catch (error) {
+      console.error('Error fetching booking:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchBooking();
+    }
+  }, [id, booking]);
 
 
   const confirmCancel=async()=>{
@@ -89,7 +93,7 @@ const SingleBooking = () => {
 
   return (
     <>
-      {booking.payment_status === 'Pending' && booking.status === 'Accepted' ? (
+      {booking?.payment_status === 'Pending' && booking.status === 'Accepted' ? (
         <div className="mx-20 w-150">
           <Alert icon={<Icon />} color="red">
             Please complete your payment to confirm your booking.
@@ -98,7 +102,7 @@ const SingleBooking = () => {
       ) : (
         ''
       )}
-      {booking.status!=="Cancelled"?<div className="float-right mx-20">
+      {booking?.status!=="Cancelled"?<div className="float-right mx-20">
         <Button
           color="red"
           onClick={handleOpen}

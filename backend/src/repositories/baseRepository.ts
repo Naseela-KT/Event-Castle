@@ -39,4 +39,7 @@ export class BaseRepository<T extends mongoose.Document>{
     async findByCondition(condition: Record<string, unknown>): Promise<T[]> {
         return await this.model.find(condition);
     }
+    async findByEmail(email: string): Promise<T | null> {
+        return await this.model.findOne({ email });
+    }
 }
