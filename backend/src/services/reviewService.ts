@@ -16,7 +16,7 @@ class ReviewService{
       ) as unknown as mongoose.Types.ObjectId;
       const vendorData = await Vendor.findById(vendorId);
       if (!vendorData) {
-        throw new Error('Vendor not found');
+        throw new CustomError("Vendor not found.", 404)
       }
       const data = await reviewRepository.create({content,rating,userId,vendorId})
       const newNotification=new notification({
@@ -32,17 +32,22 @@ class ReviewService{
       await vendorData.save();
       return true;
     } catch (error) {
-      throw error;
+      console.error("Error in addNewReview:", error)
+      throw new CustomError("Failed to add new review.", 500);
     }
   }
 
   async addReviewReply(content:string,reviewId:string): Promise<any> {
     try {
       const review=await reviewRepository.getById(reviewId)
+      if (!review) {
+        throw new CustomError("Review not found.", 404)
+      }
       const updateReply= await reviewRepository.addReply(content,reviewId)
       return updateReply;
     } catch (error) {
-      
+      console.error("Error in addReviewReply:", error)
+      throw new CustomError("Failed to add review reply.", 500);
     }
   }
 
@@ -51,7 +56,8 @@ class ReviewService{
       const reviews=await reviewRepository.getReviewsByVendorId(vendorId)
       return reviews;
     } catch (error) {
-      
+      console.error("Error in getReviewsForVendor:", error)
+      throw new CustomError("Failed to get reviews for vendor.", 500);
     }
   }
 
@@ -60,24 +66,31 @@ class ReviewService{
       const reviews=await reviewRepository.update(reviewId,{content:review})
       return reviews;
     } catch (error) {
-      
+      console.error("Error in updateReviewContent:", error)
+      throw new CustomError("Failed to update review content.", 500);
     }
   }
 
 
   async getReviewStatisticsByVendorId(vendorId: string): Promise<number[]> {
-    const reviews = await reviewRepository.getReviewsByVendorId(vendorId);
-    console.log(reviews)
-    const ratingCounts = [0, 0, 0, 0, 0]; 
-    reviews?.forEach((review: ReviewDocument) => {
-      if (review.rating >= 1 && review.rating <= 5) {
-        ratingCounts[review.rating - 1] += 1;
-      }
-    });
-    const totalReviews = reviews?.length;
-    const ratingPercentages = ratingCounts.map((count) => (totalReviews! > 0 ? (count / totalReviews!) * 100 : 0));
-
-    return ratingPercentages; 
+    try {
+      const reviews = await reviewRepository.getReviewsByVendorId(vendorId);
+      console.log(reviews)
+      const ratingCounts = [0, 0, 0, 0, 0]; 
+      reviews?.forEach((review: ReviewDocument) => {
+        if (review.rating >= 1 && review.rating <= 5) {
+          ratingCounts[review.rating - 1] += 1;
+        }
+      });
+      const totalReviews = reviews?.length;
+      const ratingPercentages = ratingCounts.map((count) => (totalReviews! > 0 ? (count / totalReviews!) * 100 : 0));
+  
+      return ratingPercentages; 
+    } catch (error) {
+      console.error("Error in getReviewStatisticsByVendorId:", error)
+      throw new CustomError("Failed to get review statistics.", 500);
+    }
+   
   }
 }
 

@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import AdminRepository  from "../repositories/adminRepository";
+import AdminRepository from "../repositories/adminRepository";
 import { CustomError } from "../error/customError";
-import userModel from "../models/userModel";
-import vendorModel from "../models/vendorModel";
-import bookingModel from "../models/bookingModel";
+import userRepository from "../repositories/userRepository";
+import vendorRepository from "../repositories/vendorRepository";
+import bookingRepository from "../repositories/bookingRepository";
 
 interface LoginResponse {
   refreshToken: string;
@@ -14,8 +14,6 @@ interface LoginResponse {
 }
 
 class AdminService {
-  
-
   async login(email: string, password: string): Promise<LoginResponse> {
     try {
       const existingAdmin = await AdminRepository.findByEmail(email);
@@ -57,16 +55,16 @@ class AdminService {
         message: "Successfully logged in..",
       };
     } catch (error) {
-      throw error;
+      throw new CustomError("An error occurred during login.", 500);
     }
   }
 
-  async getDatas(adminId: string){
+  async getDatas(adminId: string) {
     try {
       const result = await AdminRepository.getById(adminId);
       return result;
     } catch (error) {
-      throw error;
+      throw new CustomError("An unexpected error occurred while fetching admin data.", 500);
     }
   }
 
@@ -90,27 +88,37 @@ class AdminService {
         }
       );
       return accessToken;
-    } catch (error) {}
+    } catch (error) {
+      throw new CustomError("An error occurred during createRefreshToken", 500);
+    }
   }
 
   async findUsersCount() {
     try {
-      return await userModel.find({}).countDocuments()
-    } catch (error) {}
+      return await userRepository.countDocuments();
+    } catch (error) {
+      console.error("Error fetching user count:", error);
+      throw new CustomError("Unable to fetch user count", 500);
+    }
   }
 
   async findVendorsCount() {
     try {
-      return await vendorModel.find({}).countDocuments()
-    } catch (error) {}
+      return await vendorRepository.countDocuments();
+    } catch (error) {
+      console.error("Error fetching vendor count:", error);
+      throw new CustomError("Unable to fetch vendor count", 500);
+    }
   }
 
   async findBookingCount() {
     try {
-      return await bookingModel.find({}).countDocuments()
-    } catch (error) {}
+      return await bookingRepository.countDocuments();
+    } catch (error) {
+      console.error("Error fetching booking count:", error);
+      throw new CustomError("Unable to fetch booking count", 500);
+    }
   }
 }
-
 
 export default new AdminService();

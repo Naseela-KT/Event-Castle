@@ -1,6 +1,7 @@
 import Post, { PostDocument } from "../models/postModel";
 import mongoose from "mongoose";
 import PostRepository from "../repositories/postRepository";
+import { CustomError } from "../error/customError";
 
 class PostService {
   async createPost(
@@ -21,7 +22,8 @@ class PostService {
       });
       return { post: add };
     } catch (error) {
-      throw error;
+      console.error("Error in createPost:", error)
+      throw new CustomError("Failed to create post.", 500); 
     }
   }
 
@@ -36,25 +38,34 @@ class PostService {
       });
       return { posts, totalPosts };
     } catch (error) {
-      throw error;
+      console.error("Error in getAllPostsByVendor:", error)
+      throw new CustomError("Failed to get posts by vendor.", 500); 
     }
   }
 
   async getPostById(_id: string): Promise<PostDocument | null> {
     try {
       const post = await PostRepository.getById(_id);
+      if (!post) {
+        throw new CustomError(`Post with ID ${_id} not found.`, 404)
+      }
       return post;
     } catch (error) {
-      throw error;
+      console.error("Error in getPostById:", error)
+      throw new CustomError("Failed to get post by ID.", 500);
     }
   }
 
   async deletePostService(_id: string): Promise<PostDocument | null> {
     try {
       const post = await PostRepository.delete(_id);
+      if (!post) {
+        throw new CustomError(`Post with ID ${_id} not found.`, 404)
+      }
       return post;
     } catch (error) {
-      throw error;
+      console.error("Error in deletePostService:", error)
+      throw new CustomError("Failed to delete post.", 500);
     }
   }
 }

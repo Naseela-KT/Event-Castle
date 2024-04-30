@@ -50,7 +50,8 @@ class UserService {
       });
       return { user: newUser };
     } catch (error) {
-      throw error;
+      console.error("Error in signup:", error);
+      throw new CustomError("Failed to sign up new user.", 500);
     }
   }
 
@@ -73,16 +74,21 @@ class UserService {
       });
       return { user: newUser };
     } catch (error) {
-      throw error;
+      console.error("Error in googleSignup:", error);
+      throw new CustomError("Failed to sign up with Google.", 500);
     }
   }
 
   async findUser(userId: string) {
     try {
       const user = await userRepository.getById(userId);
+      if (!user) {
+        throw new CustomError("User not found.", 404);
+      }
       return user;
     } catch (error) {
-      throw error;
+      console.error("Error in findUser:", error);
+      throw new CustomError("Failed to find user.", 500);
     }
   }
 
@@ -119,7 +125,8 @@ class UserService {
         message: "Successfully logged in..",
       };
     } catch (error) {
-      throw error;
+      console.error("Error in gLogin:", error);
+      throw new CustomError("Failed to log in.", 500);
     }
   }
 
@@ -134,7 +141,7 @@ class UserService {
       console.log("user", user);
 
       if (!user || user.refreshToken !== refreshToken) {
-        throw new Error("Invalid refresh token");
+        throw new CustomError("Invalid refresh token.", 401)
       }
 
       const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, {
@@ -143,41 +150,46 @@ class UserService {
 
       return accessToken;
     } catch (error) {
-      throw error;
+      console.error("Error in createRefreshToken:", error)
+      throw new CustomError("Failed to create refresh token.", 500); 
     }
   }
 
-  async login(
-    email: string,
-    password: string
-  ): Promise<LoginResponse>{
+  async login(email: string, password: string): Promise<LoginResponse> {
     try {
       const existingUser = await userRepository.findByEmail(email);
       if (!existingUser) {
         throw new CustomError("User not exists..", 404);
       }
-  
-      const passwordMatch = await bcrypt.compare(password, existingUser.password);
-  
+
+      const passwordMatch = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+
       if (!passwordMatch) {
         throw new CustomError("Incorrect password..", 401);
       }
-  
+
       if (existingUser.isActive === false) {
         throw new CustomError("Blocked by Admin..", 404);
       }
-  
-      const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, {
-        expiresIn: "1h",
-      });
-  
+
+      const token = jwt.sign(
+        { _id: existingUser._id },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: "1h",
+        }
+      );
+
       let refreshToken = jwt.sign(
         { _id: existingUser._id },
         process.env.JWT_REFRESH_SECRET!,
         { expiresIn: "7d" }
       );
       existingUser.refreshToken = refreshToken;
-  
+
       await existingUser.save();
       return {
         refreshToken,
@@ -186,58 +198,61 @@ class UserService {
         message: "Successfully logged in..",
       };
     } catch (error) {
-      throw error;
+      console.error("Error in login:", error)
+
+    throw new CustomError("Failed to log in.", 500);
     }
   }
 
-  async getUsers(page: number, limit: number, search: string){
+  async getUsers(page: number, limit: number, search: string) {
     try {
       const users = await userRepository.findAllUsers(page, limit, search);
       return users;
     } catch (error) {
-      throw error;
+      console.error("Error in getUsers:", error)
+      throw new CustomError("Failed to get users.", 500);
     }
   }
 
-  async getUsersCount(){
+  async getUsersCount() {
     try {
       const total = await userRepository.countDocuments();
       return total;
     } catch (error) {
-      throw error;
+      console.error("Error in getUsersCount:", error)
+      throw new CustomError("Failed to get users count.", 500); 
     }
   }
 
-
-  async toggleUserBlock(userId: string): Promise<void>{
+  async toggleUserBlock(userId: string): Promise<void> {
     try {
       const user = await userRepository.getById(userId);
       if (!user) {
-        throw new Error("User not found");
+        throw new CustomError("User not found.", 404)
       }
-  
+
       user.isActive = !user.isActive; // Toggle the isActive field
       await user.save();
     } catch (error) {
-      throw error;
+      console.error("Error in toggleUserBlock:", error)
+      throw new CustomError("Failed to toggle user block.", 500);
     }
   }
 
-  async generateOtpForPassword(email: string){
+  async generateOtpForPassword(email: string) {
     try {
       const otpCode = await generateOtp(email);
-      if (otpCode !== undefined) {
-        return otpCode;
-      } else {
-        console.log("error on generating otp , please fix ..");
-        throw new Error(`couldn't generate otp, error occcured ,please fix !!`);
+      if (!otpCode) {
+        throw new CustomError("Failed to generate OTP.", 500)
       }
+      return otpCode; 
     } catch (error) {
-      throw error;
+      console.error("Error in generateOtpForPassword:", error)
+    throw new CustomError("Failed to generate OTP for password reset.", 500);
     }
   }
 
-  async ResetPassword(password: string, email: string){
+  async ResetPassword(password: string, email: string) {
     try {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -246,30 +261,29 @@ class UserService {
         throw new Error(status.message);
       }
     } catch (error) {
-      throw error;
+      console.error("Error in ResetPassword:", error)
+      throw new CustomError("Failed to reset password.", 500);
     }
   }
 
-  async CheckExistingUSer(email: string){
+  async CheckExistingUSer(email: string) {
     try {
       const existingUser = await userRepository.findByEmail(email);
       return existingUser;
     } catch (error) {
-      throw error;
+      console.error("Error in CheckExistingUSer:", error)
+      throw new CustomError("Failed to check existing user.", 500);
     }
   }
 
-  async checkCurrentPassword(
-    currentpassword: string,
-    userId: string
-  ){
+  async checkCurrentPassword(currentpassword: string, userId: string) {
     try {
       const existingUser = await userRepository.getById(userId);
-  
+
       if (!existingUser) {
         throw new CustomError("user not found", 404);
       }
-  
+
       const passwordMatch = await bcrypt.compare(
         currentpassword,
         existingUser.password
@@ -277,10 +291,11 @@ class UserService {
       if (!passwordMatch) {
         throw new CustomError("Password doesn't match", 401);
       }
-  
+
       return passwordMatch;
     } catch (error) {
-      throw error;
+      console.error("Error in checkCurrentPassword:", error)
+      throw new CustomError("Failed to check current password.", 500); 
     }
   }
 
@@ -290,80 +305,83 @@ class UserService {
     image: string,
     userId: string,
     imageUrl: string
-  ){
+  ) {
     try {
       const existingUser = await userRepository.getById(userId);
       if (!existingUser) {
         throw new CustomError("User not found", 404);
       }
+      // const update = {
+      //   name: "",
+      //   phone: 0,
+      //   image: "",
+      //   imageUrl: "",
+      // };
+
+      // if (name) {
+      //   update.name = name;
+      // } else if (existingUser?.name) {
+      //   update.name = existingUser?.name;
+      // }
+
+      // if (phone) {
+      //   update.phone = phone;
+      // } else if (existingUser?.phone) {
+      //   update.phone = existingUser?.phone;
+      // }
+
+      // if (image) {
+      //   update.image = image;
+      // } else if (existingUser?.image) {
+      //   update.image = existingUser?.image;
+      // }
+
+      // if (imageUrl) {
+      //   update.imageUrl = imageUrl;
+      // } else if (existingUser?.imageUrl) {
+      //   update.imageUrl = existingUser.imageUrl;
+      // }
       const update = {
-        name:"",
-        phone:0,
-        image:"",
-        imageUrl:""
-
-
+        name: name || existingUser.name,
+        phone: phone || existingUser.phone,
+        image: image || existingUser.image,
+        imageUrl: imageUrl || existingUser.imageUrl,
       };
-
-      if (name) {
-        update.name = name;
-      } else if (existingUser?.name) {
-        update.name = existingUser?.name;
-      }
-  
-     
-      if (phone) {
-        update.phone = phone;
-      } else if (existingUser?.phone) {
-        update.phone = existingUser?.phone;
-      }
-  
-   
-      if (image) {
-        update.image = image;
-      } else if (existingUser?.image) {
-        update.image = existingUser?.image;
-      }
-  
-
-      if (imageUrl) {
-        update.imageUrl = imageUrl;
-      } else if (existingUser?.imageUrl) {
-        update.imageUrl = existingUser.imageUrl;
-      }
-      const result=await userRepository.update(userId,update)
+      const result = await userRepository.update(userId, update);
       const userData = await userRepository.getById(userId);
       return userData;
     } catch (error) {
-      throw error;
+      console.error("Error in updateProfileService:", error)
+      throw new CustomError("Failed to update profile.", 500);
     }
   }
 
-  async UpdatePasswordService(
-    newPassword: string,
-    userId: string
-  ){
+  async UpdatePasswordService(newPassword: string, userId: string) {
     try {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
-  
+
       const existingUser = await userRepository.getById(userId);
       if (!existingUser) {
         throw new CustomError("user not found", 404);
       }
       const email = existingUser.email;
-  
-      const updatedValue = await userRepository.UpdatePassword(hashedPassword, email);
+
+      const updatedValue = await userRepository.UpdatePassword(
+        hashedPassword,
+        email
+      );
       if (updatedValue) {
         return true;
       }
       return false;
     } catch (error) {
-      throw error;
+      console.error("Error in UpdatePasswordService:", error)
+    throw new CustomError("Failed to update password.", 500);
     }
   }
 
-  async FavoriteVendor(vendorId: string, userId: string){
+  async FavoriteVendor(vendorId: string, userId: string) {
     try {
       const user = await userRepository.getById(userId);
       if (!user) {
@@ -378,7 +396,7 @@ class UserService {
       }
       user.favourite.push(vendorId);
       await user.save();
-  
+
       return true;
     } catch (error) {
       console.error("Error in addToFavorites service:", error);
@@ -386,11 +404,7 @@ class UserService {
     }
   }
 
-  async FavoriteVendors(
-    userid: string,
-    page: number,
-    pageSize: number
-  ){
+  async FavoriteVendors(userid: string, page: number, pageSize: number) {
     try {
       const userData = await userRepository.getById(userid);
       if (!userData) {
@@ -405,29 +419,20 @@ class UserService {
         await userRepository.getfavVendors(favs, page, pageSize);
       return { result, totalFavsCount };
     } catch (error) {
-      throw error;
+      console.error("Error in FavoriteVendor:", error)
+      throw new CustomError("Failed to update favorite vendors.", 500);
     }
   }
 
-  async deleteFromFavorite(userId: string, vendorId: string){
+  async deleteFromFavorite(userId: string, vendorId: string) {
     try {
       const data = await userRepository.deletefavVendor(userId, vendorId);
       return data;
     } catch (error) {
-      throw error;
+      console.error("Error in FavoriteVendors:", error)
+      throw new CustomError("Failed to retrieve favorite vendors.", 500); 
     }
-  
-
+  }
 }
-}
-
-
 
 export default new UserService();
-
-
-
-
-
-
-

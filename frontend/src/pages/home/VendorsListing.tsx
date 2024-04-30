@@ -6,7 +6,6 @@ import Footer from "../../layout/user/footer";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/api/axiosinstance";
 import { VendorData } from "../../types/vendorTypes";
-import { USER } from "../../config/constants/constants";
 import { useNavigate } from "react-router-dom";
 
 const VendorsListing = () => {

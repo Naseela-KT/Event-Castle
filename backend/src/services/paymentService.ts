@@ -3,6 +3,7 @@ import PaymentRepository from "../repositories/paymentRepository";
 import Admin from "../models/adminModel";
 import Booking from "../models/bookingModel";
 import Notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
+import { CustomError } from "../error/customError";
 
 
 class PaymentService{
@@ -59,7 +60,8 @@ class PaymentService{
         await adminNotification.save();
       return bookingData;
     } catch (error) {
-      throw error;
+      console.error("Error in addNewPayment:", error)
+      throw new CustomError("Failed to add new payment.", 500);
     }
   }
 
@@ -68,7 +70,8 @@ class PaymentService{
       const payment = await PaymentRepository.getAll();
       return payment;
     } catch (error) {
-      throw error;
+      console.error("Error in getPayments:", error)
+      throw new CustomError("Failed to retrieve payments.", 500);
     }
   }
   

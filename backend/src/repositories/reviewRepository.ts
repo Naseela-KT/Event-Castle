@@ -7,24 +7,17 @@ class ReviewRepository extends BaseRepository<ReviewDocument>{
   }
 
   async addReply(content:string,reviewId:string){
-    try {
       const data= await Review.findByIdAndUpdate(
         reviewId,
         { $push: { reply: content } }
     );
       return data
-    } catch (error) {
-      
-    }
+   
   }
 
   async getReviewsByVendorId(vendorId:string){
-    try {
-      const data= await Review.find({vendorId:vendorId}).populate('vendorId').populate('userId')
-      return data
-    } catch (error) {
-      
-    }
+     return await Review.find({vendorId:vendorId}).populate('vendorId').populate('userId')
+    
   }
 
 }

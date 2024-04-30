@@ -1,3 +1,4 @@
+import { CustomError } from "../error/customError";
 import conversationRepository from "../repositories/conversationRepository";
 
 class ConversationService {
@@ -14,13 +15,19 @@ class ConversationService {
         return newChat;
       }
       return chat;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error in createConversation:", error);
+      throw new CustomError("Error creating conversation.", 500);
+    }
   }
 
   async findChat(userId:string) {
     try {
         return await conversationRepository.findByCondition({ members: { $in: [userId] } });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error in findChat:", error);
+    throw new CustomError("Error finding chats.", 500);
+    }
   }
 }
 

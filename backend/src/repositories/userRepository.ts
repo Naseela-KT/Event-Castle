@@ -63,21 +63,13 @@ class UserRepository extends BaseRepository<UserDocument> {
   }
 
   async deletefavVendor(userId: string, vendorId: string) {
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
+    return await User.findByIdAndUpdate(
         userId,
         { $pull: { favourite: vendorId } },
         { new: true }
       );
 
-      if (!updatedUser) {
-        throw new Error("User not found");
-      }
-
-      return updatedUser;
-    } catch (error) {
-      throw error;
-    }
+      
   }
 }
 

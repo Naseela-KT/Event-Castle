@@ -73,21 +73,17 @@ class VendorRepository extends BaseRepository<VendorDocument>{
 
 
   async requestForVerification(vendorId:string){
-    try {
+  
       const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
       return data;
-    } catch (error) {
-      
-    }
+    
   }
 
   async updateVerificationStatus(vendorId:string,status:string){
-    try {
+
       const data=await vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
       return data;
-    } catch (error) {
-      
-    }
+   
   }
 
 
@@ -113,11 +109,8 @@ class VendorRepository extends BaseRepository<VendorDocument>{
   
 
   async findAllLocations(){
-    try {
       return await vendor.distinct('city');
-    } catch (error) {
-      
-    }
+   
   }
   
   

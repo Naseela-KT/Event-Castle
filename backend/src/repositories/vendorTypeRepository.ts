@@ -8,11 +8,8 @@ class VendorTypeRepository extends BaseRepository<VendorTypeDocument> {
   }
 
   async findByType(type:string){
-    try {
       return await VendorType.findOne({type:type})
-    } catch (error) {
-      
-    }
+    
   }
 }
 

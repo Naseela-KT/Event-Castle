@@ -6,6 +6,7 @@ import notification, { NOTIFICATION_TYPES } from "../models/notificationModel";
 import payment from "../models/paymentModel";
 import user from "../models/userModel";
 import admin from "../models/adminModel";
+import { CustomError } from "../error/customError";
 
 class BookingService {
   async checkIfDatePresent(vendorId: string, date: string): Promise<boolean> {
@@ -17,7 +18,8 @@ class BookingService {
       const isBooked = vendorData.bookedDates.includes(date);
       return isBooked ? true : false;
     } catch (error) {
-      throw error;
+      console.error("Error checking dates:", error);
+      throw new CustomError("Error checking dates", 500);
     }
   }
 
@@ -26,7 +28,7 @@ class BookingService {
       const vendorData = await vendor.findById(vendorId);
 
       if (!vendorData) {
-        throw new Error("Vendor not found");
+        throw new CustomError("Vendor not found",404);
       }
 
       const existingLock = vendorData.locks.find((lock) => lock.date === date);
@@ -42,7 +44,8 @@ class BookingService {
 
       await vendorData.save();
     } catch (error) {
-      throw error;
+      console.error("Error aquiring locks:", error);
+      throw new CustomError("Error aquiring locks", 500);
     }
   }
 
@@ -51,7 +54,7 @@ class BookingService {
       const vendorData = await vendor.findById(vendorId);
 
       if (!vendorData) {
-        throw new Error("Vendor not found");
+        throw new CustomError("Vendor not found",404);
       }
 
       const lockIndex = vendorData.locks.findIndex(
@@ -63,7 +66,8 @@ class BookingService {
         await vendorData.save();
       }
     } catch (error) {
-      throw error;
+      console.error("Error releasing lock for dates:", error);
+      throw new CustomError("Unable to release lock for dates", 500);
     }
   }
 
@@ -108,7 +112,8 @@ class BookingService {
       await newNotification.save();
       return booking;
     } catch (error) {
-      throw error;
+      console.error("Error creating a booking:", error);
+      throw new CustomError("Unable to create booking", 500);
     }
   }
 
@@ -125,7 +130,8 @@ class BookingService {
       );
       return { bookings, totalBookings };
     } catch (error) {
-      throw error;
+      console.error("Error fetching booking for vendor:", error);
+      throw new CustomError("Unable fetch vendor booking", 500);
     }
   }
 
@@ -138,7 +144,8 @@ class BookingService {
       );
       return { refund, totalRefund };
     } catch (error) {
-      throw error;
+      console.error("Error fetching booking for vendor:", error);
+      throw new CustomError("Unable fetch vendor booking", 500);
     }
   }
 
@@ -151,7 +158,8 @@ class BookingService {
       );
       return { bookings, totalBookings };
     } catch (error) {
-      throw error;
+      console.error("Error fetching booking for user:", error);
+      throw new CustomError("Unable fetch user booking", 500);
     }
   }
 
@@ -160,7 +168,8 @@ class BookingService {
       const bookings = await BookingRepository.findBookingsByBookingId(bookingId);
       return bookings;
     } catch (error) {
-      throw error;
+      console.error("Error fetching bookings:", error);
+      throw new CustomError("Unable fetch bookings", 500);
     }
   }
 
@@ -228,7 +237,8 @@ class BookingService {
       
       return result;
     } catch (error) {
-      throw error;
+      console.error("Error updating status:", error);
+      throw new CustomError("Unable to update booking status", 500);
     }
   }
 }

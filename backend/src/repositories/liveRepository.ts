@@ -1,3 +1,4 @@
+import { CustomError } from "../error/customError";
 import Live, { LiveDocument } from "../models/liveModel";
 import { BaseRepository } from "./baseRepository";
 
@@ -7,11 +8,7 @@ class LiveRepository extends BaseRepository<LiveDocument> {
   }
 
   async changeStatusById(url: string) {
-    try {
-      return await Live.updateOne({ url: url }, { $set: { finished: true } });
-    } catch (error) {
-      throw error;
-    }
+    return await Live.updateOne({ url: url }, { $set: { finished: true } });
   }
 }
 

@@ -1,4 +1,5 @@
 
+import { CustomError } from "../error/customError";
 import Booking, { bookingDocument } from "../models/bookingModel";
 import { BaseRepository } from "./baseRepository";
 
@@ -20,7 +21,8 @@ class BookingRepository extends BaseRepository<bookingDocument>{
       const totalBookings=await Booking.countDocuments({ vendorId: vendorId })
       return {bookings,totalBookings};
     } catch (error) {
-      throw error;
+      console.error("Error in findBookingsByVendorId:", error)
+      throw new CustomError("Failed to find bookings by vendor ID.", 500);
     }
   }
 
@@ -38,7 +40,8 @@ class BookingRepository extends BaseRepository<bookingDocument>{
       const totalBookings=await Booking.countDocuments({ userId: userId, refundAmount: { $ne: 0 } })
       return {refund:bookings,totalRefund:totalBookings};
     } catch (error) {
-      throw error;
+      console.error("Error in findRefundForUser:", error)
+      throw new CustomError("Failed to find refunds for user.", 500);
     }
   }
 
@@ -53,7 +56,8 @@ class BookingRepository extends BaseRepository<bookingDocument>{
       const totalBookings=await Booking.countDocuments({ userId: userId })
       return {bookings,totalBookings};
     } catch (error) {
-      throw error;
+      console.error("Error in findBookingsByUserId:", error)
+      throw new CustomError("Failed to find bookings by user ID.", 500);
     }
   }
 
@@ -66,7 +70,8 @@ class BookingRepository extends BaseRepository<bookingDocument>{
         .populate("vendorId");
       return result;
     } catch (error) {
-      throw error;
+      console.error("Error in findBookingsByBookingId:", error)
+      throw new CustomError("Failed to find booking by ID.", 500);
     }
   }
 

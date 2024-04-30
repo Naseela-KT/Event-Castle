@@ -15,7 +15,8 @@ class VendorTypeService {
       });
       return { message: "New Type added...", new_type };
     } catch (error) {
-      throw error;
+      console.error("Error in addType:", error)
+      throw new CustomError("Failed to add new vendor type.", 500);
     }
   }
 
@@ -24,7 +25,8 @@ class VendorTypeService {
       const availableTypes = await VendorTypeRepository.getAll();
       return availableTypes;
     } catch (error) {
-      throw error;
+      console.error("Error in getTypes:", error)
+      throw new CustomError("Failed to retrieve vendor types.", 500);
     }
   }
 
@@ -32,15 +34,21 @@ class VendorTypeService {
     try {
       return await VendorTypeRepository.delete(vendorTypeId);
     } catch (error) {
-      throw error;
+      console.error("Error in deleteType:", error)
+      throw new CustomError("Failed to delete vendor type.", 500);
     }
   }
 
   async getSingleType(vendorTypeId: string) {
     try {
-      return await VendorTypeRepository.findOne({ _id: vendorTypeId });
+      const vendorType= await VendorTypeRepository.findOne({ _id: vendorTypeId });
+      if (!vendorType) {
+        throw new CustomError("Vendor type not found.", 404)
+      }
+      return vendorType;
     } catch (error) {
-      throw error;
+      console.error("Error in getSingleType:", error)
+      throw new CustomError("Failed to retrieve vendor type.", 500); 
     }
   }
 
@@ -56,7 +64,8 @@ class VendorTypeService {
       });
       return updatedType;
     } catch (error) {
-      throw new Error("Failed to update vendor type.");
+      console.error("Error in updateVendorType:", error)
+      throw new CustomError("Failed to update vendor type.", 500); 
     }
   }
 }

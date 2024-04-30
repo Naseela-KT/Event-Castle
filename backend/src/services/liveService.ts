@@ -1,3 +1,4 @@
+import { CustomError } from "../error/customError";
 import LiveRepository from "../repositories/liveRepository";
 
 class LiveService {
@@ -6,7 +7,8 @@ class LiveService {
       const data = await LiveRepository.create({ url });
       return data;
     } catch (error) {
-      throw error;
+      console.error("Error in addNewLive:", error);
+      throw new CustomError("Failed to create a new live record.", 500);
     }
   }
 
@@ -15,7 +17,8 @@ class LiveService {
       const data = await LiveRepository.changeStatusById(url);
       return data;
     } catch (error) {
-      throw error;
+      console.error("Error in changeStatus:", error)
+      throw new CustomError("Failed to change status.", 500); 
     }
   }
 
@@ -24,7 +27,8 @@ class LiveService {
       const data = await LiveRepository.findByCondition({ finished: false });
       return data;
     } catch (error) {
-      throw error;
+      console.error("Error in getAllLive:", error)
+      throw new CustomError("Failed to retrieve live records.", 500)
     }
   }
 }
