@@ -7,6 +7,8 @@ router.get('/', messageController.getMessages);
 router.patch('/add-emoji',messageController.addEmoji)
 
 
+router.patch("/changeIsRead",messageController.changeRead)
+
 
 
 export default router;

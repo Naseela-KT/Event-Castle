@@ -110,7 +110,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </span>
                 ) : message?.deletedIds.includes(user?._id) ? (
                   ""
-                ) : message?.imageUrl? (
+                ) : message?.imageUrl ? (
                   <img
                     className="w-40 h-30 rounded-lg"
                     src={message?.imageUrl}
@@ -124,13 +124,28 @@ const Message = ({ message, own, setIsUpdated }) => {
                     >
                       <i className="fa-regular fa-face-smile text-gray-500 text-sm"></i>
                     </span>
-              
+
                     <span
                       style={{ fontSize: "14px" }}
-                      className="px-4 py-2 rounded-1g inline-block rounded-bl-none bg-pink-500 text-white"
+                      className="relative px-5 py-2 rounded-lg inline-block rounded-bl-none bg-pink-500 text-white"
                       onClick={() => handleOpenRight(message?._id)}
                     >
-                      {message.text}
+                      {/* Text content */}
+                      {message?.text}
+
+                      {message?.isRead ? (
+                        <>
+                          <i className="fa-solid fa-check-double absolute bottom-0 right-0"
+                            style={{ padding: "4px", fontSize: "10px" }} ></i>
+                        </>
+                      ) : (
+                        <>
+                          <i
+                            className="fa-solid fa-check absolute bottom-0 right-0"
+                            style={{ padding: "2px", fontSize: "10px" }} // Padding to adjust icon position
+                          ></i>
+                        </>
+                      )}
                     </span>
                   </>
                 )}
@@ -177,7 +192,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </span>
                 ) : message?.deletedIds.includes(user?._id) ? (
                   ""
-                ) :message?.imageUrl? (
+                ) : message?.imageUrl ? (
                   <img
                     className="w-40 h-30 rounded-lg"
                     src={message?.imageUrl}
@@ -211,7 +226,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   {emojis.map((emoji, index) => (
                     <span
                       key={index}
-                      onClick={() =>handleEmoji(message?._id, emoji)}
+                      onClick={() => handleEmoji(message?._id, emoji)}
                       style={{ fontSize: "16px", cursor: "pointer" }}
                     >
                       {emoji}

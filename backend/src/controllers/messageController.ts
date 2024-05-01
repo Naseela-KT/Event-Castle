@@ -62,6 +62,16 @@ class MessageController {
     }
   }
 
+  async changeRead(req: Request, res: Response): Promise<any> {
+    try {
+      const { chatId, senderId } = req.body;
+      const messages = await messageService.changeReadStatus(chatId,senderId)
+      res.status(200).json({ messages });
+    } catch (error) {
+      handleError(res, error, "changeRead");
+    }
+  }
+
 
   
 }

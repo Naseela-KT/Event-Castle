@@ -6,6 +6,7 @@ export interface messageDocument extends Document{
     text:string;
     imageName:string;
     imageUrl:string;
+    isRead:boolean;
     isDeleted:boolean;
     deletedIds:String[];
     emoji:String;
@@ -28,6 +29,10 @@ const messageSchema=new Schema<messageDocument>({
     },
     imageUrl:{
         type:String
+    },
+    isRead:{
+        type:Boolean,
+        default:false
     },
     isDeleted:{
         type:Boolean,

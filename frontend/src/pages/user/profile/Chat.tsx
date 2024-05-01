@@ -197,30 +197,30 @@ const Chat = () => {
 
   const handleSend = async (e) => {
     e.preventDefault();
-  
+
     if (file) {
       console.log("Sending file:", file.originalFile);
-  
+
       const imageName = uuidv4();
-  
+
       const params = {
         Bucket: BUCKET_NAME!,
         Key: imageName,
         Body: file.originalFile,
         ContentType: file.originalFile.type,
       };
-  
+
       const command = new PutObjectCommand(params);
       await s3.send(command);
-  
+
       const getObjectParams = {
         Bucket: BUCKET_NAME!,
         Key: imageName,
       };
-  
+
       const command2 = new GetObjectCommand(getObjectParams);
       const url = await getSignedUrl(s3, command2, { expiresIn: 86400 * 3 });
-  
+
       const message = {
         senderId: user?._id,
         text: "",
@@ -228,7 +228,7 @@ const Chat = () => {
         imageName: imageName,
         imageUrl: url,
       };
-  
+
       socket.current?.emit("send", {
         senderId: user?._id,
         receiverId,
@@ -236,7 +236,7 @@ const Chat = () => {
         image: imageName,
         imageUrl: url,
       });
-  
+
       await axiosInstanceMsg
         .post("/", message)
         .then((res) => {
@@ -250,7 +250,25 @@ const Chat = () => {
         });
     }
   };
-  
+
+  //Change Read Status
+  const changeIsRead = async (chatId: string) => {
+    try {
+      const datas = {
+        chatId,
+        senderId: user?._id,
+      };
+      await axiosInstanceMsg
+        .patch("/changeIsRead", datas, { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   return (
     <>
       <div>
@@ -281,7 +299,12 @@ const Chat = () => {
                       </div>
                       {/* <SearchInput /> */}
                       {conversation.map((c) => (
-                        <div onClick={() => handleConversationSelect(c)}>
+                        <div
+                          onClick={() => {
+                            handleConversationSelect(c);
+                            changeIsRead(c._id);
+                          }}
+                        >
                           <Conversation
                             conversation={c}
                             currentUser={user}
@@ -495,7 +518,6 @@ const Chat = () => {
                           className="rounded-full p-2 absolute bottom-4 right-4 cursor-pointer hover:bg-blue-gray-200"
                           onClick={(e) => handleSend(e)}
                           disabled={!file}
-                       
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"

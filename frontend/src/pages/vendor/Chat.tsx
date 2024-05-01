@@ -258,6 +258,23 @@ const Chat = () => {
     }
   };
 
+  //Change Read Status
+  const changeIsRead = async (chatId: string) => {
+    try {
+      const datas = {
+        chatId,
+        senderId: vendor?._id,
+      };
+      await axiosInstanceMsg
+        .patch("/changeIsRead", datas, { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div>
       <div>
@@ -334,7 +351,11 @@ const Chat = () => {
                     </div>
 
                     {conversation.map((c) => (
-                      <div onClick={() => handleConversationSelect(c)}>
+                      <div
+                      onClick={() => {
+                        handleConversationSelect(c);
+                        changeIsRead(c._id);
+                      }}>
                         <Conversation
                           conversation={c}
                           currentUser={vendor}

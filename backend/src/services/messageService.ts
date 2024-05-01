@@ -40,6 +40,15 @@ class MessageService {
       throw new CustomError("Failed to change message view.", 500);
     }
   }
+
+  async changeReadStatus(chatId:string,senderId:string){
+    try {
+      return messageRepository.updateReadStatus(chatId,senderId)
+    } catch (error) {
+      console.error("Error in changeReadStatus:", error);
+      throw new CustomError("Failed to change the status.", 500);
+    }
+  }
 }
 
 export default new MessageService();
