@@ -17,8 +17,6 @@ import { validate } from "../../../validations/vendor/registerVal";
 import { VENDOR } from "../../../config/constants/constants";
 import { VendorType } from "../../../types/commonTypes";
 
-
-
 interface VendorFormValues {
   name: string;
   vendor_type: string;
@@ -27,8 +25,6 @@ interface VendorFormValues {
   city: string;
   phone: string;
 }
-
-
 
 const initialValues: VendorFormValues = {
   name: "",
@@ -57,7 +53,8 @@ const VendorSignupForm = () => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
   ) => {
     if (typeof e === "string") {
-      setFormValues({ ...formValues, vendor_type: e });
+      setFormValues({ ...formValues, vendor_type: e }); 
+      setFormValues({ ...formValues});
     } else {
       const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
       setFormValues({ ...formValues, [name]: value });
@@ -128,19 +125,33 @@ const VendorSignupForm = () => {
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-      <CardHeader
+          <CardHeader
             floated={false}
             shadow={false}
             color="transparent"
             className="mt-10 rounded-none text-center"
-            placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Typography variant="h4"  color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          Vendor - Sign Up
-        </Typography>
-      </CardHeader>
-      <form onSubmit={submitHandler}>
-        <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <Input
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            <Typography
+              variant="h4"
+              color="black"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Vendor - Sign Up
+            </Typography>
+          </CardHeader>
+          <form onSubmit={submitHandler}>
+            <CardBody
+              className="flex flex-col gap-4"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <Input
                 label="Name"
                 onChange={handleChange}
                 value={formValues.name}
@@ -148,45 +159,53 @@ const VendorSignupForm = () => {
                 size="md"
                 crossOrigin={undefined}
                 color="black"
-                className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formErrors.name ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.name}
-            </p>
-          ) : null}
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.name ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.name}
+                </p>
+              ) : null}
 
-          <Select
+              <Select
                 label="Vendor Type"
                 size="md"
-                onChange={(e) => {
-                  if (e) {
-                    handleChange(e);
-                  }
-                } }
                 value={formValues.vendor_type}
                 name="vendor_type"
+                onChange={(e) => {
+                  if (typeof e === "string") {
+                    handleChange(e);
+                  }
+                }}
                 className="bg-white bg-opacity-50"
-                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
-            {vendorTypes.map((val, index) =>
-              val.status ? (
-                <Option value={val.type} key={index}>
-                  {val.type}
-                </Option>
-              ) :''
-            )}
-          </Select>
-          {formErrors.vendor_type ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.vendor_type}
-            </p>
-          ) : null}
-          <Input
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                {vendorTypes.map((val, index) =>
+                  val.status ? (
+                    <Option value={val.type} key={index}>
+                      {val.type}
+                    </Option>
+                  ) : (
+                    ""
+                  )
+                )}
+              </Select>
+              {formErrors.vendor_type ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.vendor_type}
+                </p>
+              ) : null}
+              <Input
                 label="City"
                 onChange={handleChange}
                 value={formValues.city}
@@ -194,16 +213,19 @@ const VendorSignupForm = () => {
                 size="md"
                 crossOrigin={undefined}
                 color="black"
-                className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formErrors.city ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.city}
-            </p>
-          ) : null}
-          <Input
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.city ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.city}
+                </p>
+              ) : null}
+              <Input
                 label="Email"
                 onChange={handleChange}
                 value={formValues.email}
@@ -211,16 +233,19 @@ const VendorSignupForm = () => {
                 size="md"
                 crossOrigin={undefined}
                 color="black"
-                className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formErrors.email ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.email}
-            </p>
-          ) : null}
-          <Input
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.email ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.email}
+                </p>
+              ) : null}
+              <Input
                 label="Mobile"
                 onChange={handleChange}
                 value={formValues.phone}
@@ -228,16 +253,19 @@ const VendorSignupForm = () => {
                 size="md"
                 crossOrigin={undefined}
                 color="black"
-                className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formErrors.phone ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.phone}
-            </p>
-          ) : null}
-          <Input
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.phone ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.phone}
+                </p>
+              ) : null}
+              <Input
                 label="Password"
                 type="password"
                 size="md"
@@ -246,65 +274,88 @@ const VendorSignupForm = () => {
                 name="password"
                 crossOrigin={undefined}
                 color="black"
-                className="bg-white bg-opacity-50" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
-          {formErrors.password ? (
-            <p
-              className="text-sm"
-              style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-            >
-              {formErrors.password}
-            </p>
-          ) : null}
-          <Button
-          className="bg-black"
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.password ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.password}
+                </p>
+              ) : null}
+              <Button
+                className="bg-black"
                 variant="gradient"
                 fullWidth
                 placeholder={undefined}
-                type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            Sign Up
-          </Button>
-        </CardBody>
-      </form>
-      <CardFooter className="pt-0" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <Typography
+                type="submit"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                Sign Up
+              </Button>
+            </CardBody>
+          </form>
+          <CardFooter
+            className="pt-0"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            <Typography
               variant="small"
               className="mt-6 flex justify-center"
               color="black"
-              placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          Already have an account?
-          <Link to={VENDOR.LOGIN}>
-            <Typography
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Already have an account?
+              <Link to={VENDOR.LOGIN}>
+                <Typography
                   as="a"
                   href="#"
                   variant="small"
                   color="black"
                   className="ml-1 font-bold"
-                  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              Login
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Login
+                </Typography>
+              </Link>
             </Typography>
-          </Link>
-        </Typography>
-        <Typography
+            <Typography
               variant="small"
               className="mt-3 flex justify-center"
               color="black"
-              placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          Are you a user?
-          <Link to={VENDOR.SIGNUP}>
-            <Typography
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              Are you a user?
+              <Link to={VENDOR.SIGNUP}>
+                <Typography
                   as="a"
                   href="#signup"
                   variant="small"
                   color="black"
                   className="ml-1 font-bold"
-                  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              Signup here
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Signup here
+                </Typography>
+              </Link>
             </Typography>
-          </Link>
-        </Typography>
-      </CardFooter>
-    </Card>
-    </div>
+          </CardFooter>
+        </Card>
+      </div>
     </div>
   );
 };

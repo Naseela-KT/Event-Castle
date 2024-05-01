@@ -13,9 +13,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAdminInfo } from "../../../redux/slices/AdminSlice";
 import AdminRootState from "../../../redux/rootstate/AdminState";
 import { validate } from "../../../validations/common/loginVal";
-import { ADMIN} from "../../../config/constants/constants";
+import { ADMIN } from "../../../config/constants/constants";
 import { useFormik } from "formik";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 interface FormValues {
   email: string;
@@ -46,13 +46,13 @@ const AdminLogin = () => {
     validate,
     onSubmit: (values) => {
       axiosInstanceAdmin
-        .post('/login', values)
+        .post("/login", values)
         .then((response) => {
           console.log(response);
 
           console.log(response.data);
-          localStorage.setItem("adminToken",response.data.token);
-          localStorage.setItem("refreshToken",response.data.refreshToken);
+          localStorage.setItem("adminToken", response.data.token);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
 
           console.log(response.data.adminData);
 
@@ -60,76 +60,120 @@ const AdminLogin = () => {
           navigate(ADMIN.DASHBOARD);
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(error.response.data.message);
           console.log("here", error);
         });
     },
   });
 
   return (
-    <div className="-ml-50" >
-      <Card
-        className="w-96 mt-20 bg-gray-200 mx-auto"
-        placeholder={undefined}
-        shadow={false}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <CardHeader
-          floated={false}
+    <>
+      <img
+        src="public/imgs/wave.png"
+        className="fixed hidden lg:block inset-0 h-full"
+        style={{ zIndex: -1 }}
+      />
+      <div className="h-screen flex flex-col justify-center items-center lg:grid lg:grid-cols-2">
+      <img
+          src="public/imgs/login-side-image.svg"
+          className="hidden lg:block w-1/2 hover:scale-150 transition-all duration-500 transform mx-300"
+        />
+        <Card
+          className="bg-gray-200 flex flex-col justify-center items-center w-1/2"
+          placeholder={undefined}
           shadow={false}
-          color="transparent"
-          className="mt-10 rounded-none text-center"
-          placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
-          <Typography variant="h4" color="black" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            Admin - Login
-          </Typography>
-        </CardHeader>
-        <form onSubmit={formik.handleSubmit}>
-          <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <Input
-              label="Email"
-              size="md"
-              crossOrigin={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="mt-10 rounded-none text-center"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+              <img
+          src="public/imgs/login-avatar.svg"
+          className="w-32"
+        />
+            <Typography
+              variant="h4"
               color="black"
-              className="bg-white bg-opacity-50"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              name="email" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
-            {formik.errors.email ? (
-              <p
-                className="text-sm"
-                style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-              >
-                {formik.errors.email}
-              </p>
-            ) : null}
-            <Input
-              label="Password"
-              size="md"
-              crossOrigin={undefined}
-              color="black"
-              className="bg-white bg-opacity-50"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              name="password"
-              type="password" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
-            {formik.errors.password ? (
-              <p
-                className="text-sm"
-                style={{ color: "red", marginBottom: -10, marginTop: -10 }}
-              >
-                {formik.errors.password}
-              </p>
-            ) : null}
-            <Button
-              fullWidth
               placeholder={undefined}
-              type="submit"
-              className="bg-gray-700"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              Login
-            </Button>
-          </CardBody>
-        </form>
-      </Card>
-    </div>
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+
+              Admin - Login
+            </Typography>
+          </CardHeader>
+          <form onSubmit={formik.handleSubmit} className="flex flex-col justify-center items-center w-1/2">
+            <CardBody
+              className="flex flex-col gap-4"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <Input
+                label="Email"
+                size="md"
+                crossOrigin={undefined}
+                color="black"
+                className="bg-white bg-opacity-50"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                name="email"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formik.errors.email ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formik.errors.email}
+                </p>
+              ) : null}
+              <Input
+                label="Password"
+                size="md"
+                crossOrigin={undefined}
+                color="black"
+                className="bg-white bg-opacity-50"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                name="password"
+                type="password"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formik.errors.password ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formik.errors.password}
+                </p>
+              ) : null}
+              <Button
+                fullWidth
+                placeholder={undefined}
+                type="submit"
+                className="bg-gray-700"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                Login
+              </Button>
+            </CardBody>
+          </form>
+        </Card>
+      </div>
+
+    
+    </>
   );
 };
 

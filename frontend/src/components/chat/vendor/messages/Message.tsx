@@ -112,6 +112,12 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </span>
                 ) : message?.deletedIds?.includes(vendor?._id) ? (
                   ''
+                ) :message?.imageUrl? (
+                  <img
+                    className="w-40 h-30 rounded-lg"
+                    src={message?.imageUrl}
+                    alt="Bonnie Green image"
+                  ></img>
                 ) : (
                   <>
                     <span
@@ -172,6 +178,12 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </span>
                 ) : message?.deletedIds?.includes(vendor?._id) ? (
                   ''
+                ) :message?.imageUrl? (
+                  <img
+                    className="w-40 h-30 rounded-lg"
+                    src={message?.imageUrl}
+                    alt="Bonnie Green image"
+                  ></img>
                 ) : (
                   <>
                     <span

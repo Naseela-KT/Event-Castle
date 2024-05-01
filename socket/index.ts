@@ -39,18 +39,43 @@ io.on("connection", (socket: Socket) => {
     io.emit("getUsers", users);
   });
 
-  socket.on("sendMessage", (message: { senderId: string; receiverId: string; text: string }) => {
-    const user = getUser(message.receiverId);
-    if (user) {
-      io.to(user.socketId).emit("getMessage", {
-        senderId: message.senderId,
-        text: message.text,
-      });
-      console.log(message.receiverId,message.text)
-    } else {
-      console.error("User not found:", message.receiverId);
+  // socket.on("sendMessage", (message: { senderId: string; receiverId: string; text: string }) => {
+  //   const user = getUser(message.receiverId);
+  //   if (user) {
+  //     io.to(user.socketId).emit("getMessage", {
+  //       senderId: message.senderId,
+  //       text: message.text,
+  //     });
+  //     console.log(message.receiverId,message.text)
+  //   } else {
+  //     console.error("User not found:", message.receiverId);
+  //   }
+  // });
+
+  socket.on(
+    "sendMessage",
+    (message: {
+      senderId: string;
+      receiverId: string;
+      text: string;
+      imageName: string;
+      imageUrl: string;
+    }) => {
+      const user = getUser(message.receiverId);
+      if (user) {
+        io.to(user.socketId).emit("getMessage", {
+          senderId: message.senderId,
+          text: message.text,
+          imageName: message.imageName,
+          imageUrl: message.imageUrl,
+        });
+
+        console.log(message.receiverId, message.text);
+      } else {
+        console.error("User not found:", message.receiverId);
+      }
     }
-  });
+  );
 
   socket.on("disconnect", () => {
     removeUser(socket.id);

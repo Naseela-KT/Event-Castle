@@ -6,11 +6,13 @@ import { handleError } from "../utils/handleError";
 class MessageController {
   async createMessage(req: Request, res: Response): Promise<any> {
     try {
-      const { conversationId, senderId, text } = req.body;
+      const { conversationId, senderId, text,imageName,imageUrl} = req.body;
       const response = await messageService.createMessage(
         conversationId,
         senderId,
-        text
+        text,
+        imageName,
+        imageUrl
       );
       res.status(200).json(response);
     } catch (error) {
@@ -59,6 +61,9 @@ class MessageController {
       handleError(res, error, "addEmoji");
     }
   }
+
+
+  
 }
 
 export default new MessageController();

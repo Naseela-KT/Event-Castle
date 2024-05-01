@@ -4,6 +4,8 @@ export interface messageDocument extends Document{
     conversationId:String;
     senderId:String;
     text:string;
+    imageName:string;
+    imageUrl:string;
     isDeleted:boolean;
     deletedIds:String[];
     emoji:String;
@@ -19,8 +21,13 @@ const messageSchema=new Schema<messageDocument>({
         required:true
     },
     text:{
-        type:String,
-        required:true
+        type:String
+    },
+    imageName:{
+        type:String
+    },
+    imageUrl:{
+        type:String
     },
     isDeleted:{
         type:Boolean,

@@ -3,9 +3,9 @@ import messageModel from "../models/messageModel";
 import messageRepository from "../repositories/messageRepository";
 
 class MessageService {
-  async createMessage(conversationId: string, senderId: string, text: string) {
+  async createMessage(conversationId: string, senderId: string, text: string,imageName:string,imageUrl:string) {
     try {
-      return await messageRepository.create({ conversationId, senderId, text });
+      return await messageRepository.create({ conversationId, senderId, text,imageName,imageUrl});
     } catch (error) {
       console.error("Error in createMessage:", error);
       throw new CustomError("Failed to create message.", 500);

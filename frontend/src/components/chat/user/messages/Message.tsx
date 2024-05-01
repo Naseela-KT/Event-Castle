@@ -1,23 +1,26 @@
-import { format } from 'timeago.js';
-import React, { useState } from 'react';
+import { format } from "timeago.js";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
   DialogHeader,
   DialogBody,
   DialogFooter,
-} from '@material-tailwind/react';
-import { axiosInstance, axiosInstanceMsg } from '../../../../config/api/axiosinstance';
-import { toast } from 'react-toastify';
-import UserRootState from '../../../../redux/rootstate/UserState';
-import { useSelector } from 'react-redux';
+} from "@material-tailwind/react";
+import {
+  axiosInstance,
+  axiosInstanceMsg,
+} from "../../../../config/api/axiosinstance";
+import { toast } from "react-toastify";
+import UserRootState from "../../../../redux/rootstate/UserState";
+import { useSelector } from "react-redux";
 
 const Message = ({ message, own, setIsUpdated }) => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const [openRight, setOpenRight] = React.useState(false);
-  const [messageIdToDelete, setMessageIdToDelete] = useState('');
+  const [messageIdToDelete, setMessageIdToDelete] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
-  const emojis = ['😀', '😂', '❤️', '👍', '👎'];
+  const emojis = ["😀", "😂", "❤️", "👍", "👎"];
   const handleOpenRight = (msgId: string) => {
     setOpenRight(!openRight);
     setMessageIdToDelete(msgId);
@@ -33,52 +36,52 @@ const Message = ({ message, own, setIsUpdated }) => {
   const handleDeleteEveryone = async () => {
     axiosInstance
       .patch(
-        '/delete-for-everyone',
+        "/delete-for-everyone",
         { msgId: messageIdToDelete },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         console.log(response);
         setIsUpdated(true);
-        handleOpenRight('');
+        handleOpenRight("");
       })
       .catch((error) => {
-        handleOpenRight('');
+        handleOpenRight("");
         toast.error(error.response);
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
   const handleDeleteForMe = async (side: string) => {
     axiosInstance
       .patch(
-        '/delete-for-me',
+        "/delete-for-me",
         { msgId: messageIdToDelete, id: user?._id },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         console.log(response);
         setIsUpdated(true);
-        if (side == 'right') {
-          handleOpenRight('');
+        if (side == "right") {
+          handleOpenRight("");
         } else {
-          handleOpenLeft('');
+          handleOpenLeft("");
         }
       })
       .catch((error) => {
-        if (side == 'right') {
-          handleOpenRight('');
+        if (side == "right") {
+          handleOpenRight("");
         } else {
-          handleOpenLeft('');
+          handleOpenLeft("");
         }
         toast.error(error.response);
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
   const handleEmoji = async (msgId: string, emoji: string) => {
     axiosInstanceMsg
-      .patch('/add-emoji', { msgId, emoji }, { withCredentials: true })
+      .patch("/add-emoji", { msgId, emoji }, { withCredentials: true })
       .then((response) => {
         console.log(response);
         setIsUpdated(true);
@@ -87,26 +90,32 @@ const Message = ({ message, own, setIsUpdated }) => {
       .catch((error) => {
         setShowEmojis(false);
         toast.error(error.response);
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
   return (
     <>
       {own ? (
-        <div style={{maxHeight:"400px",overflowY:"auto"}}>
+        <div>
           <div className="flex items-end justify-end">
             <div className="relative flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-end">
               <div>
                 {message?.isDeleted ? (
                   <span
-                    style={{ fontStyle: 'italic' }}
+                    style={{ fontStyle: "italic" }}
                     className="px-4 py-2 rounded-1g inline-block rounded-bl-none bg-pink-200 text-gray-800"
                   >
                     You deleted this message
                   </span>
                 ) : message?.deletedIds.includes(user?._id) ? (
-                  ''
+                  ""
+                ) : message?.imageUrl? (
+                  <img
+                    className="w-40 h-30 rounded-lg"
+                    src={message?.imageUrl}
+                    alt="Bonnie Green image"
+                  ></img>
                 ) : (
                   <>
                     <span
@@ -115,8 +124,9 @@ const Message = ({ message, own, setIsUpdated }) => {
                     >
                       <i className="fa-regular fa-face-smile text-gray-500 text-sm"></i>
                     </span>
+              
                     <span
-                      style={{ fontSize: '14px' }}
+                      style={{ fontSize: "14px" }}
                       className="px-4 py-2 rounded-1g inline-block rounded-bl-none bg-pink-500 text-white"
                       onClick={() => handleOpenRight(message?._id)}
                     >
@@ -126,9 +136,9 @@ const Message = ({ message, own, setIsUpdated }) => {
                 )}
               </div>
               {message?.deletedIds.includes(user?._id) ? (
-                ''
+                ""
               ) : (
-                <div style={{ fontSize: '16px' }}>{message?.emoji}</div>
+                <div style={{ fontSize: "16px" }}>{message?.emoji}</div>
               )}
               {showEmojis && (
                 <div className="flex absolute bottom-10 right-0 w-40 justify-between bg-white border border-gray-200 p-2 rounded-lg">
@@ -136,7 +146,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                     <span
                       key={index}
                       onClick={() => handleEmoji(message?._id, emoji)}
-                      style={{ fontSize: '16px', cursor: 'pointer' }}
+                      style={{ fontSize: "16px", cursor: "pointer" }}
                     >
                       {emoji}
                     </span>
@@ -146,7 +156,7 @@ const Message = ({ message, own, setIsUpdated }) => {
             </div>
           </div>
           {message?.deletedIds.includes(user?._id) ? (
-            ''
+            ""
           ) : (
             <p className="flex items-end justify-end text-xs text-gray-500 mr-2">
               {format(message.createdAt)}
@@ -160,19 +170,25 @@ const Message = ({ message, own, setIsUpdated }) => {
               <div>
                 {message?.isDeleted ? (
                   <span
-                    style={{ fontStyle: 'italic' }}
+                    style={{ fontStyle: "italic" }}
                     className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-100 text-gray-600"
                   >
                     This message was deleted
                   </span>
                 ) : message?.deletedIds.includes(user?._id) ? (
-                  ''
+                  ""
+                ) :message?.imageUrl? (
+                  <img
+                    className="w-40 h-30 rounded-lg"
+                    src={message?.imageUrl}
+                    alt="Bonnie Green image"
+                  ></img>
                 ) : (
                   <>
                     <span
                       className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600"
                       onClick={() => handleOpenLeft(message?._id)}
-                      style={{ fontSize: '14px' }}
+                      style={{ fontSize: "14px" }}
                     >
                       {message.text}
                     </span>
@@ -186,17 +202,17 @@ const Message = ({ message, own, setIsUpdated }) => {
                 )}
               </div>
               {message?.deletedIds.includes(user?._id) ? (
-                ''
+                ""
               ) : (
-                <div style={{ fontSize: '16px' }}>{message?.emoji}</div>
+                <div style={{ fontSize: "16px" }}>{message?.emoji}</div>
               )}
               {showEmojis && (
                 <div className="flex justify-between absolute bottom-10  w-40 bg-white border border-gray-200 p-2 rounded-lg">
                   {emojis.map((emoji, index) => (
                     <span
                       key={index}
-                      onClick={() => handleEmoji(message?._id, emoji)}
-                      style={{ fontSize: '16px', cursor: 'pointer' }}
+                      onClick={() =>handleEmoji(message?._id, emoji)}
+                      style={{ fontSize: "16px", cursor: "pointer" }}
                     >
                       {emoji}
                     </span>
@@ -206,7 +222,7 @@ const Message = ({ message, own, setIsUpdated }) => {
             </div>
           </div>
           {message?.deletedIds.includes(user?._id) ? (
-            ''
+            ""
           ) : (
             <p className="text-xs text-gray-500 ml-2">
               {format(message.createdAt)}
@@ -256,7 +272,7 @@ const Message = ({ message, own, setIsUpdated }) => {
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
-              onClick={() => handleDeleteForMe('right')}
+              onClick={() => handleDeleteForMe("right")}
             >
               <span>Delete for me</span>
             </Button>
@@ -270,7 +286,7 @@ const Message = ({ message, own, setIsUpdated }) => {
           <Button
             variant="text"
             color="green"
-            onClick={() => handleOpenRight('')}
+            onClick={() => handleOpenRight("")}
             className="mr-1"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
@@ -312,7 +328,7 @@ const Message = ({ message, own, setIsUpdated }) => {
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
-              onClick={() => handleDeleteForMe('left')}
+              onClick={() => handleDeleteForMe("left")}
             >
               <span>Delete for me</span>
             </Button>
@@ -326,7 +342,7 @@ const Message = ({ message, own, setIsUpdated }) => {
           <Button
             variant="text"
             color="green"
-            onClick={() => handleOpenLeft('')}
+            onClick={() => handleOpenLeft("")}
             className="mr-1"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
