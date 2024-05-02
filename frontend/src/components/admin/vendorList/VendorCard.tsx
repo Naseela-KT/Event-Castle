@@ -34,7 +34,7 @@ import {
   )}
       <Card
         shadow={false}
-        className="relative grid h-[18rem] w-full max-w-[16rem] items-end justify-center overflow-hidden text-center" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        className="relative grid h-[18rem] w-full max-w-[15rem] items-end justify-center overflow-hidden text-center" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
         <CardHeader
           floated={false}
           shadow={false}

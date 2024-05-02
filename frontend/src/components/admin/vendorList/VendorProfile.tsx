@@ -74,7 +74,7 @@ const VendorProfile = () => {
       {vendor?.verificationRequest ? (
         <div>
           <Card
-            className="mt-6  ml-20 mr-20 bg-gray-100 text-center"
+            className="mt-6 ml-0 mr-10 bg-gray-100 text-center"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -127,7 +127,7 @@ const VendorProfile = () => {
         ''
       )}
 
-      <div className="w-85 m-10 mx-20">
+      <div className="w-85 m-10 mx-10">
         <Card
           className="mt-6"
           placeholder={undefined}

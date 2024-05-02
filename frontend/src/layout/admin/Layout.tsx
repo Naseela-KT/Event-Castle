@@ -1,23 +1,25 @@
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { axiosInstanceAdmin } from "../../config/api/axiosinstance";
-import { logout } from "../../redux/slices/AdminSlice";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
-// import { SetStateAction } from "react";
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { ADMIN } from '../../config/constants/constants';
 import { PowerIcon } from "@heroicons/react/24/outline";
-import { ADMIN } from "../../config/constants/constants";
+import { axiosInstanceAdmin } from '../../config/api/axiosinstance';
+import { logout } from '../../redux/slices/AdminSlice';
+import { useDispatch } from 'react-redux';
 
-const Sidebar = () => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+  const path=useLocation()
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const path=useLocation()
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const handleOpen = (value: SetStateAction<boolean> | "") => {
-  //   setOpen(open === value ? 0 : value);
-  // };
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -32,49 +34,17 @@ const Sidebar = () => {
       });
   };
 
-  // Function to handle window resize and adjust sidebar accordingly
-  const handleResize = () => {
-    if (window.innerWidth <= 768) {
-      setOpen(false); // Set sidebar to closed when screen size hits medium or below
-    } else {
-      setOpen(true); // Set sidebar to open for larger screens
-    }
-  };
-
-  // Add event listener for window resize
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const [open, setOpen] = useState(true);
-
   return (
-    <div className="sidebar fixed">
-      <div className={`sidebar ${
-          open ? "open" : "closed"
-        } bg-gray-900 h-screen p-5 pt-8 relative duration-30 top-0 left-0 w-full md:w-auto md:static md:left-auto md:top-auto md:translate-x-0 transition-all duration-300 ease-in-out transform ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ width: open ? "250px" : "80px" }}>
-        <img
-          src="/public/imgs/control.png"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple border-2 rounded-full ${
-            !open && "rotate-180"
-          }`}
-          onClick={() => setOpen(!open)}
-        />
-        <div className="flex gap-x-4 items-center">
-       
-          <h1
-            className={`text-white origin-left font-medium text-xl duration-200 ${
-              !open && "scale-0"
-            }`}
-          >
-            Event Castle
-          </h1>
-        </div>
-        <ul className="pt-6">
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <aside
+        className={`fixed bg-gray-900 text-white w-64 p-4 h-full transition-transform ${
+          isSidebarOpen ? 'translate-x-0 z-999' : '-translate-x-64 pt-20'
+        } sm:translate-x-0`}
+      >
+        {isSidebarOpen?<button className='ml-50' onClick={toggleSidebar}><i className="fa-solid fa-arrow-left"></i></button>:""}
+        <nav>
+          <ul>
           <Link to={ADMIN.DASHBOARD}>
             <li
               className={`${path.pathname==ADMIN.DASHBOARD?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white  text-sm items-center gap-x-4 
@@ -101,7 +71,7 @@ const Sidebar = () => {
           </Link>
           <Link to={ADMIN.VENDORS}>
             <li
-              className={`${path.pathname==ADMIN.VENDORS?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
+              className={`${path.pathname==ADMIN.VENDORS || path.pathname==ADMIN.VENDOR?"bg-gray-400 text-gray-800":"text-gray-300"} flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-sm items-center gap-x-4 
               mt-2
               `}
             >
@@ -149,11 +119,27 @@ const Sidebar = () => {
                 Logout
               </span>
             </li>
-   
-        </ul>
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        <header className="fixed w-full bg-gray-900 text-white p-4 flex justify-between items-center z-10">
+          <button onClick={toggleSidebar} className="sm:hidden">
+            {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
+          <h1 className="text-xl text-end">Event Castle</h1>
+        </header>
+
+        {/* Content Area */}
+        <main className="flex-1 overflow-auto p-4 bg-gray-100 mt-16 sm:ml-64">
+          {children}
+        </main>
       </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default Layout;

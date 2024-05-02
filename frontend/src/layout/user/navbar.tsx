@@ -138,7 +138,7 @@ const Navbar = () => {
       onPointerLeaveCapture={undefined}
     >
       <div
-        className={`navbar mx-auto flex items-center justify-between ${isScrolled && (!location.pathname.includes("/profile/*") || !location.pathname.includes("/chat")) ? "bg-black -mt-5 rounded-lg p-5 shadow-lg text-white m-0" : "m-0"}`}
+        className={`navbar mx-auto flex items-center justify-between ${isScrolled && (!location.pathname.includes(`/profile`) || !location.pathname.includes("/chat")) ? "bg-black -mt-5 rounded-lg p-5 shadow-lg text-white m-0" : "m-0"}`}
       >
         <Link to={USER.HOME}>
           <Typography

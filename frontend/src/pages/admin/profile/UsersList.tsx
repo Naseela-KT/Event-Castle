@@ -3,7 +3,7 @@ import UsersTable from "../../../components/admin/usersList/usersTable";
 function UsersList() {
 
   return (
-    <div className="m-20">
+    <div className="m-10">
       <UsersTable/>
  
     </div>

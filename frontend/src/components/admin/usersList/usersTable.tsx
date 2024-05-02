@@ -135,7 +135,7 @@ const UsersTable = () => {
         </div>
       </CardHeader>
       <CardBody
-        className="overflow-scroll px-0"
+        className="overflow-x-scroll px-0"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}

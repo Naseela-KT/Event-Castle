@@ -5,7 +5,7 @@ import RevenueChart from "../../../components/admin/dashboard/RevenueChart"
 function Dashboard() {
 
   return (
-    <div className="m-20">
+    <div className="m-10">
       <CountCard/>
     <RevenueChart/>
     </div>

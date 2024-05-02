@@ -79,7 +79,7 @@ const AdminLogin = () => {
           className="hidden lg:block w-1/2 hover:scale-150 transition-all duration-500 transform mx-300"
         />
         <Card
-          className="bg-gray-200 flex flex-col justify-center items-center w-1/2"
+          className="bg-gray-200 flex flex-col justify-center items-center lg:w-1/2 lg:ml-0 -ml-50"
           placeholder={undefined}
           shadow={false}
           onPointerEnterCapture={undefined}
@@ -109,7 +109,7 @@ const AdminLogin = () => {
               Admin - Login
             </Typography>
           </CardHeader>
-          <form onSubmit={formik.handleSubmit} className="flex flex-col justify-center items-center w-1/2">
+          <form onSubmit={formik.handleSubmit} className="flex flex-col justify-center items-center">
             <CardBody
               className="flex flex-col gap-4"
               placeholder={undefined}

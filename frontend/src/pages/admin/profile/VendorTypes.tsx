@@ -7,7 +7,7 @@ function VendorTypes() {
 
 
   return (
-    <div className="m-20">
+    <div className="m-10">
         <AddVendorType/>
         <div className="mt-8">
         <VendorTypeList/>

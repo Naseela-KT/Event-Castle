@@ -1,26 +1,28 @@
-
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../../components/admin/Sidebar";
-import { useSelector } from 'react-redux';
-import AdminState  from '../../redux/rootstate/AdminState';
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-
+import { useSelector } from "react-redux";
+import AdminState from "../../redux/rootstate/AdminState";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Layout from "../../layout/admin/Layout";
 
 const AdminApp: React.FC = () => {
-  const isAdminSignedIn = useSelector((state: AdminState) => state.admin.isAdminSignedIn);
+  const isAdminSignedIn = useSelector(
+    (state: AdminState) => state.admin.isAdminSignedIn
+  );
 
   return (
     <>
-    
-        <ToastContainer/>
-        <div className="flex">
-          {isAdminSignedIn && <Sidebar />}
-          <div className="mainContent flex-1 ml-50">
-            <Outlet />
-          </div>
+      <ToastContainer />
+      {isAdminSignedIn ? (
+        <Layout>
+          <Outlet />
+        </Layout>
+      ) : (
+        <div className="mainContent flex-1 ml-50">
+          <Outlet />
         </div>
+      )}
     </>
   );
 };

@@ -11,7 +11,7 @@ import { Payment } from '../../../types/commonTypes';
 function Wallet() {
   const admin = useSelector((state: AdminRootState) => state.admin.admindata);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [adminData,setAdminData]=useState<AdminData>({})
+  const [adminData,setAdminData]=useState<AdminData>()
 
   const formatDate = (createdAt: Date) => {
     const date = new Date(createdAt);
@@ -43,11 +43,11 @@ function Wallet() {
   }, []);
 
   return (
-    <div className="mx-20">
+    <div className="px-4 sm:px-6 md:px-10 lg:px-20 overflow-x-auto">
       <Typography
         variant="h5"
         color="black"
-        className="font-bold m-10"
+        className="font-bold my-4 md:my-10"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -57,7 +57,7 @@ function Wallet() {
       <Card
         color="gray"
         variant="gradient"
-        className="max-w-[20rem] p-4 mx-auto mb-10"
+        className="max-w-xs md:max-w-md lg:max-w-lg p-4 mx-auto mb-6"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -95,12 +95,12 @@ function Wallet() {
       </Card>
 
       <Card
-        className="h-full w-full overflow-scroll"
+        className="h-full w-full overflow-x-auto"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        <table className="w-full min-w-max table-auto text-left">
+        <table className="w-full min-w-max table-auto text-left overflow-x-auto">
           <thead>
             <tr>
               <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
