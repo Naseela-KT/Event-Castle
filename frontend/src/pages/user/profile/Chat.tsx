@@ -149,6 +149,7 @@ const Chat = () => {
   //scrolling to bottom when new msg arrives
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+
   }, [messages]);
 
   const handleInputChange = (e) => {
@@ -320,7 +321,8 @@ const Chat = () => {
                 </div>
                 {/* 
               middle content start */}
-                <div className="flex-1 p-2 sm:pb-6 justify-between h-screen flex-col  hidden xl:flex mx-2">
+              {/* hidden */}
+                <div className="flex-1 p-2 sm:pb-6 justify-between h-screen flex-col xl:flex mx-2">
                   {!filemodal ? (
                     <>
                       <div className="flex sm:items-center  justify-between py-3 border-b border-gray-200 p-3">

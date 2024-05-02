@@ -121,7 +121,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                 ) : (
                   <>
                     <span
-                      className="inline-block bg-gray-200 rounded-full px-1 m-1"
+                      className="inline-block bg-gray-200 rounded-full px-1 m-1 cursor-pointer"
                       onClick={() => setShowEmojis(!showEmojis)}
                     >
                       <i className="fa-regular fa-face-smile text-gray-500 text-sm"></i>
@@ -210,7 +210,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                       {message.text}
                     </span>
                     <span
-                      className="inline-block bg-gray-200 rounded-full px-1 m-1"
+                      className="inline-block bg-gray-200 rounded-full px-1 m-1 cursor-pointer"
                       onClick={() => setShowEmojis(!showEmojis)}
                     >
                       <i className="fa-regular fa-face-smile text-gray-500 text-sm"></i>

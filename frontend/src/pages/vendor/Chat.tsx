@@ -315,14 +315,14 @@ const Chat = () => {
                         to="/chat"
                         className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white"
                       >
-                        {user?.name}
+                        {vendor?.name}
                       </Link>
                     </div>
                     <div className="ml-4 relative flex-shrink-0">
                       <button className="bg-red-700 text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-700 focus:ring-white">
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={user?.imageUrl}
+                          src={vendor?.logoUrl}
                           alt=""
                         />
                       </button>
@@ -384,7 +384,7 @@ const Chat = () => {
                           <div className="flex flex-col leading-tight">
                             <div className="text-1xl mt-1 flex items-center">
                               <span className="text-gray-700 mr-3">
-                                {vendor ? vendor?.name : ""}
+                                {user ? user?.name : ""}
                               </span>
                               {activeUsers.some(
                                 (u) => u.userId === receiverId && u.active
