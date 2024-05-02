@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { format } from "timeago.js";
 import {
   axiosInstanceMsg,
@@ -14,8 +15,15 @@ import {
   Button,
   DialogFooter,
 } from "@material-tailwind/react";
+import { Messages } from "../../../../types/commonTypes";
 
-const Message = ({ message, own, setIsUpdated }) => {
+interface MessageProps {
+  own: boolean;
+  message: Partial<Messages>
+  setIsUpdated:React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Message:React.FC<MessageProps>=({ message, own, setIsUpdated }) => {
   const vendor = useSelector(
     (state: VendorRootState) => state.vendor.vendordata
   );
@@ -110,7 +118,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   >
                     You deleted this message
                   </span>
-                ) : message?.deletedIds?.includes(vendor?._id) ? (
+                ) : message?.deletedIds?.includes(vendor?._id!) ? (
                   ""
                 ) : message?.imageUrl ? (
                   <img
@@ -129,7 +137,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                     <span
                       style={{ fontSize: "14px" }}
                       className="relative px-5 py-2 rounded-lg inline-block rounded-bl-none bg-pink-500 text-white"
-                      onClick={() => handleOpenRight(message?._id)}
+                      onClick={() => handleOpenRight(message?._id!)}
                     >
                       {/* Text content */}
                       {message?.text}
@@ -152,7 +160,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </>
                 )}
               </div>
-              {message?.deletedIds?.includes(vendor?._id) ? (
+              {message?.deletedIds?.includes(vendor?._id!) ? (
                 ""
               ) : (
                 <div style={{ fontSize: "16px" }}>{message?.emoji}</div>
@@ -162,7 +170,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   {emojis.map((emoji, index) => (
                     <span
                       key={index}
-                      onClick={() => handleEmoji(message?._id, emoji)}
+                      onClick={() => handleEmoji(message?._id!, emoji)}
                       style={{ fontSize: "16px", cursor: "pointer" }}
                     >
                       {emoji}
@@ -172,11 +180,11 @@ const Message = ({ message, own, setIsUpdated }) => {
               )}
             </div>
           </div>
-          {message?.deletedIds?.includes(vendor?._id) ? (
+          {message?.deletedIds?.includes(vendor?._id!) ? (
             ""
           ) : (
             <p className="flex items-end justify-end text-xs text-gray-500 mr-2">
-              {format(message.createdAt)}
+              {format(message?.createdAt!)}
             </p>
           )}
         </div>
@@ -192,7 +200,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   >
                     This message was deleted
                   </span>
-                ) : message?.deletedIds?.includes(vendor?._id) ? (
+                ) : message?.deletedIds?.includes(vendor?._id!) ? (
                   ""
                 ) : message?.imageUrl ? (
                   <img
@@ -204,7 +212,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   <>
                     <span
                       className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600"
-                      onClick={() => handleOpenLeft(message?._id)}
+                      onClick={() => handleOpenLeft(message?._id!)}
                       style={{ fontSize: "14px" }}
                     >
                       {message.text}
@@ -218,7 +226,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   </>
                 )}
               </div>
-              {message?.deletedIds?.includes(vendor?._id) ? (
+              {message?.deletedIds?.includes(vendor?._id!) ? (
                 ""
               ) : (
                 <div style={{ fontSize: "16px" }}>{message?.emoji}</div>
@@ -228,7 +236,7 @@ const Message = ({ message, own, setIsUpdated }) => {
                   {emojis.map((emoji, index) => (
                     <span
                       key={index}
-                      onClick={() => handleEmoji(message?._id, emoji)}
+                      onClick={() => handleEmoji(message?._id!, emoji)}
                       style={{ fontSize: "16px", cursor: "pointer" }}
                     >
                       {emoji}
@@ -238,11 +246,11 @@ const Message = ({ message, own, setIsUpdated }) => {
               )}
             </div>
           </div>
-          {message?.deletedIds?.includes(vendor?._id) ? (
+          {message?.deletedIds?.includes(vendor?._id!) ? (
             ""
           ) : (
             <p className="text-xs text-gray-500 ml-2">
-              {format(message.createdAt)}
+              {format(message?.createdAt!)}
             </p>
           )}
         </div>

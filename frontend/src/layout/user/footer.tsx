@@ -4,7 +4,7 @@ import { Typography, IconButton } from '@material-tailwind/react';
 const year = new Date().getFullYear();
 
 interface Social {
- color: string;
+ color: string | undefined;
  name: string;
  path: string;
 }
@@ -109,7 +109,7 @@ const Footer: React.FC<FooterProps> = ({
               {description}
             </Typography>
             <div className="mx-auto mt-6 mb-8 flex justify-center gap-2 md:mb-0 lg:justify-start">
-              {socials.map(({ color, name, path }) => (
+              {socials.map(({ name, path }) => (
                 <a
                  key={name}
                  href={path}
@@ -117,7 +117,7 @@ const Footer: React.FC<FooterProps> = ({
                  rel="noopener noreferrer"
                 >
                  <IconButton color="white" className="rounded-full shadow-none bg-transparent"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <Typography color={color}>
+                    <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
                       <i className={`fa-brands fa-${name}`} />
                     </Typography>
                  </IconButton>

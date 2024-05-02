@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import Conversation from "../../../components/chat/user/sidebar/Conversation";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -19,6 +20,13 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Chats, Messages } from "../../../types/commonTypes";
+import { VendorData } from "../../../types/vendorTypes";
+
+interface FileDetails {
+  filename: string;
+  originalFile: File;
+}
 
 const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY || "";
 const BUCKET_REGION = import.meta.env.VITE_BUCKET_REGION || "";
@@ -27,21 +35,22 @@ const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY || "";
 
 const Chat = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
-  const [isUpdated, setIsUpdated] = useState(false);
-  const [conversation, setconversation] = useState([]);
-  const [currentchat, setcurrentchat] = useState(null);
-  const [messages, setmessages] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [conversation, setconversation] = useState<Chats[]>([]);
+  const [currentchat, setcurrentchat] = useState<Chats | null>(null);
+  const [messages, setmessages] = useState<Partial<Messages>[]>([]);
+  const [arrivalMessage, setArrivalMessage] = useState<Partial<Messages> | null>(null);
   const [newMessage, setnewMessage] = useState("");
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [vendor, setVendor] = useState({});
-  const scrollRef = useRef();
+  const [activeUsers, setActiveUsers] = useState<any[]>([]);
+  const [vendor, setVendor] = useState<VendorData>();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [filemodal, setFileModal] = useState(false);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<FileDetails | null>();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const socket = useRef<Socket>();
 
-  const handleConversationSelect = (selectedConversation) => {
+  const handleConversationSelect = (selectedConversation:Chats) => {
     setcurrentchat(selectedConversation);
     const friendId = selectedConversation.members.find((m) => m !== user?._id);
     // Fetch vendor data based on friendId
@@ -59,7 +68,7 @@ const Chat = () => {
     socket.current = io("ws://localhost:8900");
     socket.current?.on("getMessage", (data) => {
       setArrivalMessage({
-        sender: data.senderId,
+        senderId: data.senderId,
         text: data.text,
         createdAt: Date.now(),
       });
@@ -67,9 +76,14 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    arrivalMessage &&
-      currentchat?.members.includes(arrivalMessage.sender) &&
-      setmessages((prev) => [...prev, arrivalMessage]);
+    if (arrivalMessage && currentchat) {
+      const isInCurrentChat = currentchat.members.includes(arrivalMessage.senderId!);
+  
+      if (isInCurrentChat) {
+        // Use a callback function with the correct type
+        setmessages((prev) => [...prev, arrivalMessage]); // prev is Partial<Messages>[]
+      }
+    }
   }, [arrivalMessage, currentchat]);
 
   useEffect(() => {
@@ -113,7 +127,7 @@ const Chat = () => {
     (member) => member !== user?._id
   );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     const message = {
       senderId: user?._id,
@@ -152,7 +166,7 @@ const Chat = () => {
 
   }, [messages]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setnewMessage(e.target.value);
   };
 
@@ -163,16 +177,16 @@ const Chat = () => {
   }, []);
 
   // image input
-  const fileInputRef = useRef(null);
+ 
 
   const handleButtonClick = () => {
     // When the IconButton is clicked, trigger the hidden file input
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      fileInputRef?.current?.click();
     }
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: { target: { files: any[]; }; }) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setFileModal(true);
@@ -196,7 +210,7 @@ const Chat = () => {
     region: BUCKET_REGION!,
   });
 
-  const handleSend = async (e) => {
+  const handleSend = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (file) {
@@ -403,7 +417,7 @@ const Chat = () => {
                                   type="file"
                                   ref={fileInputRef}
                                   style={{ display: "none" }}
-                                  onChange={handleFileChange}
+                                  onChange={()=>handleFileChange}
                                 />
 
                                 {/* IconButton that triggers the hidden file input */}

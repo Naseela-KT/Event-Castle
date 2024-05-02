@@ -34,7 +34,8 @@ const App: React.FC = () => {
         pathname == USER.VERIFY ||
         pathname == VENDOR.VERIFY ||
         pathname.includes(USER.FORGOT_PWD) ||
-        pathname.includes(USER.RESET_PWD)
+        pathname.includes(USER.RESET_PWD)||
+        pathname.includes(USER.PROFILE)
       ) && (
         <div className="container fixed left-2/4 z-10 mx-auto -translate-x-2/4 pt-4">
           <Navbar />

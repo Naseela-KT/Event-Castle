@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import Conversation from "../../components/chat/vendor/sidebar/Conversation";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   axiosInstance,
@@ -19,6 +20,13 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
+import { Chats, Messages } from "../../types/commonTypes";
+import { UserData } from "../../types/userTypes";
+
+interface FileDetails {
+  filename: string;
+  originalFile: File;
+}
 
 const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY || "";
 const BUCKET_REGION = import.meta.env.VITE_BUCKET_REGION || "";
@@ -30,24 +38,25 @@ const Chat = () => {
   const vendor = useSelector(
     (state: VendorRootState) => state.vendor.vendordata
   );
-  const [isUpdated, setIsUpdated] = useState(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
-  const [conversation, setconversation] = useState([]);
-  const [currentchat, setcurrentchat] = useState(null);
-  const [messages, setmessages] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [conversation, setconversation] = useState<Chats[]>([]);
+  const [currentchat, setcurrentchat] = useState<Chats | null>(null);
+  const [messages, setmessages] = useState<Partial<Messages>[]>([]);
+  const [arrivalMessage, setArrivalMessage] = useState<Partial<Messages> | null>(null);
   const [newMessage, setnewMessage] = useState("");
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [user, setUser] = useState({});
+  const [activeUsers, setActiveUsers] = useState<any[]>([]);
+  const [user, setUser] = useState<UserData>();
   const [filemodal, setFileModal] = useState(false);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<FileDetails|null>();
 
-  const scrollRef = useRef();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const socket = useRef<Socket>();
 
   // const socket = useRef(io('ws://localhost:8900'));
 
-  const handleConversationSelect = (selectedConversation) => {
+  const handleConversationSelect = (selectedConversation:Chats) => {
     setcurrentchat(selectedConversation);
     const friendId = selectedConversation.members.find((m) => m !== user?._id);
     // Fetch vendor data based on friendId
@@ -65,7 +74,7 @@ const Chat = () => {
     socket.current = io("ws://localhost:8900");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
-        sender: data.senderId,
+        senderId: data.senderId,
         text: data.text,
         createdAt: Date.now(),
       });
@@ -74,7 +83,7 @@ const Chat = () => {
 
   useEffect(() => {
     arrivalMessage &&
-      currentchat?.members.includes(arrivalMessage.sender) &&
+      currentchat?.members.includes(arrivalMessage.senderId!) &&
       setmessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentchat]);
 
@@ -120,7 +129,7 @@ const Chat = () => {
     (member) => member !== vendor?._id
   );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     const message = {
@@ -158,7 +167,7 @@ const Chat = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setnewMessage(e.target.value);
   };
 
@@ -169,7 +178,7 @@ const Chat = () => {
   }, []);
 
 
-  const fileInputRef = useRef(null);
+ 
 
   const handleButtonClick = () => {
     // When the IconButton is clicked, trigger the hidden file input
@@ -178,7 +187,7 @@ const Chat = () => {
     }
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: { target: { files: any[]; }; }) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setFileModal(true);
@@ -202,7 +211,7 @@ const Chat = () => {
     region: BUCKET_REGION!,
   });
 
-  const handleSend = async (e) => {
+  const handleSend = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   
     if (file) {
@@ -452,7 +461,7 @@ const Chat = () => {
                                   type="file"
                                   ref={fileInputRef}
                                   style={{ display: "none" }}
-                                  onChange={handleFileChange}
+                                  onChange={()=>handleFileChange}
                                 />
 
                                 {/* IconButton that triggers the hidden file input */}

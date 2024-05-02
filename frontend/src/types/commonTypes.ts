@@ -1,24 +1,24 @@
 import { UserData } from "./userTypes";
 import { VendorData } from "./vendorTypes";
 
-export interface Review{
-  _id:string;
+export interface Review {
+  _id: string;
   userId: UserData;
   rating: number;
   content: string;
-  reply:Array<string>
+  reply: Array<string>;
 }
 
-export interface Notification{
-    _id:string;
-    message: string;
-    read: boolean;
-    type:string;
-    createdAt: string;
+export interface Notification {
+  _id: string;
+  message: string;
+  read: boolean;
+  type: string;
+  createdAt: string;
 }
 
 export interface Booking {
-  _id:string;
+  _id: string;
   date: string;
   name: string;
   eventName: string;
@@ -48,7 +48,21 @@ export interface VendorType {
   status: boolean;
 }
 
+export interface Chats {
+  _id:string;
+  members: string[];
+}
 
-export interface Chat{
-  members:string[];
+export interface Messages {
+  _id: string;
+  conversationId: string;
+  senderId: string;
+  text: string;
+  imageName: string;
+  imageUrl: string;
+  isRead: boolean;
+  isDeleted: boolean;
+  deletedIds: string[];
+  emoji: string;
+  createdAt:number;
 }
