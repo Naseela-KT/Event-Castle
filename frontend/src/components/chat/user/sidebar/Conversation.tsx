@@ -1,12 +1,24 @@
 import { Link } from "react-router-dom";
 import { axiosInstanceVendor } from "../../../../config/api/axiosinstance";
 import { useEffect, useState } from "react";
+import { Chats } from "../../../../types/commonTypes";
+import { UserData } from "../../../../types/userTypes";
+import { VendorData } from "../../../../types/vendorTypes";
 
-const Conversation = ({ conversation, currentUser, active, currentchat }) => {
-  const [vendor, setVendor] = useState(null);
-  const friendId = conversation.members.find((m) => m !== currentUser._id);
+
+
+interface ConversationsProps {
+  conversation: Chats;
+  currentUser: Partial<UserData | null>;
+  active:boolean;
+  currentchat:Chats | null
+}
+
+const Conversation:React.FC<ConversationsProps>=({ conversation, currentUser, active, currentchat }) => {
+  const [vendor, setVendor] = useState<VendorData>();
+  const friendId = conversation.members.find((m) => m !== currentUser?._id);
   useEffect(() => {
-    const friendId = conversation.members.find((m) => m !== currentUser._id);
+    
 
     const getUser = async () => {
       try {
@@ -20,7 +32,7 @@ const Conversation = ({ conversation, currentUser, active, currentchat }) => {
       }
     };
     getUser();
-  }, [currentUser, conversation, active, currentchat]);
+  }, [currentUser, conversation, active, currentchat,friendId]);
 
   return (
     <div>

@@ -6,7 +6,8 @@ import Footer from "../../layout/user/footer";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/api/axiosinstance";
 import { VendorData } from "../../types/vendorTypes";
-import { useNavigate } from "react-router-dom";
+// import Pagination from "../../components/common/Pagination";
+
 
 const VendorsListing = () => {
   const [vendors, setVendors] = useState<VendorData[]>([]);
@@ -18,7 +19,7 @@ const VendorsListing = () => {
   const [category, setCategory] = useState<string[]>([]);
   const [selectLocation, setSelectLocation] = useState<string[]>([]);
   const [sort,setSort]=useState<number>();
-  const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const VendorsListing = () => {
 
   useEffect(() => {
     fetchVendors();
-  }, [category,search,selectLocation,sort]);
+  }, [category,search,selectLocation,sort,page]);
 
   useEffect(() => {
     axiosInstance
@@ -155,11 +156,12 @@ const VendorsListing = () => {
       {/* {vendors.length > 0 && (
          <Pagination
          currentPage={currentPage}
-         totalPages={totalPages}
+         totalPages={totalPages!}
          handlePageChange={handlePageChange}
          isTable={false}
        />
       )} */}
+      {totalPages}
       <div className="bg-white">
         <Footer />
       </div>

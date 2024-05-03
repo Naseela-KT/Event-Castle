@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
-import { setVendorInfo } from '../../../redux/slices/VendorSlice';
+
 
 const CustomDatePicker: React.FC = () => {
   const vendor = useSelector(

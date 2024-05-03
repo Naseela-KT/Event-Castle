@@ -12,17 +12,21 @@ import cookieParser = require('cookie-parser');
 import messageRoutes from './routes/messageRoutes';
 import chatRoute from './routes/conversationRoutes'
 
+import initializeSocket from './socket';
+import {createServer} from 'http';
+
 const app=express()
 
 
 dotenv.config();
 connectDB();
 
+const server = createServer(app)
 
 
 
 app.use(cors({
-  origin:"http://localhost:5000",
+  origin:["http://localhost:5000"],
   credentials:true
 }));
 
@@ -58,7 +62,9 @@ app.use('/api/vendor', vendorRoutes);
 app.use('/api/messages',messageRoutes)
 app.use('/api/conversation',chatRoute)
 
+initializeSocket(server);
+
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });

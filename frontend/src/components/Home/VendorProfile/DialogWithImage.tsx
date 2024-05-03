@@ -19,7 +19,7 @@ export function DialogWithImage({ imageUrl, open, handler,caption }:DialogWithIm
 
 
  return (
-    <Dialog size="xs" open={open} onClose={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Dialog size="xs" open={open} handler={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       
       <DialogBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <img

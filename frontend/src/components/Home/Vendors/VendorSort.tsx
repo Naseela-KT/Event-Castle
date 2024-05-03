@@ -1,6 +1,10 @@
 import { Select, Option } from "@material-tailwind/react";
 
-const VendorSort = ({setSort}) => {
+interface VendorSortProps {
+  setSort: (sortOrder: number) => void;
+}
+
+const VendorSort:React.FC<VendorSortProps>=({setSort}) => {
 
   return (
     <Select

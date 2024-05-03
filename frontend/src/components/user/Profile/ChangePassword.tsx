@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { validate } from "../../../validations/common/changePwdValidation";
 import { useSelector } from "react-redux";
 import UserRootState from "../../../redux/rootstate/UserState";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { USER } from "../../../config/constants/constants";
 
 interface FormValues {

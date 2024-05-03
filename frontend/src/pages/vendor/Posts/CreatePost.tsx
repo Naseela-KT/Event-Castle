@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -23,7 +24,7 @@ const CreatePost = () => {
       useEffect(() => {
         console.log(vendor?._id);
       }, []);
-    
+      const [imageSrc, setImageSrc] = useState<string | undefined>();
       const [caption, setCaption] = useState<string>("");
       const [file, setFile] = useState<File | undefined>(undefined);
       const [cropData, setCropData] = useState("#");
@@ -44,6 +45,7 @@ const CreatePost = () => {
         const reader = new FileReader();
         reader.onload = () => {
             setFile(reader.result as any);
+            setImageSrc(reader.result as string)
         };
         reader.readAsDataURL(files[0]);
       };
@@ -53,7 +55,7 @@ const CreatePost = () => {
           const croppedCanvas = cropperRef.current.cropper.getCroppedCanvas();
           croppedCanvas.toBlob((blob) => {
             setCroppedImageBlob(blob);
-            setCropData(URL.createObjectURL(blob))
+            setCropData(URL.createObjectURL(blob!))
           });
         }
      };
@@ -139,7 +141,7 @@ const CreatePost = () => {
                 style={{ height: 400, width: "90%",marginRight:"10px" }}
                 initialAspectRatio={1}
                 preview=".img-preview"
-                src={file}
+                src={imageSrc}
                 ref={cropperRef}
                 viewMode={1}
                 guides={true}

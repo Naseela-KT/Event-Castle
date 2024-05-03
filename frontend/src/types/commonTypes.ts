@@ -31,6 +31,7 @@ export interface Booking {
   status: string;
   payment_status: string;
   amount: number;
+  refundAmount:number;
 }
 
 export interface Payment {

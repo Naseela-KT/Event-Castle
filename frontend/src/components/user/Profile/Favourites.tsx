@@ -20,9 +20,15 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '../../common/Pagination';
 import { USER } from '../../../config/constants/constants';
 
+interface Favourite {
+  _id: string;
+  coverpicUrl:string;
+  name:string
+}
+
 export default function Favourites() {
   const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null); // State to hold the selected id
+  const [selectedId, setSelectedId] = useState(""); // State to hold the selected id
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
@@ -32,7 +38,7 @@ export default function Favourites() {
   };
   
   const handleClose = () => setOpen(false); // Close the dialog
-  const [favourites, setFavourites] = useState([]);
+  const [favourites, setFavourites] = useState<Favourite[]>([]);
   const user = useSelector((state: UserRootState) => state.user.userdata);
 
   useEffect(() => {
@@ -58,7 +64,7 @@ export default function Favourites() {
   };
 
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id:string) => {
     axiosInstance
       .delete(`/delete-favorite-vendor?vendorId=${id}&userId=${user?._id}`, {
         withCredentials: true,
@@ -68,7 +74,7 @@ export default function Favourites() {
         handleClose();
         if(response.data.userData){
           toast.success("Vendor Profile Removed from Favourites!")
-          setFavourites(favourites.filter(fav => fav._id!== id));
+          setFavourites(favourites?.filter((fav) => fav._id !== id));
         }
         
       })

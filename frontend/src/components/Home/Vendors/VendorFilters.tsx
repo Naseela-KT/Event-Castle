@@ -4,13 +4,21 @@ import {
   AccordionHeader,
   AccordionBody,
   Checkbox,
-
 } from "@material-tailwind/react";
+
 
 interface IconProps {
   id: number;
   open: number;
 }
+
+interface VendorFiltersProps {
+  setSelectLocation: React.Dispatch<React.SetStateAction<string[]>>; // Correct type for state setter
+  vendorTypeData: { _id: string; type: string }[]; // Correct type for vendor data
+  locations: string[];
+  setCategory: React.Dispatch<React.SetStateAction<string[]>>; // Correct type for state setter
+}
+
 
 function Icon({ id, open }: IconProps) {
   return (
@@ -31,33 +39,42 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = ({
+
+
+const VendorFilters:React.FC<VendorFiltersProps>=({
   setSelectLocation,
   vendorTypeData,
   locations,
-  setCategory
+  setCategory,
 }) => {
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>
     setOpen(open === value ? 0 : value);
 
-
-  const handleCategoryChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value, checked } = e.target;
     if (checked) {
-      setCategory(prevCategories => [...prevCategories, value]);
+      setCategory((prevCategories) => [...prevCategories, value]);
     } else {
-      setCategory(prevCategories => prevCategories.filter(category => category !== value));
+      setCategory((prevCategories) =>
+        prevCategories.filter((category) => category !== value)
+      );
     }
   };
 
-  const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLocationChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value, checked } = e.target;
     if (checked) {
-      setSelectLocation(prevLocation => [...prevLocation, value]);
+      setSelectLocation((prevLocation) => [...prevLocation, value]);
     } else {
-      setSelectLocation(prevLocation => prevLocation.filter(location => location !== value));
+      setSelectLocation((prevLocation) =>
+        prevLocation.filter((location) => location !== value)
+      );
     }
   };
 
@@ -112,7 +129,7 @@ const VendorFilters = ({
           Location
         </AccordionHeader>
         <AccordionBody>
-          {locations?.map((location,index) => (
+          {locations?.map((location, index) => (
             <Checkbox
               key={index}
               label={location}

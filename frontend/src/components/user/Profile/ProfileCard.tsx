@@ -16,23 +16,10 @@ import { USER } from "../../../config/constants/constants";
 
 interface FormInputs {
   name: string;
-  phone: string;
+  phone: string | undefined ;
 }
 
-// interface FormErrors {
-//  name?: string;
-//  phone?: string;
-// }
 
-export interface UserData {
-  name: string;
-  email: string;
-  _id: string;
-  isActive: boolean;
-  image: string;
-  phone: string;
-  imageUrl:string
-}
 
 
 const ProfileCard = () => {
@@ -40,7 +27,7 @@ const ProfileCard = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [inputs, setInputs] = useState<FormInputs>({
     name: user?.name || "",
-    phone: user?.phone || "",
+    phone: user?.phone?.toString(),
   });
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -56,7 +43,9 @@ const ProfileCard = () => {
     // Submit form data
     const formData = new FormData();
     formData.append("name", inputs.name);
-    formData.append("phone", inputs.phone);
+    if (inputs.phone) {
+      formData.append("phone", inputs.phone.toString()); // Convert to string
+    }
     if (file) {
       formData.append("image", file, file.name);
     }

@@ -3,16 +3,26 @@
 import { Link } from 'react-router-dom'
 import { axiosInstance} from '../../../../config/api/axiosinstance'
 import { useEffect, useState } from 'react'
+import { Chats } from '../../../../types/commonTypes';
+import { VendorData } from '../../../../types/vendorTypes';
+import { UserData } from '../../../../types/userTypes';
 
 
 
+interface ConversationsProps {
+  conversation: Chats;
+  currentUser: Partial<VendorData | null>;
+  active:boolean;
+  currentchat:Chats | null
+}
 
-const Conversation=({conversation , currentUser , active,currentchat}) => {
-  const [user , setUser] = useState(null)
+
+const Conversation:React.FC<ConversationsProps>=({conversation , currentUser , active,currentchat}) => {
+  const [user , setUser] = useState<UserData>()
 
   useEffect(()=>{
 
-    const friendId = conversation.members.find((m)=> m !== currentUser._id)
+    const friendId = conversation.members.find((m)=> m !== currentUser?._id)
 
     const getUser = async ()=>{
       try {
@@ -71,4 +81,4 @@ const Conversation=({conversation , currentUser , active,currentchat}) => {
   )
 }
 
-export default Conversation
+export default Conversation;

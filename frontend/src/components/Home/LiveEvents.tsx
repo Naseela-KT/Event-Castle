@@ -9,7 +9,16 @@ import {
 import { axiosInstance } from '../../config/api/axiosinstance';
 import { Link } from 'react-router-dom';
 
-function Icon({ open }) {
+interface IconProps {
+  open: boolean; 
+}
+
+interface Live {
+  _id: string;
+  url: string;
+}
+
+const Icon: React.FC<IconProps> = ({ open }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,12 +35,9 @@ function Icon({ open }) {
       />
     </svg>
   );
-}
+};
 
-interface Live {
-  _id: string;
-  url: string;
-}
+
 
 const LiveEvents = () => {
   const [live, setLive] = useState<Live[]>([]);
@@ -68,7 +74,7 @@ const LiveEvents = () => {
       >
         <Accordion
           open={alwaysOpen}
-          icon={<Icon open={handleAlwaysOpen} />}
+          icon={<Icon open={alwaysOpen} />}
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}

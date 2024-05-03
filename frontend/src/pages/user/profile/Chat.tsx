@@ -33,6 +33,8 @@ const BUCKET_REGION = import.meta.env.VITE_BUCKET_REGION || "";
 const BUCKET_NAME = import.meta.env.VITE_BUCKET_NAME || "";
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY || "";
 
+
+
 const Chat = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
@@ -65,7 +67,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io("http://localhost:5000");
     socket.current?.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,

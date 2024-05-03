@@ -3,12 +3,13 @@ import UserRootState from '../../../redux/rootstate/UserState';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../config/api/axiosinstance';
 import Pagination from '../../common/Pagination';
+import { Booking } from '../../../types/commonTypes';
 
 const Wallet = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [transaction, setTransaction] = useState([]);
+  const [transaction, setTransaction] = useState<Booking[]>([]);
 
   useEffect(() => {
     setTran(currentPage);

@@ -22,7 +22,7 @@ const VendorPosts= () => {
   );
  const [posts, setPosts] = useState<Post[]>([]);
  const [fetchTrigger, setFetchTrigger] = useState(false);
- const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+ const [selectedPost, setSelectedPost] = useState<Partial<Post>>();
  const [open, setOpen] = useState(false);
  const navigate = useNavigate();
  const location = useLocation();
@@ -82,8 +82,8 @@ const VendorPosts= () => {
           
           {selectedPost && (
             <DialogWithImage
-            caption={selectedPost.caption}
-              imageUrl={selectedPost.imageUrl}
+            caption={selectedPost.caption!}
+              imageUrl={selectedPost.imageUrl!}
               open={open}
               handler={handleOpen}
             />

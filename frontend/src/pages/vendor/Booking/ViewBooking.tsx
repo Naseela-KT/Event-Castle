@@ -14,7 +14,7 @@ import { Booking } from '../../../types/commonTypes';
 
 
 const ViewBooking = () => {
-  const [bookings, setBookings] = useState<Booking>({});
+  const [bookings, setBookings] = useState<Booking>();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
@@ -32,10 +32,15 @@ const ViewBooking = () => {
   }, [id]);
 
   const handleStatusChange = (newStatus: string) => {
-    setBookings((prevBookings) => ({
-      ...prevBookings,
-      status: newStatus,
-    }));
+    setBookings((prevBookings) => {
+      if (!prevBookings) {
+        return;
+      }
+      return {
+        ...prevBookings,
+        status: newStatus,
+      };
+    });
   };
 
   return (
@@ -77,7 +82,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.eventName}
+                  {bookings?.eventName}
                 </Typography>
               </div>
               <div>
@@ -99,7 +104,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.city}
+                  {bookings?.city}
                 </Typography>
               </div>
               <div>
@@ -121,7 +126,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.date}
+                  {bookings?.date}
                 </Typography>
               </div>
               <div>
@@ -138,9 +143,9 @@ const ViewBooking = () => {
                 <Typography
                   variant="small"
                   color={
-                    bookings.status === 'Accepted'
+                    bookings?.status === 'Accepted'
                       ? 'green'
-                      : bookings.status === 'Rejected'
+                      : bookings?.status === 'Rejected'
                         ? 'red'
                         : 'blue'
                   }
@@ -149,7 +154,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.status}
+                  {bookings?.status}
                 </Typography>
               </div>
             </div>
@@ -180,7 +185,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.name}
+                  {bookings?.name}
                 </Typography>
               </div>
               <div>
@@ -202,7 +207,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.mobile}
+                  {bookings?.mobile}
                 </Typography>
               </div>
               <div>
@@ -224,7 +229,7 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.city}
+                  {bookings?.city}
                 </Typography>
                 <Typography
                   variant="small"
@@ -234,14 +239,14 @@ const ViewBooking = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  {bookings.pin}
+                  {bookings?.pin}
                 </Typography>
               </div>
             </div>
           </CardBody>
         </Card>
         <UpdateStatus
-          bookingId={bookings._id}
+          bookingId={bookings?._id}
           onStatusChange={handleStatusChange}
         />
       </div>
@@ -279,7 +284,7 @@ const ViewBooking = () => {
             onPointerLeaveCapture={undefined}
           >
             Status :{' '}
-            <span className="text-blue-200">{bookings.payment_status}</span>
+            <span className="text-blue-200">{bookings?.payment_status}</span>
           </Typography>
         </CardHeader>
 

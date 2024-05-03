@@ -54,7 +54,7 @@ function Icon() {
 const SingleBooking = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const [booking, setBooking] = useState<Booking>({});
+  const [booking, setBooking] = useState<Booking>();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
@@ -313,7 +313,7 @@ const SingleBooking = () => {
           </CardBody>
         </Card>
       </div>
-      <PaymentCard booking={booking} />
+      <PaymentCard booking={booking!} />
       <Dialog
       size='xs'
         open={open}
