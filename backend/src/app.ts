@@ -11,6 +11,8 @@ import {userEmailVerifyOtp, userOtpExpiration,vendorOtpExpiration} from './middl
 import cookieParser = require('cookie-parser');
 import messageRoutes from './routes/messageRoutes';
 import chatRoute from './routes/conversationRoutes'
+import path from 'path'
+import { Request,Response,NextFunction } from 'express';
 
 import initializeSocket from './socket';
 import {createServer} from 'http';
@@ -26,9 +28,12 @@ const server = createServer(app)
 
 
 app.use(cors({
-  origin:["http://localhost:5000"],
+  origin:["http://localhost:5000","https://eventcastle.online"],
   credentials:true
 }));
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'../../frontend/dist')))
 
 const sessionMiddleware: RequestHandler = session({
   secret: 'cfcyygyv',
@@ -62,7 +67,16 @@ app.use('/api/vendor', vendorRoutes);
 app.use('/api/messages',messageRoutes)
 app.use('/api/conversation',chatRoute)
 
+app.use((err:any, req:Request, res:Response, next:NextFunction) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+});
+
 initializeSocket(server);
+app.get('*',(req:Request,res:Response) =>{
+  res.sendFile(path.join(__dirname,'../../frontend/dist/index.html'))
+})
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => {

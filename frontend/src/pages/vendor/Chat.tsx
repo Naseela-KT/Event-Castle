@@ -32,7 +32,7 @@ const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY || "";
 const BUCKET_REGION = import.meta.env.VITE_BUCKET_REGION || "";
 const BUCKET_NAME = import.meta.env.VITE_BUCKET_NAME || "";
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY || "";
-
+const VITE_CHAT_BASE=import.meta.env.VITE_CHAT_BASE || "";
 
 const Chat = () => {
   // const user = useSelector((state: UserRootState) => state.user.userdata);
@@ -72,7 +72,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.current = io(VITE_CHAT_BASE);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,
