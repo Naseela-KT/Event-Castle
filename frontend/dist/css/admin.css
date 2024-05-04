@@ -1,0 +1,32 @@
+
+
+.sidebar {
+    z-index: 30;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 250px; /* Adjust the width as needed */
+    height: 100vh; /* Make the sidebar full height */
+    overflow-y: hidden; /* Prevent scrolling within the sidebar */
+}
+
+.mainContent {
+    margin-left: 250px; /* Adjust this value to match the width of your sidebar */
+    height: 100vh; /* Make the main content area full height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+
+
+@media (max-width: 768px) {
+    .mainContent {
+        margin-left: 30px; /* Adjust the margin-left to match the new sidebar width */
+    }
+}
+
+@media (max-width: 340px) {
+    .mainContent {
+        margin-left: 10px; /* Adjust the margin-left to match the new sidebar width */
+    }
+}
