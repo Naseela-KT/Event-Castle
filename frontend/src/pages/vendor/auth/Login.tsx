@@ -67,7 +67,7 @@ const VendorLoginForm = () => {
       <div
         className="w-full md:w-1/2 h-full object-cover"
         style={{
-          backgroundImage: `url('/public/imgs/vendor-bg.png')`,
+          backgroundImage: `url('/imgs/vendor-bg.png')`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backdropFilter: "revert-layer",

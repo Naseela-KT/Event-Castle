@@ -75,7 +75,7 @@ const AdminLogin = () => {
       />
       <div className="h-screen flex flex-col justify-center items-center lg:grid lg:grid-cols-2">
       <img
-          src="public/imgs/login-side-image.svg"
+          src="/imgs/login-side-image.svg"
           className="hidden lg:block w-1/2 hover:scale-150 transition-all duration-500 transform mx-300"
         />
         <Card

@@ -15,7 +15,7 @@ const SubsribeCard = () => {
             Get news in your inbox every week! We hate spam too, so no worries about this.
           </Typography>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 md:flex-row">
-            <div className="w-80">
+            <div className="w-60 md:w-80 lg:w-80 xl:w-80">
               <Input label="Email" color="white" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
             </div>
             <Button size="md" className="lg:w-32" fullWidth color="white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

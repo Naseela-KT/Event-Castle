@@ -155,7 +155,7 @@ const Navbar = () => {
           {user ? (<>
           <NotificationIcon/>
             <Menu>
-              <MenuHandler>
+              {user?.imageUrl? <MenuHandler>
                 <Avatar
                   size="sm"
                   variant="circular"
@@ -166,7 +166,10 @@ const Navbar = () => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 />
-              </MenuHandler>
+              </MenuHandler>: <MenuHandler>
+                {user?.name}
+              </MenuHandler>}
+             
               <MenuList
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -332,11 +335,7 @@ const Navbar = () => {
       >
         <div className="container mx-auto">
           {navList}
-          <a
-            href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
-            target="_blank"
-            className="mb-2 block"
-          >
+        <Link to={USER.PROFILE}>
             <Button
               variant="text"
               size="sm"
@@ -345,12 +344,12 @@ const Navbar = () => {
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
-              pro version
+              Profile
             </Button>
-          </a>
+            </Link>
         </div>
         <div>
-          <Link to={"/"}>
+    
             <Button
               variant="gradient"
               size="sm"
@@ -358,10 +357,11 @@ const Navbar = () => {
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
+              onClick={handleLogout}
             >
-              free download
+              Logout
             </Button>
-          </Link>
+        
         </div>
       </MobileNav>
     </MTNavbar>

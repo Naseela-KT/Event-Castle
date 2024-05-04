@@ -16,6 +16,7 @@ import { VendorData } from "../../types/vendorTypes";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/api/axiosinstance";
 
+
 function Home() {
   const [vendors, setVendors] = useState<VendorData[]>([]);
   const [search, setSearch] = useState("");
@@ -77,57 +78,61 @@ function Home() {
         </div>
       </div>
       <section className="-mt-20 bg-white px-4 pb-20 pt-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-1 lg:grid-cols-1 lg:mx-30">
-            <Card
-              className="mt-6 w-full"
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            >
-              <CardBody
-                className="flex justify-between items-center"
-                placeholder={undefined}
+  <div className="container mx-auto">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-1 lg:grid-cols-1 lg:mx-30">
+      <Card
+        className="mt-6 w-full"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        <CardBody
+          className="flex flex-col lg:flex-row justify-between items-center"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <div className="flex flex-col lg:flex-row w-full lg:space-x-4">
+            {/* Input field covers 100% in small screens and 80% in large screens */}
+            <div className="w-full lg:w-4/5">
+              <Input
+                label="Search"
+                size="lg"
+                name="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
-              >
-                {/* Adjust the width for input and button */}
-                <div className="flex w-full">
-                  {/* Input field covers 80% */}
-                  <div className="w-4/5">
-                    <Input
-                      label="Search"
-                      size="lg"
-                      name="search"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      onPointerEnterCapture={undefined}
-                      onPointerLeaveCapture={undefined}
-                      crossOrigin={undefined}
-                    />
-                  </div>
+                crossOrigin={undefined}
+              />
+            </div>
 
-                  {/* "Find Vendors" button covers the remaining 20% */}
-                  <div className="w-1/5 pl-4">
-                    {" "}
-                    {/* Adding padding for spacing */}
-                    <Link to={search?.length>0?`${USER.VENDORS}?search=${search}`:`${USER.VENDORS}`}>
-                      <Button
-                        className="w-full bg-black"
-                        placeholder={undefined}
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                      >
-                        Find Vendors
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
+            {/* "Find Vendors" button covers 100% in small screens and 20% in large screens */}
+            <div className="w-full lg:w-1/5 mt-4 lg:mt-0">
+              <Link
+                to={
+                  search?.length > 0
+                    ? `${USER.VENDORS}?search=${search}`
+                    : `${USER.VENDORS}`
+                }
+              >
+                <Button
+                  className="w-full bg-black"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Find Vendors
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</section>
+
 
       <LiveEvents />
 
@@ -140,58 +145,58 @@ function Home() {
         </h1>
         <VendorTypesCarousels />
       </section> */}
-      <section>
-        <div className="mt-32 flex flex-wrap items-start mb-20 w-full h-full bg-[url('/imgs/bg-4.jpg')] bg-cover bg-center">
-          <div className="mx-20 -mt-8 w-full px-4 md:w-5/12">
-            <div className="lg:mx-20 lg:my-20 mb-10 px-4 md:w-full">
-              <Card
-                className="shadow-lg border shadow-gray-500/10 rounded-lg"
+     <section>
+  <div className="flex flex-wrap items-start w-full h-full bg-[url('/imgs/bg-4.jpg')] bg-cover bg-center mt-32 mb-20">
+    {/* This div is centered for smaller screens and remains at the same location for larger screens */}
+    <div className="w-full md:w-5/12 px-4 md:px-20 lg:px-20 md:mt-8 lg:mt-0 p-20">
+      <div className="flex justify-center">
+        {/* Ensure the card is centered on smaller screens */}
+        <div className="w-full md:w-auto lg:w-auto">
+          <Card
+            className="shadow-lg border shadow-gray-500/10 rounded-lg mx-auto lg:mx-0"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            <CardBody
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="font-normal"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                <CardBody
-                  placeholder={undefined}
-                  onPointerEnterCapture={undefined}
-                  onPointerLeaveCapture={undefined}
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    Events
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-3 mt-2 font-bold"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    Professional Event Planning
-                  </Typography>
-                  <Typography
-                    className="font-normal text-blue-gray-500"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    Experience the convenience of personalized service, tailored
-                    to meet your company's unique needs. Our experts handle
-                    everything from venue selection to logistics, so you can
-                    focus on your business.
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
-          </div>
+                Events
+              </Typography>
+              <Typography
+                      variant="h5"
+                      color="blue-gray"
+                      className="mb-3 mt-2 font-bold"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}  onPointerLeaveCapture={undefined}              >
+                Professional Event Planning
+              </Typography>
+              <Typography
+                className="font-normal text-blue-gray-500"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                Experience the convenience of personalized service, tailored to meet your company's unique needs. Our experts handle everything from venue selection to logistics, so you can focus on your business.
+              </Typography>
+            </CardBody>
+          </Card>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
       <section className="mt-30  mx-20 items-center">
         <h1
           style={{ fontFamily: "playfair display", fontSize: "30px" }}
@@ -200,7 +205,7 @@ function Home() {
           TOP &nbsp;RATED &nbsp;VENDORS
         </h1>
         <div className="flex flex-wrap items-center w-full">
-          <div className="mx-auto px-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+          <div className="mx-auto md:m-20 px-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8">
             {vendors?.map((vendor, index) => (
               <Card
                 key={index}
@@ -282,7 +287,7 @@ function Home() {
         <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-2xl">
           <h1
             style={{ fontFamily: "playfair display", fontSize: "30px" }}
-            className="mt-10 text-center"
+            className="mt-10 text-center sm:p-4"
           >
             ABOUT &nbsp;OUR &nbsp;PLANNING &nbsp;PROCESS
           </h1>

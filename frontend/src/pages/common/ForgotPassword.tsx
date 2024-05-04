@@ -147,7 +147,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row items-start">
-    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage: location.pathname === "/forgot-password" ? `url('/public/imgs/login.png')` :location.pathname === "/vendor/forgot-password"?`url('/public/imgs/vendor-bg.png')`: "", backgroundSize: "cover", backgroundRepeat: "no-repeat", backdropFilter: "revert-layer"}}>
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage: location.pathname === "/forgot-password" ? `url('/imgs/login.png')` :location.pathname === "/vendor/forgot-password"?`url('/imgs/vendor-bg.png')`: "", backgroundSize: "cover", backgroundRepeat: "no-repeat", backdropFilter: "revert-layer"}}>
         {location.pathname === "/forgot-password"?(<><h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
           <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p></>):(<>  <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">
               Unlock Your Potential with Us
