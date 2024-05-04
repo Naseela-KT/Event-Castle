@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/app.js",
+  "main": "dist/app.js",
   "scripts": {
     "start": "nodemon ./src/app.ts",
     "build": "tsc"
