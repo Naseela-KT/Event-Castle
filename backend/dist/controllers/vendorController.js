@@ -199,7 +199,7 @@ class VendorController {
                 }
                 if (otp === otpCode) {
                     const vendor = yield vendorService_1.default.signup(email, password, name, phone, city, vendor_type);
-                    res.status(201).json({ vendor });
+                    res.status(201).json({ vendor: vendor });
                 }
                 else {
                     throw new customError_1.CustomError("Invalid otp !!", 400);
