@@ -55,15 +55,15 @@ const UserLogin = () => {
       axiosInstance
         .post("/login", values)
         .then((response) => {
-          console.log(response);
+         
           localStorage.setItem("userToken", response.data.token)
           localStorage.setItem("userRefresh", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
           navigate(USER.HOME);
         })
         .catch((error) => {
-          toast.error(error.response)
-          console.log("here", error);
+          console.log(error)
+          toast.error(error.response.data.message)
         });
     },
   });

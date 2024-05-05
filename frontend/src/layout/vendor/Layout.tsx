@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import {NavLink,useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { VENDOR } from "../../config/constants/constants";
-import {
-  ChevronDownIcon,
-
-} from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { axiosInstanceVendor } from "../../config/api/axiosinstance";
-import { logout } from "../../redux/slices/AdminSlice";
+import { logout } from "../../redux/slices/VendorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Accordion,
@@ -29,7 +26,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const vendorData = useSelector(
-    (state: VendorRootState) => state.vendor.vendordata,
+    (state: VendorRootState) => state.vendor.vendordata
   );
 
   const toggleSidebar = () => {
@@ -51,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       .get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
-        navigate(VENDOR.LOGIN);
+        navigate(`${VENDOR.LOGIN}`);
       })
       .catch((error) => {
         console.log("here", error);
@@ -64,7 +61,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <aside
         className={`fixed bg-white text-black w-64 p-4 h-full transition-transform border-r border-gray-300 ${
           isSidebarOpen ? "translate-x-0 z-999" : "-translate-x-64 pt-20"
-        } sm:translate-x-0`}>
+        } sm:translate-x-0`}
+      >
         {isSidebarOpen ? (
           <button className="ml-50" onClick={toggleSidebar}>
             <i className="fa-solid fa-arrow-left"></i>
@@ -259,15 +257,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 onPointerLeaveCapture={undefined}
               >
                 <AccordionHeader
-                className={`${
-                  pathname === "/posts" ||
-                  pathname.includes("post")
-                    ? "bg-gray-300 border-1 rounded-lg"
-                    : ""
-                }
+                  className={`${
+                    pathname === "/posts" || pathname.includes("post")
+                      ? "bg-gray-300 border-1 rounded-lg"
+                      : ""
+                  }
             border-b-0 p-3`}
                   onClick={() => handleOpen(2)}
-              
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
@@ -343,7 +339,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   onClick={() => handleOpen(3)}
                   className={`${
                     pathname === "/booking" ||
-                    pathname.includes("booking")||  pathname.includes("add-date")
+                    pathname.includes("booking") ||
+                    pathname.includes("add-date")
                       ? "bg-gray-300 border-1 rounded-lg"
                       : ""
                   }
@@ -401,68 +398,74 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                   <NavLink
-                              to={VENDOR.BOOKING_HISTORY}>
-                  <ListItem
-                    className="ml-10"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    Booking history
-                  </ListItem>
+                  <NavLink to={VENDOR.BOOKING_HISTORY}>
+                    <ListItem
+                      className="ml-10"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    >
+                      Booking history
+                    </ListItem>
                   </NavLink>
-                  <NavLink
-                              to={VENDOR.ADD_DATE}>
-                  <ListItem
-                    className="ml-10"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    Add date
-                  </ListItem>
+                  <NavLink to={VENDOR.ADD_DATE}>
+                    <ListItem
+                      className="ml-10"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    >
+                      Add date
+                    </ListItem>
                   </NavLink>
                 </List>
               </AccordionBody>
             </Accordion>
             <NavLink
-                  to={VENDOR.REVIEWS}
-                 className={pathname.includes("review")?"bg-gray-300 border-1 rounded-lg"
-                 : ""}>
-            <ListItem
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
+              to={VENDOR.REVIEWS}
+              className={
+                pathname.includes("review")
+                  ? "bg-gray-300 border-1 rounded-lg"
+                  : ""
+              }
             >
-              <ListItemPrefix
+              <ListItem
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                <i className="fa-regular fa-star"></i>
-              </ListItemPrefix>
-              Reviews
-            </ListItem>
+                <ListItemPrefix
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <i className="fa-regular fa-star"></i>
+                </ListItemPrefix>
+                Reviews
+              </ListItem>
             </NavLink>
             <NavLink
-                  to={VENDOR.NOTIFICATIONS}
-                  className={pathname.includes("notifications")?"bg-gray-300 border-1 rounded-lg"
-                 : ""}>
-            <ListItem
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
+              to={VENDOR.NOTIFICATIONS}
+              className={
+                pathname.includes("notifications")
+                  ? "bg-gray-300 border-1 rounded-lg"
+                  : ""
+              }
             >
-              <ListItemPrefix
+              <ListItem
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                <i className="fa-regular fa-bell"></i>
-              </ListItemPrefix>
-              Notifications
-            </ListItem>
+                <ListItemPrefix
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <i className="fa-regular fa-bell"></i>
+                </ListItemPrefix>
+                Notifications
+              </ListItem>
             </NavLink>
             <hr className="my-2 border-blue-gray-50" />
             <Button
@@ -525,21 +528,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           {/* Right-aligned icon */}
           <div className="r-2">
-          <NavLink to={VENDOR.CHAT}>
-          <i className="fa-solid fa-message"></i>
-          </NavLink>
-          <Avatar
-                          src={
-                            vendorData?.logoUrl?vendorData?.logoUrl:"/imgs/vendor/logo-default.svg"
-                          }
-                          className="ml-2"
-                          size="sm"
-                          placeholder={undefined}
-                          onPointerEnterCapture={undefined}
-                          onPointerLeaveCapture={undefined}
-                        />
+            <NavLink to={VENDOR.CHAT}>
+              <i className="fa-solid fa-message"></i>
+            </NavLink>
+            <Avatar
+              src={
+                vendorData?.logoUrl
+                  ? vendorData?.logoUrl
+                  : "/imgs/vendor/logo-default.jpeg"
+              }
+              className="ml-2"
+              size="sm"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            />
           </div>
-          
+
           <button onClick={toggleSidebar} className="sm:hidden">
             {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>

@@ -221,7 +221,7 @@ class VendorController{
           city,
           vendor_type
         );
-        res.status(201).json({vendor});
+        res.status(201).json({vendor:vendor});
       } else {
         throw new CustomError("Invalid otp !!", 400);
       }

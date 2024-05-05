@@ -161,8 +161,9 @@ const Navbar = () => {
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
+            variant="h6"
           >
-            <img src="/icons/logo.svg" alt="Event castle" className="w-22" />
+            Event Castle
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
@@ -179,7 +180,7 @@ const Navbar = () => {
                       alt="tania andrew"
                       className="cursor-pointer"
                       src={
-                        user?.imageUrl ? user.imageUrl : "fallback-image-url"
+                        user?.imageUrl ? user.imageUrl : "/imgs/user-default.svg"
                       }
                       placeholder={undefined}
                       onPointerEnterCapture={undefined}

@@ -65,7 +65,7 @@ const EditProfile: React.FC = () => {
       errors.city = "City is required";
     }
     if (!/^\d{10}$/.test(formState.phone.toString())) {
-      errors.phone = "Invalid phone number";
+      errors.phone = "Phone is required";
     }
   
     if (Object.keys(errors).length === 0) {

@@ -199,7 +199,7 @@ class UserService {
       };
     } catch (error) {
       console.error("Error in login:", error)
-
+      
     throw new CustomError("Failed to log in.", 500);
     }
   }

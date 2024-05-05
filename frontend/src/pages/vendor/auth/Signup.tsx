@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../validations/vendor/registerVal";
-import { VENDOR } from "../../../config/constants/constants";
+import { USER, VENDOR } from "../../../config/constants/constants";
 import { VendorType } from "../../../types/commonTypes";
 
 interface VendorFormValues {
@@ -338,7 +338,7 @@ const VendorSignupForm = () => {
               onPointerLeaveCapture={undefined}
             >
               Are you a user?
-              <Link to={VENDOR.SIGNUP}>
+              <Link to={USER.SIGNUP}>
                 <Typography
                   as="a"
                   href="#signup"
