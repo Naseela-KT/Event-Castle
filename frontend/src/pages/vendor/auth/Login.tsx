@@ -38,7 +38,7 @@ const VendorLoginForm = () => {
 
   useEffect(() => {
     if (vendor) {
-      navigate(VENDOR.VENDOR);
+      navigate(`${VENDOR.VENDOR}`);
     }
   }, []);
 
@@ -50,10 +50,11 @@ const VendorLoginForm = () => {
         .post("/login", values)
         .then((response) => {
           console.log(response);
+          toast.success("Successfully logged in!")
           localStorage.setItem("vendorToken",response.data.token);
           localStorage.setItem("vendorRefresh",response.data.refreshToken);
           dispatch(setVendorInfo(response.data.vendorData));
-          navigate(VENDOR.DASHBOARD);
+          navigate(`${VENDOR.DASHBOARD}`);
         })
         .catch((error) => {
           toast.error(error.response.data.message);

@@ -7,7 +7,7 @@ import { VENDOR } from '../../config/constants/constants';
 const VendorPrivateRoute = () => {
     const vendor = useSelector((state : VendorRootState) => state.vendor.isVendorSignedIn);
   return (
-    vendor ? <Outlet/>:<Navigate to={VENDOR.LOGIN} replace/>
+    vendor ? <Outlet/>:<Navigate to={`${VENDOR.LOGIN}`} replace/>
   )
 }
 

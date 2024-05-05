@@ -65,7 +65,7 @@ const VerifyEmail = () => {
                 console.log(response);
                 dispatch(setVendorInfo(response.data.vendor));
                 toast.success("Successfully registered..!");
-                navigate(VENDOR.DASHBOARD);
+                navigate(`${VENDOR.DASHBOARD}`);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
@@ -77,7 +77,7 @@ const VerifyEmail = () => {
                 console.log(response);
                 dispatch(setUserInfo(response.data.user));
                 toast.success("Successfully registered..!");
-                navigate(USER.HOME);
+                navigate(`${USER.HOME}`);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);

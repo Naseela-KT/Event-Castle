@@ -28,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       .get("/logout")
       .then(() => {
         dispatch(logout()); // Assuming you want to clear admin info on logout
-        navigate(ADMIN.LOGIN);
+        navigate(`${ADMIN.LOGIN}`);
       })
       .catch((error) => {
         console.log("here", error);

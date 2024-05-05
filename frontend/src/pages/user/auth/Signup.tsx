@@ -68,7 +68,7 @@ const UserSignup= () => {
           console.log(response);
           if (response.data.email) {
             toast.warn(response.data.message);
-            navigate(USER.VERIFY);
+            navigate(`${USER.VERIFY}`);
           }
         })
         .catch((error) => {
@@ -208,7 +208,7 @@ const UserSignup= () => {
                   console.log(res)
                   if(res.data.message) {
                     toast.success(res.data.message);
-                    navigate(USER.LOGIN);
+                    navigate(`${USER.LOGIN}`);
                   }
                 })
                 .catch((error) => {

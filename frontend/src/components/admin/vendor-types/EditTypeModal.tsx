@@ -104,7 +104,7 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
 
   useEffect(() => {
     if (open) {
-      navigate(ADMIN.VENDOR_TYPES, { replace: true });
+      navigate(`${ADMIN.VENDOR_TYPES}`, { replace: true });
     }
   }, [open, navigate]);
 

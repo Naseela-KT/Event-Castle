@@ -37,7 +37,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (admin) {
-      navigate(ADMIN.DASHBOARD);
+      navigate(`${ADMIN.DASHBOARD}`);
     }
   }, []);
 
@@ -57,7 +57,7 @@ const AdminLogin = () => {
           console.log(response.data.adminData);
 
           dispatch(setAdminInfo(response.data.adminData));
-          navigate(ADMIN.DASHBOARD);
+          navigate(`${ADMIN.DASHBOARD}`);
         })
         .catch((error) => {
           toast.error(error.response.data.message);

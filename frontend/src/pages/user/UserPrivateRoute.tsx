@@ -8,7 +8,7 @@ const UserPrivateRoute = () => {
     const user = useSelector((state : UserRootState) => state.user.userdata);
 
     return user?.isActive===false ? (
-      <Navigate to={USER.LOGIN} replace />
+      <Navigate to={`${USER.LOGIN}`} replace />
     ) : (
       <Outlet />
     );

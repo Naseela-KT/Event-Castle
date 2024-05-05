@@ -89,7 +89,7 @@ const VendorSignupForm = () => {
           console.log(response);
           if (response.data.email) {
             toast.warn(response.data.message);
-            navigate(VENDOR.VERIFY);
+            navigate(`${VENDOR.VERIFY}`);
           }
         })
         .catch((error) => {

@@ -93,7 +93,7 @@ const CreatePost = () => {
           .then((response) => {
             console.log(response);
             toast.success("Post added successfully...!");
-            navigate(VENDOR.VIEW_POSTS);
+            navigate(`${VENDOR.VIEW_POSTS}`);
           })
           .catch((error) => {
             toast.error(error.response.data.message);

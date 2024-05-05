@@ -58,7 +58,7 @@ export default function AddVendorType() {
         .then((response) => {
           console.log(response);
           setFormValues(initialValues);
-          navigate(ADMIN.VENDOR_TYPES, { replace: true });
+          navigate(`${ADMIN.VENDOR_TYPES}`, { replace: true });
         })
         .catch((error) => {
           toast.error(error.response.data.message);

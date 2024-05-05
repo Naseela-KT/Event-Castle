@@ -58,7 +58,7 @@ const ProfileCard = () => {
         console.log(response);
         toast.success("Profile updated successfully...!");
         dispatch(setUserInfo(response.data));
-        navigate(USER.PROFILE);
+        navigate(`${USER.PROFILE}`);
       })
       .catch((error) => {
         toast.error(error.response.data.message);

@@ -6,7 +6,7 @@ import { ADMIN } from '../../config/constants/constants';
 const AdminPrivateRoute = () => {
     const admin = useSelector((state : AdminRootState) => state.admin.isAdminSignedIn);
   return (
-    admin ? <Outlet/> :<Navigate to={ADMIN.LOGIN} replace/>
+    admin ? <Outlet/> :<Navigate to={`${ADMIN.LOGIN}`} replace/>
   )
 }
 

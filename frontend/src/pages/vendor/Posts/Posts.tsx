@@ -50,7 +50,7 @@ export default function Posts() {
       .then((response) => {
         toast.success(response.data.message);
         setFetchTrigger(!fetchTrigger);
-        navigate(VENDOR.VIEW_POSTS);
+        navigate(`${VENDOR.VIEW_POSTS}`);
       })
       .catch((error) => {
         toast.error(error.response.data.message);

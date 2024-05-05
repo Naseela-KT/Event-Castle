@@ -96,7 +96,7 @@ const ForgotPassword = () => {
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate(VENDOR.RESET_PWD);
+                navigate(`${VENDOR.RESET_PWD}`);
               })
               .catch((error) => {
                 toast.error(error.response.data.error);
@@ -107,7 +107,7 @@ const ForgotPassword = () => {
               .then((response) => {
                 console.log(response);
                 toast.success(response.data.message);
-                navigate(USER.RESET_PWD);
+                navigate(`${USER.RESET_PWD}`);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);

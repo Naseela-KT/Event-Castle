@@ -90,7 +90,7 @@ const EditProfile: React.FC = () => {
           console.log(response);
           setFormState(initialFormState); // Reset form state after successful submission
           toast.success("Profile updated successfully!");
-          navigate(VENDOR.VIEW_PROFILE);
+          navigate(`${VENDOR.VIEW_PROFILE}`);
         })
         .catch((error) => {
           toast.error(error.response.data.message);

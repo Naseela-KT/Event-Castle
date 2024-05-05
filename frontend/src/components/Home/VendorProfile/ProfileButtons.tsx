@@ -44,7 +44,7 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,us
     }
     try {
       await axiosInstanceChat.post('/' , body).then(()=>{
-        navigate(USER.CHAT)
+        navigate(`${USER.CHAT}`)
       })
     } catch(error) {
       console.log(error)

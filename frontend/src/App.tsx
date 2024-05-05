@@ -22,6 +22,7 @@ import Room from "./components/user/live/Room";
 import { USER, VENDOR } from "./config/constants/constants";
 import { Toaster } from "react-hot-toast";
 
+
 const App: React.FC = () => {
   const { pathname } = useLocation();
 

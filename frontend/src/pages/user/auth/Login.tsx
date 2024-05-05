@@ -59,7 +59,7 @@ const UserLogin = () => {
           localStorage.setItem("userToken", response.data.token)
           localStorage.setItem("userRefresh", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
-          navigate(USER.HOME);
+          navigate(`${USER.HOME}`);
         })
         .catch((error) => {
           console.log(error)
@@ -147,7 +147,7 @@ const UserLogin = () => {
               // localStorage.setItem("studentToken",res.data.token)//for setting token in local storage
               dispatch(setUserInfo(res.data.userData));
               toast.success(res.data.message);
-              navigate(USER.HOME);
+              navigate(`${USER.HOME}`);
             }
           })
           .catch((error) => {

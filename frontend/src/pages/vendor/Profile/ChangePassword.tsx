@@ -62,7 +62,7 @@ import Layout from "../../../layout/vendor/Layout";
           .then((response) => {
             console.log(response);
             toast.success("Password updated Successfully!")
-            navigate(VENDOR.VIEW_PROFILE);
+            navigate(`${VENDOR.VIEW_PROFILE}`);
           })
           .catch((error) => {
             // localStorage.removeItem("userToken");

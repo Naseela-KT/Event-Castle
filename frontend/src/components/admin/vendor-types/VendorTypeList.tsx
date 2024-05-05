@@ -39,7 +39,7 @@ const VendorTypeList = () => {
         setVendorType((prevVendorTypes) =>
           prevVendorTypes.filter((type) => type._id !== vendorTypeId),
         );
-        navigate(ADMIN.VENDOR_TYPES);
+        navigate(`${ADMIN.VENDOR_TYPES}`);
       })
       .catch((error) => {
         console.log('here', error);

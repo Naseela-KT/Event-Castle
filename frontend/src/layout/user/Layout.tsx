@@ -39,7 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       .get("/logout")
       .then(() => {
         dispatch(logout());
-        navigate(USER.LOGIN);
+        navigate(`${USER.LOGIN}`);
       })
       .catch((error) => {
         console.log("here", error);

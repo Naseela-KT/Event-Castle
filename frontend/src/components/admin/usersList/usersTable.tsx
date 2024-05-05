@@ -70,7 +70,7 @@ const UsersTable = () => {
           dispatch(logout()); // Dispatch logout action if the user is blocked
         }
         toast.success(response.data.message);
-        navigate(ADMIN.USERS);
+        navigate(`${ADMIN.USERS}`);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
