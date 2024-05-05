@@ -19,7 +19,7 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
             {title}
           </h4>
           <h4 className="ml-10 text-lg text-title-md font-bold text-black dark:text-white">
-            {value}
+            {value?value:0}
           </h4>
        
       </div>

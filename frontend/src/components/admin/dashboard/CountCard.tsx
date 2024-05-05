@@ -24,16 +24,16 @@ const CountCard = () => {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 mb-3">
       <CardDataStats title="Users" value={users}>
         <i
-          className="fa-solid fa-users justify-center"
+          className="fa-solid fa-users justify-center text-pink-400"
           style={{ fontSize: "36px" }}
         ></i>
       </CardDataStats>
       <CardDataStats title="Vendors" value={vendors}>
-      <i className="fa-solid fa-user-tie" style={{ fontSize: "36px" }}></i>
+      <i className="fa-solid fa-user-tie text-pink-400" style={{ fontSize: "36px" }}></i>
     
       </CardDataStats>
       <CardDataStats title="Booking" value={booking}>
-      <i className="fa-regular fa-calendar-check"
+      <i className="fa-regular fa-calendar-check text-pink-400"
           style={{ fontSize: "36px" }}
         ></i>
       </CardDataStats>

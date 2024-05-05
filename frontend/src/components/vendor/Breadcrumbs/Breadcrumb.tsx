@@ -1,26 +1,38 @@
-import { Breadcrumbs } from "@material-tailwind/react";
+import { Breadcrumbs, Typography } from "@material-tailwind/react";
 import { VENDOR } from "../../../config/constants/constants";
 
 interface BreadcrumbProps {
   pageName: string;
-  folderName:string;
+  folderName: string;
 }
-const Breadcrumb = ({ pageName ,folderName}: BreadcrumbProps) => {
+const Breadcrumb = ({ pageName, folderName }: BreadcrumbProps) => {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+      <Typography
+        variant="h5"
+        className="font-bold mb-5 ml-2"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
         {pageName}
-      </h2>
+      </Typography>
 
-    <Breadcrumbs placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <a href={VENDOR.DASHBOARD} className="opacity-60">
-        Dashboard
-      </a>
-      {folderName&& <a href="#" className="opacity-60">
-        {folderName}
-      </a>}
-      <a href="#">{pageName}</a>
-    </Breadcrumbs>
+      <Breadcrumbs
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        <a href={VENDOR.DASHBOARD} className="opacity-60">
+          Dashboard
+        </a>
+        {folderName && (
+          <a href="#" className="opacity-60">
+            {folderName}
+          </a>
+        )}
+        <a href="#">{pageName}</a>
+      </Breadcrumbs>
     </div>
   );
 };

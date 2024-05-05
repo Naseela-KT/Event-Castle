@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import { useLocation } from 'react-router-dom';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,7 @@ import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { Button } from '@material-tailwind/react';
 import { toast } from 'react-toastify';
 import { VendorData } from '../../../types/vendorTypes';
+import Layout from '../../../layout/vendor/Layout';
 
 
 const Profile = () => {
@@ -48,15 +48,15 @@ const Profile = () => {
   };
 
   return (
-    <DefaultLayout>
+    <Layout>
       <Breadcrumb pageName="Profile" folderName="" />
 
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
        
         <div className="relative z-20 h-35 md:h-65">
           <img
-            src={vendor?.coverpicUrl}
-            alt="profile cover"
+            src={vendor?.coverpicUrl?vendor?.coverpicUrl:"/imgs/vendor/cover-default.jpg"}
+            alt="Cover"
             className="h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center"
           />
             {vendor?.isVerified?<svg
@@ -82,8 +82,8 @@ const Profile = () => {
           <div className="relative z-30 mx-auto -mt-16 h-40 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
             <div className="relative drop-shadow-2">
               <img
-                src={vendor?.logoUrl}
-                alt="profile"
+                src={vendor?.logoUrl?vendor?.logoUrl:"/imgs/vendor/logo-default.jpeg"}
+                alt="Logo"
                 className="rounded-full w-full h-30 object-cover"
               />
              
@@ -149,7 +149,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </Layout>
   );
 };
 

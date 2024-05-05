@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import UserRootState from '../../../redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 import { USER } from '../../../config/constants/constants';
-
+import { toast as hottoast } from "react-hot-toast";
 
 interface VendorReviewProps {
   id: string | undefined;  
@@ -30,13 +30,24 @@ const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!user) {
+      hottoast.error('User must be logged in to add a review.', {
+        style: {
+          background: 'red', // Red background
+          color: '#FFFFFF', // White text
+        },
+        duration: 3000,
+      });
+      return;
+    }
+
     if (rating === 0) {
-      toast.error("Please select a rating.");
+      hottoast.error("Please select a rating.");
       return;
     }
   
     if (!review.trim()) {
-      toast.error("Please enter a review.");
+      hottoast.error("Please enter a review.");
       return;
     }
    
@@ -51,14 +62,14 @@ const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
       navigate(`${USER.VIEW_VENDOR}?id=${id}`);
     })
     .catch((error) => {
-      toast.error(error.response.data.message)
+      hottoast.error(error.response.data.message)
       console.log("here", error);
     });
 
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-8 bg-gray rounded-md shadow-md">
+    <div className="max-w-2xl mx-5 lg:mx-auto mt-8 p-8 bg-gray rounded-md shadow-md">
       <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

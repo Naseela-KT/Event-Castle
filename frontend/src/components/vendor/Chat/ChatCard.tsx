@@ -148,8 +148,8 @@ const ChatCard = () => {
       </CardBody>
     </Card>
   ) : (
-    <Typography variant="h6" color="red" className="text-center mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      No notifications yet
+    <Typography variant="h5" color="red" className="text-center mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      No notifications yet!
     </Typography>
   )}
 </div>

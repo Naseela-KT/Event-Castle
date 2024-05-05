@@ -1,13 +1,14 @@
-import DefaultLayout from '../../layout/vendor/VendorLayout'
+
 import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb'
 import ChatCard from '../../components/vendor/Chat/ChatCard'
+import Layout from '../../layout/vendor/Layout'
 
 const Notifications = () => {
   return (
-    <DefaultLayout>
+    <Layout>
     <Breadcrumb pageName="Notifications" folderName="" />
         <ChatCard/>
-    </DefaultLayout>
+    </Layout>
   )
 }
 

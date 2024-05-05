@@ -1,9 +1,9 @@
 import React from "react";
 import CardDataStats from "../../components/vendor/CardDataStats";
-import DefaultLayout from "../../layout/vendor/VendorLayout";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../redux/rootstate/VendorState";
 import ChartOne from "../../components/vendor/Charts/ChartOne";
+import Layout from "../../layout/vendor/Layout";
 
 
 const Dashboard: React.FC = () => {
@@ -12,28 +12,28 @@ const Dashboard: React.FC = () => {
   );
 
   return (
-    <DefaultLayout>
+    <Layout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 mb-3">
         <CardDataStats title="Booking" value={vendor?.totalBooking}>
           <i
-            className="flex fa-regular fa-calendar-check justify-center"
+            className="flex fa-regular fa-calendar-check justify-center text-pink-400"
             style={{ fontSize: "36px" }}
           ></i>
         </CardDataStats>
         <CardDataStats title="Rating" value={vendor?.totalRating}>
           <i
-            className="fa-regular fa-star justify-center"
+            className="fa-regular fa-star justify-center text-pink-400"
             style={{ fontSize: "36px" }}
           ></i>
         </CardDataStats>
         <CardDataStats title="Reviews" value={vendor?.reviews?.length}>
-        <i className="fa-regular fa-pen-to-square" style={{ fontSize: "36px" }}></i>
+        <i className="fa-regular fa-pen-to-square text-pink-400" style={{ fontSize: "36px" }}></i>
         </CardDataStats>
       </div>
       <ChartOne/>
       {/* <ChartTwo/>
       <ChartThree/> */}
-    </DefaultLayout>
+    </Layout>
   );
 };
 

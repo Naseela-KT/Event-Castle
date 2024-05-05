@@ -5,6 +5,7 @@ import VendorRootState from '../../../redux/rootstate/VendorState';
 import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
 import { VENDOR } from '../../../config/constants/constants';
+import { Typography } from '@material-tailwind/react';
 
 interface Booking {
   _id: string;
@@ -48,8 +49,9 @@ const BookingTable = () => {
     setCurrentPage(page);
   };
 
-  return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+  return (<>
+    {bookings?.length>0?(
+      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
@@ -60,7 +62,7 @@ const BookingTable = () => {
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 City
               </th>
-
+  
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Date
               </th>
@@ -83,7 +85,7 @@ const BookingTable = () => {
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">{item.city}</p>
                 </td>
-
+  
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">{item.date}</p>
                 </td>
@@ -138,8 +140,11 @@ const BookingTable = () => {
           />
         )}
       </div>
-    </div>
-  );
+    </div>):( <Typography variant="h5" color="red" className="text-center mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    No bookings yet!
+  </Typography>)}
+
+  </>)
 };
 
 export default BookingTable;

@@ -117,7 +117,7 @@ function Home() {
                 }
               >
                 <Button
-                  className="w-full bg-black"
+                  className="w-full bg-pink-400"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
@@ -197,7 +197,7 @@ function Home() {
   </div>
 </section>
 
-      <section className="mt-30  mx-20 items-center">
+      <section className="mt-30 mx-10 items-center">
         <h1
           style={{ fontFamily: "playfair display", fontSize: "30px" }}
           className="text-center mb-10"
@@ -205,11 +205,11 @@ function Home() {
           TOP &nbsp;RATED &nbsp;VENDORS
         </h1>
         <div className="flex flex-wrap items-center w-full">
-          <div className="mx-auto md:m-20 px-4 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+          <div className="mx-auto md:m-10 sm:m-5 px-4 sm:grid sm:grid-cols-2 grid-cols-4 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-3 gap-8">
             {vendors?.map((vendor, index) => (
               <Card
                 key={index}
-                className="shadow-lg  shadow-gray-500/10 rounded-lg w-full"
+                className="shadow-lg  shadow-gray-500/10 rounded-lg w-full mb-2"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -224,7 +224,7 @@ function Home() {
                   >
                     <img
                       alt="Card Image"
-                      src={vendor.coverpicUrl}
+                      src={vendor.coverpicUrl?vendor.coverpicUrl:"/imgs/vendor/cover-default.jpg"}
                       className="h-full w-full"
                     />
                   </CardHeader>
@@ -242,7 +242,8 @@ function Home() {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                   >
-                    {vendor.name}
+             
+                    {vendor.city}
                   </Typography>
                   <Typography
                     variant="h5"
@@ -252,7 +253,7 @@ function Home() {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                   >
-                    {vendor.city}
+                           {vendor.name}
                   </Typography>
                 </CardBody>
               </Card>
@@ -265,13 +266,13 @@ function Home() {
           <Button
             variant="text"
             size="lg"
-            color="gray"
+            color="pink"
             className="flex items-end bg-gray justify-end gap-2 mb-10 mt-4"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <ArrowSmallRightIcon className="h-5 w-5 font-bold text-gray-900" />
+            <ArrowSmallRightIcon className="h-5 w-5 font-bold text-pink-400" />
             VIEW MORE
           </Button>
         </Link>

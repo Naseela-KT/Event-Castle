@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { SetStateAction, useState } from 'react';
 import {
   Tabs,
@@ -6,6 +7,7 @@ import {
   Tab,
   TabPanel,
   Button,
+  Typography,
 } from '@material-tailwind/react';
 import VendorPosts from './VendorsPosts';
 import ReviewCard from './ReviewCard';
@@ -45,7 +47,7 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
     <Tabs
       value={activeTab}
       onChange={handleTabChange}
-      className="ml-20 mr-20 mb-20"
+      className="mx-5 sm:mx-10 md:mx-10 lg:mx-20 mb-10"
     >
       <TabsHeader
         placeholder={undefined}
@@ -74,14 +76,18 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
           <TabPanel key={value} value={value}>
             {value === 'images' && <VendorPosts />}
             {value === 'reviews' && (
+              <>
+              {reviews?.length==0&&<Typography variant="h5" color="pink" className=" mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      No reviews added!
+    </Typography>}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {reviews?.map((review, index) => (
                   <ReviewCard key={index} {...review} />
                 ))}
+                
+         
               </div>
-            )}
-
-            <div className="flex justify-center">
+              {reviews?.length!>0&&<div className="flex justify-center items-center">
               <Button
                 variant="outlined"
                 placeholder={undefined}
@@ -91,9 +97,12 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                View More
+                View More Images
               </Button>
-            </div>
+            </div>}
+              </>
+            )}
+
           </TabPanel>
         ))}
       </TabsBody>

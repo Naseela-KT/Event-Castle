@@ -20,13 +20,14 @@ import Chat from "./pages/user/profile/Chat";
 import LiveStreaming from "./pages/user/profile/LiveStreaming";
 import Room from "./components/user/live/Room";
 import { USER, VENDOR } from "./config/constants/constants";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   const { pathname } = useLocation();
 
   return (
     <>
-  
+      <Toaster />
       <ToastContainer />
       {!(
         pathname == USER.LOGIN ||
@@ -37,7 +38,7 @@ const App: React.FC = () => {
         pathname.includes(USER.RESET_PWD)||
         pathname.includes(USER.PROFILE)
       ) && (
-        <div className="container fixed left-2/4 z-10 mx-auto -translate-x-2/4 pt-4">
+        <div className="container fixed left-2/4 z-10 -translate-x-2/4 pt-4">
           <Navbar />
         </div>
       )}

@@ -173,8 +173,9 @@ const UsersTable = () => {
                       <div className="flex items-center gap-3">
                         <Avatar
                           src={
-                            "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
+                           user.imageUrl?user.imageUrl:"/imgs/user-default.svg"
                           }
+                          
                           size="sm"
                           placeholder={undefined}
                           onPointerEnterCapture={undefined}
@@ -231,10 +232,11 @@ const UsersTable = () => {
                     <td className={classes}>
                       {user.isActive ? (
                         <Button
+                        color="pink"
                           variant="gradient"
                           onClick={() => handleBlock(user._id)}
                           size="sm"
-                          className="hidden lg:inline-block"
+                          className="hidden lg:inline-block w-30"
                           placeholder={undefined}
                           onPointerEnterCapture={undefined}
                           onPointerLeaveCapture={undefined}
@@ -246,7 +248,8 @@ const UsersTable = () => {
                           variant="gradient"
                           onClick={() => handleBlock(user._id)}
                           size="sm"
-                          className="hidden lg:inline-block"
+                          color="pink"
+                          className="hidden lg:inline-block w-30"
                           placeholder={undefined}
                           onPointerEnterCapture={undefined}
                           onPointerLeaveCapture={undefined}
@@ -289,6 +292,7 @@ const UsersTable = () => {
           <Button
             variant="outlined"
             size="sm"
+            color="pink"
             onClick={() => {
               const nextPage = page - 1 > 0 ? page - 1 : 1;
               navigate(`${ADMIN.USERS}?page=${nextPage}&search=${search}`);
@@ -302,6 +306,7 @@ const UsersTable = () => {
           <Button
             variant="outlined"
             size="sm"
+            color="pink"
             onClick={() => {
               const nextPage = page + 1 <= totalPages! ? page + 1 : totalPages;
               navigate(`${ADMIN.USERS}?page=${nextPage}&search=${search}`);

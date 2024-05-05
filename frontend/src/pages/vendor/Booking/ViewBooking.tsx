@@ -1,4 +1,4 @@
-import DefaultLayout from '../../../layout/vendor/VendorLayout';
+
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,
@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { Booking } from '../../../types/commonTypes';
+import Layout from '../../../layout/vendor/Layout';
 
 
 const ViewBooking = () => {
@@ -44,7 +45,7 @@ const ViewBooking = () => {
   };
 
   return (
-    <DefaultLayout>
+    <Layout>
       <Breadcrumb pageName="View" folderName="Booking" />
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <Card
@@ -299,7 +300,7 @@ const ViewBooking = () => {
           </div>
         </CardBody>
       </Card>
-    </DefaultLayout>
+    </Layout>
   );
 };
 

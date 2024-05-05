@@ -1,22 +1,21 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../../layout/vendor/VendorLayout';
-import { useSelector } from 'react-redux';
-import VendorRootState from '../../../redux/rootstate/VendorState';
-import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
-import Pagination from '../../../components/common/Pagination';
-import { VENDOR } from '../../../config/constants/constants';
-import { Post } from '../../../types/vendorTypes';
-
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import { useSelector } from "react-redux";
+import VendorRootState from "../../../redux/rootstate/VendorState";
+import { useEffect, useState } from "react";
+import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import Pagination from "../../../components/common/Pagination";
+import { VENDOR } from "../../../config/constants/constants";
+import { Post } from "../../../types/vendorTypes";
+import { Typography } from "@material-tailwind/react";
+import Layout from "../../../layout/vendor/Layout";
 
 export default function Posts() {
   const vendorData = useSelector(
-    (state: VendorRootState) => state.vendor.vendordata,
+    (state: VendorRootState) => state.vendor.vendordata
   );
   const [posts, setPosts] = useState<Post[]>([]);
   const [fetchTrigger, setFetchTrigger] = useState(false);
@@ -32,13 +31,13 @@ export default function Posts() {
     try {
       const response = await axiosInstanceVendor.get(
         `/posts?vendorid=${vendorData?._id}&page=${page}`,
-        { withCredentials: true },
+        { withCredentials: true }
       );
       setPosts(response.data.posts);
       const totalPagesFromResponse = response.data.totalPages;
       setTotalPages(totalPagesFromResponse);
     } catch (error) {
-      console.error('Error fetching vendors:', error);
+      console.error("Error fetching vendors:", error);
     }
   };
   const handlePageChange = (page: number) => {
@@ -55,14 +54,28 @@ export default function Posts() {
       })
       .catch((error) => {
         toast.error(error.response.data.message);
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
   return (
     <>
-      <DefaultLayout>
+      <Layout>
         <Breadcrumb pageName="Posts" folderName="" />
+        {posts?.length == 0 ? (
+          <Typography
+            variant="h5"
+            color="red"
+            className="text-center mt-4"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            No post added!
+          </Typography>
+        ) : (
+          ""
+        )}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 m-2">
           {posts.map(({ imageUrl, caption, _id }, index) => (
             <div key={index} className="card shadow-lg rounded-lg relative">
@@ -91,7 +104,7 @@ export default function Posts() {
             isTable={false}
           />
         )}
-      </DefaultLayout>
+      </Layout>
     </>
   );
 }

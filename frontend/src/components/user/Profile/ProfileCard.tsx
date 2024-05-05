@@ -136,9 +136,10 @@ const ProfileCard = () => {
             label="Phone"
             size="md"
             name="phone"
+     
             value={inputs.phone}
             onChange={handleInputChange} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}        />
-        <Button variant="gradient" fullWidth type="submit"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Button variant="gradient" className="text-pink-400 bg-pink-300" fullWidth type="submit"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Update
         </Button>
       </CardBody>

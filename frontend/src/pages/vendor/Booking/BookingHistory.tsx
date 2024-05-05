@@ -1,17 +1,19 @@
-import DefaultLayout from '../../../layout/vendor/VendorLayout'
+
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb'
 import BookingTable from '../../../components/vendor/Tables/BookingTable'
+import Layout from '../../../layout/vendor/Layout'
+
 
 const BookingHistory = () => {
   return (
-    <DefaultLayout>
+    <Layout>
     <Breadcrumb pageName="History" folderName='Booking'/>
 
     <div className="flex flex-col gap-10">
       
       <BookingTable />
     </div>
-  </DefaultLayout>
+  </Layout>
   )
 }
 

@@ -1,85 +1,33 @@
-import React from 'react';
-import { Typography, IconButton } from '@material-tailwind/react';
+import React, { useEffect, useState } from 'react';
+import { Typography} from '@material-tailwind/react';
+import { axiosInstance } from '../../config/api/axiosinstance';
+import { VendorType } from '../../types/commonTypes';
+import { Link } from 'react-router-dom';
+import { USER } from '../../config/constants/constants';
 
 const year = new Date().getFullYear();
 
-interface Social {
- color: string | undefined;
- name: string;
- path: string;
-}
 
-interface MenuItem {
- name: string;
- path: string;
-}
+
 
 interface Menu {
  name: string;
- items: MenuItem[];
+ items: string[];
 }
 
 interface FooterProps {
- title?: string;
- description?: string;
- socials?: Social[];
  menus?: Menu[];
  copyright?: React.ReactNode;
 }
 
 const Footer: React.FC<FooterProps> = ({
- title = "Event Castle",
- description = "Easy to use React components for Tailwind CSS and Material Design.",
- socials = [
-  {
-    color: "gray",
-    name: "twitter",
-    path: "https://www.twitter.com/creativetim",
-  },
-  {
-    color: "gray",
-    name: "youtube",
-    path: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
-  },
-  {
-    color: "gray",
-    name: "instagram",
-    path: "https://www.instagram.com/creativetimofficial/",
-  },
-  {
-    color: "black",
-    name: "github",
-    path: "https://github.com/creativetimofficial/material-tailwind",
-  },
-],
+
  menus = [
   {
-    name: "useful links",
+    name: "Start Planning",
     items: [
-      { name: "About Us", path: "https://www.creative-tim.com/presentation" },
-      { name: "Blog", path: "https://www.creative-tim.com/blog" },
-      {
-        name: "Github",
-        path: "https://www.github.com/creativetimofficial/material-tailwind?ref=mtk",
-      },
-      {
-        name: "Free Products",
-        path: "https://www.creative-tim.com/templates/free?ref=mtk",
-      },
-    ],
-  },
-  {
-    name: "other resources",
-    items: [
-     
-      {
-        name: "Change Log",
-        path: "https://github.com/creativetimofficial/material-tailwind/blob/main/CHANGELOG.md?ref=mtk",
-      },
-      {
-        name: "Contact Us",
-        path: "https://creative-tim.com/contact-us?ref=mtk",
-      },
+      "Search by Vendor",
+      "Search by City"
     ],
   },
 ],
@@ -97,33 +45,42 @@ const Footer: React.FC<FooterProps> = ({
     </>
  ),
 }) => {
+  const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
+  useEffect(() => {
+    axiosInstance
+      .get("/vendor-types")
+      .then((response) => {
+        console.log(response);
+        setvendorTypes(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
  return (
     <footer className="relative px-4 pt-8 pb-6 ml-10 mr-10">
       <div className="container mx-auto">
         <div className="flex flex-wrap pt-6 text-center lg:text-left">
           <div className="w-full px-4 lg:w-6/12">
             <Typography variant="h4" className="mb-4" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              {title}
+              Event Castle
             </Typography>
+            <Link to={USER.HOME}>
             <Typography className="font-normal text-blue-gray-500 lg:w-2/5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              {description}
+              Home
             </Typography>
-            <div className="mx-auto mt-6 mb-8 flex justify-center gap-2 md:mb-0 lg:justify-start">
-              {socials.map(({ name, path }) => (
-                <a
-                 key={name}
-                 href={path}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                >
-                 <IconButton color="white" className="rounded-full shadow-none bg-transparent"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
-                      <i className={`fa-brands fa-${name}`} />
-                    </Typography>
-                 </IconButton>
-                </a>
-              ))}
-            </div>
+            </Link>
+            <Link to={USER.VENDORS}>
+            <Typography className="font-normal text-blue-gray-500 lg:w-2/5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              Vendors
+            </Typography>
+            </Link>
+            <Link to={USER.ABOUT}>
+            <Typography className="font-normal text-blue-gray-500 lg:w-2/5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              About
+            </Typography>
+            </Link>
+            
           </div>
           <div className="mx-auto mt-12 grid w-max grid-cols-2 gap-24 lg:mt-0">
             {menus.map(({ name, items }) => (
@@ -131,26 +88,50 @@ const Footer: React.FC<FooterProps> = ({
                 <Typography
                   variant="small"
                   color="blue-gray"
-                  className="mb-2 block font-medium uppercase"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                  className="mb-2 block font-bold uppercase"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                  {name}
                 </Typography>
                 <ul className="mt-3">
-                 {items.map((item) => (
-                    <li key={item.name}>
+                 {items.map((item,index) => (
+                    <li key={index}>
+                      <Link to={USER.VENDORS}>
                       <Typography
                        as="a"
-                       href={item.path}
                        target="_blank"
                        rel="noreferrer"
                        variant="small"
                        className="mb-2 block font-normal text-blue-gray-500 hover:text-blue-gray-700"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                      >
-                        {item.name}
+                        {item}
                       </Typography>
+                      </Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
+
+          <div>
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="mb-2 block font-bold uppercase "  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                 Services
+                </Typography>
+                <ul className="mt-3">
+                 {vendorTypes.map((item,index) => (
+                    <li key={index}>
+                      <Typography
+                       as="a"
+                       target="_blank"
+                       rel="noreferrer"
+                       variant="small"
+                       className="mb-2 block font-normal text-blue-gray-500 hover:text-blue-gray-700"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                      >
+                        {item.type}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              </div>
           </div>
         </div>
         <hr className="my-6 border-gray-300" />

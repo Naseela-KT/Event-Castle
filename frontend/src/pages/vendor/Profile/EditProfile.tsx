@@ -5,9 +5,9 @@ import VendorRootState from "../../../redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 import { VENDOR } from "../../../config/constants/constants";
+import Layout from "../../../layout/vendor/Layout";
 
 
 const initialFormState = {
@@ -123,7 +123,7 @@ const EditProfile: React.FC = () => {
     }
   };
   return (
-    <DefaultLayout>
+    <Layout>
     <Breadcrumb pageName="Edit-Profile" folderName="Profile"/>
     <div className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl lg:max-w-4xl bg-gray-100">
     <div className="md:flex">
@@ -148,7 +148,7 @@ const EditProfile: React.FC = () => {
               {formState.coverpicUrl? (
                 <img
                   src={formState.coverpicUrl}
-                  alt="Logo Preview"
+                  alt="Coverpic Preview"
                   className="mt-2 w-full h-32 object-cover"
                 />
               ):(formState.coverpicPreview&&<img
@@ -290,7 +290,7 @@ const EditProfile: React.FC = () => {
       </div>
     </div>
 
-    </DefaultLayout>
+    </Layout>
   );
 };
 

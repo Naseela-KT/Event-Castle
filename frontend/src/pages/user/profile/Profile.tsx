@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
     <>
  
         <Layout>
-        <div className="flex-1 bg-gray-100">
+        <div className="flex-1 bg-white mt-10">
           <div
             // className="overflow-y-scroll"
             style={{ maxHeight: "calc(100vh - 120px)" }}

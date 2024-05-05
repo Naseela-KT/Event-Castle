@@ -303,7 +303,7 @@ const VendorProfile = () => {
                   variant="gradient"
                   onClick={() => handleBlock()}
                   size="sm"
-                  color="red"
+                  color="pink"
                   className="hidden lg:inline-block"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}

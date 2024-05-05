@@ -43,7 +43,7 @@ function VendorsList() {
          <h3 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-inherit text-center">
            Vendors List
          </h3>
-         <Button variant="gradient" className="rounded-full md:mx-20 w-50"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+         <Button variant="gradient" className="rounded-full md:mx-20 w-50" color="pink" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
            <Link to={ADMIN.VENDOR_TYPES}>View Vendor Types</Link>
          </Button>
        </div>

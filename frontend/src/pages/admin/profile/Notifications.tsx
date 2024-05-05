@@ -88,7 +88,7 @@ const Notifications = () => {
               key={key}
             >
               <div
-                className={`${!data.read ? "bg-[#66615b] p-4  bg-opacity-30" : "bg-gray-400 p-4  bg-opacity-30"}`}
+                className={`${!data.read ? "bg-gray-400 p-4  bg-opacity-30" : "bg-gray-100 p-4  bg-opacity-30"}`}
               >
                 <div className="flex items-center gap-5">
                   <div className="relative flex flex-1 items-center justify-between">
@@ -104,14 +104,14 @@ const Notifications = () => {
                       </p>
                       {!data?.read ? (
                         <button
-                          className="absolute top-6 right-1 bg-black text-white text-xs px-2 py-1 rounded-full"
+                          className="absolute top-6 right-1 bg-pink-400 text-white text-xs px-2 py-1 rounded-full"
                           onClick={(e) => handleRead(e, data?._id)}
                         >
                           Mark as read
                         </button>
                       ) : (
                         <button
-                          className="absolute top-6 right-1 bg-brown-400 text-white text-xs px-2 py-1 rounded-full"
+                          className="absolute top-6 right-1 bg-gray-900 text-white text-xs px-2 py-1 rounded-full"
                           onClick={(e) => handleRead(e, data?._id)}
                         >
                           Mark as unread

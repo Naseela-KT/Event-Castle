@@ -91,12 +91,12 @@ class PostController  {
       const id=req.params.id;
       const post=await postService.getPostById(id);
 
-      if(!post){
-        throw new CustomError('Post not found!',404)
-      }
+      // if(!post){
+      //   throw new CustomError('Post not found!',404)
+      // }
       const params={
         Bucket: process.env.BUCKET_NAME!,
-        Key: post.image,
+        Key: post?.image,
       }
       
       const command=new DeleteObjectCommand(params);

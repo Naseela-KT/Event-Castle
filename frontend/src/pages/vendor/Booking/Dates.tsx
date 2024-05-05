@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import DefaultLayout from '../../../layout/vendor/VendorLayout';
 import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,
@@ -18,6 +17,7 @@ import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { axiosInstanceVendor } from '../../../config/api/axiosinstance';
 import { toast } from 'react-toastify';
+import Layout from '../../../layout/vendor/Layout';
 
 
 const CustomDatePicker: React.FC = () => {
@@ -69,7 +69,7 @@ const CustomDatePicker: React.FC = () => {
   };
 
   return (
-    <DefaultLayout>
+    <Layout>
       <Breadcrumb pageName="Dates" folderName="Booking" />
       <div className="flex justify-between gap-2">
       <div className='w-full'>
@@ -200,7 +200,7 @@ const CustomDatePicker: React.FC = () => {
         </div>
        
       </div>
-    </DefaultLayout>
+    </Layout>
   );
 };
 

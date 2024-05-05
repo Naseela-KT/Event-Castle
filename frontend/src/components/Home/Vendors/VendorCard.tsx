@@ -12,17 +12,17 @@ import { VendorData } from "../../../types/vendorTypes";
    
   const VendorCard:React.FC<VendorData>=({name,city,_id,coverpicUrl,totalRating}) =>{
     return (
-      <Card className="w-full max-w-[16rem] shadow-lg h-80"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <Card className="w-full max-w-[16rem] shadow-lg h-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <CardHeader floated={false} color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <img
-            src={coverpicUrl}
-            alt="ui/ux review check"
+            src={coverpicUrl?coverpicUrl:"/imgs/vendor/cover-default.jpg"}
+            alt="coverpic"
           />
-          <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+          <div className="to-bg-black-10 absolute inset-0 h-80 w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
          
         </CardHeader>
         <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-2 flex items-center justify-between">
             <Typography variant="h5" color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {name}
             </Typography>
@@ -33,7 +33,7 @@ import { VendorData } from "../../../types/vendorTypes";
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="-mt-0.5 h-5 w-5 text-yellow-700"
+                className="-mt-0.5 h-5 w-5 text-pink-400"
               >
                 <path
                   fillRule="evenodd"
@@ -50,7 +50,7 @@ import { VendorData } from "../../../types/vendorTypes";
         </CardBody>
         <CardFooter className="pt-3 -mt-5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <Link to={`/view-vendor?id=${_id}`}>
-          <Button size="md" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <Button size="sm" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             View Profile
           </Button>
           </Link>

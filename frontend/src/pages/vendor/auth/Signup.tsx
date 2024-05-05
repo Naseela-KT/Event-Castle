@@ -53,8 +53,8 @@ const VendorSignupForm = () => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
   ) => {
     if (typeof e === "string") {
-      setFormValues({ ...formValues, vendor_type: e }); 
-      setFormValues({ ...formValues});
+      const updatedFormValues = { ...formValues, vendor_type: e };
+      setFormValues({...updatedFormValues});
     } else {
       const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
       setFormValues({ ...formValues, [name]: value });

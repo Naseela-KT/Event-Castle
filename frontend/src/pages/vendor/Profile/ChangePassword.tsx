@@ -12,9 +12,9 @@ import {
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { validate } from "../../../validations/common/changePwdValidation";
 import { axiosInstanceVendor } from "../../../config/api/axiosinstance";
-import DefaultLayout from "../../../layout/vendor/VendorLayout";
 import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
 import { VENDOR } from "../../../config/constants/constants";
+import Layout from "../../../layout/vendor/Layout";
 
   
   interface FormValues {
@@ -73,7 +73,7 @@ import { VENDOR } from "../../../config/constants/constants";
     };
   
     return (
-      <DefaultLayout>
+      <Layout>
          <Breadcrumb pageName="Change-Password" folderName="Profile"/>
          <Card
            className="w-full sm:w-96 mx-auto m-auto" // Adjusted width and margin for responsiveness
@@ -146,7 +146,7 @@ import { VENDOR } from "../../../config/constants/constants";
              </CardBody>
            </form>
          </Card>
-      </DefaultLayout>
+      </Layout>
      );
      
   };

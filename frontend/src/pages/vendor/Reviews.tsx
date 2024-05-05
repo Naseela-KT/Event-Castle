@@ -1,57 +1,60 @@
-import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
-import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/vendor/VendorLayout';
-import { useSelector } from 'react-redux';
-import VendorRootState from '../../redux/rootstate/VendorState';
-import React, { FormEvent, useEffect, useState } from 'react';
-import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../config/api/axiosinstance';
-import { toast } from 'react-toastify';
+import {
+  Button,
+  Progress,
+  Rating,
+  Textarea,
+  Typography,
+} from "@material-tailwind/react";
+import Breadcrumb from "../../components/vendor/Breadcrumbs/Breadcrumb";
+import { useSelector } from "react-redux";
+import VendorRootState from "../../redux/rootstate/VendorState";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Dialog, DialogHeader, DialogBody } from "@material-tailwind/react";
+import { axiosInstanceVendor } from "../../config/api/axiosinstance";
+import { toast } from "react-toastify";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-} from '@material-tailwind/react';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { Review } from '../../types/commonTypes';
-
-
+} from "@material-tailwind/react";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { Review } from "../../types/commonTypes";
+import Layout from "../../layout/vendor/Layout";
 
 export const Reviews = () => {
   const vendor = useSelector(
-    (state: VendorRootState) => state.vendor.vendordata,
+    (state: VendorRootState) => state.vendor.vendordata
   );
 
   const [openAccordions, setOpenAccordions] = useState<number[]>([]);
 
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [open, setOpen] = useState(false);
-  const [currentReviewId, setCurrentReviewId] = useState('');
-  const [reviews,setReviews]=useState<Review[]>([])
-  const [stats,setStats]=useState<number[]>([])
+  const [currentReviewId, setCurrentReviewId] = useState("");
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [stats, setStats] = useState<number[]>([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     axiosInstanceVendor
-    .get(`/getReviews?vendorId=${vendor?._id}`, { withCredentials: true })
-    .then((response) => {
-      setReviews(response.data.reviews);
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.log('here', error);
-    });
+      .get(`/getReviews?vendorId=${vendor?._id}`, { withCredentials: true })
+      .then((response) => {
+        setReviews(response.data.reviews);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("here", error);
+      });
 
-    axiosInstanceVendor.get(`/reviews/statistics?vendorId=${vendor?._id}`)
-    .then((res)=>{
-      console.log(res.data.percentages)
-      setStats(res.data.percentages)
-    }).catch((error)=>{
-      console.log(error)
-    })
-  },[])
-
-
-  
+    axiosInstanceVendor
+      .get(`/reviews/statistics?vendorId=${vendor?._id}`)
+      .then((res) => {
+        console.log(res.data.percentages);
+        setStats(res.data.percentages);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleOpen = (reviewId: string) => {
     setCurrentReviewId(reviewId); // Set the current review ID
@@ -70,7 +73,7 @@ export const Reviews = () => {
 
   const handleReplySubmit = async (
     e: FormEvent<HTMLFormElement>,
-    reviewId: string,
+    reviewId: string
   ) => {
     e.preventDefault();
     console.log(reviewId);
@@ -78,227 +81,242 @@ export const Reviews = () => {
       .put(
         `/add-review-reply?&reviewId=${reviewId}`,
         { content },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         console.log(response);
         if (response.data.vendorData) {
           setOpen(false);
-          toast.success('Reply added Successfully!');
+          toast.success("Reply added Successfully!");
         }
       })
       .catch((error) => {
         toast.error(error.response.data.message);
-        console.log('here', error);
+        console.log("here", error);
       });
   };
 
   return (
-    <DefaultLayout>
+    <Layout>
       <Breadcrumb pageName="Reviews" folderName="" />
-      <div className="flex flex-col md:flex-row  justify-between w-full gap-2 m-10">
-        <div className="flex flex-col items-start w-full">
-          <div className="flex items-center mb-2">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-bold">Customer reviews & ratings</h2>
-              <div className="flex">
-                <Rating
-                  value={Math.ceil(vendor?.totalRating ?? 0)}
-                  ratedColor="amber"
-                  readonly
+      {reviews.length > 0 ? (
+        <>
+          <div className="flex flex-col md:flex-row  justify-between w-full gap-2 m-10">
+            <div className="flex flex-col items-start w-full">
+              <div className="flex items-center mb-2">
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-2xl font-bold">
+                    Customer reviews & ratings
+                  </h2>
+                  <div className="flex">
+                    <Rating
+                      value={Math.ceil(vendor?.totalRating ?? 0)}
+                      ratedColor="amber"
+                      readonly
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
+                  </div>
+                  <div className="flex">
+                    <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                      {Math.ceil(vendor?.totalRating ?? 0)}
+                    </p>
+                    <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                      out of
+                    </p>
+                    <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                      5
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full">
+              <div className="flex items-center mt-4">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  5 star
+                </a>
+                <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                  <Progress
+                    value={stats[4]}
+                    color="amber"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {stats[4]}
+                </span>
+              </div>
+              <div className="flex items-center mt-4">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  4 star
+                </a>
+                <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                  <Progress
+                    value={stats[3]}
+                    color="amber"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {stats[3]}%
+                </span>
+              </div>
+              <div className="flex items-center mt-4">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  3 star
+                </a>
+                <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                  <Progress
+                    value={stats[2]}
+                    color="amber"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {stats[2]}%
+                </span>
+              </div>
+              <div className="flex items-center mt-4">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  2 star
+                </a>
+                <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded ">
+                  <Progress
+                    value={stats[1]}
+                    color="amber"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {stats[1]}%
+                </span>
+              </div>
+              <div className="flex items-center mt-4">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  1 star
+                </a>
+                <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                  <Progress
+                    value={stats[0]}
+                    color="amber"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                </div>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {stats[0]}%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {reviews?.map((val, index) => (
+            <React.Fragment key={index}>
+              <hr className="border-bodydark2 mx-10 my-6" />
+              <div className="flex flex-col md:flex-row gap-8 m-10">
+                <div className="md:w-1/2">
+                  <div className="mb-4 gap-1">
+                    <Rating
+                      value={val.rating}
+                      className="text-sm"
+                      ratedColor="amber"
+                      readonly
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    />
+                    <h2 className="text-lg font-bold">{val.userId.name}</h2>
+                    <p className="text-sm text-gray-500">March 14, 2021</p>
+                  </div>
+                </div>
+                <div className="md:w-1/2">
+                  <div className="mb-4 gap-4">
+                    <p className="text-sm text-gray-600">{val.content}</p>
+                  </div>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => handleOpen(val._id)}
+                    size="sm"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    Give reply
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row gap-8 mx-10 mb-10 -mt-10">
+                <Accordion
+                  open={openAccordions.includes(index)}
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
-                />
+                  className="w-50"
+                >
+                  <AccordionHeader
+                    className="text-sm flex items-center w-60"
+                    onClick={() => handleToggleAccordion(index)}
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    View replies
+                    {openAccordions.includes(index) ? (
+                      <FaAngleUp />
+                    ) : (
+                      <FaAngleDown />
+                    )}
+                  </AccordionHeader>
+                  <AccordionBody>
+                    {val.reply.map((reply, replyIndex) => (
+                      <p key={replyIndex}>{reply}</p>
+                    ))}
+                  </AccordionBody>
+                </Accordion>
               </div>
-              <div className="flex">
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-                {Math.ceil(vendor?.totalRating ?? 0)}
-                </p>
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-                  out of
-                </p>
-                <p className="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-                  5
-                </p>
-              </div>
-           
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full">
-          <div className="flex items-center mt-4">
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              5 star
-            </a>
-            <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-              <Progress
-                value={stats[4]}
-                color="amber"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {stats[4]}
-            </span>
-          </div>
-          <div className="flex items-center mt-4">
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              4 star
-            </a>
-            <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-              <Progress
-                value={stats[3]}
-                color="amber"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {stats[3]}%
-            </span>
-          </div>
-          <div className="flex items-center mt-4">
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              3 star
-            </a>
-            <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-              <Progress
-                value={stats[2]}
-                color="amber"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {stats[2]}%
-            </span>
-          </div>
-          <div className="flex items-center mt-4">
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              2 star
-            </a>
-            <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded ">
-              <Progress
-                value={stats[1]}
-                color="amber"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {stats[1]}%
-            </span>
-          </div>
-          <div className="flex items-center mt-4">
-            <a
-              href="#"
-              className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              1 star
-            </a>
-            <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-              <Progress
-                value={stats[0]}
-                color="amber"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {stats[0]}%
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {reviews?.map((val, index) => (
-        <React.Fragment key={index}>
-          <hr className="border-bodydark2 mx-10 my-6" />
-          <div className="flex flex-col md:flex-row gap-8 m-10">
-            <div className="md:w-1/2">
-              <div className="mb-4 gap-1">
-                <Rating
-                  value={val.rating}
-                  className="text-sm"
-                  ratedColor="amber"
-                  readonly
-                  placeholder={undefined}
-                  onPointerEnterCapture={undefined}
-                  onPointerLeaveCapture={undefined}
-                />
-                <h2 className="text-lg font-bold">{val.userId.name}</h2>
-                <p className="text-sm text-gray-500">March 14, 2021</p>
-              </div>
-            </div>
-            <div className="md:w-1/2">
-              <div className="mb-4 gap-4">
-                <p className="text-sm text-gray-600">{val.content}</p>
-              </div>
-            </div>
-            <div>
-              <Button
-                onClick={() => handleOpen(val._id)}
-                size="sm"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                Give reply
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row gap-8 mx-10 mb-10 -mt-10">
-            <Accordion
-              open={openAccordions.includes(index)} 
-              placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-              className="w-50"
-            >
-              <AccordionHeader
-                className="text-sm flex items-center w-60" 
-                onClick={() => handleToggleAccordion(index)}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                View replies
-               
-                {openAccordions.includes(index) ? (
-                  <FaAngleUp />
-                ) : (
-                  <FaAngleDown />
-                )}
-              </AccordionHeader>
-              <AccordionBody>
-                {val.reply.map((reply, replyIndex) => (
-                  <p key={replyIndex}>{reply}</p>
-                ))}
-              </AccordionBody>
-            </Accordion>
-          </div>
-        </React.Fragment>
-      ))}
+            </React.Fragment>
+          ))}
+        </>
+      ) : (
+        <Typography
+          variant="h5"
+          color="red"
+          className="text-center mt-4"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          No reviews added yet!
+        </Typography>
+      )}
 
       <Dialog
         size="xs"
@@ -360,6 +378,6 @@ export const Reviews = () => {
           </form>
         </DialogBody>
       </Dialog>
-    </DefaultLayout>
+    </Layout>
   );
 };

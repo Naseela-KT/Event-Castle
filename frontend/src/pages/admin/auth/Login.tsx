@@ -69,7 +69,7 @@ const AdminLogin = () => {
   return (
     <>
       <img
-        src="public/imgs/wave.png"
+        src="/imgs/wave.png"
         className="fixed hidden lg:block inset-0 h-full"
         style={{ zIndex: -1 }}
       />
@@ -95,7 +95,7 @@ const AdminLogin = () => {
             onPointerLeaveCapture={undefined}
           >
               <img
-          src="public/imgs/login-avatar.svg"
+          src="/imgs/login-avatar.svg"
           className="w-32"
         />
             <Typography
@@ -161,7 +161,7 @@ const AdminLogin = () => {
                 fullWidth
                 placeholder={undefined}
                 type="submit"
-                className="bg-gray-700"
+                className="bg-gray-900"
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >

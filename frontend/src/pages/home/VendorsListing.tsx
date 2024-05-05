@@ -8,7 +8,6 @@ import { axiosInstance } from "../../config/api/axiosinstance";
 import { VendorData } from "../../types/vendorTypes";
 // import Pagination from "../../components/common/Pagination";
 
-
 const VendorsListing = () => {
   const [vendors, setVendors] = useState<VendorData[]>([]);
   const [vendorTypeData, setVendorTypeData] = useState([]);
@@ -18,9 +17,7 @@ const VendorsListing = () => {
   const [search, setSearch] = useState<string>("");
   const [category, setCategory] = useState<string[]>([]);
   const [selectLocation, setSelectLocation] = useState<string[]>([]);
-  const [sort,setSort]=useState<number>();
-
-
+  const [sort, setSort] = useState<number>();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -36,7 +33,7 @@ const VendorsListing = () => {
 
   useEffect(() => {
     fetchVendors();
-  }, [category,search,selectLocation,sort,page]);
+  }, [category, search, selectLocation, sort, page]);
 
   useEffect(() => {
     axiosInstance
@@ -82,11 +79,9 @@ const VendorsListing = () => {
     }
   };
 
-
-
   return (
     <>
-      <div className="relative flex h-screen content-center items-center justify-start pt-16 pb-20 m-0">
+      <div className="relative flex h-screen content-center items-center justify-start pt-16 pb-20 mb-0">
         <div className="absolute top-0 h-100 w-full bg-[url('/imgs/bg-3.jpg')] bg-cover bg-center" />
         <div className="absolute top-0 h-100 w-full bg-black/30 bg-cover bg-center" />
         <Card
@@ -100,7 +95,6 @@ const VendorsListing = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-         
             <Typography
               placeholder={undefined}
               onPointerEnterCapture={undefined}
@@ -131,7 +125,7 @@ const VendorsListing = () => {
           </div>
           <h3>Sort By:</h3>
           <div>
-            <VendorSort setSort={setSort}/>
+            <VendorSort setSort={setSort} />
           </div>
         </div>
         <div className="flex md:flex-row flex-col">
@@ -145,9 +139,11 @@ const VendorsListing = () => {
             />
           </div>
 
-          <div className="md:ml-15 mx-5 flex md:flex-row flex-col gap-4">
+          <div className="flex flex-col md:flex-row gap-4 mt-5 md:ml-10">
             {vendors.map((vendor, index) => (
-              <VendorCard {...vendor} key={index} />
+              <div key={index} className="w-full">
+                <VendorCard {...vendor} />
+              </div>
             ))}
           </div>
         </div>
