@@ -1,40 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Rating } from "@material-tailwind/react";
-import { axiosInstance } from '../../../config/api/axiosinstance';
+import { axiosInstance } from "../../../config/api/axiosinstance";
 
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import UserRootState from '../../../redux/rootstate/UserState';
-import { useSelector } from 'react-redux';
-import { USER } from '../../../config/constants/constants';
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import UserRootState from "../../../redux/rootstate/UserState";
+import { useSelector } from "react-redux";
+import { USER } from "../../../config/constants/constants";
 import { toast as hottoast } from "react-hot-toast";
 
 interface VendorReviewProps {
-  id: string | undefined;  
+  id: string | undefined;
+  setReviewAdded: (value: boolean) => void;
 }
-const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
+const AddReview: React.FC<VendorReviewProps> = ({ id, setReviewAdded }) => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
 
   const [rating, setRating] = useState<number>(0);
-  const [review, setReview] = useState<string>('');
-  const navigate=useNavigate();
-
+  const [review, setReview] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleRatingChange = (value: number) => {
     setRating(value);
   };
 
-  const handleReviewChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleReviewChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setReview(event.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!user) {
-      hottoast.error('User must be logged in to add a review.', {
+      hottoast.error("User must be logged in to add a review.", {
         style: {
-          background: 'red', // Red background
-          color: '#FFFFFF', // White text
+          background: "red", // Red background
+          color: "#FFFFFF", // White text
         },
         duration: 3000,
       });
@@ -45,27 +47,30 @@ const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
       hottoast.error("Please select a rating.");
       return;
     }
-  
+
     if (!review.trim()) {
       hottoast.error("Please enter a review.");
       return;
     }
-   
-    setRating(0);
-    setReview('');
-     console.log(rating,review)
-    axiosInstance
-    .post(`/addVendorReview`, {vendorId:id,userId:user?._id,rating:rating,content:review},{withCredentials:true})
-    .then((response) => {
-      console.log(response);
-      toast.success(response.data.message)
-      navigate(`${USER.VIEW_VENDOR}?id=${id}`);
-    })
-    .catch((error) => {
-      hottoast.error(error.response.data.message)
-      console.log("here", error);
-    });
 
+    axiosInstance
+      .post(
+        `/addVendorReview`,
+        { vendorId: id, userId: user?._id, rating: rating, content: review },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        setRating(0);
+        setReview("");
+        console.log(response);
+        toast.success(response.data.message);
+        setReviewAdded(true);
+        navigate(`${USER.VIEW_VENDOR}?id=${id}`);
+      })
+      .catch((error) => {
+        hottoast.error(error.response.data.message);
+        console.log("here", error);
+      });
   };
 
   return (
@@ -73,20 +78,47 @@ const AddReview: React.FC<VendorReviewProps> = ({ id }) => {
       <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating</label>
-          <Rating value={rating} onChange={handleRatingChange} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+          <label
+            htmlFor="rating"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Rating
+          </label>
+          <Rating
+            value={rating}
+            onChange={(e) => handleRatingChange(e)}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          />
         </div>
         <div className="mb-4">
-          <label htmlFor="review" className="block text-sm font-medium text-gray-700">Review</label>
-          <textarea id="review" name="review" rows={4} value={review} onChange={handleReviewChange} className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+          <label
+            htmlFor="review"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Review
+          </label>
+          <textarea
+            id="review"
+            name="review"
+            rows={4}
+            value={review}
+            onChange={handleReviewChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          ></textarea>
         </div>
         <div className="text-right">
-          <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
+          <button
+            type="submit"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>
   );
-}
-
+};
 
 export default AddReview;

@@ -7,7 +7,7 @@ export interface UserData{
     isActive:boolean;
     image:string;
     imageUrl:string;
-    favourite:Array<string>;
+    favourite:string[];
     wallet:number;
     refreshToken:string;
 }

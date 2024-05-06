@@ -1,20 +1,33 @@
+import { Button, Typography } from "@material-tailwind/react";
+import { Link, useLocation } from "react-router-dom";
+import { USER } from "../../../config/constants/constants";
+
 const MessageSkeleton = () => {
-	return (
-		<>
-			<div className='flex gap-3 items-center'>
-				<div className='skeleton w-10 h-10 rounded-full shrink-0'></div>
-				<div className='flex flex-col gap-1'>
-					<div className='skeleton h-4 w-40'></div>
-					<div className='skeleton h-4 w-40'></div>
-				</div>
-			</div>
-			<div className='flex gap-3 items-center justify-end'>
-				<div className='flex flex-col gap-1'>
-					<div className='skeleton h-4 w-40'></div>
-				</div>
-				<div className='skeleton w-10 h-10 rounded-full shrink-0'></div>
-			</div>
-		</>
-	);
+	const path = useLocation();
+  return (
+    <>
+      <div className="flex items-center justify-center pt-25 gap-4 md:flex-col flex-row">
+        <img src="/imgs/chat-default.svg" alt="" className="w-100 h-200" />
+		{path.pathname==`${USER.CHAT}`?<><Typography
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          Find Vendors to start the chat...
+        </Typography>
+		<Link to={USER.VENDORS}>
+        <Button
+          color="pink"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          Find Vendors
+        </Button>
+		</Link></>:""}
+        
+      </div>
+    </>
+  );
 };
 export default MessageSkeleton;

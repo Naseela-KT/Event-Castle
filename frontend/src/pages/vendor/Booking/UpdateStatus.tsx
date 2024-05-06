@@ -91,7 +91,6 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange  }
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
-              <Option value="Pending">Pending</Option>
               <Option value="Accepted">Accepted</Option>
               <Option value="Rejected">Rejected</Option>
             </Select>

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../common/Pagination';
 import { USER } from '../../../config/constants/constants';
 import { Booking } from '../../../types/commonTypes';
+import { Typography } from '@material-tailwind/react';
 
 
 const BookingDetails = () => {
@@ -37,7 +38,18 @@ const BookingDetails = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke mx-20 bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <>
+    {bookings.length==0?<Typography
+      variant="h5"
+      color="red"
+      className="text-center mt-4"
+      placeholder={undefined}
+      onPointerEnterCapture={undefined}
+      onPointerLeaveCapture={undefined}
+    >
+      No bookings made!
+    </Typography>: <div className="rounded-sm border border-stroke mx-20 bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
@@ -141,7 +153,9 @@ const BookingDetails = () => {
            />
         )}
       </div>
-    </div>
+    </div>}
+   
+    </>
   );
 };
 

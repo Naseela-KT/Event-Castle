@@ -29,6 +29,7 @@ const VendorsListing = () => {
     if (searchParam) {
       setSearch(searchParam); // Update search state if a search parameter is found
     }
+    window.scrollTo(0, 0);
   }, [search]);
 
   useEffect(() => {
@@ -139,7 +140,7 @@ const VendorsListing = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 mt-5 md:ml-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 md:ml-10">
             {vendors.map((vendor, index) => (
               <div key={index} className="w-full">
                 <VendorCard {...vendor} />

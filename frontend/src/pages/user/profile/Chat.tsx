@@ -22,6 +22,8 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Chats, Messages } from "../../../types/commonTypes";
 import { VendorData } from "../../../types/vendorTypes";
+import MessageSkeleton from "../../../components/chat/skeletons/MessageSkeleton";
+import Layout from "../../../layout/user/Layout";
 
 interface FileDetails {
   filename: string;
@@ -288,7 +290,9 @@ const Chat = () => {
 
   return (
     <>
-      <div>
+    <Layout>
+   
+    {conversation.length==0?<MessageSkeleton/>: <div>
         <div>
           <div className="relative min-h-screen flex flex-col bg-gray-50 pt-15">
             {/* chat layout starts here */}
@@ -560,7 +564,8 @@ const Chat = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+      </Layout>
     </>
   );
 };

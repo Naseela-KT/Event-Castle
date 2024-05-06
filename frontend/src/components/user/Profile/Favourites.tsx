@@ -86,52 +86,63 @@ export default function Favourites() {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 m-10">
-        {favourites.map(({ coverpicUrl, name, _id }, index) => (
-          <div key={index}>
-            <Card
-              className="mt-2 w-70"
+      {favourites.length==0?<Typography
+            variant="h5"
+            color="red"
+            className="text-center mt-4"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            No Favourite added!
+          </Typography>:  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 m-10">
+      
+      {favourites.map(({ coverpicUrl, name, _id }, index) => (
+        <div key={index}>
+          <Card
+            className="mt-2 w-70"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            <CardHeader
+              color="blue-gray"
+              className="relative h-40"
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
-              <CardHeader
-                color="blue-gray"
-                className="relative h-40"
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
+              <img src={coverpicUrl} alt={name} />
+              <button
+                onClick={() => handleOpen(_id)} // Pass _id to handleOpen
+                className="absolute top-0 right-0 m-2 bg-danger hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
-                <img src={coverpicUrl} alt={name} />
-                <button
-                  onClick={() => handleOpen(_id)} // Pass _id to handleOpen
-                  className="absolute top-0 right-0 m-2 bg-danger hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </CardHeader>
+            <CardBody
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <Link to={`${USER.VIEW_VENDOR}?id=${_id}`}>
+                <Typography
+                  variant="h5"
+                  color="blue-gray"
+                  className="mb-2 text-center"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
                 >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </CardHeader>
-              <CardBody
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                <Link to={`${USER.VIEW_VENDOR}?id=${_id}`}>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-2 text-center"
-                    placeholder={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                  >
-                    {name}
-                  </Typography>
-                </Link>
-              </CardBody>
-            </Card>
-          </div>
-        ))}
-      </div>
+                  {name}
+                </Typography>
+              </Link>
+            </CardBody>
+          </Card>
+        </div>
+      ))}
+    </div>}
+    
       {favourites.length > 0 && (
        <Pagination
        currentPage={currentPage}

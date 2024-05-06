@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom';
 const ErrorBoundary: React.FC = () => {
  const error = useRouteError();
 
- // Function to handle navigation to the home page
-
-
- // Determine the error message based on the error status
  let errorMessage = 'Something went wrong. Please try again later.';
  if (isRouteErrorResponse(error)) {
     if (error.status === 404) {
       errorMessage = 'Page not found (404). Please check the URL.';
     } else if (error.status === 500) {
       errorMessage = 'Internal Server Error (500). Please try again later.';
+    }else{
+      errorMessage = error.statusText;
+
     }
  }
 

@@ -1,16 +1,17 @@
-import { useSelector } from 'react-redux';
-import UserRootState from '../../../redux/rootstate/UserState';
-import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../config/api/axiosinstance';
-import Pagination from '../../common/Pagination';
-import { Booking } from '../../../types/commonTypes';
+import { useSelector } from "react-redux";
+import UserRootState from "../../../redux/rootstate/UserState";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../../config/api/axiosinstance";
+import Pagination from "../../common/Pagination";
+import { Booking } from "../../../types/commonTypes";
+import { Typography } from "@material-tailwind/react";
 
 const Wallet = () => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [transaction, setTransaction] = useState<Booking[]>([]);
-
+  const [totalAmount, setTotalAmount] = useState(0);
   useEffect(() => {
     setTran(currentPage);
   }, [currentPage]);
@@ -25,10 +26,15 @@ const Wallet = () => {
           setTransaction(response.data.transaction);
           const totalPagesFromResponse = response.data.totalPages;
           setTotalPages(totalPagesFromResponse);
-          console.log(response.data.payment);
+          const transactions = response.data.transaction; // Assuming transaction data is an array
+          const total = transactions.reduce((sum: number, transaction: Booking) => {
+            return sum + (transaction.refundAmount || 0); // Ensure to account for undefined amounts
+          }, 0);
+
+          setTotalAmount(total);
         })
         .catch((error) => {
-          console.log('here', error);
+          console.log("here", error);
         });
     } catch (error) {
       console.log(error);
@@ -48,12 +54,12 @@ const Wallet = () => {
           </h2>
           <div className="flex justify-center items-center">
             <p className="text-gray-600">Balance:</p>
-            <p className="text-xl font-bold">₹2000</p>
+            <p className="text-xl font-bold">{totalAmount}</p>
           </div>
         </div>
       </div>
       {/* Table */}
-      <div className="rounded-sm border border-stroke mx-20 mt-5 bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      {totalAmount>0? <div className="rounded-sm border border-stroke mx-20 mt-5 bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
@@ -106,7 +112,17 @@ const Wallet = () => {
             />
           )}
         </div>
-      </div>
+      </div>:<Typography
+            variant="h5"
+            color="red"
+            className="text-center mt-4"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            No transactions made!
+          </Typography>}
+     
     </>
   );
 };

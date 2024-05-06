@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className={`flex h-screen overflow-hidden`}>
       {/* Sidebar */}
       <aside
         className={`fixed bg-white text-black w-64 p-4 h-full transition-transform border-r border-gray-300 ${
@@ -80,7 +80,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                Event Castle
+                {vendorData?.name}
               </Typography>
             </NavLink>
           )}
@@ -467,6 +467,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 Notifications
               </ListItem>
             </NavLink>
+            <NavLink
+              to={VENDOR.CHAT}
+             
+            >
+              <ListItem
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                <ListItemPrefix
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+             <i className="fa-regular fa-message mt-2 mr-2"></i>
+                </ListItemPrefix>
+                Chat
+              </ListItem>
+            </NavLink>
             <hr className="my-2 border-blue-gray-50" />
             <Button
               onClick={handleLogout}
@@ -527,9 +546,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Typography>
 
           {/* Right-aligned icon */}
-          <div className="r-2">
+          <div className="r-2 lg:flex hidden">
             <NavLink to={VENDOR.CHAT}>
-              <i className="fa-solid fa-message"></i>
+              <i className="fa-solid fa-message mt-2 mr-2"></i>
             </NavLink>
             <Avatar
               src={
@@ -537,7 +556,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   ? vendorData?.logoUrl
                   : "/imgs/vendor/logo-default.jpeg"
               }
-              className="ml-2"
+              className="ml-2 text-sm"
               size="sm"
               placeholder={undefined}
               onPointerEnterCapture={undefined}

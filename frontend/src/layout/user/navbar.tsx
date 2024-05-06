@@ -13,6 +13,7 @@ import {
   AccordionBody,
   AccordionHeader,
   List,
+  Tooltip,
 } from "@material-tailwind/react";
 
 import {
@@ -168,22 +169,27 @@ const Navbar = () => {
         <div className="hidden gap-2 lg:flex">
           {user ? (
             <>
+           
               <NotificationIcon />
+            
 
               <Link to={`${USER.PROFILE}`}>
+              <Tooltip content="Profile" color="white">
                 <Avatar
-                  size="sm"
+                  size="xs"
                   variant="circular"
                   alt={user?.name}
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-white mt-2"
                   src={
-                    user?.imageUrl ? user.imageUrl : "/imgs/user-default.jpg"
+                    user?.imageUrl ? user.imageUrl : "/imgs/user-default.svg"
                   }
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 />
+                </Tooltip>
               </Link>
+              <Tooltip content="Logout" color="white">
               <Button
               color="white"
               size="sm"
@@ -195,6 +201,7 @@ const Navbar = () => {
               >
                 <PowerIcon className="h-5 w-5" />
               </Button>
+              </Tooltip>
             </>
           ) : (
             <>

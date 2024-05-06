@@ -27,33 +27,40 @@ export function VendorProfile() {
   const [vendor, setVendor] = useState<VendorData>();
   const [favourite, setFavourite] = useState(false);
   const [review, setReview] = useState<Review[]>([]);
+  const [reviewAdded,setReviewAdded]=useState(false)
 
   useEffect(() => {
-    if (user?.favourite.includes(id)) {
-      setFavourite(true);
-    }
-    axiosInstance
-      .get(`/getvendor?vendorid=${id}`, { withCredentials: true })
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(`/getvendor?vendorid=${id}`, {
+          withCredentials: true,
+        });
         setVendor(response.data.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("here", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axiosInstance
-      .get(`/getReviews?vendorId=${id}`, { withCredentials: true })
-      .then((response) => {
-        setReview(response.data.reviews);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("here", error);
-      });
-  });
+  
+        // Set `favourite` based on whether the user has favorited this vendor
+        if (user?.favourite?.includes(id)) {
+          setFavourite(true);
+        } else {
+          setFavourite(false); // Make sure to handle the else case
+        }
+  
+        // Fetch and set reviews
+        const reviewsResponse = await axiosInstance.get(`/getReviews?vendorId=${id}`, {
+          withCredentials: true,
+        });
+        setReview(reviewsResponse.data.reviews);
+        
+        setReviewAdded(false); // Reset after data is fetched
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData(); // Call the async function
+  
+  }, [user, id, reviewAdded]); // Ensure correct dependencies
+  
 
   const handleFavourite = async () => {
     if (!user || !user._id) {
@@ -163,7 +170,7 @@ export function VendorProfile() {
               <div className="mt-10 mb-10 flex lg:flex-col md:flex-row flex-col justify-between items-center lg:justify-end lg:mb-0 lg:px-4 flex-wrap lg:-mt-5">
                 <div className="flex gap-2">
                   <IconButton
-                    color={favourite ? "pink" : "black"}
+                    color={favourite?"pink" : "black"}
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -225,7 +232,7 @@ export function VendorProfile() {
         <VendorTabs reviews={review} />
       </section>
       <section className="mb-20">
-        <AddReview id={vendor?._id} />
+        <AddReview id={vendor?._id} setReviewAdded={()=>setReviewAdded}/>
       </section>
       <div className="bg-white">
         <Footer />

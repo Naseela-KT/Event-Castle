@@ -50,14 +50,21 @@ class ReviewService {
                 if (!vendorData) {
                     throw new customError_1.CustomError("Vendor not found.", 404);
                 }
-                const data = yield reviewRepository_1.default.create({ content, rating, userId, vendorId });
+                const data = yield reviewRepository_1.default.create({
+                    content,
+                    rating,
+                    userId,
+                    vendorId,
+                });
                 const newNotification = new notificationModel_1.default({
                     recipient: vendorId,
                     message: "New review added!",
-                    type: notificationModel_1.NOTIFICATION_TYPES.REVIEW
+                    type: notificationModel_1.NOTIFICATION_TYPES.REVIEW,
                 });
                 yield newNotification.save();
-                const vendorReview = yield reviewRepository_1.default.findByCondition({ vendorId: vendorId });
+                const vendorReview = yield reviewRepository_1.default.findByCondition({
+                    vendorId: vendorId,
+                });
                 const vendorRatings = vendorReview.map((review) => review.rating);
                 vendorData.totalRating = calculateOverallRating(vendorRatings);
                 yield vendorData.save();
@@ -100,7 +107,9 @@ class ReviewService {
     updateReviewContent(reviewId, review) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reviews = yield reviewRepository_1.default.update(reviewId, { content: review });
+                const reviews = yield reviewRepository_1.default.update(reviewId, {
+                    content: review,
+                });
                 return reviews;
             }
             catch (error) {
@@ -121,7 +130,7 @@ class ReviewService {
                     }
                 });
                 const totalReviews = reviews === null || reviews === void 0 ? void 0 : reviews.length;
-                const ratingPercentages = ratingCounts.map((count) => (totalReviews > 0 ? (count / totalReviews) * 100 : 0));
+                const ratingPercentages = ratingCounts.map((count) => totalReviews > 0 ? (count / totalReviews) * 100 : 0);
                 return ratingPercentages;
             }
             catch (error) {
@@ -132,7 +141,16 @@ class ReviewService {
     }
 }
 exports.default = new ReviewService();
+// const calculateOverallRating = (ratings: any[]) => {
+//   const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
+//   return ratings.length > 0 ? Math.round((totalRating / ratings.length),1 ):0;
+// };
 const calculateOverallRating = (ratings) => {
-    const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
-    return ratings.length > 0 ? totalRating / ratings.length : 0;
+    const validRatings = ratings.filter((rating) => typeof rating === "number" && !isNaN(rating));
+    if (validRatings.length === 0) {
+        return 0;
+    }
+    const totalRating = validRatings.reduce((acc, rating) => acc + rating, 0);
+    const averageRating = totalRating / validRatings.length;
+    return Math.round(averageRating * 10) / 10;
 };

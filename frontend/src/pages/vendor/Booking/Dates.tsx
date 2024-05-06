@@ -45,11 +45,13 @@ const CustomDatePicker: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (selectedDate === '') {
+    if (selectedDate.length==0) {
       setError('Please select a date');
+      return
     }
-    if (selectedStatus === '') {
+    if (selectedStatus?.length==0) {
       setSelectError('Please select status');
+      return
     }
 
     axiosInstanceVendor
@@ -66,6 +68,8 @@ const CustomDatePicker: React.FC = () => {
       .catch((error) => {
         console.log('Error:', error);
       });
+      setSelectedDate('')
+      setSelectedStatus('')
   };
 
   return (
