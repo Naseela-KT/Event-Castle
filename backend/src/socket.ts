@@ -39,6 +39,7 @@ const initializeSocket = (httpServer: any) => {
     socket.on("adduser", (userId: string) => {
       addUser(userId, socket.id);
       io.emit("getUsers", users);
+ 
     });
 
     socket.on(
@@ -52,6 +53,7 @@ const initializeSocket = (httpServer: any) => {
       }) => {
         const user = getUser(message.receiverId);
         if (user) {
+  
           io.to(user.socketId).emit("getMessage", {
             senderId: message.senderId,
             text: message.text,

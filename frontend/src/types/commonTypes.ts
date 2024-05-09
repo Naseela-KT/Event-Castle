@@ -52,6 +52,9 @@ export interface VendorType {
 export interface Chats {
   _id:string;
   members: string[];
+  recentMessage: string;
+  updatedAt:Date;
+  createdAt:Date;
 }
 
 export interface Messages {

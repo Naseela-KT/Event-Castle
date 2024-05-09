@@ -29,12 +29,6 @@ const Room = () => {
     role_str === 'Host' ? ZegoUIKitPrebuilt.Host : ZegoUIKitPrebuilt.Audience;
 
   const sharedLinks: { name: string; url: string }[] = [];
-  if (role === ZegoUIKitPrebuilt.Host) {
-    sharedLinks.push({
-      name: 'Join as co-host',
-      url: `${CLIENT_URL}${USER.LIVE_ROOM}/${roomId}/Host`,
-    });
-  }
 
   sharedLinks.push({
     name: 'Join as audience',
@@ -42,7 +36,8 @@ const Room = () => {
   });
 
   const handleLiveStart = (url: string) => {
-    axiosInstance
+    if (role === ZegoUIKitPrebuilt.Host) {
+      axiosInstance
       .post('/add-live', { url }, { withCredentials: true })
       .then((response) => {
         console.log('here.....');
@@ -51,6 +46,8 @@ const Room = () => {
       .catch((error) => {
         console.log('here', error);
       });
+
+    }
   };
 
   const handleLiveEnd = () => {

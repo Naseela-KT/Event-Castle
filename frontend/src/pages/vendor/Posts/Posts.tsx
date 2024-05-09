@@ -44,9 +44,9 @@ export default function Posts() {
     setCurrentPage(page);
   };
 
-  const handleDelete = (postId: string) => {
+  const handleDelete = (id: string) => {
     axiosInstanceVendor
-      .delete(`/posts/${postId}`)
+      .delete(`/posts/${id}`,{withCredentials:true})
       .then((response) => {
         toast.success(response.data.message);
         setFetchTrigger(!fetchTrigger);

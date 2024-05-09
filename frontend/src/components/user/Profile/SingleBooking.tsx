@@ -74,7 +74,7 @@ const SingleBooking = () => {
     if (id) {
       fetchBooking();
     }
-  }, [id, booking]);
+  }, [id]);
 
 
   const confirmCancel=async()=>{
@@ -93,7 +93,7 @@ const SingleBooking = () => {
 
   return (
     <>
-      {booking?.payment_status === 'Pending' && booking.status === 'Accepted' ? (
+      {booking?.payment_status === 'Pending' && booking?.status === 'Accepted' ? (
         <div className="mx-20 w-150">
           <Alert icon={<Icon />} color="red">
             Please complete your payment to confirm your booking.

@@ -62,7 +62,7 @@ class PostController  {
       }
 
       const command2 = new GetObjectCommand(getObjectParams);
-      const url = await getSignedUrl(s3, command2,{expiresIn: 86400 * 3});
+      const url = await getSignedUrl(s3, command2,{expiresIn: 86400 * 6});
       let imageUrl=url;
 
       const post = await postService.createPost(caption, imageName, vendor_id,imageUrl);
@@ -91,9 +91,9 @@ class PostController  {
       const id=req.params.id;
       const post=await postService.getPostById(id);
 
-      // if(!post){
-      //   throw new CustomError('Post not found!',404)
-      // }
+      if(!post){
+        throw new CustomError('Post not found!',404)
+      }
       const params={
         Bucket: process.env.BUCKET_NAME!,
         Key: post?.image,

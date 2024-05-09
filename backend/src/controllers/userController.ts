@@ -398,7 +398,7 @@ class UserController{
         }
   
         const command = new GetObjectCommand(getObjectParams);
-        imageUrl = await getSignedUrl(s3, command,{expiresIn: 86400 * 3});
+        imageUrl = await getSignedUrl(s3, command,{expiresIn: 86400 * 6});
         
       }
 

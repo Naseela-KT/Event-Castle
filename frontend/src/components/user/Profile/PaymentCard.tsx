@@ -35,7 +35,7 @@ const PaymentCard:React.FC<PaymentCardProps>=({booking}) => {
         axiosInstance
           .post(
             `/create-checkout-session`,
-            { userId: user?._id, ...booking?.vendorId,bookingId:booking._id},
+            { userId: user?._id, ...booking?.vendorId,bookingId:booking?._id},
             { withCredentials: true },
           )
           .then((response) => {
@@ -90,7 +90,7 @@ const PaymentCard:React.FC<PaymentCardProps>=({booking}) => {
               </Typography>
             </div>
             <div>
-              {booking.status==="Accepted" && booking.payment_status==="Pending"?<Button
+              {booking?.status==="Accepted" && booking?.payment_status==="Pending"?<Button
                 onClick={handleOpen}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -135,16 +135,7 @@ const PaymentCard:React.FC<PaymentCardProps>=({booking}) => {
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-           <Typography
-            variant="small"
-            color="red"
-            className="mb-2"
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            Please note that the token amount is non-refundable in case of cancellation.
-          </Typography>
+           
           <Typography
             variant="h6"
             color="gray"

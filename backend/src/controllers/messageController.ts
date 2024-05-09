@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Message from "../models/messageModel";
 import messageService from "../services/messageService";
 import { handleError } from "../utils/handleError";
+import conversationService from "../services/conversationService";
 
 class MessageController {
   async createMessage(req: Request, res: Response): Promise<any> {
@@ -14,6 +15,7 @@ class MessageController {
         imageName,
         imageUrl
       );
+      await conversationService.updateConversation(conversationId,text);
       res.status(200).json(response);
     } catch (error) {
       handleError(res, error, "createMessage");

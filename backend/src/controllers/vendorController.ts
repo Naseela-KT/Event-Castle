@@ -414,7 +414,7 @@ class VendorController{
           Key: coverpicFile?.originalname,
         });
         coverpicUrl = await getSignedUrl(s3, covercommand2, {
-          expiresIn: 86400 * 3,
+          expiresIn: 86400 * 6,
         });
 
         // Upload logo to S3
@@ -433,17 +433,17 @@ class VendorController{
           Key: logoFile?.originalname,
         });
         logoUrl = await getSignedUrl(s3, logocommand2, {
-          expiresIn: 86400 * 3,
+          expiresIn: 86400 * 6,
         });
       }
 
       const updatedVendor = await VendorService.updateVendor(
         vendorId,
         formData,
-        coverpicUrl,
-        logoUrl,
-        logoFile?.originalname,
-        coverpicFile?.originalname
+        coverpicUrl?coverpicUrl:"",
+        logoUrl?logoUrl:"",
+        logoFile?.originalname ? logoFile?.originalname :"",
+        coverpicFile?.originalname ?coverpicFile?.originalname:""
       );
 
       res.status(200).json(updatedVendor);

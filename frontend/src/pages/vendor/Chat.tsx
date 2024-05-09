@@ -99,16 +99,16 @@ const Chat = () => {
   }, [vendor]);
 
   //getting conversations
+  const getconversation = async () => {
+    try {
+      const res = await axiosInstanceChat.get(`/?userId=${vendor?._id}`);
+      console.log(res.data);
+      setconversation(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const getconversation = async () => {
-      try {
-        const res = await axiosInstanceChat.get(`/?userId=${vendor?._id}`);
-        console.log(res.data);
-        setconversation(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getconversation();
   }, [vendor?._id]);
 
@@ -163,6 +163,7 @@ const Chat = () => {
     } catch (error) {
       console.log(error);
     }
+    getconversation();
   };
 
   //scrolling to bottom when new msg arrives

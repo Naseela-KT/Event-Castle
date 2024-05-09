@@ -95,21 +95,40 @@ const Chat = () => {
     socket.current?.on("getUsers", (users) => {
       console.log(users);
     });
+    
   }, [user]);
 
   //getting conversations
+  // useEffect(() => {
+  //   const getconversation = async () => {
+  //     try {
+  //       const res = await axiosInstanceChat.get(`/?userId=${user?._id}`);
+  //       console.log(res.data);
+  //       setconversation(res.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getconversation();
+  //   socket.current?.on("getConv",()=>{
+  //     getconversation();
+  //   })
+  // }, [user?._id,arrivalMessage]);
+  const getConversation = async () => {
+    try {
+      const res = await axiosInstanceChat.get(`/?userId=${user?._id}`);
+      console.log(res.data);
+      setconversation(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getconversation = async () => {
-      try {
-        const res = await axiosInstanceChat.get(`/?userId=${user?._id}`);
-        console.log(res.data);
-        setconversation(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getconversation();
+    getConversation();
   }, [user?._id]);
+  
+ 
 
   //getting messages
   useEffect(() => {
@@ -155,6 +174,7 @@ const Chat = () => {
         .then((res) => {
           setmessages([...messages, res.data]);
           setnewMessage("");
+         
         })
         .catch((error) => {
           console.log(error);
@@ -162,6 +182,7 @@ const Chat = () => {
     } catch (error) {
       console.log(error);
     }
+    getConversation();
   };
 
   //scrolling to bottom when new msg arrives
@@ -179,6 +200,9 @@ const Chat = () => {
       setActiveUsers(users);
     });
   }, []);
+
+
+
 
   // image input
  
@@ -294,9 +318,10 @@ const Chat = () => {
    
     {conversation.length==0?<MessageSkeleton/>: <div>
         <div>
-          <div className="relative min-h-screen flex flex-col bg-gray-50 pt-15">
             {/* chat layout starts here */}
-            <div className="flex-grow w-full max-w-7xl mx-auto lg:flex">
+          <div className="relative min-h-400 flex flex-col bg-gray-50">
+          
+            <div className="flex-grow w-full max-w-5xl mx-auto lg:flex">
               <div className="flex-1 min-w-0 bg-white xl:flex ">
                 <div className="border-b border-black xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-400 bg-gray-50">
                   <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-white">
