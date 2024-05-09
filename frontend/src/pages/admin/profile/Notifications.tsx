@@ -8,23 +8,34 @@ import { Notification } from "../../../types/commonTypes";
 import { Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { ADMIN } from "../../../config/constants/constants";
+import Pagination from "../../../components/common/Pagination";
 
 const Notifications = () => {
   const [notifications, setNotification] = useState<Notification[]>([]);
   const admin = useSelector((state: AdminRootState) => state.admin.admindata);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
   useEffect(() => {
+    fetchNotification(currentPage);
+  }, [currentPage]);
+
+
+  const fetchNotification = async (page: number) => {
     axiosInstanceAdmin
-      .get(`/admin-notifications?recipient=${admin?._id}`, {
+      .get(`/admin-notifications?recipient=${admin?._id}&page=${page}`, {
         withCredentials: true,
       })
       .then((response) => {
         setNotification(response.data.notification);
         console.log(response.data.notification);
+        const totalPagesFromResponse = response.data.totalPages;
+        setTotalPages(totalPagesFromResponse);
       })
       .catch((error) => {
         console.log("here", error);
       });
-  }, []);
+  }
 
   const handleRead = async (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -66,6 +77,10 @@ const Notifications = () => {
       .catch((error) => {
         console.log("here", error);
       });
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -126,9 +141,9 @@ const Notifications = () => {
                       <Link
                         to={`${data.type == "NEW_USER" ? ADMIN.USERS : data.type == "NEW_VENDOR" ? ADMIN.VENDORS : ADMIN.WALLET}`}
                       >
-                        <button className="absolute -mx-1 top-6 right-30 text-xs text-white px-2 py-1 rounded-full bg-blue-300">
-                          View
-                        </button>
+                       <button className={`absolute top-6  text-xs text-white bg-blue-300 px-2 py-1 rounded-full ${!data?.read? 'right-24':'right-28'}`}>
+                            View
+                          </button>
                       </Link>
                     </div>
                   </div>
@@ -136,6 +151,14 @@ const Notifications = () => {
               </div>
             </div>
           ))}
+           {notifications.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+          isTable={false}
+        />
+      )}
         </div>
       ) : (
         <Typography

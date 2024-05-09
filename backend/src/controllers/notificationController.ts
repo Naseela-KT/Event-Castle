@@ -6,9 +6,12 @@ import { handleError } from "../utils/handleError";
 class NotificationController {
   async getAllNotifications(req: Request, res: Response){
     try {
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
       const recipient:string=req.query.recipient as string
-      const data=await NotificationService.getNotifications(recipient)
-      res.status(201).json({notification:data})
+      const {notifications,count}=await NotificationService.getNotifications(recipient,page,pageSize)
+      const totalPages = Math.ceil(count / pageSize);
+      res.status(201).json({notification:notifications,totalPages: totalPages})
     } catch (error) {
       handleError(res, error, "getAllNotifications");
     }
@@ -17,15 +20,15 @@ class NotificationController {
 
 
 
-  async getAdminNotifications(req: Request, res: Response){
-    try {
-      const adminId:string=req.query.adminId as string
-      const data=await NotificationService.getNotificationForAdmin(adminId)
-      res.status(201).json({notification:data})
-    } catch (error) {
-      handleError(res, error, "getAdminNotifications");
-    }
-  }
+  // async getAdminNotifications(req: Request, res: Response){
+  //   try {
+  //     const adminId:string=req.query.adminId as string
+  //     const data=await NotificationService.getNotificationForAdmin(adminId)
+  //     res.status(201).json({notification:data})
+  //   } catch (error) {
+  //     handleError(res, error, "getAdminNotifications");
+  //   }
+  // }
 
   async toggleRead(req: Request, res: Response){
     try {
@@ -44,8 +47,8 @@ class NotificationController {
       const {id:_id, recipient } = req.query as { id: string; recipient: string };
        
       const deleteData=await NotificationService.delete(_id)
-      const data=await NotificationService.getNotifications(recipient)
-      res.status(201).json({notification:data})
+      // const data=await NotificationService.getNotifications(recipient)
+      res.status(201).json({notification:deleteData})
     } catch (error) {
       handleError(res, error, "deleteNotification");
     }

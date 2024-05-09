@@ -273,14 +273,15 @@ class VendorController{
 
   async getAllVendors(req: Request, res: Response): Promise<void>{
     try {
-      const { page = 1, limit = 6, search = "" ,category='',location='',sort} = req.query;
+      const { page = 1, limit = 8, search = "" ,category='',location='',sort} = req.query;
       console.log(req.query)
       const pageNumber = parseInt(page as string, 10);
       const limitNumber = parseInt(limit as string, 10);
       const sortValue = parseInt(sort as string, 10);
       const vendorData = await VendorService.getVendors(pageNumber,limitNumber,search.toString(),category.toString(),location.toString(),sortValue);
       const totalVendors = await VendorService.getVendorsCount();
-      res.status(200).json({ vendorData, totalVendors });
+      const totalPages = Math.ceil(totalVendors / limitNumber);
+      res.status(200).json({ vendorData,  totalPages});
     } catch (error) {
       handleError(res, error, "getAllVendors");
     }

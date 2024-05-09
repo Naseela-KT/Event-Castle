@@ -59,7 +59,7 @@ function VendorsList() {
              currentPage={currentPage}
              totalPages={totalPages}
              handlePageChange={handlePageChange}
-             isTable={true}
+             isTable={false}
            />
         )}
      </div>

@@ -3,10 +3,10 @@ import NotificationRepository from "../repositories/notificationRepository";
 import { CustomError } from "../error/customError";
 
 class NotificationService {
-  async getNotifications(recipient: string) {
+  async getNotifications(recipient: string,page: number, pageSize: number) {
     try {
-      const data = await NotificationRepository.findAllNotifications(recipient);
-      return data;
+      return await NotificationRepository.findAllNotifications(recipient, page, pageSize);
+     
     } catch (error) {
       console.error("Error in getNotifications:", error);
       throw new CustomError("Failed to fetch notifications.", 500);

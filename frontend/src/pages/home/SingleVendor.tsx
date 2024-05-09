@@ -18,6 +18,8 @@ import ProfileButtons from "../../components/home/VendorProfile/ProfileButtons";
 import { Review } from "../../types/commonTypes";
 import { VendorData } from "../../types/vendorTypes";
 import { toast as hottoast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../redux/slices/UserSlice";
 
 export function VendorProfile() {
   const user = useSelector((state: UserRootState) => state.user.userdata);
@@ -28,6 +30,9 @@ export function VendorProfile() {
   const [favourite, setFavourite] = useState(false);
   const [review, setReview] = useState<Review[]>([]);
   const [reviewAdded,setReviewAdded]=useState(false)
+  const dispatch=useDispatch()
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,21 +41,21 @@ export function VendorProfile() {
           withCredentials: true,
         });
         setVendor(response.data.data);
-  
-        // Set `favourite` based on whether the user has favorited this vendor
+        
+    
         if (user?.favourite?.includes(id)) {
           setFavourite(true);
         } else {
-          setFavourite(false); // Make sure to handle the else case
+          setFavourite(false);
         }
   
-        // Fetch and set reviews
+      
         const reviewsResponse = await axiosInstance.get(`/getReviews?vendorId=${id}`, {
           withCredentials: true,
         });
         setReview(reviewsResponse.data.reviews);
         
-        setReviewAdded(false); // Reset after data is fetched
+        setReviewAdded(false); 
         window.scrollTo(0, 0);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,6 +86,7 @@ export function VendorProfile() {
         .then((response) => {
           console.log(response);
           setFavourite(response.data.fav);
+          dispatch(setUserInfo(response.data.userData))
           toast.success(response.data.message);
           console.log(response.data);
         })
@@ -170,7 +176,8 @@ export function VendorProfile() {
               <div className="mt-10 mb-10 flex lg:flex-col md:flex-row flex-col justify-between items-center lg:justify-end lg:mb-0 lg:px-4 flex-wrap lg:-mt-5">
                 <div className="flex gap-2">
                   <IconButton
-                    color={favourite?"pink" : "black"}
+                  // style={favourite?{backgroundColor:"pink"}:{backgroundColor:"black"}}
+                  color={favourite?"pink":"black"}
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}

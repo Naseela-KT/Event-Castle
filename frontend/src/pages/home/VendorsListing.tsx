@@ -6,6 +6,7 @@ import Footer from "../../layout/user/footer";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/api/axiosinstance";
 import { VendorData } from "../../types/vendorTypes";
+import Pagination from "../../components/common/Pagination";
 // import Pagination from "../../components/common/Pagination";
 
 const VendorsListing = () => {
@@ -14,6 +15,7 @@ const VendorsListing = () => {
   const [locations, setLocations] = useState<string[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [category, setCategory] = useState<string[]>([]);
   const [selectLocation, setSelectLocation] = useState<string[]>([]);
@@ -36,6 +38,10 @@ const VendorsListing = () => {
     fetchVendors();
   }, [category, search, selectLocation, sort, page]);
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   useEffect(() => {
     axiosInstance
       .get(`/get-locations`, {
@@ -53,7 +59,7 @@ const VendorsListing = () => {
   const fetchVendors = async () => {
     try {
       const response = await axiosInstance.get(
-        `/getvendors?search=${search}&page=${page}&category=${category.join(",")}&location=${selectLocation.join(",")}&sort=${sort}`,
+        `/getvendors?search=${search}&page=${currentPage}&category=${category.join(",")}&location=${selectLocation.join(",")}&sort=${sort}`,
         {
           withCredentials: true,
         }
@@ -61,9 +67,7 @@ const VendorsListing = () => {
 
       console.log(response.data.vendorData);
       setVendors(response.data.vendorData);
-      setTotalPages(() => {
-        return Math.ceil(response.data.totalUsers / 6);
-      });
+      setTotalPages(response.data.totalPages)
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }
@@ -150,15 +154,15 @@ const VendorsListing = () => {
         </div>
       </section>
       {/* pagination */}
-      {/* {vendors.length > 0 && (
+      {vendors.length > 0 && (
          <Pagination
          currentPage={currentPage}
          totalPages={totalPages!}
          handlePageChange={handlePageChange}
          isTable={false}
        />
-      )} */}
-      {totalPages}
+      )}
+ 
       <div className="bg-white">
         <Footer />
       </div>

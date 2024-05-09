@@ -420,15 +420,15 @@ class UserController{
       if (!userId) {
         res.status(400).json({ error: "Invalid user id." });
       }
-      console.log("Userid: " + userId);
-      console.log("vendorId: ", vendorId);
+   
       
       const data = await userService.FavoriteVendor(vendorId, userId);
+      const userData=await userService.findUser(userId)
 
       if (data) {
-        res.status(200).json({ message: "vendor added to Favorite list..",fav:true });
+        res.status(200).json({ message: "vendor added to Favorite list..",fav:true ,userData});
       } else {
-        res.status(200).json({ message: "vendor removed from favorites",fav:false });
+        res.status(200).json({ message: "vendor removed from favorites",fav:false,userData });
       }
     } catch (error) {
       handleError(res, error, "AddFavVendor");
