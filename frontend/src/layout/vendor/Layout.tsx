@@ -469,7 +469,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </NavLink>
             <NavLink
               to={VENDOR.CHAT}
-             
+              className={
+                pathname.includes("chat")
+                  ? "bg-gray-300 border-1 rounded-lg"
+                  : ""
+              }
             >
               <ListItem
                 placeholder={undefined}

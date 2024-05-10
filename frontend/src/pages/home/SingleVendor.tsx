@@ -34,6 +34,8 @@ export function VendorProfile() {
 
 
 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -239,7 +241,7 @@ export function VendorProfile() {
         <VendorTabs reviews={review} />
       </section>
       <section className="mb-20">
-        <AddReview id={vendor?._id} setReviewAdded={()=>setReviewAdded}/>
+        <AddReview id={vendor?._id} setReviewAdded={setReviewAdded} reviewAdded={reviewAdded}/>
       </section>
       <div className="bg-white">
         <Footer />

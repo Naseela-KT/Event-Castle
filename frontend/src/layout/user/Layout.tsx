@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, {  useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { USER } from "../../config/constants/constants";
 import {
@@ -33,21 +33,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSelector((state: UserState) => state.user.userdata);
 
-  const [activePath, setActivePath] = useState('');
 
-  useEffect(() => {
-    // Set activePath based on the current location
-    setActivePath(location.pathname);
-  }, [location]);
 
-  const handleSidebarClick = (path:string) => {
-    setActivePath(path);
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  const path = useLocation();
+  const { pathname } = location;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -134,9 +126,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <Link to={USER.PROFILE} onClick={() => handleSidebarClick(`${USER.PROFILE}`)}>
+            <NavLink to={USER.PROFILE}>
               <ListItem
-                className={`${activePath == USER.PROFILE ? "text-pink-400" : ""}text-sm`}
+                className={`text-sm ${pathname==USER.PROFILE ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -150,10 +142,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </ListItemPrefix>
                 Profile
               </ListItem>
-            </Link>
+            </NavLink>
             <Link to={`${USER.PROFILE}${USER.CHANGE_PWD}`}>
               <ListItem
-                className={`${path.pathname == `${USER.PROFILE}${USER.CHANGE_PWD}` ? "text-pink-300" : ""}text-sm`}
+                className={`text-sm ${pathname.includes(`${USER.PROFILE}${USER.CHANGE_PWD}`) ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -170,7 +162,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
             <Link to={`${USER.PROFILE}${USER.FAV}`}>
               <ListItem
-                className={`${path.pathname == `${USER.PROFILE}${USER.FAV}` ? "bg-gray-300" : ""}text-sm`}
+                className={`text-sm ${pathname==`${USER.PROFILE}${USER.FAV}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -187,11 +179,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
             <Link to={`${USER.PROFILE}${USER.BOOKING_DETAILS}`}>
               <ListItem
-                className={`${
-                  path.pathname.includes(USER.BOOKING || USER.BOOKING_DETAILS)
-                    ? "bg-gray-300"
-                    : ""
-                }text-sm`}
+                className={`text-sm ${pathname==`${USER.PROFILE}${USER.BOOKING_DETAILS}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -208,7 +196,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
             <Link to={`${USER.PROFILE}${USER.WALLET}`}>
               <ListItem
-                className={`${path.pathname == `${USER.PROFILE}${USER.WALLET}` ? "bg-gray-300" : ""}text-sm`}
+                className={`text-sm ${pathname==`${USER.PROFILE}${USER.WALLET}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -225,7 +213,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
             <Link to={`${USER.PROFILE}${USER.INBOX}`}>
               <ListItem
-                className={`${path.pathname==`${USER.PROFILE}${USER.INBOX}` ? "bg-gray-300" : ""}text-sm`}
+                className={`text-sm ${pathname==`${USER.PROFILE}${USER.INBOX}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -245,7 +233,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
          
             <Link to={`${USER.CHAT}`}>
               <ListItem
-                className={`${path.pathname == `${USER.CHAT}` ? "bg-gray-300" : ""}text-sm`}
+                className={`text-sm ${pathname==`${USER.CHAT}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -264,7 +252,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link to={`${USER.LIVE}`}>
               <ListItem
               
-                className={`${path.pathname == `${USER.LIVE}` ? "bg-gray-300" : ""}text-sm`}
+                className={`text-sm ${pathname==`${USER.LIVE}` ? "bg-gray-300" : ""}`}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}

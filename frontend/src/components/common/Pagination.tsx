@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
           {currentPage > 1 && (
             <button
               disabled
-              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none bg-pink-500 active:bg-pink-400 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
               onClick={() => handlePageChange(currentPage - 1)}
             >
@@ -38,7 +38,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
             <div className="flex items-center gap-2" key={page}>
               <button
                 onClick={() => handlePageChange(page)}
-                className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg ${page === currentPage ? 'bg-gray-900' : 'bg-gray-400'} text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+                className={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg ${page === currentPage ? 'bg-pink-400' : 'bg-pink-100'} text-center align-middle font-sans text-xs font-medium uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
                 type="button"
               >
                 <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
           {currentPage < totalPages && (
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              className="flex items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-pink-500 active:bg-pink-400 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
             >
               Next
@@ -74,6 +74,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
             <Button
               variant="outlined"
               size="sm"
+              color='pink'
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
@@ -88,6 +89,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
               <IconButton
                 variant={currentPage === page ? 'gradient' : 'outlined'}
                 size="sm"
+                color='pink'
                 key={page}
                 onClick={() => handlePageChange(page)}
                 placeholder={undefined}
@@ -102,6 +104,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handle
             <Button
               variant="outlined"
               size="sm"
+              color='pink'
               onClick={() => handlePageChange(currentPage + 1)}
               placeholder={undefined}
               onPointerEnterCapture={undefined}

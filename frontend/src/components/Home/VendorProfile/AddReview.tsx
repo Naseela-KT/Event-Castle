@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Rating } from "@material-tailwind/react";
 import { axiosInstance } from "../../../config/api/axiosinstance";
-
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
-import { USER } from "../../../config/constants/constants";
 import { toast as hottoast } from "react-hot-toast";
 
 interface VendorReviewProps {
   id: string | undefined;
   setReviewAdded: (value: boolean) => void;
+  reviewAdded:boolean;
 }
-const AddReview: React.FC<VendorReviewProps> = ({ id, setReviewAdded }) => {
+const AddReview: React.FC<VendorReviewProps> = ({ id, setReviewAdded,reviewAdded }) => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
 
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>("");
-  const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    if(reviewAdded){
+      setRating(0)
+    }
+  },[reviewAdded])
 
   const handleRatingChange = (value: number) => {
     setRating(value);
@@ -60,12 +64,14 @@ const AddReview: React.FC<VendorReviewProps> = ({ id, setReviewAdded }) => {
         { withCredentials: true }
       )
       .then((response) => {
-        setRating(0);
-        setReview("");
+        
         console.log(response);
         toast.success(response.data.message);
         setReviewAdded(true);
-        navigate(`${USER.VIEW_VENDOR}?id=${id}`);
+        setRating(0);
+        setReview("");
+        console.log(rating,review)
+       
       })
       .catch((error) => {
         hottoast.error(error.response.data.message);
