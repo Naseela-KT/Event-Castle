@@ -15,11 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const notificationRepository_1 = __importDefault(require("../repositories/notificationRepository"));
 const customError_1 = require("../error/customError");
 class NotificationService {
-    getNotifications(recipient) {
+    getNotifications(recipient, page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield notificationRepository_1.default.findAllNotifications(recipient);
-                return data;
+                return yield notificationRepository_1.default.findAllNotifications(recipient, page, pageSize);
             }
             catch (error) {
                 console.error("Error in getNotifications:", error);

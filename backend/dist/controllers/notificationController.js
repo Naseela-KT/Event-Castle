@@ -18,27 +18,27 @@ class NotificationController {
     getAllNotifications(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const page = parseInt(req.query.page) || 1;
+                const pageSize = parseInt(req.query.pageSize) || 8;
                 const recipient = req.query.recipient;
-                const data = yield notificationService_1.default.getNotifications(recipient);
-                res.status(201).json({ notification: data });
+                const { notifications, count } = yield notificationService_1.default.getNotifications(recipient, page, pageSize);
+                const totalPages = Math.ceil(count / pageSize);
+                res.status(201).json({ notification: notifications, totalPages: totalPages });
             }
             catch (error) {
                 (0, handleError_1.handleError)(res, error, "getAllNotifications");
             }
         });
     }
-    getAdminNotifications(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const adminId = req.query.adminId;
-                const data = yield notificationService_1.default.getNotificationForAdmin(adminId);
-                res.status(201).json({ notification: data });
-            }
-            catch (error) {
-                (0, handleError_1.handleError)(res, error, "getAdminNotifications");
-            }
-        });
-    }
+    // async getAdminNotifications(req: Request, res: Response){
+    //   try {
+    //     const adminId:string=req.query.adminId as string
+    //     const data=await NotificationService.getNotificationForAdmin(adminId)
+    //     res.status(201).json({notification:data})
+    //   } catch (error) {
+    //     handleError(res, error, "getAdminNotifications");
+    //   }
+    // }
     toggleRead(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -58,8 +58,8 @@ class NotificationController {
                 console.log(req.query);
                 const { id: _id, recipient } = req.query;
                 const deleteData = yield notificationService_1.default.delete(_id);
-                const data = yield notificationService_1.default.getNotifications(recipient);
-                res.status(201).json({ notification: data });
+                // const data=await NotificationService.getNotifications(recipient)
+                res.status(201).json({ notification: deleteData });
             }
             catch (error) {
                 (0, handleError_1.handleError)(res, error, "deleteNotification");

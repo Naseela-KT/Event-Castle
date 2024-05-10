@@ -18,11 +18,17 @@ class NotificationRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(notificationModel_1.default);
     }
-    findAllNotifications(recipient) {
+    findAllNotifications(recipient, page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield notificationModel_1.default.find({ recipient: recipient }).sort({
-                createdAt: -1,
-            });
+            const skip = (page - 1) * pageSize;
+            const notifications = yield notificationModel_1.default.find({ recipient: recipient }).sort({
+                createdAt: -1
+            })
+                .skip(skip)
+                .limit(pageSize)
+                .exec();
+            const count = yield notificationModel_1.default.countDocuments({ recipient: recipient });
+            return { notifications, count };
         });
     }
     findUnreadNotifications(recipient) {

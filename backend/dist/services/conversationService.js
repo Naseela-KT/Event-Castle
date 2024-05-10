@@ -38,11 +38,21 @@ class ConversationService {
     findChat(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield conversationRepository_1.default.findByCondition({ members: { $in: [userId] } });
+                return yield conversationRepository_1.default.findConversations(userId);
             }
             catch (error) {
                 console.error("Error in findChat:", error);
                 throw new customError_1.CustomError("Error finding chats.", 500);
+            }
+        });
+    }
+    updateConversation(id, text) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield conversationRepository_1.default.findByIdAndUpdate(id, text);
+            }
+            catch (error) {
+                throw error;
             }
         });
     }

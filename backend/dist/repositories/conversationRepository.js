@@ -9,5 +9,11 @@ class ConversationRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(conversationModel_1.default);
     }
+    findByIdAndUpdate(id, text) {
+        return conversationModel_1.default.findOneAndUpdate({ _id: id }, { $set: { recentMessage: text } });
+    }
+    findConversations(userId) {
+        return conversationModel_1.default.find({ members: { $in: [userId] } }).sort({ updatedAt: -1 });
+    }
 }
 exports.default = new ConversationRepository();

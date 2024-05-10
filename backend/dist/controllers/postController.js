@@ -17,6 +17,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
 const sharp_1 = __importDefault(require("sharp"));
 const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
+const customError_1 = require("../error/customError");
 const postService_1 = __importDefault(require("../services/postService"));
 const handleError_1 = require("../utils/handleError");
 dotenv_1.default.config();
@@ -54,7 +55,7 @@ class PostController {
                     Key: imageName,
                 };
                 const command2 = new client_s3_1.GetObjectCommand(getObjectParams);
-                const url = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command2, { expiresIn: 86400 * 3 });
+                const url = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command2, { expiresIn: 86400 * 6 });
                 let imageUrl = url;
                 const post = yield postService_1.default.createPost(caption, imageName, vendor_id, imageUrl);
                 res.status(201).json(post);
@@ -84,9 +85,9 @@ class PostController {
             try {
                 const id = req.params.id;
                 const post = yield postService_1.default.getPostById(id);
-                // if(!post){
-                //   throw new CustomError('Post not found!',404)
-                // }
+                if (!post) {
+                    throw new customError_1.CustomError('Post not found!', 404);
+                }
                 const params = {
                     Bucket: process.env.BUCKET_NAME,
                     Key: post === null || post === void 0 ? void 0 : post.image,

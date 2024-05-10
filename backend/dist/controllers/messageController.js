@@ -15,12 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const messageModel_1 = __importDefault(require("../models/messageModel"));
 const messageService_1 = __importDefault(require("../services/messageService"));
 const handleError_1 = require("../utils/handleError");
+const conversationService_1 = __importDefault(require("../services/conversationService"));
 class MessageController {
     createMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { conversationId, senderId, text, imageName, imageUrl } = req.body;
                 const response = yield messageService_1.default.createMessage(conversationId, senderId, text, imageName, imageUrl);
+                yield conversationService_1.default.updateConversation(conversationId, text);
                 res.status(200).json(response);
             }
             catch (error) {

@@ -5,5 +5,6 @@ const conversationSchema = new mongoose_1.Schema({
     members: [{
             type: String,
         }],
+    recentMessage: String
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("Conversation", conversationSchema);

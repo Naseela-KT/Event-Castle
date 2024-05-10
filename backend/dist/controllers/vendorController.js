@@ -259,14 +259,15 @@ class VendorController {
     getAllVendors(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { page = 1, limit = 6, search = "", category = '', location = '', sort } = req.query;
+                const { page = 1, limit = 8, search = "", category = '', location = '', sort } = req.query;
                 console.log(req.query);
                 const pageNumber = parseInt(page, 10);
                 const limitNumber = parseInt(limit, 10);
                 const sortValue = parseInt(sort, 10);
                 const vendorData = yield vendorService_1.default.getVendors(pageNumber, limitNumber, search.toString(), category.toString(), location.toString(), sortValue);
                 const totalVendors = yield vendorService_1.default.getVendorsCount();
-                res.status(200).json({ vendorData, totalVendors });
+                const totalPages = Math.ceil(totalVendors / limitNumber);
+                res.status(200).json({ vendorData, totalPages });
             }
             catch (error) {
                 (0, handleError_1.handleError)(res, error, "getAllVendors");
@@ -390,7 +391,7 @@ class VendorController {
                         Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
                     });
                     coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, {
-                        expiresIn: 86400 * 3,
+                        expiresIn: 86400 * 6,
                     });
                     // Upload logo to S3
                     const logoUploadParams = {
@@ -406,10 +407,10 @@ class VendorController {
                         Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
                     });
                     logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, {
-                        expiresIn: 86400 * 3,
+                        expiresIn: 86400 * 6,
                     });
                 }
-                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl, logoUrl, logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname, coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname);
+                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : "", logoUrl ? logoUrl : "", (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : "", (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname) ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname : "");
                 res.status(200).json(updatedVendor);
             }
             catch (error) {
