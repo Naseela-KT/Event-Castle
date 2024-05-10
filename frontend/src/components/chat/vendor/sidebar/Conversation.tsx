@@ -75,7 +75,7 @@ const Conversation:React.FC<ConversationsProps>=({conversation , currentUser , a
             
             </div>
             <div className="flex items-center justify-start">
-              <p className="text-sm text-gray-500 truncate">{conversation?.recentMessage.slice(0,10)}</p>
+              <p className="text-sm text-gray-500 truncate">{conversation?.recentMessage?.slice(0,10)}</p>
               {/* <div className="text-white text-xs bg-red-400 rounded-full px-1 py-0">
                 2
               </div> */}
