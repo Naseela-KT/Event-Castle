@@ -80,7 +80,7 @@ const AddReview: React.FC<VendorReviewProps> = ({ id, setReviewAdded,reviewAdded
   };
 
   return (
-    <div className="max-w-2xl mx-5 lg:mx-auto mt-8 p-8 bg-gray rounded-md shadow-md">
+    <div className="max-w-2xl mx-5 lg:mx-auto mt-20 p-8 bg-gray rounded-md shadow-md">
       <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

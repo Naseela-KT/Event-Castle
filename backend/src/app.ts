@@ -28,7 +28,7 @@ const server = createServer(app)
 
 
 app.use(cors({
-  origin:["http://localhost:5000","https://eventcastle.online"],
+  origin:["http://localhost:5000","https://eventcastleonline."],
   credentials:true
 }));
 

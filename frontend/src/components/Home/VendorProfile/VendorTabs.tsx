@@ -6,8 +6,8 @@ import {
   TabsBody,
   Tab,
   TabPanel,
-  Button,
   Typography,
+  Button,
 } from '@material-tailwind/react';
 import VendorPosts from './VendorsPosts';
 import ReviewCard from './ReviewCard';
@@ -80,14 +80,14 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
               {reviews?.length==0&&<Typography variant="h5" color="pink" className=" mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       No reviews added!
     </Typography>}
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+              <div className="grid  gap-4 sm:grid-cols-1 md:grid-cols-2">
                 {reviews?.map((review, index) => (
                   <ReviewCard key={index} {...review} />
                 ))}
                 
          
               </div>
-              {reviews?.length!>0&&<div className="flex justify-center items-center">
+              {reviews?.length!>0&&<div className="flex justify-center items-center mt-10">
               <Button
                 variant="outlined"
                 placeholder={undefined}
@@ -97,7 +97,7 @@ const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
               >
-                View More Images
+                View More Reviews
               </Button>
             </div>}
               </>

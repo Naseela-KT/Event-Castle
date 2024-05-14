@@ -58,7 +58,11 @@ const Footer: React.FC<FooterProps> = ({
       });
   }, []);
  return (
+  <>
+     <hr className="my-6 border-gray-300 mx-10" />
+
     <footer className="relative px-4 pt-8 pb-6 ml-10 mr-10">
+      
       <div className="container mx-auto">
         <div className="flex flex-wrap pt-6 text-center lg:text-left">
           <div className="w-full px-4 lg:w-6/12">
@@ -146,6 +150,7 @@ const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
     </footer>
+    </>
  );
 };
 

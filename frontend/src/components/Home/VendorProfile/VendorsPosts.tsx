@@ -85,8 +85,9 @@ const VendorPosts= () => {
           </button>}
           
           {selectedPost && (
+
             <DialogWithImage
-            caption={selectedPost.caption!}
+             caption={selectedPost.caption!}
               imageUrl={selectedPost.imageUrl!}
               open={open}
               handler={handleOpen}
@@ -95,7 +96,7 @@ const VendorPosts= () => {
         </div>
       ))}
     </div>
-    {posts.length>0&&<div className="flex justify-center items-center">
+    {posts.length>0&&<div className="flex justify-center items-center mt-10">
               <Button
                 variant="outlined"
                 placeholder={undefined}

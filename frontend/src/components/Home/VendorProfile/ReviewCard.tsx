@@ -4,18 +4,20 @@ import {
   CardBody,
   Typography,
   Rating,
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
   Button,
   Dialog,
   DialogBody,
   DialogFooter,
   DialogHeader,
   Input,
+  Avatar,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { FaAngleUp, FaAngleDown } from "react-icons/fa";
+import { FaAngleDown } from "react-icons/fa";
 import { UserData } from "../../../types/userTypes";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
@@ -37,20 +39,11 @@ const ReviewCard: React.FC<Review> = ({
   rating,
   content,
   reply,
-  key,
+
 }) => {
   const user = useSelector((state: UserRootState) => state.user.userdata);
-  const [openAccordions, setOpenAccordions] = useState<number[]>([]);
-  const handleToggleAccordion = (index: number) => {
-    const isOpen = openAccordions.includes(key);
-    setOpenAccordions((prevState) => {
-      if (isOpen) {
-        return prevState.filter((item) => item !== key); // Close the accordion
-      } else {
-        return [...prevState, index]; // Open the accordion
-      }
-    });
-  };
+  
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(!open);
@@ -79,11 +72,9 @@ const ReviewCard: React.FC<Review> = ({
 
   return (
     <>
-   
       <Card
-        color="transparent"
-        shadow={false}
-        className="w-full max-w-[20rem]"
+        color="white"
+        className="w-full p-5"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -97,7 +88,16 @@ const ReviewCard: React.FC<Review> = ({
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          <i className="fa-solid fa-user"></i>
+          <Avatar
+            size="xs"
+            variant="circular"
+            alt={userId?.name}
+            className="cursor-pointer bg-white mt-2"
+            src={userId?.imageUrl ? userId.imageUrl : "/imgs/user-default.svg"}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          />
           <div className="flex w-full flex-col gap-0.5">
             <div className="flex items-center justify-between">
               <Typography
@@ -120,7 +120,7 @@ const ReviewCard: React.FC<Review> = ({
           </div>
         </CardHeader>
         <CardBody
-          className="mb-6 p-0 ml-7"
+          className="mb-4 p-0 ml-10"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
@@ -140,34 +140,41 @@ const ReviewCard: React.FC<Review> = ({
             )}
           </Typography>
           {reply.length > 0 ? (
-            <div className="flex flex-col md:flex-row gap-8  mb-10 mt-5">
-              <Accordion
-                open={openAccordions.includes(key)}
-                placeholder={undefined}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-                className="w-50"
-              >
-                <AccordionHeader
-                  className="text-sm flex items-center w-60"
-                  onClick={() => handleToggleAccordion(key)}
+            <div className="flex flex-col md:flex-row gap-8 mt-5 -ml-5">
+              <Menu>
+                <MenuHandler>
+              
+                  <Button
+                    className="hover:none flex flex-row"
+                    variant="text"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    View replies
+                    <FaAngleDown className="ml-2 mt-[0.5]"/>
+                  </Button>
+                  
+                
+                  
+                </MenuHandler>
+                <MenuList
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  View replies
-                  {openAccordions.includes(key) ? (
-                    <FaAngleUp />
-                  ) : (
-                    <FaAngleDown />
-                  )}
-                </AccordionHeader>
-                <AccordionBody>
                   {reply.map((replyval, replyIndex) => (
-                    <p key={replyIndex}>{replyval}</p>
+                    <MenuItem
+                      key={replyIndex}
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    >
+                      {replyval}
+                    </MenuItem>
                   ))}
-                </AccordionBody>
-              </Accordion>
+                </MenuList>
+              </Menu>
             </div>
           ) : (
             ""
@@ -202,12 +209,12 @@ const ReviewCard: React.FC<Review> = ({
             value={review}
             name="review"
             onChange={(e) => {
-              const val=e.target.value
+              const val = e.target.value;
               setReview(val);
               if (val.trim() === "") {
                 setError("Review cannot be empty!");
               } else {
-                setError(""); 
+                setError("");
               }
             }}
             disabled={false}

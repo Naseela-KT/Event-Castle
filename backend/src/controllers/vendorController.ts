@@ -378,8 +378,8 @@ class VendorController{
       const vendorId: string = req.query.vendorid as string; // Assuming vendorId is sent in the request body
       const formData = req.body;
 
-      let coverpicFile, coverpicUrl;
-      let logoFile, logoUrl;
+      let coverpicFile, coverpicUrl="";
+      let logoFile, logoUrl="";
 
       if (req.files) {
         if (
@@ -388,6 +388,25 @@ class VendorController{
           Array.isArray(req.files["coverpic"])
         ) {
           coverpicFile = req.files["coverpic"][0];
+          const coverpicUploadParams = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: coverpicFile?.originalname,
+            Body: coverpicFile?.buffer,
+            ContentType: coverpicFile?.mimetype,
+          };
+  
+          console.log(coverpicFile?.originalname);
+  
+          const covercommand = new PutObjectCommand(coverpicUploadParams);
+          await s3.send(covercommand);
+  
+          const covercommand2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME!,
+            Key: coverpicFile?.originalname,
+          });
+          coverpicUrl = await getSignedUrl(s3, covercommand2, {
+            expiresIn: 86400 * 6,
+          });
         }
 
         if (
@@ -396,55 +415,38 @@ class VendorController{
           Array.isArray(req.files["logo"])
         ) {
           logoFile = req.files["logo"][0];
+          const logoUploadParams = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: logoFile?.originalname,
+            Body: logoFile?.buffer,
+            ContentType: logoFile?.mimetype,
+          };
+  
+          const logocommand = new PutObjectCommand(logoUploadParams);
+          await s3.send(logocommand);
+  
+          const logocommand2 = new GetObjectCommand({
+            Bucket: process.env.BUCKET_NAME!,
+            Key: logoFile?.originalname,
+          });
+          logoUrl = await getSignedUrl(s3, logocommand2, {
+            expiresIn: 86400 * 6,
+          });
         }
-
-        const coverpicUploadParams = {
-          Bucket: process.env.BUCKET_NAME,
-          Key: coverpicFile?.originalname,
-          Body: coverpicFile?.buffer,
-          ContentType: coverpicFile?.mimetype,
-        };
-
-        console.log(coverpicFile?.originalname);
-
-        const covercommand = new PutObjectCommand(coverpicUploadParams);
-        await s3.send(covercommand);
-
-        const covercommand2 = new GetObjectCommand({
-          Bucket: process.env.BUCKET_NAME!,
-          Key: coverpicFile?.originalname,
-        });
-        coverpicUrl = await getSignedUrl(s3, covercommand2, {
-          expiresIn: 86400 * 6,
-        });
-
-        // Upload logo to S3
-        const logoUploadParams = {
-          Bucket: process.env.BUCKET_NAME,
-          Key: logoFile?.originalname,
-          Body: logoFile?.buffer,
-          ContentType: logoFile?.mimetype,
-        };
-
-        const logocommand = new PutObjectCommand(logoUploadParams);
-        await s3.send(logocommand);
-
-        const logocommand2 = new GetObjectCommand({
-          Bucket: process.env.BUCKET_NAME!,
-          Key: logoFile?.originalname,
-        });
-        logoUrl = await getSignedUrl(s3, logocommand2, {
-          expiresIn: 86400 * 6,
-        });
+        
       }
+
+      const vendor=await VendorService.getSingleVendor(vendorId)
+
+     
 
       const updatedVendor = await VendorService.updateVendor(
         vendorId,
         formData,
-        coverpicUrl?coverpicUrl:"",
-        logoUrl?logoUrl:"",
-        logoFile?.originalname ? logoFile?.originalname :"",
-        coverpicFile?.originalname ?coverpicFile?.originalname:""
+        coverpicUrl?coverpicUrl:vendor.coverpicUrl,
+        logoUrl?logoUrl:vendor.logoUrl,
+        logoFile?.originalname ? logoFile?.originalname :vendor.logo,
+        coverpicFile?.originalname ?coverpicFile?.originalname:vendor.coverpic
       );
 
       res.status(200).json(updatedVendor);
