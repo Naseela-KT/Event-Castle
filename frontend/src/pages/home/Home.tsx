@@ -339,7 +339,6 @@ function Home() {
       <section className="mt-40">
         <SubsribeCard />
       </section>
-
       <div className="bg-white">
         <Footer />
       </div>

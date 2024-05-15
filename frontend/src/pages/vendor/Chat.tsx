@@ -193,6 +193,7 @@ const Chat = () => {
   };
 
   const handleFileChange = (event: { target: { files: any[]; }; }) => {
+    console.log(event.target.files[0])
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setFileModal(true);

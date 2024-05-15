@@ -7,6 +7,7 @@ export interface Review {
   rating: number;
   content: string;
   reply: Array<string>;
+  createdAt: string;
 }
 
 export interface Notification {

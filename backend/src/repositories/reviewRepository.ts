@@ -15,8 +15,14 @@ class ReviewRepository extends BaseRepository<ReviewDocument>{
    
   }
 
-  async getReviewsByVendorId(vendorId:string){
-     return await Review.find({vendorId:vendorId}).populate('vendorId').populate('userId')
+  async getReviewsByVendorId(vendorId:string,page: number, pageSize: number){
+    const skip = (page - 1) * pageSize;
+    const reviews=await Review.find({vendorId:vendorId}).populate('vendorId').populate('userId').sort({
+      createdAt: -1})
+      .skip(skip)
+      .limit(pageSize)
+      const count = await Review.countDocuments({vendorId:vendorId})
+      return { reviews, count };
     
   }
 

@@ -49,8 +49,11 @@ class ReviewController{
       async getReviews(req: Request, res: Response): Promise<void> {
         try {
           const vendorId: string = req.query.vendorId as string;
-          const reviews=await ReviewService.getReviewsForVendor(vendorId)
-          res.status(200).json({reviews});
+          const page: number = parseInt(req.query.page as string) || 1;
+          const pageSize: number = parseInt(req.query.pageSize as string) || 6;
+          const {reviews,count}=await ReviewService.getReviewsForVendor(vendorId,page,pageSize)
+          const totalPages = Math.ceil(count / pageSize);
+          res.status(200).json({reviews,totalPages});
         } catch (error) {
           if (error instanceof CustomError) {
             res.status(error.statusCode).json({ message: error.message });

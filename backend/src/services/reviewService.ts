@@ -63,10 +63,10 @@ class ReviewService {
     }
   }
 
-  async getReviewsForVendor(vendorId: string): Promise<any> {
+  async getReviewsForVendor(vendorId: string,page: number, pageSize: number): Promise<any> {
     try {
-      const reviews = await reviewRepository.getReviewsByVendorId(vendorId);
-      return reviews;
+      return await reviewRepository.getReviewsByVendorId(vendorId, page, pageSize);
+      
     } catch (error) {
       console.error("Error in getReviewsForVendor:", error);
       throw new CustomError("Failed to get reviews for vendor.", 500);
@@ -87,7 +87,7 @@ class ReviewService {
 
   async getReviewStatisticsByVendorId(vendorId: string): Promise<number[]> {
     try {
-      const reviews = await reviewRepository.getReviewsByVendorId(vendorId);
+      const {reviews}= await reviewRepository.getReviewsByVendorId(vendorId,1,1);
       console.log(reviews);
       const ratingCounts = [0, 0, 0, 0, 0];
       reviews?.forEach((review: ReviewDocument) => {
