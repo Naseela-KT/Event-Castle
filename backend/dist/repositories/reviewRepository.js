@@ -20,13 +20,25 @@ class ReviewRepository extends baseRepository_1.BaseRepository {
     }
     addReply(content, reviewId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield reviewModel_1.default.findByIdAndUpdate(reviewId, { $push: { reply: content } });
+            const data = yield reviewModel_1.default.findByIdAndUpdate(reviewId, {
+                $push: { reply: content },
+            });
             return data;
         });
     }
-    getReviewsByVendorId(vendorId) {
+    getReviewsByVendorId(vendorId, page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield reviewModel_1.default.find({ vendorId: vendorId }).populate('vendorId').populate('userId');
+            const skip = (page - 1) * pageSize;
+            const reviews = yield reviewModel_1.default.find({ vendorId: vendorId })
+                .populate("vendorId")
+                .populate("userId")
+                .sort({
+                createdAt: -1,
+            })
+                .skip(skip)
+                .limit(pageSize);
+            const count = yield reviewModel_1.default.countDocuments({ vendorId: vendorId });
+            return { reviews, count };
         });
     }
 }

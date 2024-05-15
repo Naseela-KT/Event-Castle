@@ -364,53 +364,53 @@ class VendorController {
             try {
                 const vendorId = req.query.vendorid; // Assuming vendorId is sent in the request body
                 const formData = req.body;
-                let coverpicFile, coverpicUrl;
-                let logoFile, logoUrl;
+                let coverpicFile, coverpicUrl = "";
+                let logoFile, logoUrl = "";
                 if (req.files) {
                     if (typeof req.files === "object" &&
                         "coverpic" in req.files &&
                         Array.isArray(req.files["coverpic"])) {
                         coverpicFile = req.files["coverpic"][0];
+                        const coverpicUploadParams = {
+                            Bucket: process.env.BUCKET_NAME,
+                            Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
+                            Body: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.buffer,
+                            ContentType: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.mimetype,
+                        };
+                        console.log(coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname);
+                        const covercommand = new client_s3_1.PutObjectCommand(coverpicUploadParams);
+                        yield s3.send(covercommand);
+                        const covercommand2 = new client_s3_1.GetObjectCommand({
+                            Bucket: process.env.BUCKET_NAME,
+                            Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
+                        });
+                        coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, {
+                            expiresIn: 86400 * 6,
+                        });
                     }
                     if (typeof req.files === "object" &&
                         "logo" in req.files &&
                         Array.isArray(req.files["logo"])) {
                         logoFile = req.files["logo"][0];
+                        const logoUploadParams = {
+                            Bucket: process.env.BUCKET_NAME,
+                            Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
+                            Body: logoFile === null || logoFile === void 0 ? void 0 : logoFile.buffer,
+                            ContentType: logoFile === null || logoFile === void 0 ? void 0 : logoFile.mimetype,
+                        };
+                        const logocommand = new client_s3_1.PutObjectCommand(logoUploadParams);
+                        yield s3.send(logocommand);
+                        const logocommand2 = new client_s3_1.GetObjectCommand({
+                            Bucket: process.env.BUCKET_NAME,
+                            Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
+                        });
+                        logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, {
+                            expiresIn: 86400 * 6,
+                        });
                     }
-                    const coverpicUploadParams = {
-                        Bucket: process.env.BUCKET_NAME,
-                        Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
-                        Body: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.buffer,
-                        ContentType: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.mimetype,
-                    };
-                    console.log(coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname);
-                    const covercommand = new client_s3_1.PutObjectCommand(coverpicUploadParams);
-                    yield s3.send(covercommand);
-                    const covercommand2 = new client_s3_1.GetObjectCommand({
-                        Bucket: process.env.BUCKET_NAME,
-                        Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
-                    });
-                    coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, {
-                        expiresIn: 86400 * 6,
-                    });
-                    // Upload logo to S3
-                    const logoUploadParams = {
-                        Bucket: process.env.BUCKET_NAME,
-                        Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
-                        Body: logoFile === null || logoFile === void 0 ? void 0 : logoFile.buffer,
-                        ContentType: logoFile === null || logoFile === void 0 ? void 0 : logoFile.mimetype,
-                    };
-                    const logocommand = new client_s3_1.PutObjectCommand(logoUploadParams);
-                    yield s3.send(logocommand);
-                    const logocommand2 = new client_s3_1.GetObjectCommand({
-                        Bucket: process.env.BUCKET_NAME,
-                        Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
-                    });
-                    logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, {
-                        expiresIn: 86400 * 6,
-                    });
                 }
-                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : "", logoUrl ? logoUrl : "", (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : "", (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname) ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname : "");
+                const vendor = yield vendorService_1.default.getSingleVendor(vendorId);
+                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : vendor.coverpicUrl, logoUrl ? logoUrl : vendor.logoUrl, (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : vendor.logo, (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname) ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname : vendor.coverpic);
                 res.status(200).json(updatedVendor);
             }
             catch (error) {

@@ -85,11 +85,10 @@ class PaymentService {
             }
         });
     }
-    getPayments() {
+    getPayments(page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const payment = yield paymentRepository_1.default.getAll();
-                return payment;
+                return yield paymentRepository_1.default.findAllPayments(page, pageSize);
             }
             catch (error) {
                 console.error("Error in getPayments:", error);

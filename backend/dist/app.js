@@ -24,7 +24,7 @@ dotenv_1.default.config();
 (0, connectToMongoDB_1.connectDB)();
 const server = (0, http_1.createServer)(exports.app);
 exports.app.use((0, cors_1.default)({
-    origin: ["http://localhost:5000", "https://eventcastle.online"],
+    origin: ["http://localhost:5000", "https://eventcastleonline."],
     credentials: true
 }));
 exports.app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));

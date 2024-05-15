@@ -92,11 +92,10 @@ class ReviewService {
             }
         });
     }
-    getReviewsForVendor(vendorId) {
+    getReviewsForVendor(vendorId, page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reviews = yield reviewRepository_1.default.getReviewsByVendorId(vendorId);
-                return reviews;
+                return yield reviewRepository_1.default.getReviewsByVendorId(vendorId, page, pageSize);
             }
             catch (error) {
                 console.error("Error in getReviewsForVendor:", error);
@@ -121,7 +120,7 @@ class ReviewService {
     getReviewStatisticsByVendorId(vendorId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reviews = yield reviewRepository_1.default.getReviewsByVendorId(vendorId);
+                const { reviews } = yield reviewRepository_1.default.getReviewsByVendorId(vendorId, 1, 1);
                 console.log(reviews);
                 const ratingCounts = [0, 0, 0, 0, 0];
                 reviews === null || reviews === void 0 ? void 0 : reviews.forEach((review) => {

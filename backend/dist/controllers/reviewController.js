@@ -58,8 +58,11 @@ class ReviewController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const vendorId = req.query.vendorId;
-                const reviews = yield reviewService_1.default.getReviewsForVendor(vendorId);
-                res.status(200).json({ reviews });
+                const page = parseInt(req.query.page) || 1;
+                const pageSize = parseInt(req.query.pageSize) || 6;
+                const { reviews, count } = yield reviewService_1.default.getReviewsForVendor(vendorId, page, pageSize);
+                const totalPages = Math.ceil(count / pageSize);
+                res.status(200).json({ reviews, totalPages });
             }
             catch (error) {
                 if (error instanceof customError_1.CustomError) {

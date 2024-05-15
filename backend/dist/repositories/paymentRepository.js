@@ -18,10 +18,20 @@ class PaymentRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super(paymentModel_1.default);
     }
-    findAllPayments() {
+    findAllPayments(page, pageSize) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield paymentModel_1.default.find().populate('userId').populate('vendorId').populate('bookingId');
-            return result;
+            const skip = (page - 1) * pageSize;
+            const payment = yield paymentModel_1.default.find()
+                .populate("userId")
+                .populate("vendorId")
+                .populate("bookingId")
+                .sort({
+                createdAt: -1,
+            })
+                .skip(skip)
+                .limit(pageSize);
+            const count = yield paymentModel_1.default.countDocuments({});
+            return { payment, count };
         });
     }
 }

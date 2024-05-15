@@ -33,7 +33,7 @@ router.get("/single-type", adminAuthMiddleware_1.default, vendorTypeController_1
 router.put("/update-type", vendorTypeController_1.default.updateType);
 //Payment
 router.get('/load-admin-data', adminController_1.default.getAdminData);
-router.get('/all-payment-details', adminAuthMiddleware_1.default, paymentController_1.default.getAllPayments);
+// router.get('/all-payment-details',adminAuth,PaymentController.getAllPayments);
 router.get('/all-payment-details', paymentController_1.default.getAllPayments);
 //Notification
 router.get('/admin-notifications', notificationController_1.default.getAllNotifications);

@@ -77,8 +77,11 @@ class PaymentController {
     getAllPayments(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const payment = yield paymentService_1.default.getPayments();
-                res.status(200).json({ payment });
+                const page = parseInt(req.query.page) || 1;
+                const pageSize = parseInt(req.query.pageSize) || 6;
+                const { payment, count } = yield paymentService_1.default.getPayments(page, pageSize);
+                const totalPages = Math.ceil(count / pageSize);
+                res.status(200).json({ payment, totalPages });
             }
             catch (error) {
                 (0, handleError_1.handleError)(res, error, "getAllPayments");
