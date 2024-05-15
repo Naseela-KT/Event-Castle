@@ -65,10 +65,9 @@ class PaymentService{
     }
   }
 
-  async getPayments () {
+  async getPayments (page: number, pageSize: number) {
     try {
-      const payment = await PaymentRepository.getAll();
-      return payment;
+      return await PaymentRepository.findAllPayments(page, pageSize);
     } catch (error) {
       console.error("Error in getPayments:", error)
       throw new CustomError("Failed to retrieve payments.", 500);

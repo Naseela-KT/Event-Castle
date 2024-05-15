@@ -1,36 +1,49 @@
-import { Card, CardHeader, Typography } from '@material-tailwind/react';
-import { useSelector } from 'react-redux';
-import AdminRootState from '../../../redux/rootstate/AdminState';
-import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
-import { useEffect, useState } from 'react';
-import { AdminData } from '../../../types/adminTypes';
-import { Payment } from '../../../types/commonTypes';
-
-
+import { Card, CardHeader, Typography } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
+import AdminRootState from "../../../redux/rootstate/AdminState";
+import { axiosInstanceAdmin } from "../../../config/api/axiosinstance";
+import { useEffect, useState } from "react";
+import { AdminData } from "../../../types/adminTypes";
+import { Payment } from "../../../types/commonTypes";
+import Pagination from "../../../components/common/Pagination";
 
 function Wallet() {
   const admin = useSelector((state: AdminRootState) => state.admin.admindata);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [adminData,setAdminData]=useState<AdminData>()
+  const [adminData, setAdminData] = useState<AdminData>();
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
+  useEffect(() => {
+    fetchPayments(currentPage);
+  }, [currentPage]);
 
   const formatDate = (createdAt: Date) => {
     const date = new Date(createdAt);
 
-    const formattedDate = date.toLocaleDateString('en-US');
+    const formattedDate = date.toLocaleDateString("en-US");
     return formattedDate;
   };
 
-  useEffect(() => {
+  const fetchPayments = async (page: number) => {
     axiosInstanceAdmin
-      .get(`/all-payment-details`, { withCredentials: true })
+      .get(`/all-payment-details?page=${page}`, { withCredentials: true })
       .then((response) => {
         setPayments(response.data.payment);
+        setTotalPages(response.data.totalPages);
         console.log(response.data.payment);
       })
       .catch((error) => {
-        console.log('here', error);
+        console.log("here", error);
       });
+  };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  useEffect(() => {
     axiosInstanceAdmin
       .get(`/load-admin-data?adminId=${admin?._id}`, { withCredentials: true })
       .then((response) => {
@@ -38,7 +51,7 @@ function Wallet() {
         console.log(response.data.adminData);
       })
       .catch((error) => {
-        console.log('here', error);
+        console.log("here", error);
       });
   }, []);
 
@@ -201,7 +214,7 @@ function Wallet() {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                   >
-                    {item.userId.name}
+                    {item?.userId?.name}
                   </Typography>
                 </td>
                 <td className="p-4">
@@ -260,8 +273,19 @@ function Wallet() {
                 </td>
               </tr>
             ))}
+           
+              
+           
           </tbody>
         </table>
+        {payments.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  handlePageChange={handlePageChange}
+                  isTable={true}
+                />
+              )}
       </Card>
     </div>
   );

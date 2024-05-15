@@ -79,8 +79,11 @@ class PaymentController {
 
   async getAllPayments(req: Request, res: Response){
     try {
-      const payment=await PaymentService.getPayments()
-      res.status(200).json({payment})
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 6;
+      const {payment,count}=await PaymentService.getPayments(page,pageSize)
+      const totalPages = Math.ceil(count / pageSize);
+      res.status(200).json({payment,totalPages})
     } catch (error) {
       handleError(res, error, "getAllPayments");
     }

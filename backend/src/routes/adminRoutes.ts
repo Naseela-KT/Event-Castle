@@ -37,7 +37,7 @@ router.put("/update-type",VendorTypeController.updateType)
 
 //Payment
 router.get('/load-admin-data',AdminController.getAdminData)
-router.get('/all-payment-details',adminAuth,PaymentController.getAllPayments);
+// router.get('/all-payment-details',adminAuth,PaymentController.getAllPayments);
 router.get('/all-payment-details',PaymentController.getAllPayments);
 
 //Notification
