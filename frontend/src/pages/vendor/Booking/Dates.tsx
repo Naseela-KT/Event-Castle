@@ -40,7 +40,7 @@ const CustomDatePicker: React.FC = () => {
       .catch((error) => {
         console.log('Error:', error);
       });
-  }, [dates]);
+  }, []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
