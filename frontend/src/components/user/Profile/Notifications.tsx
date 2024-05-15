@@ -26,7 +26,7 @@ const Notifications = () => {
         withCredentials: true,
       })
       .then((response) => {
-        setNotification(response.data.notification);
+     setNotification(response.data.notification);
         console.log(response.data.notification);
         const totalPagesFromResponse = response.data.totalPages;
         setTotalPages(totalPagesFromResponse);
@@ -54,7 +54,8 @@ const Notifications = () => {
         }
       )
       .then((response) => {
-        setNotification(response.data.notification);
+        // setNotification(response.data.notification);
+      fetchNotification(currentPage)
         toast.success("Status changed Successfully!");
         console.log(response.data.notification);
       })
@@ -73,7 +74,8 @@ const Notifications = () => {
         withCredentials: true,
       })
       .then((response) => {
-        setNotification(response.data.notification);
+        // setNotification(response.data.notification);
+        fetchNotification(currentPage)
         toast.success("Deleted Successfully!");
         console.log(response.data.notification);
       })
