@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import Conversation from "../../components/chat/vendor/sidebar/Conversation";
 import { useSelector } from "react-redux";
-import { MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import {  MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   axiosInstance,
@@ -192,17 +192,24 @@ const Chat = () => {
     }
   };
 
-  const handleFileChange = (event: { target: { files: any[]; }; }) => {
-    console.log(event.target.files[0])
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFileModal(true);
-      setFile({
-        filename: URL.createObjectURL(selectedFile),
-        originalFile: selectedFile,
-      });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Ensure event.target exists and has files property
+    if (event.target.files && event.target.files.length > 0) {
+      // Access the first selected file
+      const selectedFile = event.target.files[0];
+  
+      // Check if a file is selected
+      if (selectedFile) {
+        // Do something with the selected file
+        setFileModal(true);
+        setFile({
+          filename: URL.createObjectURL(selectedFile),
+          originalFile: selectedFile,
+        });
+      }
     }
   };
+  
 
   const handleRemoveFile = () => {
     setFileModal(false);
@@ -297,60 +304,7 @@ const Chat = () => {
      
     <div>
       <div className="relative min-h-screen flex flex-col bg-gray-50">
-        {/* <nav className="flex-shrink-0 bg-black">
-          <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-            <div className="relative flex items-center justify-between h-16">
-              <div>
-                <Link to="/vendor/dashboard">
-                  <i className="fa-solid fa-arrow-left text-gray-300"></i>
-                </Link>
-              </div>
-              <div></div>
-              <div className="flex lg:hidden">
-                <button className="bg-red-600 inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-600 focus:ring-white">
-                  <svg
-                    className="block h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h8m-8 6h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="hidden lg:block lg:w-80">
-                <div className="flex items-center justify-end">
-                  <div className="flex">
-                    <Link
-                      to={`${VENDOR.DASHBOARD}`}
-                      className="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-white"
-                    >
-                      {vendor?.name}
-                    </Link>
-                  </div>
-                  <div className="ml-4 relative flex-shrink-0">
-                    <button className="bg-red-700 text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-700 focus:ring-white">
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src={vendor?.logoUrl}
-                        alt=""
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav> */}
-        {/* Nav ends here */}
+       
         {/* chat layout starts here */}
         <div className="flex-grow w-full max-w-7xl mx-auto lg:flex ">
           <div className="flex-1 min-w-0 bg-white xl:flex">
@@ -424,24 +378,7 @@ const Chat = () => {
                         </div>
                       </div>
 
-                      {/* <div className="flex items-center space-x-2">
-                  <button className="inline-flex items-center justify-center rounded-full h-1@ w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      className="h-6 w-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </button>
-                </div> */}
+                    
                     </div>
 
                     {/* message */}
@@ -470,7 +407,7 @@ const Chat = () => {
                                 type="file"
                                 ref={fileInputRef}
                                 style={{ display: "none" }}
-                                onChange={()=>handleFileChange}
+                                onChange={(event)=>handleFileChange(event)}
                               />
 
                               {/* IconButton that triggers the hidden file input */}

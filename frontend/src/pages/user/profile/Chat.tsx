@@ -98,22 +98,7 @@ const Chat = () => {
     
   }, [user]);
 
-  //getting conversations
-  // useEffect(() => {
-  //   const getconversation = async () => {
-  //     try {
-  //       const res = await axiosInstanceChat.get(`/?userId=${user?._id}`);
-  //       console.log(res.data);
-  //       setconversation(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getconversation();
-  //   socket.current?.on("getConv",()=>{
-  //     getconversation();
-  //   })
-  // }, [user?._id,arrivalMessage]);
+
   const getConversation = async () => {
     try {
       const res = await axiosInstanceChat.get(`/?userId=${user?._id}`);
@@ -214,14 +199,22 @@ const Chat = () => {
     }
   };
 
-  const handleFileChange = (event: { target: { files: any[]; }; }) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFileModal(true);
-      setFile({
-        filename: URL.createObjectURL(selectedFile),
-        originalFile: selectedFile,
-      });
+ 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Ensure event.target exists and has files property
+    if (event.target.files && event.target.files.length > 0) {
+      // Access the first selected file
+      const selectedFile = event.target.files[0];
+  
+      // Check if a file is selected
+      if (selectedFile) {
+        // Do something with the selected file
+        setFileModal(true);
+        setFile({
+          filename: URL.createObjectURL(selectedFile),
+          originalFile: selectedFile,
+        });
+      }
     }
   };
 
@@ -448,7 +441,7 @@ const Chat = () => {
                                   type="file"
                                   ref={fileInputRef}
                                   style={{ display: "none" }}
-                                  onChange={()=>handleFileChange}
+                                  onChange={(event)=>handleFileChange(event)}
                                 />
 
                                 {/* IconButton that triggers the hidden file input */}
