@@ -63,10 +63,7 @@ const VendorSignupForm = () => {
     setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
   };
 
-  // const handleSelectChange = (e: string) => {
-  //   setVendorType(e);
-  //   setVendorTypeError("")
-  // };
+
 
   useEffect(() => {
     if (vendor) {
