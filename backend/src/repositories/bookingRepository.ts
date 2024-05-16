@@ -33,7 +33,8 @@ class BookingRepository extends BaseRepository<bookingDocument>{
   ){
     try {
       const skip = (page - 1) * pageSize;
-      const bookings = await Booking.find({ userId: userId, refundAmount: { $ne: 0 } }) // Filtering where refundAmount is not equal to "0"
+      const bookings = await Booking.find({ userId: userId, refundAmount: { $ne: 0 } })
+      .populate("vendorId")
         .skip(skip)
         .limit(pageSize)
         .exec();

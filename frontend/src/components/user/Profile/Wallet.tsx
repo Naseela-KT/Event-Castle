@@ -23,6 +23,7 @@ const Wallet = () => {
           withCredentials: true,
         })
         .then((response) => {
+        
           setTransaction(response.data.transaction);
           const totalPagesFromResponse = response.data.totalPages;
           setTotalPages(totalPagesFromResponse);
@@ -83,7 +84,7 @@ const Wallet = () => {
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {item?.vendorId?._id}
+                      {item?.vendorId ? item?.vendorId?.name:""}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

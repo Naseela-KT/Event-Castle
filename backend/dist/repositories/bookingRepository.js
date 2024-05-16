@@ -37,7 +37,8 @@ class BookingRepository extends baseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const skip = (page - 1) * pageSize;
-                const bookings = yield bookingModel_1.default.find({ userId: userId, refundAmount: { $ne: 0 } }) // Filtering where refundAmount is not equal to "0"
+                const bookings = yield bookingModel_1.default.find({ userId: userId, refundAmount: { $ne: 0 } })
+                    .populate("vendorId")
                     .skip(skip)
                     .limit(pageSize)
                     .exec();
