@@ -23,7 +23,7 @@ class VendorService {
     phone: number,
     city: string,
     vendor_type: string
-  ): Promise<string> {
+  ) {
     try {
       const existingVendor = await vendorRepository.findByEmail(email);
       if (existingVendor) {
@@ -59,7 +59,7 @@ class VendorService {
         type: NOTIFICATION_TYPES.NEW_VENDOR,
       });
 
-      return token;
+      return {vendor:newVendor,token};
     } catch (error) {
       console.error("Error in signup:", error);
       throw new CustomError("Failed to create new vendor.", 500);

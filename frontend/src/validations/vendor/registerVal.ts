@@ -4,8 +4,7 @@ interface ValidationErrors {
     phone:string;
     city:string;
     password: string;
-    vendor_type:string;
-
+    confirm_password:string;
    }
    
    interface ValidationValues {
@@ -14,7 +13,7 @@ interface ValidationErrors {
     phone:string;
     city:string;
     password: string;
-    vendor_type:string;
+    confirm_password:string;
    }
 
 export const validate =  (values: ValidationValues): ValidationErrors => {
@@ -24,7 +23,7 @@ export const validate =  (values: ValidationValues): ValidationErrors => {
        phone: "",
        city:"",
        password: "",
-       vendor_type:""
+       confirm_password:""
        
    };
 
@@ -56,10 +55,6 @@ export const validate =  (values: ValidationValues): ValidationErrors => {
     errors.phone = 'Should contain 10 numbers';
   }
 
-  if (values.vendor_type.length===0) {
-    errors.vendor_type = 'Vendor Type is required';
-  }
-
 
    if (!values.password.trim()) {
       errors.password = 'Password is equired';
@@ -67,8 +62,14 @@ export const validate =  (values: ValidationValues): ValidationErrors => {
       errors.password = 'Contain atleast 6 characters';
     }
 
+    if (!values.confirm_password.trim()) {
+      errors.confirm_password = 'Confirm Password is equired';
+  } else if (values.confirm_password!==values.password) {
+      errors.confirm_password = 'Password should match!';
+  }
 
- console.log(errors)
+
+
    return errors;
  };
    

@@ -211,7 +211,7 @@ class VendorController {
         throw new CustomError("OTP Expired...Try to resend OTP !!", 400);
       }
       if (otp === otpCode) {
-        const vendor = await VendorService.signup(
+        const {token,vendor} = await VendorService.signup(
           email,
           password,
           name,
@@ -219,7 +219,8 @@ class VendorController {
           city,
           vendor_type
         );
-        res.status(201).json(vendor);
+
+        res.status(201).json({vendor});
       } else {
         throw new CustomError("Invalid otp !!", 400);
       }

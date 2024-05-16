@@ -62,7 +62,7 @@ const VerifyEmail = () => {
           ? axiosInstanceVendor
               .post("/verify", values, { withCredentials: true })
               .then((response) => {
-                console.log(response);
+                console.log(response.data);
                 dispatch(setVendorInfo(response.data.vendor));
                 toast.success("Successfully registered..!");
                 navigate(`${VENDOR.DASHBOARD}`);

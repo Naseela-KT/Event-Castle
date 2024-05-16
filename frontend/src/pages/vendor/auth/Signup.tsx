@@ -21,20 +21,20 @@ import VendorRootState from "../../../redux/rootstate/VendorState";
 
 interface VendorFormValues {
   name: string;
-  vendor_type: string;
   email: string;
   password: string;
   city: string;
   phone: string;
+  confirm_password: string;
 }
 
 const initialValues: VendorFormValues = {
   name: "",
-  vendor_type: "",
   email: "",
   password: "",
   city: "",
   phone: "",
+  confirm_password: "",
 };
 
 const VendorSignupForm = () => {
@@ -43,37 +43,36 @@ const VendorSignupForm = () => {
   );
   const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
   const [formValues, setFormValues] = useState(initialValues);
+  const [vendor_type, setVendorType] = useState<string>("");
+  const [vendorTypeError,setVendorTypeError]=useState("")
   const [formErrors, setFormErrors] = useState<VendorFormValues>({
     name: "",
     email: "",
     password: "",
     city: "",
     phone: "",
-    vendor_type: "",
+    confirm_password: "",
   });
 
   const navigate = useNavigate();
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
-  ) => {
-    if (typeof e === "string") {
-      const updatedFormValues = { ...formValues, vendor_type: e };
-      setFormValues({...updatedFormValues});
-    } else {
-      const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
-      setFormValues({ ...formValues, [name]: value });
-      const errors = validate({ ...formValues, [name]: value });
-      setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
-    }
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    const errors = validate({ ...formValues, [name]: value });
+    setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
   };
+
+  // const handleSelectChange = (e: string) => {
+  //   setVendorType(e);
+  //   setVendorTypeError("")
+  // };
 
   useEffect(() => {
     if (vendor) {
       navigate(`${VENDOR.DASHBOARD}`);
     }
   }, []);
-
 
   useEffect(() => {
     axiosInstanceVendor
@@ -86,22 +85,23 @@ const VendorSignupForm = () => {
         console.error("Error fetching users:", error);
       });
   }, []);
-  
 
   const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const errors = validate(formValues);
     setFormErrors(errors);
-    console.log(errors);
-    console.log(Object.values(errors));
+    if(vendor_type.length==0){
+      setVendorTypeError("Choose Type")
+      return
+    }
     if (Object.values(errors).every((error) => error === "")) {
       console.log(formValues);
       axiosInstanceVendor
-        .post("/signup", formValues, { withCredentials: true })
+        .post("/signup", {...formValues,vendor_type}, { withCredentials: true })
         .then((response) => {
           console.log(response);
           if (response.data.email) {
-            toast.warn(response.data.message);
+            toast.success(response.data.message);
             navigate(`${VENDOR.VERIFY}`);
           }
         })
@@ -130,7 +130,7 @@ const VendorSignupForm = () => {
           "Your vision, our canvas. Let's paint the future."
         </p>
       </div>
-      <div className="w-full md:w-1/2 mt-10 md:mt-0">
+      <div className="w-full md:w-1/2 mt-10 md:mt-0 h-screen overflow-auto">
         <Card
           className="w-full md:w-96 m-auto bg-dark"
           shadow={false}
@@ -187,18 +187,17 @@ const VendorSignupForm = () => {
 
               <Select
                 label="Vendor Type"
-                size="md"
-                value={formValues.vendor_type}
                 name="vendor_type"
-                onChange={(e) => {
-                  if (typeof e === "string") {
-                    handleChange(e);
-                  }
+                value={vendor_type}
+                onChange={(e)=>{
+                  setVendorType(e!);
+                  setVendorTypeError("")
                 }}
                 className="bg-white bg-opacity-50"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
+                key={vendor_type} // Add this line
               >
                 {vendorTypes.map((val, index) =>
                   val.status ? (
@@ -210,12 +209,12 @@ const VendorSignupForm = () => {
                   )
                 )}
               </Select>
-              {formErrors.vendor_type ? (
+              {vendorTypeError ? (
                 <p
                   className="text-sm"
                   style={{ color: "red", marginBottom: -10, marginTop: -10 }}
                 >
-                  {formErrors.vendor_type}
+                  {vendorTypeError}
                 </p>
               ) : null}
               <Input
@@ -297,6 +296,27 @@ const VendorSignupForm = () => {
                   style={{ color: "red", marginBottom: -10, marginTop: -10 }}
                 >
                   {formErrors.password}
+                </p>
+              ) : null}
+              <Input
+                label="Confirm Password"
+                type="password"
+                size="md"
+                onChange={handleChange}
+                value={formValues.confirm_password}
+                name="confirm_password"
+                crossOrigin={undefined}
+                color="black"
+                className="bg-white bg-opacity-50"
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
+              {formErrors.confirm_password ? (
+                <p
+                  className="text-sm"
+                  style={{ color: "red", marginBottom: -10, marginTop: -10 }}
+                >
+                  {formErrors.confirm_password}
                 </p>
               ) : null}
               <Button
