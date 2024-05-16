@@ -54,7 +54,7 @@ class BookingRepository extends baseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const skip = (page - 1) * pageSize;
-                const bookings = yield bookingModel_1.default.find({ userId: userId }).sort({ createdAt: -1 }).skip(skip).limit(pageSize).exec();
+                const bookings = yield bookingModel_1.default.find({ userId: userId }).populate("vendorId").sort({ createdAt: -1 }).skip(skip).limit(pageSize).exec();
                 const totalBookings = yield bookingModel_1.default.countDocuments({ userId: userId });
                 return { bookings, totalBookings };
             }

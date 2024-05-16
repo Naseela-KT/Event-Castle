@@ -54,7 +54,7 @@ class VendorService {
                     message: `New vendor registered!`,
                     type: notificationModel_1.NOTIFICATION_TYPES.NEW_VENDOR,
                 });
-                return token;
+                return { vendor: newVendor, token };
             }
             catch (error) {
                 console.error("Error in signup:", error);

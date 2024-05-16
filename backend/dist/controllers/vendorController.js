@@ -32,8 +32,8 @@ const s3 = new client_s3_1.S3Client({
     region: process.env.BUCKET_REGION,
 });
 function getCurrentWeekRange() {
-    const startOfWeek = (0, moment_1.default)().startOf('isoWeek').toDate();
-    const endOfWeek = (0, moment_1.default)().endOf('isoWeek').toDate();
+    const startOfWeek = (0, moment_1.default)().startOf("isoWeek").toDate();
+    const endOfWeek = (0, moment_1.default)().endOf("isoWeek").toDate();
     return { startOfWeek, endOfWeek };
 }
 // Function to get current year range
@@ -198,8 +198,8 @@ class VendorController {
                     throw new customError_1.CustomError("OTP Expired...Try to resend OTP !!", 400);
                 }
                 if (otp === otpCode) {
-                    const vendor = yield vendorService_1.default.signup(email, password, name, phone, city, vendor_type);
-                    res.status(201).json({ vendor: vendor });
+                    const { token, vendor } = yield vendorService_1.default.signup(email, password, name, phone, city, vendor_type);
+                    res.status(201).json({ vendor });
                 }
                 else {
                     throw new customError_1.CustomError("Invalid otp !!", 400);
@@ -259,7 +259,7 @@ class VendorController {
     getAllVendors(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { page = 1, limit = 8, search = "", category = '', location = '', sort } = req.query;
+                const { page = 1, limit = 8, search = "", category = "", location = "", sort, } = req.query;
                 console.log(req.query);
                 const pageNumber = parseInt(page, 10);
                 const limitNumber = parseInt(limit, 10);
@@ -410,7 +410,9 @@ class VendorController {
                     }
                 }
                 const vendor = yield vendorService_1.default.getSingleVendor(vendorId);
-                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : vendor.coverpicUrl, logoUrl ? logoUrl : vendor.logoUrl, (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : vendor.logo, (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname) ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname : vendor.coverpic);
+                const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : vendor.coverpicUrl, logoUrl ? logoUrl : vendor.logoUrl, (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : vendor.logo, (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname)
+                    ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname
+                    : vendor.coverpic);
                 res.status(200).json(updatedVendor);
             }
             catch (error) {
@@ -487,37 +489,37 @@ class VendorController {
                 const vendorId = req.query.vendorId;
                 const dateType = req.query.date;
                 if (!vendorId || !mongoose_1.Types.ObjectId.isValid(vendorId)) {
-                    res.status(400).json({ message: 'Invalid or missing vendorId' });
+                    res.status(400).json({ message: "Invalid or missing vendorId" });
                     return;
                 }
                 let start, end, groupBy, sortField, arrayLength = 0;
                 switch (dateType) {
-                    case 'week':
+                    case "week":
                         const { startOfWeek, endOfWeek } = getCurrentWeekRange();
                         start = startOfWeek;
                         end = endOfWeek;
-                        groupBy = { day: { $dayOfMonth: '$createdAt' } }; // Group by day
-                        sortField = 'day'; // Sort by day
+                        groupBy = { day: { $dayOfMonth: "$createdAt" } }; // Group by day
+                        sortField = "day"; // Sort by day
                         arrayLength = 7;
                         break;
-                    case 'month':
+                    case "month":
                         const { startOfYear, endOfYear } = getCurrentYearRange();
                         start = startOfYear;
                         end = endOfYear;
-                        groupBy = { month: { $month: '$createdAt' } }; // Group by month
-                        sortField = 'month'; // Sort by month
+                        groupBy = { month: { $month: "$createdAt" } }; // Group by month
+                        sortField = "month"; // Sort by month
                         arrayLength = 12;
                         break;
-                    case 'year':
+                    case "year":
                         const { startOfFiveYearsAgo, endOfCurrentYear } = getLastFiveYearsRange();
                         start = startOfFiveYearsAgo;
                         end = endOfCurrentYear;
-                        groupBy = { year: { $year: '$createdAt' } }; // Group by year
-                        sortField = 'year'; // Sort by year
+                        groupBy = { year: { $year: "$createdAt" } }; // Group by year
+                        sortField = "year"; // Sort by year
                         arrayLength = 5;
                         break;
                     default:
-                        res.status(400).json({ message: 'Invalid date parameter' });
+                        res.status(400).json({ message: "Invalid date parameter" });
                         return;
                 }
                 const revenueData = yield paymentModel_1.default.aggregate([
@@ -533,7 +535,7 @@ class VendorController {
                     {
                         $group: {
                             _id: groupBy,
-                            totalRevenue: { $sum: '$amount' },
+                            totalRevenue: { $sum: "$amount" },
                         },
                     },
                     {
@@ -542,14 +544,15 @@ class VendorController {
                 ]);
                 const revenueArray = Array.from({ length: arrayLength }, (_, index) => {
                     const item = revenueData.find((r) => {
-                        if (dateType === 'week') {
+                        if (dateType === "week") {
                             return r._id.day === index + 1;
                         }
-                        else if (dateType === 'month') {
+                        else if (dateType === "month") {
                             return r._id.month === index + 1;
                         }
-                        else if (dateType === 'year') {
-                            return r._id.year === new Date().getFullYear() - (arrayLength - 1) + index;
+                        else if (dateType === "year") {
+                            return (r._id.year ===
+                                new Date().getFullYear() - (arrayLength - 1) + index);
                         }
                         return false;
                     });
