@@ -15,7 +15,6 @@ import UserRootState from "../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
 import AddReview from "../../components/home/VendorProfile/AddReview";
 import ProfileButtons from "../../components/home/VendorProfile/ProfileButtons";
-import { Review } from "../../types/commonTypes";
 import { VendorData } from "../../types/vendorTypes";
 import { toast as hottoast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -28,7 +27,6 @@ export function VendorProfile() {
   const id = queryParams.get("id") || "";
   const [vendor, setVendor] = useState<VendorData>();
   const [favourite, setFavourite] = useState(false);
-  const [review, setReview] = useState<Review[]>([]);
   const [reviewAdded,setReviewAdded]=useState(false)
   const dispatch=useDispatch()
 
@@ -51,11 +49,6 @@ export function VendorProfile() {
           setFavourite(false);
         }
   
-      
-        const reviewsResponse = await axiosInstance.get(`/getReviews?vendorId=${id}`, {
-          withCredentials: true,
-        });
-        setReview(reviewsResponse.data.reviews);
         
         setReviewAdded(false); 
         window.scrollTo(0, 0);
@@ -238,7 +231,7 @@ export function VendorProfile() {
         </div>
       </section>
       <section>
-        <VendorTabs reviews={review} />
+        <VendorTabs />
       </section>
       <section className="mb-20">
         <AddReview id={vendor?._id} setReviewAdded={setReviewAdded} reviewAdded={reviewAdded}/>

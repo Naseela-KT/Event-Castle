@@ -49,6 +49,8 @@ const ReviewCard: React.FC<Review> = ({
   const handleOpen = () => setOpen(!open);
   const [review, setReview] = useState(content);
   const [error, setError] = useState("");
+  
+ 
 
   const handleUpdate = async () => {
     if (review.trim() === "") {
@@ -72,6 +74,7 @@ const ReviewCard: React.FC<Review> = ({
 
   return (
     <>
+    
       <Card
         color="white"
         className="w-full p-5"

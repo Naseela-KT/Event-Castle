@@ -104,7 +104,18 @@ const ProfileCard = () => {
               alt="Selected Profile"
               className="h-40 w-40 rounded-full"
             />
-          ) : (
+          ) :user?.imageUrl?(
+            <div onClick={() => {
+              const fileInput = document.getElementById('file-upload');
+              if (fileInput) fileInput.click();
+            }}>
+              <img
+                src={user?.imageUrl}
+                alt="Selected Profile"
+                className="h-40 w-40 rounded-full cursor-pointer"
+              />
+            </div>
+          ):(
             <label
               htmlFor="file-upload"
               className="cursor-pointer h-40 w-40 flex items-center justify-center inline-block text-white font-bold py-2 px-4 rounded transition-colors duration-200"

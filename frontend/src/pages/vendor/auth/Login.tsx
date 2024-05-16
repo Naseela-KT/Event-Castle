@@ -38,7 +38,7 @@ const VendorLoginForm = () => {
 
   useEffect(() => {
     if (vendor) {
-      navigate(`${VENDOR.VENDOR}`);
+      navigate(`${VENDOR.DASHBOARD}`);
     }
   }, []);
 

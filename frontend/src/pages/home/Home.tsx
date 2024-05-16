@@ -23,6 +23,7 @@ function Home() {
 
   useEffect(() => {
     fetchVendors();
+    window.scrollTo(0, 0);
   }, []);
 
   const fetchVendors = async () => {

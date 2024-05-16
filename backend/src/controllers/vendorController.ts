@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import moment from 'moment';
+import moment from "moment";
 import VendorService from "../services/vendorService";
 import generateOtp from "../utils/generateOtp";
 import vendor from "../models/vendorModel";
@@ -51,8 +51,8 @@ declare module "express-session" {
 }
 
 function getCurrentWeekRange() {
-  const startOfWeek = moment().startOf('isoWeek').toDate();
-  const endOfWeek = moment().endOf('isoWeek').toDate();
+  const startOfWeek = moment().startOf("isoWeek").toDate();
+  const endOfWeek = moment().endOf("isoWeek").toDate();
   return { startOfWeek, endOfWeek };
 }
 
@@ -71,7 +71,7 @@ function getLastFiveYearsRange() {
   return { startOfFiveYearsAgo, endOfCurrentYear };
 }
 
-class VendorController{
+class VendorController {
   async vendorSignup(req: Request, res: Response): Promise<void> {
     try {
       const { email, password, name, phone, city, vendor_type } = req.body;
@@ -174,10 +174,8 @@ class VendorController{
   async VendorLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { refreshToken, token, vendorData, message } = await VendorService.login(
-        email,
-        password
-      );
+      const { refreshToken, token, vendorData, message } =
+        await VendorService.login(email, password);
       res.cookie("jwtToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -221,7 +219,7 @@ class VendorController{
           city,
           vendor_type
         );
-        res.status(201).json({vendor:vendor});
+        res.status(201).json(vendor);
       } else {
         throw new CustomError("Invalid otp !!", 400);
       }
@@ -271,22 +269,36 @@ class VendorController{
     }
   }
 
-  async getAllVendors(req: Request, res: Response): Promise<void>{
+  async getAllVendors(req: Request, res: Response): Promise<void> {
     try {
-      const { page = 1, limit = 8, search = "" ,category='',location='',sort} = req.query;
-      console.log(req.query)
+      const {
+        page = 1,
+        limit = 8,
+        search = "",
+        category = "",
+        location = "",
+        sort,
+      } = req.query;
+      console.log(req.query);
       const pageNumber = parseInt(page as string, 10);
       const limitNumber = parseInt(limit as string, 10);
       const sortValue = parseInt(sort as string, 10);
-      const vendorData = await VendorService.getVendors(pageNumber,limitNumber,search.toString(),category.toString(),location.toString(),sortValue);
+      const vendorData = await VendorService.getVendors(
+        pageNumber,
+        limitNumber,
+        search.toString(),
+        category.toString(),
+        location.toString(),
+        sortValue
+      );
       const totalVendors = await VendorService.getVendorsCount();
       const totalPages = Math.ceil(totalVendors / limitNumber);
-      res.status(200).json({ vendorData,  totalPages});
+      res.status(200).json({ vendorData, totalPages });
     } catch (error) {
       handleError(res, error, "getAllVendors");
     }
-  } 
- 
+  }
+
   async Toggleblock(req: Request, res: Response): Promise<void> {
     try {
       const VendorId: string | undefined = req.query.VendorId as
@@ -333,7 +345,10 @@ class VendorController{
       const confirmPassword = req.body.confirm_password;
       if (password === confirmPassword) {
         const email = (req.session as any).vendorotp.email;
-        const status = await VendorService.ResetVendorPasswordService(password, email);
+        const status = await VendorService.ResetVendorPasswordService(
+          password,
+          email
+        );
         res.status(200).json({ message: "Password reset successfully." });
       } else {
         res.status(400).json({ error: "Passwords do not match." });
@@ -353,13 +368,19 @@ class VendorController{
       const vendorId: string = req.query.vendorid as string;
       console.log(vendorId);
 
-      let status = await VendorService.checkCurrentPassword(currentPassword, vendorId);
+      let status = await VendorService.checkCurrentPassword(
+        currentPassword,
+        vendorId
+      );
 
       if (!status) {
         throw new CustomError(`Current password is wrong!`, 400);
       }
 
-      const data = await VendorService.UpdatePasswordService(newPassword, vendorId);
+      const data = await VendorService.UpdatePasswordService(
+        newPassword,
+        vendorId
+      );
 
       if (!data) {
         res
@@ -372,14 +393,15 @@ class VendorController{
     }
   }
 
- 
   async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const vendorId: string = req.query.vendorid as string; // Assuming vendorId is sent in the request body
       const formData = req.body;
 
-      let coverpicFile, coverpicUrl="";
-      let logoFile, logoUrl="";
+      let coverpicFile,
+        coverpicUrl = "";
+      let logoFile,
+        logoUrl = "";
 
       if (req.files) {
         if (
@@ -394,12 +416,12 @@ class VendorController{
             Body: coverpicFile?.buffer,
             ContentType: coverpicFile?.mimetype,
           };
-  
+
           console.log(coverpicFile?.originalname);
-  
+
           const covercommand = new PutObjectCommand(coverpicUploadParams);
           await s3.send(covercommand);
-  
+
           const covercommand2 = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME!,
             Key: coverpicFile?.originalname,
@@ -421,10 +443,10 @@ class VendorController{
             Body: logoFile?.buffer,
             ContentType: logoFile?.mimetype,
           };
-  
+
           const logocommand = new PutObjectCommand(logoUploadParams);
           await s3.send(logocommand);
-  
+
           const logocommand2 = new GetObjectCommand({
             Bucket: process.env.BUCKET_NAME!,
             Key: logoFile?.originalname,
@@ -433,20 +455,19 @@ class VendorController{
             expiresIn: 86400 * 6,
           });
         }
-        
       }
 
-      const vendor=await VendorService.getSingleVendor(vendorId)
-
-     
+      const vendor = await VendorService.getSingleVendor(vendorId);
 
       const updatedVendor = await VendorService.updateVendor(
         vendorId,
         formData,
-        coverpicUrl?coverpicUrl:vendor.coverpicUrl,
-        logoUrl?logoUrl:vendor.logoUrl,
-        logoFile?.originalname ? logoFile?.originalname :vendor.logo,
-        coverpicFile?.originalname ?coverpicFile?.originalname:vendor.coverpic
+        coverpicUrl ? coverpicUrl : vendor.coverpicUrl,
+        logoUrl ? logoUrl : vendor.logoUrl,
+        logoFile?.originalname ? logoFile?.originalname : vendor.logo,
+        coverpicFile?.originalname
+          ? coverpicFile?.originalname
+          : vendor.coverpic
       );
 
       res.status(200).json(updatedVendor);
@@ -454,8 +475,6 @@ class VendorController{
       handleError(res, error, "updateProfile");
     }
   }
-
-
 
   async sendVerifyRequest(req: Request, res: Response): Promise<void> {
     try {
@@ -478,15 +497,17 @@ class VendorController{
     }
   }
 
-
-
   async addDates(req: Request, res: Response): Promise<void> {
     try {
       const vendorId: string = req.body.vendorId as string;
       const status = req.body.status;
       const date = req.body.date;
       console.log(vendorId, status, date);
-      const bookedDates = await VendorService.addDateAvailability(vendorId, status, date);
+      const bookedDates = await VendorService.addDateAvailability(
+        vendorId,
+        status,
+        date
+      );
       res.status(200).json({ bookedDates, message: "Date status updated!" });
     } catch (error) {
       handleError(res, error, "addDates");
@@ -506,57 +527,59 @@ class VendorController{
   async getLocations(req: Request, res: Response): Promise<void> {
     try {
       const Locations = await VendorService.getAllLocations();
-      res.status(200).json({ locations:Locations });
+      res.status(200).json({ locations: Locations });
     } catch (error) {
       handleError(res, error, "getLocations");
     }
   }
 
- 
-
-
   async getRevenue(req: Request, res: Response): Promise<void> {
     try {
       const vendorId = req.query.vendorId as string;
       const dateType = req.query.date as string;
-  
+
       if (!vendorId || !Types.ObjectId.isValid(vendorId)) {
-        res.status(400).json({ message: 'Invalid or missing vendorId' });
+        res.status(400).json({ message: "Invalid or missing vendorId" });
         return;
       }
-  
-      let start, end, groupBy, sortField, arrayLength=0;
-  
+
+      let start,
+        end,
+        groupBy,
+        sortField,
+        arrayLength = 0;
+
       switch (dateType) {
-        case 'week':
+        case "week":
           const { startOfWeek, endOfWeek } = getCurrentWeekRange();
           start = startOfWeek;
           end = endOfWeek;
-          groupBy = { day: { $dayOfMonth: '$createdAt' } }; // Group by day
-          sortField = 'day';// Sort by day
+          groupBy = { day: { $dayOfMonth: "$createdAt" } }; // Group by day
+          sortField = "day"; // Sort by day
           arrayLength = 7;
           break;
-        case 'month':
+        case "month":
           const { startOfYear, endOfYear } = getCurrentYearRange();
           start = startOfYear;
           end = endOfYear;
-          groupBy = { month: { $month: '$createdAt' } }; // Group by month
-          sortField = 'month'; // Sort by month
+          groupBy = { month: { $month: "$createdAt" } }; // Group by month
+          sortField = "month"; // Sort by month
           arrayLength = 12;
           break;
-        case 'year':
-          const { startOfFiveYearsAgo, endOfCurrentYear } = getLastFiveYearsRange();
+        case "year":
+          const { startOfFiveYearsAgo, endOfCurrentYear } =
+            getLastFiveYearsRange();
           start = startOfFiveYearsAgo;
           end = endOfCurrentYear;
-          groupBy = { year: { $year: '$createdAt' } }; // Group by year
-          sortField = 'year';// Sort by year
+          groupBy = { year: { $year: "$createdAt" } }; // Group by year
+          sortField = "year"; // Sort by year
           arrayLength = 5;
           break;
         default:
-          res.status(400).json({ message: 'Invalid date parameter' });
+          res.status(400).json({ message: "Invalid date parameter" });
           return;
       }
-  
+
       const revenueData = await payment.aggregate([
         {
           $match: {
@@ -570,7 +593,7 @@ class VendorController{
         {
           $group: {
             _id: groupBy,
-            totalRevenue: { $sum: '$amount' },
+            totalRevenue: { $sum: "$amount" },
           },
         },
         {
@@ -579,28 +602,26 @@ class VendorController{
       ]);
       const revenueArray = Array.from({ length: arrayLength }, (_, index) => {
         const item = revenueData.find((r) => {
-          if (dateType === 'week') {
+          if (dateType === "week") {
             return r._id.day === index + 1;
-          } else if (dateType === 'month') {
+          } else if (dateType === "month") {
             return r._id.month === index + 1;
-          } else if (dateType === 'year') {
-            return r._id.year === new Date().getFullYear() - (arrayLength - 1) + index;
+          } else if (dateType === "year") {
+            return (
+              r._id.year ===
+              new Date().getFullYear() - (arrayLength - 1) + index
+            );
           }
           return false;
         });
         return item ? item.totalRevenue : 0; // Default to 0 if no data for the expected index
       });
-  
-      res.status(200).json({ revenue: revenueArray }); 
+
+      res.status(200).json({ revenue: revenueArray });
     } catch (error) {
       handleError(res, error, "getRevenue");
     }
   }
-  
-
-
 }
 
-export default new VendorController()
-
-
+export default new VendorController();

@@ -52,7 +52,7 @@ class BookingRepository extends BaseRepository<bookingDocument>{
   ){
     try {
       const skip = (page - 1) * pageSize;
-      const bookings = await Booking.find({ userId: userId }).sort({createdAt:-1}).skip(skip).limit(pageSize).exec();
+      const bookings = await Booking.find({ userId: userId }).populate("vendorId").sort({createdAt:-1}).skip(skip).limit(pageSize).exec();
       const totalBookings=await Booking.countDocuments({ userId: userId })
       return {bookings,totalBookings};
     } catch (error) {

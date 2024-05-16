@@ -27,7 +27,7 @@ export interface Booking {
   pin: number;
   mobile: number;
   createdAt: Date;
-  vendorId: string;
+  vendorId: VendorData;
   userId: string;
   status: string;
   payment_status: string;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import {
   Tabs,
   TabsHeader,
@@ -12,16 +12,26 @@ import {
 import VendorPosts from './VendorsPosts';
 import ReviewCard from './ReviewCard';
 import { Review } from '../../../types/commonTypes';
+import { axiosInstance } from '../../../config/api/axiosinstance';
 
 
 
-interface VendorReviewProps {
-  reviews: Review[] | undefined;
-}
 
-const VendorTabs: React.FC<VendorReviewProps> = ({ reviews }) => {
+
+const VendorTabs= () => {
   const [activeTab, setActiveTab] = useState('images');
-  
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id") || "";
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(()=>{
+   axiosInstance.get(`/getReviews?vendorId=${id}`, {
+      withCredentials: true,
+    }).then((response)=>{
+      setReviews(response.data.reviews);
+    });
+   
+  })
 
   const handleTabChange = (value: SetStateAction<string>) => {
     setActiveTab(value);

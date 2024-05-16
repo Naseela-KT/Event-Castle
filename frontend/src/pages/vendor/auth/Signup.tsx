@@ -16,6 +16,8 @@ import { toast } from "react-toastify";
 import { validate } from "../../../validations/vendor/registerVal";
 import { USER, VENDOR } from "../../../config/constants/constants";
 import { VendorType } from "../../../types/commonTypes";
+import { useSelector } from "react-redux";
+import VendorRootState from "../../../redux/rootstate/VendorState";
 
 interface VendorFormValues {
   name: string;
@@ -36,6 +38,9 @@ const initialValues: VendorFormValues = {
 };
 
 const VendorSignupForm = () => {
+  const vendor = useSelector(
+    (state: VendorRootState) => state.vendor.vendordata
+  );
   const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState<VendorFormValues>({
@@ -64,6 +69,13 @@ const VendorSignupForm = () => {
   };
 
   useEffect(() => {
+    if (vendor) {
+      navigate(`${VENDOR.DASHBOARD}`);
+    }
+  }, []);
+
+
+  useEffect(() => {
     axiosInstanceVendor
       .get("/vendor-types")
       .then((response) => {
@@ -74,6 +86,7 @@ const VendorSignupForm = () => {
         console.error("Error fetching users:", error);
       });
   }, []);
+  
 
   const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
