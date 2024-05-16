@@ -99,11 +99,16 @@ const ProfileCard = () => {
           onPointerLeaveCapture={undefined}
         >
           {previewUrl ? (
-            <img
-              src={previewUrl}
-              alt="Selected Profile"
-              className="h-40 w-40 rounded-full"
-            />
+              <div onClick={() => {
+                const fileInput = document.getElementById('file-upload');
+                if (fileInput) fileInput.click();
+              }}>
+                <img
+                  src={previewUrl}
+                  alt="Selected Profile"
+                  className="h-40 w-40 rounded-full cursor-pointer"
+                />
+              </div>
           ) :user?.imageUrl?(
             <div onClick={() => {
               const fileInput = document.getElementById('file-upload');

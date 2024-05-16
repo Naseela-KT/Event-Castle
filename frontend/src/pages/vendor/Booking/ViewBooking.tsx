@@ -246,10 +246,11 @@ const ViewBooking = () => {
             </div>
           </CardBody>
         </Card>
-        <UpdateStatus
+        {bookings?.status=="pending"?<UpdateStatus
           bookingId={bookings?._id}
           onStatusChange={handleStatusChange}
-        />
+        />:""}
+        
       </div>
       <Card
         className="mt-6 w-full mb-20"

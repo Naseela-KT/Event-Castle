@@ -83,6 +83,7 @@ const SingleBooking = () => {
       .then((response) => {
         // setBooking(response.data.bookings[0]);
         handleOpen();
+        fetchBooking();
         toast.success("Booking cancelled Successfully!")
         console.log(response.data.bookings[0]);
       })

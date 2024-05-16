@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ChangePassword from "../../../components/user/Profile/ChangePassword";
 import Favourites from "../../../components/user/Profile/Favourites";
 import ProfileCard from "../../../components/user/Profile/ProfileCard";
@@ -10,13 +10,15 @@ import {
   USER
 } from "../../../config/constants/constants";
 import Layout from "../../../layout/user/Layout";
+import { useSelector } from "react-redux";
+import UserRootState from "../../../redux/rootstate/UserState";
 
 
 const Profile: React.FC = () => {
+  const user = useSelector((state: UserRootState) => state.user.userdata);
   return (
     <>
- 
-        <Layout>
+      {!user?<Navigate to={`${USER.LOGIN}`} replace />:<Layout>
         <div className="flex-1 bg-white mt-10">
           <div
             // className="overflow-y-scroll"
@@ -33,7 +35,8 @@ const Profile: React.FC = () => {
             </Routes>
           </div>
         </div>
-        </Layout>
+        </Layout>}
+        
   
     </>
   );
