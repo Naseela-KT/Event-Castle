@@ -40,7 +40,7 @@ class VendorService {
                     password: hashedPassword,
                     name,
                     phone,
-                    city,
+                    city: toTitleCase(city),
                     isActive,
                     isVerified,
                     verificationRequest,
@@ -111,7 +111,7 @@ class VendorService {
             }
             catch (error) {
                 console.error("Error in login:", error);
-                throw new customError_1.CustomError("Failed to log in.", 500);
+                throw error;
             }
         });
     }
@@ -245,12 +245,13 @@ class VendorService {
             try {
                 const update = {
                     name: formData.name,
-                    city: formData.city,
+                    city: toTitleCase(formData.city),
                     phone: parseInt(formData.phone),
                     coverpicUrl: coverpicUrl,
                     logoUrl: logoUrl,
                     logo: logo,
                     coverpic: coverpic,
+                    about: formData.about
                 };
                 yield vendorRepository_1.default.update(vendorId, update);
                 const updatedVendor = yield vendorRepository_1.default.getById(vendorId);
@@ -322,5 +323,10 @@ class VendorService {
             }
         });
     }
+}
+function toTitleCase(city) {
+    return city.toLowerCase().split(' ').map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
 }
 exports.default = new VendorService();

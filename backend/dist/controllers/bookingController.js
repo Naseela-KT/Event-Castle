@@ -88,7 +88,7 @@ class BookingController {
             try {
                 const userId = req.query.userId;
                 const page = parseInt(req.query.page) || 1;
-                const pageSize = parseInt(req.query.pageSize) || 4;
+                const pageSize = parseInt(req.query.pageSize) || 6;
                 const { bookings, totalBookings } = yield bookingService_1.default.getAllBookingsByUser(userId, page, pageSize);
                 const totalPages = Math.ceil(totalBookings / pageSize);
                 res.status(201).json({ bookings, totalPages: totalPages });

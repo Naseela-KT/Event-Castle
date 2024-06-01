@@ -31,6 +31,7 @@ router.post("/verify-otp", userController_1.default.VerifyOtpForPassword);
 router.post("/reset-password", userController_1.default.ResetUserPassword);
 router.post("/google/login", userController_1.default.googleLogin);
 router.post("/google/register", userController_1.default.googleRegister);
+router.post("/send-message", userController_1.default.sendMessage);
 //Home
 router.get("/getvendors", vendorController_1.default.getAllVendors);
 router.get("/vendor-types", vendorTypeController_1.default.getVendorTypes);

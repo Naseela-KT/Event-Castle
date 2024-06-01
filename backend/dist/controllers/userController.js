@@ -492,5 +492,17 @@ class UserController {
             }
         });
     }
+    sendMessage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { name, email, mobile, subject, message } = req.body;
+                const data = yield userService_1.default.sendEmail(name, email, mobile, subject, message);
+                res.status(200).json(data);
+            }
+            catch (error) {
+                (0, handleError_1.handleError)(res, error, "sendMessage");
+            }
+        });
+    }
 }
 exports.default = new UserController();

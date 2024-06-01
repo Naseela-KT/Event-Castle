@@ -206,7 +206,7 @@ class VendorController {
                 }
             }
             catch (error) {
-                (0, handleError_1.handleError)(res, error, "verifyOtp");
+                throw error;
             }
         });
     }
@@ -265,8 +265,8 @@ class VendorController {
                 const limitNumber = parseInt(limit, 10);
                 const sortValue = parseInt(sort, 10);
                 const vendorData = yield vendorService_1.default.getVendors(pageNumber, limitNumber, search.toString(), category.toString(), location.toString(), sortValue);
-                const totalVendors = yield vendorService_1.default.getVendorsCount();
-                const totalPages = Math.ceil(totalVendors / limitNumber);
+                const totalVendors = vendorData.length;
+                const totalPages = Math.floor(totalVendors / limitNumber);
                 res.status(200).json({ vendorData, totalPages });
             }
             catch (error) {
@@ -410,6 +410,7 @@ class VendorController {
                     }
                 }
                 const vendor = yield vendorService_1.default.getSingleVendor(vendorId);
+                console.log(formData);
                 const updatedVendor = yield vendorService_1.default.updateVendor(vendorId, formData, coverpicUrl ? coverpicUrl : vendor.coverpicUrl, logoUrl ? logoUrl : vendor.logoUrl, (logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname) ? logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname : vendor.logo, (coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname)
                     ? coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname
                     : vendor.coverpic);

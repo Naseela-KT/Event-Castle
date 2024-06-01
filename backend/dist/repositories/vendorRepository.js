@@ -34,7 +34,7 @@ class VendorRepository extends baseRepository_1.BaseRepository {
                     const locations = location.split(',').map(l => l.trim());
                     query.city = { $in: locations };
                 }
-                const validSortValue = sortValue === 1 || sortValue === -1 ? sortValue : 1;
+                const validSortValue = sortValue === 1 || sortValue === 1 ? sortValue : -1;
                 const vendors = yield vendorModel_2.default.find(query).sort({ totalRating: validSortValue })
                     .skip((page - 1) * limit)
                     .limit(limit);

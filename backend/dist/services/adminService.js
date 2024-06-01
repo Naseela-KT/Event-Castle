@@ -25,7 +25,7 @@ class AdminService {
             try {
                 const existingAdmin = yield adminRepository_1.default.findByEmail(email);
                 if (!existingAdmin) {
-                    throw new customError_1.CustomError("Admin not exist", 400);
+                    throw new customError_1.CustomError("Incorrect email...", 400);
                 }
                 const passwordMatch = yield bcrypt_1.default.compare(password, existingAdmin.password);
                 if (!passwordMatch) {
@@ -46,7 +46,7 @@ class AdminService {
                 };
             }
             catch (error) {
-                throw new customError_1.CustomError("An error occurred during login.", 500);
+                throw error;
             }
         });
     }

@@ -21,6 +21,7 @@ const customError_1 = require("../error/customError");
 const adminRepository_1 = __importDefault(require("../repositories/adminRepository"));
 const notificationRepository_1 = __importDefault(require("../repositories/notificationRepository"));
 const notificationModel_1 = require("../models/notificationModel");
+const nodemailer_1 = __importDefault(require("nodemailer"));
 class UserService {
     signup(email, password, name, phone, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -397,6 +398,35 @@ class UserService {
             catch (error) {
                 console.error("Error in FavoriteVendors:", error);
                 throw new customError_1.CustomError("Failed to retrieve favorite vendors.", 500);
+            }
+        });
+    }
+    sendEmail(name, email, mobile, subject, message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const transporter = nodemailer_1.default.createTransport({
+                    host: "smtp.gmail.com",
+                    port: 587,
+                    secure: false,
+                    requireTLS: true,
+                    auth: {
+                        user: process.env.USER_NAME,
+                        pass: process.env.USER_PASSWORD,
+                    },
+                });
+                const mailOptions = {
+                    from: `${name} <${email}>`,
+                    to: process.env.SEND_EMAIL,
+                    subject: subject,
+                    text: `${message}\n\nName:${name}\nMobile:${mobile}`,
+                };
+                console.log(mailOptions);
+                const info = yield transporter.sendMail(mailOptions);
+                console.log("Email sent: " + info.response);
+                return true;
+            }
+            catch (error) {
+                throw new customError_1.CustomError("Error sending email! Try after sometimes...", 500);
             }
         });
     }
