@@ -9,6 +9,7 @@ import { Response } from "express";
 import adminRepository from "../repositories/adminRepository";
 import notificationRepository from "../repositories/notificationRepository";
 import { NOTIFICATION_TYPES } from "../models/notificationModel";
+import nodemailer from 'nodemailer';
 
 interface LoginResponse {
   userData: UserDocument;
@@ -431,6 +432,34 @@ class UserService {
     } catch (error) {
       console.error("Error in FavoriteVendors:", error)
       throw new CustomError("Failed to retrieve favorite vendors.", 500); 
+    }
+  }
+
+  async sendEmail(name:string,email:string,mobile:string,subject:string,message:string) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: process.env.USER_NAME,
+            pass: process.env.USER_PASSWORD,
+        },
+    });
+    const mailOptions = {
+        from: `${name} <${email}>`,
+        to: process.env.SEND_EMAIL,
+        subject: subject,
+        text: `${message}\n\nName:${name}\nMobile:${mobile}`,
+    };
+    console.log(mailOptions)
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: " + info.response);
+    return true
+    } catch (error) {
+      throw new CustomError("Error sending email! Try after sometimes...", 500); 
     }
   }
 }

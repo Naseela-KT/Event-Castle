@@ -502,6 +502,19 @@ class UserController{
     }
   }
 
+
+  async sendMessage(req: Request, res: Response): Promise<void>{
+    try {
+      
+      const {name,email,mobile,subject,message}=req.body;
+
+      const data = await userService.sendEmail(name,email,mobile,subject,message);
+      res.status(200).json(data);
+    } catch (error) {
+      handleError(res, error, "sendMessage");
+    }
+  }
+
 }
 
 export default new UserController()

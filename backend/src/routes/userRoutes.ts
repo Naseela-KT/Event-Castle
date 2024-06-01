@@ -30,6 +30,8 @@ router.post("/reset-password", UserController.ResetUserPassword);
 router.post("/google/login", UserController.googleLogin);
 router.post("/google/register", UserController.googleRegister);
 
+router.post("/send-message",UserController.sendMessage)
+
 //Home
 router.get("/getvendors", VendorController.getAllVendors);
 router.get("/vendor-types", VendorTypeController.getVendorTypes);

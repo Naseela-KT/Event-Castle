@@ -39,7 +39,8 @@ export const USER = {
   VENDORS: "/vendors",
   BOOK_EVENT: "/book-event",
   PAYMENT_SUCCESS: "/payment-success",
-  ABOUT:"/about"
+  ABOUT:"/about",
+  CONTACT:"/contact"
 };
 
 

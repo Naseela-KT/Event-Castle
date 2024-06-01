@@ -22,6 +22,7 @@ import Room from "./components/user/live/Room";
 import { USER, VENDOR } from "./config/constants/constants";
 import { Toaster } from "react-hot-toast";
 import About from "./pages/home/About";
+import Contact from "./pages/home/Contact";
 
 
 const App: React.FC = () => {
@@ -55,6 +56,7 @@ const App: React.FC = () => {
           <Route path={USER.SIGNUP} element={<UserSignup />} />
           <Route path={USER.VENDORS} element={<VendorsListing />} />
           <Route path={USER.ABOUT} element={<About/>} />
+          <Route path={USER.CONTACT} element={<Contact/>} />
           <Route path="" element={<UserPrivateRoute />}>
             <Route path={USER.VIEW_VENDOR} element={<VendorProfile />} />
             <Route path={`${USER.PROFILE}/*`} element={<Profile />} />

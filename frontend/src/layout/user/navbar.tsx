@@ -130,6 +130,20 @@ const Navbar = () => {
           About
         </Link>
       </Typography>
+      <Typography
+        key="Contact"
+        as="li"
+        variant="small"
+        color={location.pathname === USER.CONTACT ? "pink" : "inherit"}
+        className="capitalize"
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        <Link to={USER.CONTACT} className="flex items-center gap-1 p-1 font-bold">
+          Contact
+        </Link>
+      </Typography>
     </ul>
   );
 
