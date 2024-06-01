@@ -225,7 +225,7 @@ class VendorController {
         throw new CustomError("Invalid otp !!", 400);
       }
     } catch (error) {
-      handleError(res, error, "verifyOtp");
+      throw error;
     }
   }
 
@@ -292,8 +292,8 @@ class VendorController {
         location.toString(),
         sortValue
       );
-      const totalVendors = await VendorService.getVendorsCount();
-      const totalPages = Math.ceil(totalVendors / limitNumber);
+      const totalVendors = vendorData.length;
+      const totalPages = Math.floor(totalVendors / limitNumber);
       res.status(200).json({ vendorData, totalPages });
     } catch (error) {
       handleError(res, error, "getAllVendors");
@@ -459,6 +459,7 @@ class VendorController {
       }
 
       const vendor = await VendorService.getSingleVendor(vendorId);
+      console.log(formData)
 
       const updatedVendor = await VendorService.updateVendor(
         vendorId,

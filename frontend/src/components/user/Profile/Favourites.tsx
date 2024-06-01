@@ -106,16 +106,18 @@ export default function Favourites() {
             onPointerLeaveCapture={undefined}
           >
             <CardHeader
-              color="blue-gray"
+            
               className="relative h-40"
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
-              <img src={coverpicUrl} alt={name} />
+              <Link to={`${USER.VIEW_VENDOR}?id=${_id}`}>
+              <img src={coverpicUrl?coverpicUrl:"/imgs/vendor/cover-default.jpg"} alt={name} />
+              </Link>
               <button
                 onClick={() => handleOpen(_id)} // Pass _id to handleOpen
-                className="absolute top-0 right-0 m-2 bg-danger hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                className="absolute top-0 right-0 m-2 bg-danger hover:bg-red-700 hover:text-white text-red-500 font-bold py-1 px-3 rounded"
               >
                 <FontAwesomeIcon icon={faTrash} />
               </button>

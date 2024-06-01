@@ -85,7 +85,7 @@ class BookingController {
     try {
       const userId: string = req.query.userId as string;
       const page: number = parseInt(req.query.page as string) || 1;
-      const pageSize: number = parseInt(req.query.pageSize as string) || 4;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 6;
       const { bookings, totalBookings } =
         await BookingService.getAllBookingsByUser(userId, page, pageSize);
       const totalPages = Math.ceil(totalBookings / pageSize);

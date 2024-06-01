@@ -21,6 +21,7 @@ import LiveStreaming from "./pages/user/profile/LiveStreaming";
 import Room from "./components/user/live/Room";
 import { USER, VENDOR } from "./config/constants/constants";
 import { Toaster } from "react-hot-toast";
+import About from "./pages/home/About";
 
 
 const App: React.FC = () => {
@@ -53,6 +54,7 @@ const App: React.FC = () => {
           <Route path={USER.RESET_PWD} element={<ResetPassword />} />
           <Route path={USER.SIGNUP} element={<UserSignup />} />
           <Route path={USER.VENDORS} element={<VendorsListing />} />
+          <Route path={USER.ABOUT} element={<About/>} />
           <Route path="" element={<UserPrivateRoute />}>
             <Route path={USER.VIEW_VENDOR} element={<VendorProfile />} />
             <Route path={`${USER.PROFILE}/*`} element={<Profile />} />

@@ -18,7 +18,7 @@ class AdminService {
     try {
       const existingAdmin = await AdminRepository.findByEmail(email);
       if (!existingAdmin) {
-        throw new CustomError("Admin not exist", 400);
+        throw new CustomError("Incorrect email...", 400);
       }
 
       const passwordMatch = await bcrypt.compare(
@@ -55,7 +55,7 @@ class AdminService {
         message: "Successfully logged in..",
       };
     } catch (error) {
-      throw new CustomError("An error occurred during login.", 500);
+      throw error;
     }
   }
 

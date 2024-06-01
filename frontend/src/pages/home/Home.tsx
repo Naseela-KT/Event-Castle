@@ -207,7 +207,8 @@ function Home() {
         </h1>
         <div className="flex flex-wrap items-center w-full">
           <div className="mx-auto md:m-10 sm:m-5 px-4 sm:grid sm:grid-cols-2 grid-cols-4 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-            {vendors?.map((vendor, index) => (
+            {vendors?.slice(0,9).map((vendor, index) =>(
+              
               <Card
                 key={index}
                 className="shadow-lg  shadow-gray-500/10 rounded-lg w-full mb-2"
@@ -254,7 +255,9 @@ function Home() {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                   >
+                      <Link to={`${USER.VIEW_VENDOR}?id=${vendor?._id}`}>
                            {vendor.name}
+                           </Link>
                   </Typography>
                 </CardBody>
               </Card>

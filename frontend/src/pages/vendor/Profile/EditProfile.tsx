@@ -75,6 +75,7 @@ const EditProfile: React.FC = () => {
       formData.append("name", formState.name);
       formData.append("city", formState.city);
       formData.append("phone", formState.phone.toString());
+      formData.append("about", formState.about);
       // Append coverpic if it exists
       if (formState.coverpic) {
         formData.append("coverpic", formState.coverpic);
@@ -102,26 +103,7 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  // const handleInputChange = (
-  //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   const target = event.target as HTMLInputElement;
-  //   const { name, files, value } = target;
-  //   if (files && files.length > 0) {
-  //     const file = files[0];
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       setFormState((prevState) => ({
-  //         ...prevState,
-  //         [name]: file, // Set the file directly
-  //         [`${name}Preview`]: reader.result as string, // Set the preview URL
-  //       }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     setFormState((prevState) => ({ ...prevState, [name]: value }));
-  //   }
-  // };
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

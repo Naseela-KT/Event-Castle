@@ -93,10 +93,10 @@ const BookingTable = () => {
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                       item.status === 'Accepted'
-                        ? 'bg-success text-success'
+                        ? 'bg-green-200 text-green-500'
                         : item.status === 'Rejected'
-                          ? 'bg-danger text-danger'
-                          : 'bg-blue-200 text-blue-200'
+                          ? 'bg-red-200 text-red-500':item.status === 'Cancelled'?
+                          'bg-red-200 text-red-500':'bg-blue-200 text-blue-500'
                     }`}
                   >
                     {item.status}

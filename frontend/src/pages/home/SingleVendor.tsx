@@ -187,7 +187,7 @@ export function VendorProfile() {
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                     color="black"
-                  >
+                  ><i className="fa-solid fa-star mr-1"></i>
                     {vendor?.totalRating}
                   </Button>
                 </div>
@@ -219,11 +219,7 @@ export function VendorProfile() {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-                  An artist of considerable range, Jenna the name taken by
-                  Melbourne-raised, Brooklyn-based Nick Murphy writes, performs
-                  and records all of his own music, giving it a warm, intimate
-                  feel with a solid groove structure. An artist of considerable
-                  range.
+                  {vendor?.about}
                 </Typography>
               </div>
             </div>

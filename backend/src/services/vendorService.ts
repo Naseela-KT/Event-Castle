@@ -37,13 +37,12 @@ class VendorService {
       const totalBooking: number = 0;
 
       const vendorType = await vendorTypeRepository.findByType(vendor_type);
-
       const newVendor = await vendorRepository.create({
         email,
         password: hashedPassword,
         name,
         phone,
-        city,
+        city:toTitleCase(city),
         isActive,
         isVerified,
         verificationRequest,
@@ -137,7 +136,7 @@ class VendorService {
       };
     } catch (error) {
       console.error("Error in login:", error);
-      throw new CustomError("Failed to log in.", 500);
+      throw error;
     }
   }
 
@@ -290,12 +289,13 @@ class VendorService {
     try {
       const update = {
         name: formData.name,
-        city: formData.city,
+        city: toTitleCase(formData.city),
         phone: parseInt(formData.phone),
         coverpicUrl: coverpicUrl,
         logoUrl: logoUrl,
         logo: logo,
         coverpic: coverpic,
+        about:formData.about
       };
       await vendorRepository.update(vendorId, update);
       const updatedVendor = await vendorRepository.getById(vendorId);
@@ -363,6 +363,12 @@ class VendorService {
       throw new CustomError("Failed to get all locations.", 500);
     }
   }
+}
+
+function toTitleCase(city: string): string {
+  return city.toLowerCase().split(' ').map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
 }
 
 export default new VendorService();

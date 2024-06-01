@@ -55,7 +55,6 @@ const UserLogin = () => {
       axiosInstance
         .post("/login", values)
         .then((response) => {
-         
           localStorage.setItem("userToken", response.data.token)
           localStorage.setItem("userRefresh", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
@@ -69,8 +68,6 @@ const UserLogin = () => {
     },
   });
 
-
- 
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row items-start">

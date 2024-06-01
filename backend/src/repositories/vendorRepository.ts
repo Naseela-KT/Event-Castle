@@ -32,7 +32,7 @@ class VendorRepository extends BaseRepository<VendorDocument>{
         query.city = { $in: locations };
       }
   
-      const validSortValue = sortValue === 1 || sortValue === -1 ? sortValue : 1;
+      const validSortValue = sortValue === 1 || sortValue === 1 ? sortValue : -1;
   
       const vendors = await vendor.find(query).sort({totalRating:validSortValue})
         .skip((page - 1) * limit)
