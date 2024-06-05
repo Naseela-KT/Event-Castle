@@ -1,5 +1,5 @@
 // App.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,12 +23,20 @@ import { USER, VENDOR } from "./config/constants/constants";
 import { Toaster } from "react-hot-toast";
 import About from "./pages/home/About";
 import Contact from "./pages/home/Contact";
+import Loader from "./components/common/Loader";
 
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
 
-  return (
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  return loading ? (
+    <Loader />
+  ) :(
     <>
       <Toaster />
       <ToastContainer />
