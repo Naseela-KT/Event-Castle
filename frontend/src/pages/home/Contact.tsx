@@ -1,8 +1,12 @@
 import { Typography } from "@material-tailwind/react";
 import Footer from "../../layout/user/footer";
 import ContactForm from "../../components/home/ContactForm";
+import { useEffect } from "react";
 
 const Contact = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-start lg:pt-16 pt-6 pb-20 mb-0">

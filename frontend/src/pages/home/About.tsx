@@ -299,7 +299,7 @@ const About = () => {
       </section>
 
       <section className="lg:my-40 my-20">
-        <div className="relative h-100 w-full bg-[url('/imgs/about/ready-img.jpg')] bg-cover bg-center">
+      <div className="relative h-100 w-full" style={{ backgroundImage: "url('/imgs/about/ready-img.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
           <div className="absolute inset-0 bg-black opacity-30"></div>
           <div className="relative flex items-center justify-end h-full w-full p-8">
             <div className="bg-white bg-opacity-70 p-8 rounded-lg max-w-lg">
