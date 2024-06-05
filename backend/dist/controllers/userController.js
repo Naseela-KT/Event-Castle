@@ -390,7 +390,7 @@ class UserController {
                         Key: imageName
                     };
                     const command = new client_s3_1.GetObjectCommand(getObjectParams);
-                    imageUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command, { expiresIn: 86400 * 6 });
+                    imageUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command, {});
                 }
                 const user = yield userService_1.default.updateProfileService(name, phone, imageName, userId, imageUrl);
                 res.status(201).json(user);

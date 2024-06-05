@@ -396,9 +396,8 @@ class UserController{
           Bucket: process.env.BUCKET_NAME!,
           Key:imageName
         }
-  
         const command = new GetObjectCommand(getObjectParams);
-        imageUrl = await getSignedUrl(s3, command,{expiresIn: 86400 * 6});
+        imageUrl = await getSignedUrl(s3, command,{});
         
       }
 
