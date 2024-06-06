@@ -55,7 +55,7 @@ class PostController {
                     Key: imageName,
                 };
                 const command2 = new client_s3_1.GetObjectCommand(getObjectParams);
-                const url = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command2, {});
+                const url = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command, { expiresIn: 86400 * 6 });
                 let imageUrl = url;
                 const post = yield postService_1.default.createPost(caption, imageName, vendor_id, imageUrl);
                 res.status(201).json(post);

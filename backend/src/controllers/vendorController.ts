@@ -427,7 +427,7 @@ class VendorController {
             Bucket: process.env.BUCKET_NAME!,
             Key: coverpicFile?.originalname,
           });
-          coverpicUrl = await getSignedUrl(s3, covercommand2, {});
+          coverpicUrl = await getSignedUrl(s3, covercommand2, { expiresIn: 86400 * 6 });
         }
 
         if (
@@ -450,7 +450,7 @@ class VendorController {
             Bucket: process.env.BUCKET_NAME!,
             Key: logoFile?.originalname,
           });
-          logoUrl = await getSignedUrl(s3, logocommand2, {});
+          logoUrl = await getSignedUrl(s3, logocommand2, { expiresIn: 86400 * 6 });
         }
       }
 

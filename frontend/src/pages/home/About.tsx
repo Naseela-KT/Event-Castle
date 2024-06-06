@@ -2,18 +2,32 @@ import { Typography } from "@material-tailwind/react";
 import Footer from "../../layout/user/footer";
 import { USER } from "../../config/constants/constants";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Shimmer } from "react-shimmer";
+import React from "react";
+const AboutImages = React.lazy(
+  () => import("../../components/home/AboutImages")
+);
 
 const About = () => {
+  const [showAboutImages, setShowAboutImages] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Set a timer to show AboutImages after 3 seconds
+    const timer = setTimeout(() => {
+      setShowAboutImages(true);
+    }, 4000);
+
+    // Clean up the timer on component unmount
+    return () => clearTimeout(timer);
   }, []);
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-start lg:pt-16 pt-6 pb-20 mb-0">
         <div className="absolute top-0 h-100 w-full bg-[url('/imgs/about/banner.jpg')] bg-cover bg-center" />
         <div className="absolute top-0 h-100 w-full bg-black/40 bg-cover bg-center" />
-        <div className="mt-4 lg:ml-20 ml-10 lg:justify-start z-10">
+        <div className="mt-4 lg:ml-20 ml-10 lg:justify-start z-1">
           <Typography
             variant="h2"
             color="white"
@@ -27,7 +41,7 @@ const About = () => {
         </div>
       </div>
       {/* Section 2 */}
-      <div className="flex flex-wrap items-center mb-20 mx-10 lg:-mt-10 md:-mt-20 -mt-40">
+      <div className="flex flex-wrap items-center mb-20 mx-10 lg:-mt-10 md:-mt-40 -mt-40">
         <div className="mx-auto  w-full px-4 md:w-5/12">
           <Typography
             variant="h2"
@@ -62,98 +76,11 @@ const About = () => {
         </div>
         <div className="mx-auto mt-24 flex justify-center px-4 md:w-5/12 w-12/12 lg:mt-0">
           <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
-            <div className="grid gap-4">
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-1.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-2.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="https://images.unsplash.com/photo-1541314053190-1db8c88dc05a?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="gallery-photo"
-                />
-              </div>
-            </div>
-            <div className="grid gap-4">
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-4.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-5.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-6.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-            </div>
-            <div className="grid gap-4">
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-7.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-8.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-9.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-            </div>
-            <div className="grid gap-4">
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-10.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-11.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-              <div className="overflow-hidden group">
-                <img
-                  className="h-auto max-w-full rounded-lg object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
-                  src="/imgs/about/ev-12.jpg"
-                  alt="gallery-photo"
-                />
-              </div>
-            </div>
+            {showAboutImages ? (
+              <AboutImages />
+            ) : (
+              <Shimmer width={400} height={400} />
+            )}
           </div>
         </div>
       </div>
@@ -299,7 +226,14 @@ const About = () => {
       </section>
 
       <section className="lg:my-40 my-20">
-      <div className="relative h-100 w-full" style={{ backgroundImage: "url('/imgs/about/ready-img.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+        <div
+          className="relative h-100 w-full"
+          style={{
+            backgroundImage: "url('/imgs/about/ready-img.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           <div className="absolute inset-0 bg-black opacity-30"></div>
           <div className="relative flex items-center justify-end h-full w-full p-8">
             <div className="bg-white bg-opacity-70 p-8 rounded-lg max-w-lg">

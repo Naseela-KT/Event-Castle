@@ -384,7 +384,7 @@ class VendorController {
                             Bucket: process.env.BUCKET_NAME,
                             Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
                         });
-                        coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, {});
+                        coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, { expiresIn: 86400 * 6 });
                     }
                     if (typeof req.files === "object" &&
                         "logo" in req.files &&
@@ -402,7 +402,7 @@ class VendorController {
                             Bucket: process.env.BUCKET_NAME,
                             Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
                         });
-                        logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, {});
+                        logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, { expiresIn: 86400 * 6 });
                     }
                 }
                 const vendor = yield vendorService_1.default.getSingleVendor(vendorId);

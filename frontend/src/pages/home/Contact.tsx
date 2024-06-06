@@ -26,7 +26,7 @@ const Contact = () => {
           </Typography>
         </div>
       </div>
-      <section className="-mt-20">
+      <section className="lg:-mt-20 -mt-40">
         <div className="flex flex-wrap justify-center md:mx-18 mx-10 lg:mx-0">
           <div className="w-full md:w-1/2 lg:w-1/4 p-4 cursor-pointer">
             <div className="rounded-lg shadow-md p-6 flex items-center bg-[#fce9f1] transform transition-transform duration-300 hover:scale-105">
