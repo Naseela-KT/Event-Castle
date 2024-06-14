@@ -16,7 +16,6 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
 const sharp_1 = __importDefault(require("sharp"));
-const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 const customError_1 = require("../error/customError");
 const postService_1 = __importDefault(require("../services/postService"));
 const handleError_1 = require("../utils/handleError");
@@ -50,13 +49,13 @@ class PostController {
                 };
                 const command = new client_s3_1.PutObjectCommand(params);
                 yield s3.send(command);
-                const getObjectParams = {
-                    Bucket: process.env.BUCKET_NAME,
-                    Key: imageName,
-                };
-                const command2 = new client_s3_1.GetObjectCommand(getObjectParams);
-                const url = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command, { expiresIn: 86400 * 6 });
-                let imageUrl = url;
+                // const getObjectParams={
+                //   Bucket: process.env.BUCKET_NAME!,
+                //   Key: imageName,
+                // }
+                // const command2 = new GetObjectCommand(getObjectParams);
+                // const url = await getSignedUrl(s3, command, { expiresIn: 86400 * 6 });
+                let imageUrl = `${process.env.IMAGE_URL}/${imageName}`;
                 const post = yield postService_1.default.createPost(caption, imageName, vendor_id, imageUrl);
                 res.status(201).json(post);
             }

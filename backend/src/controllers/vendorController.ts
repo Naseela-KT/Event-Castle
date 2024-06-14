@@ -418,16 +418,18 @@ class VendorController {
             ContentType: coverpicFile?.mimetype,
           };
 
-          console.log(coverpicFile?.originalname);
+       
 
           const covercommand = new PutObjectCommand(coverpicUploadParams);
           await s3.send(covercommand);
 
-          const covercommand2 = new GetObjectCommand({
-            Bucket: process.env.BUCKET_NAME!,
-            Key: coverpicFile?.originalname,
-          });
-          coverpicUrl = await getSignedUrl(s3, covercommand2, { expiresIn: 86400 * 6 });
+          // const covercommand2 = new GetObjectCommand({
+          //   Bucket: process.env.BUCKET_NAME!,
+          //   Key: coverpicFile?.originalname,
+          // });
+          // coverpicUrl = await getSignedUrl(s3, covercommand2, { expiresIn: 86400 * 6 });
+
+          coverpicUrl=`${process.env.IMAGE_URL}/${coverpicFile?.originalname}`
         }
 
         if (
@@ -446,11 +448,12 @@ class VendorController {
           const logocommand = new PutObjectCommand(logoUploadParams);
           await s3.send(logocommand);
 
-          const logocommand2 = new GetObjectCommand({
-            Bucket: process.env.BUCKET_NAME!,
-            Key: logoFile?.originalname,
-          });
-          logoUrl = await getSignedUrl(s3, logocommand2, { expiresIn: 86400 * 6 });
+          // const logocommand2 = new GetObjectCommand({
+          //   Bucket: process.env.BUCKET_NAME!,
+          //   Key: logoFile?.originalname,
+          // });
+          // logoUrl = await getSignedUrl(s3, logocommand2, { expiresIn: 86400 * 6 });
+          logoUrl=`${process.env.IMAGE_URL}/${logoFile?.originalname}`
         }
       }
 

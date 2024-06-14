@@ -4,7 +4,7 @@ import generateOtp from "../utils/generateOtp";
 import user from "../models/userModel";
 import Jwt from "jsonwebtoken";
 import sharp from "sharp";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand,ObjectCannedACL } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -391,14 +391,13 @@ class UserController{
         const command2 = new PutObjectCommand(params);
         await s3.send(command2);
 
-
-        const getObjectParams={
-          Bucket: process.env.BUCKET_NAME!,
-          Key:imageName
-        }
-        const command = new GetObjectCommand(getObjectParams);
-        imageUrl = await getSignedUrl(s3, command,{ expiresIn: 86400 * 6 });
-        
+        // const getObjectParams={
+        //   Bucket: process.env.BUCKET_NAME!,
+        //   Key:imageName
+        // }
+        // const command = new GetObjectCommand(getObjectParams);
+        // imageUrl = await getSignedUrl(s3, command,{ expiresIn: 86400 * 6 });
+        imageUrl=`${process.env.IMAGE_URL}/${imageName}`;
       }
 
       const user = await userService.updateProfileService(name, phone, imageName, userId,imageUrl);

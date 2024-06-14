@@ -20,7 +20,6 @@ const sharp_1 = __importDefault(require("sharp"));
 const client_s3_1 = require("@aws-sdk/client-s3");
 const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
-const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 const customError_1 = require("../error/customError");
 const handleError_1 = require("../utils/handleError");
 dotenv_1.default.config();
@@ -385,12 +384,13 @@ class UserController {
                     };
                     const command2 = new client_s3_1.PutObjectCommand(params);
                     yield s3.send(command2);
-                    const getObjectParams = {
-                        Bucket: process.env.BUCKET_NAME,
-                        Key: imageName
-                    };
-                    const command = new client_s3_1.GetObjectCommand(getObjectParams);
-                    imageUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, command, { expiresIn: 86400 * 6 });
+                    // const getObjectParams={
+                    //   Bucket: process.env.BUCKET_NAME!,
+                    //   Key:imageName
+                    // }
+                    // const command = new GetObjectCommand(getObjectParams);
+                    // imageUrl = await getSignedUrl(s3, command,{ expiresIn: 86400 * 6 });
+                    imageUrl = `${process.env.IMAGE_URL}/${imageName}`;
                 }
                 const user = yield userService_1.default.updateProfileService(name, phone, imageName, userId, imageUrl);
                 res.status(201).json(user);

@@ -56,14 +56,14 @@ class PostController  {
       const command = new PutObjectCommand(params);
       await s3.send(command);
 
-      const getObjectParams={
-        Bucket: process.env.BUCKET_NAME!,
-        Key: imageName,
-      }
+      // const getObjectParams={
+      //   Bucket: process.env.BUCKET_NAME!,
+      //   Key: imageName,
+      // }
 
-      const command2 = new GetObjectCommand(getObjectParams);
-      const url = await getSignedUrl(s3, command, { expiresIn: 86400 * 6 });
-      let imageUrl=url;
+      // const command2 = new GetObjectCommand(getObjectParams);
+      // const url = await getSignedUrl(s3, command, { expiresIn: 86400 * 6 });
+      let imageUrl=`${process.env.IMAGE_URL}/${imageName}`;
 
       const post = await postService.createPost(caption, imageName, vendor_id,imageUrl);
       res.status(201).json(post);

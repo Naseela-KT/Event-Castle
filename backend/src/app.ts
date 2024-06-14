@@ -25,10 +25,10 @@ connectDB();
 
 const server = createServer(app)
 
-
+// ,"https://eventcastle.online"
 
 app.use(cors({
-  origin:["http://localhost:5000","https://eventcastleonline."],
+  origin:["http://localhost:5000"],
   credentials:true
 }));
 

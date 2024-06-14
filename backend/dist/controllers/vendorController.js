@@ -18,7 +18,6 @@ const generateOtp_1 = __importDefault(require("../utils/generateOtp"));
 const vendorModel_1 = __importDefault(require("../models/vendorModel"));
 const client_s3_1 = require("@aws-sdk/client-s3");
 const dotenv_1 = __importDefault(require("dotenv"));
-const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 const customError_1 = require("../error/customError");
 const mongoose_1 = require("mongoose");
 const paymentModel_1 = __importDefault(require("../models/paymentModel"));
@@ -377,14 +376,14 @@ class VendorController {
                             Body: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.buffer,
                             ContentType: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.mimetype,
                         };
-                        console.log(coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname);
                         const covercommand = new client_s3_1.PutObjectCommand(coverpicUploadParams);
                         yield s3.send(covercommand);
-                        const covercommand2 = new client_s3_1.GetObjectCommand({
-                            Bucket: process.env.BUCKET_NAME,
-                            Key: coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname,
-                        });
-                        coverpicUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, covercommand2, { expiresIn: 86400 * 6 });
+                        // const covercommand2 = new GetObjectCommand({
+                        //   Bucket: process.env.BUCKET_NAME!,
+                        //   Key: coverpicFile?.originalname,
+                        // });
+                        // coverpicUrl = await getSignedUrl(s3, covercommand2, { expiresIn: 86400 * 6 });
+                        coverpicUrl = `${process.env.IMAGE_URL}/${coverpicFile === null || coverpicFile === void 0 ? void 0 : coverpicFile.originalname}`;
                     }
                     if (typeof req.files === "object" &&
                         "logo" in req.files &&
@@ -398,11 +397,12 @@ class VendorController {
                         };
                         const logocommand = new client_s3_1.PutObjectCommand(logoUploadParams);
                         yield s3.send(logocommand);
-                        const logocommand2 = new client_s3_1.GetObjectCommand({
-                            Bucket: process.env.BUCKET_NAME,
-                            Key: logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname,
-                        });
-                        logoUrl = yield (0, s3_request_presigner_1.getSignedUrl)(s3, logocommand2, { expiresIn: 86400 * 6 });
+                        // const logocommand2 = new GetObjectCommand({
+                        //   Bucket: process.env.BUCKET_NAME!,
+                        //   Key: logoFile?.originalname,
+                        // });
+                        // logoUrl = await getSignedUrl(s3, logocommand2, { expiresIn: 86400 * 6 });
+                        logoUrl = `${process.env.IMAGE_URL}/${logoFile === null || logoFile === void 0 ? void 0 : logoFile.originalname}`;
                     }
                 }
                 const vendor = yield vendorService_1.default.getSingleVendor(vendorId);
