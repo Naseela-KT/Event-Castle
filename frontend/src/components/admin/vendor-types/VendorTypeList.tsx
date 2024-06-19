@@ -1,4 +1,4 @@
-import { Button } from '@material-tailwind/react';
+import { Avatar, Button } from '@material-tailwind/react';
 import { useState, useEffect } from 'react';
 import { axiosInstanceAdmin } from '../../../config/api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
@@ -81,6 +81,7 @@ const VendorTypeList = () => {
           <table className="w-full text-left table-auto min-w-max pl-20">
             <thead>
               <tr>
+              
                 <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
                   <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
                     Type
@@ -105,10 +106,12 @@ const VendorTypeList = () => {
             <tbody>
               {vendorType.map((type, index) => (
                 <tr key={index}>
+              
+                 
                   <td className="p-4 border-b border-blue-gray-50">
                     <div className="flex gap-3">
                       <p className="block text-center font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900">
-                        {type.type}
+                      <Avatar src={type?.imageUrl} alt={""} size="sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} /> {type.type}
                       </p>
                     </div>
                   </td>

@@ -15,6 +15,7 @@ import { USER } from "../../config/constants/constants";
 import { VendorData } from "../../types/vendorTypes";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/api/axiosinstance";
+import VendorTypeImages from "../../components/home/VendorTypeImages";
 
 
 function Home() {
@@ -146,13 +147,22 @@ function Home() {
         </h1>
         <VendorTypesCarousels />
       </section> */}
+      <section className="mt-10 mx-20 text-center">
+        <h1
+          style={{ fontFamily: "playfair display", fontSize: "30px" }}
+          className="text-center mb-20"
+        >
+          VENDOR &nbsp;TYPES &nbsp;
+        </h1>
+      <VendorTypeImages/>
+      </section>
      <section>
   <div className="flex flex-wrap items-start w-full h-full bg-[url('/imgs/bg-4.jpg')] bg-cover bg-center mt-32 mb-20">
     {/* This div is centered for smaller screens and remains at the same location for larger screens */}
-    <div className="w-full md:w-5/12 px-4 md:px-20 lg:px-20 md:mt-8 lg:mt-0 p-20">
+    <div className="w-full lg:w-8/12 md:w-5/12 px-4 md:px-20 lg:px-20 md:mt-8 lg:mt-0 p-20">
       <div className="flex justify-center">
         {/* Ensure the card is centered on smaller screens */}
-        <div className="w-full md:w-auto lg:w-auto">
+        <div className="w-full md:w-auto lg:w-[600px]">
           <Card
             className="shadow-lg border shadow-gray-500/10 rounded-lg mx-auto lg:mx-0"
             placeholder={undefined}

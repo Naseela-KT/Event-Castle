@@ -6,7 +6,6 @@ import {
   CardBody,
   Typography,
   Input,
- 
   Select,
   Option,
 } from "@material-tailwind/react";
@@ -40,7 +39,7 @@ const initialValues: FormValues = {
 const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
   const handleOpen = () => !open;
   const [singleType, setSingleType] = useState<VendorType>();
-
+  const [image, setImage] = useState<File | null>(null);
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
   const [formErrors, setFormErrors] = useState<FormValues>({
     type: "",
@@ -62,6 +61,13 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
       }));
       const errors = validate({ ...formValues, [name]: value });
       setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
+    }
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      setImage(files[0]);
     }
   };
 
@@ -88,9 +94,18 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
     const errors = validate(formValues);
     setFormErrors(errors);
     if (Object.values(errors).every((error) => error === "")) {
-
+      const formData = new FormData();
+      formData.append("type", formValues.type);
+      formData.append("status", formValues.status);
+      if (image) {
+        formData.append("image", image);
+      }
       axiosInstanceAdmin
-        .put(`/update-type?id=${vendorTypeId}`, formValues)
+        .put(`/update-type?id=${vendorTypeId}`,formData,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log(response);
           setFormValues(initialValues);
@@ -115,17 +130,39 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-none"
-        placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
-        <Card className="mx-auto w-full max-w-[24rem]" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <CardBody className="flex flex-col gap-4" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        placeholder={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      >
+        <Card
+          className="mx-auto w-full max-w-[24rem]"
+          placeholder={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
+          <CardBody
+            className="flex flex-col gap-4"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             <form onSubmit={handleSubmit}>
               <Typography
                 variant="h4"
                 color="blue-gray"
-                placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 Editing {singleType?.type}
               </Typography>
-              <Typography className="mb-2" variant="h6" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <Typography
+                className="mb-2"
+                variant="h6"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 Type
               </Typography>
               <Input
@@ -135,13 +172,22 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
                 name="type"
                 crossOrigin={undefined}
                 value={formValues.type}
-                onChange={handleChange} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              />
+                onChange={handleChange}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              />
               {formErrors.type ? (
                 <p className="text-sm" style={{ color: "red" }}>
                   {formErrors.type}
                 </p>
               ) : null}
-              <Typography className="mb-2" variant="h6" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <Typography
+                className="mb-2"
+                variant="h6"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 Status
               </Typography>
               <Select
@@ -156,7 +202,10 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
                   if (e) {
                     handleChange(e);
                   }
-                } }  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
+                }}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
                 <Option value="Active">Active</Option>
                 <Option value="Non-Active">Non-Active</Option>
               </Select>
@@ -165,23 +214,49 @@ const EditTypeModal: React.FC<Props> = ({ open, onClose, vendorTypeId }) => {
                   {formErrors.status}
                 </p>
               ) : null}
-          <div className="pt-5 mr-0">
-            <Button
+
+              <Typography
+                className="mb-2"
+                variant="h6"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                Image
+              </Typography>
+              <Input
+                type="file"
+                size="lg"
+                name="image"
+                onChange={handleImageChange}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                crossOrigin={undefined}
+              />
+
+              <div className="pt-5 mr-0">
+                <Button
                   variant="outlined"
                   color="red"
                   className="mr-1"
                   onClick={onClose}
-                  placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              <span>Cancel</span>
-            </Button>
-            <Button
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <span>Cancel</span>
+                </Button>
+                <Button
                   variant="gradient"
                   color="green"
                   placeholder={undefined}
-                  type="submit"  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-              <span>Update</span>
-            </Button>
-            </div>
+                  type="submit"
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <span>Update</span>
+                </Button>
+              </div>
             </form>
           </CardBody>
           {/* <CardFooter  placeholder={undefined}>

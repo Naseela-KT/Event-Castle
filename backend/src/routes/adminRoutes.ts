@@ -7,6 +7,10 @@ import  PaymentController  from "../controllers/paymentController";
 import adminAuth from "../middlewares/adminAuthMiddleware";
 import NotificationController  from "../controllers/notificationController";
 import adminController from "../controllers/adminController";
+import multer from "multer";
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 
 const router = express.Router();
 
@@ -29,11 +33,11 @@ router.get('/getvendors' ,adminAuth,VendorController.getAllVendors )
 router.put('/update-verify-status',VendorController.updateVerifyStatus);
 
 //vendorType
-router.post('/add-type' , VendorTypeController.addVendorType);
+router.post('/add-type' , upload.single("image"), VendorTypeController.addVendorType);
 router.get('/vendor-types' ,adminAuth,VendorTypeController.getVendorTypes);
 router.delete('/delete-vendortype',VendorTypeController.deleteVendorType)
 router.get("/single-type",adminAuth,VendorTypeController.LoadSingleType)
-router.put("/update-type",VendorTypeController.updateType)
+router.put("/update-type", upload.single("image"),VendorTypeController.updateType)
 
 //Payment
 router.get('/load-admin-data',AdminController.getAdminData)

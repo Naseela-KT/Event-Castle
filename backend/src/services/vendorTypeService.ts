@@ -2,7 +2,7 @@ import { CustomError } from "../error/customError";
 import VendorTypeRepository from "../repositories/vendorTypeRepository";
 
 class VendorTypeService {
-  async addType(type: string, status: string) {
+  async addType(type: string, status: string, image:string, imageUrl:string) {
     try {
       const existingType = await VendorTypeRepository.findByType(type);
       if (existingType) {
@@ -12,6 +12,8 @@ class VendorTypeService {
       const new_type = await VendorTypeRepository.create({
         type,
         status: status === "Active",
+        image,
+        imageUrl
       });
       return { message: "New Type added...", new_type };
     } catch (error) {
@@ -55,12 +57,16 @@ class VendorTypeService {
   async updateVendorType(
     vendorTypeId: string,
     type: string,
-    status: string
+    status: string,
+    image:string,
+    imageUrl:string
   ): Promise<any> {
     try {
       const updatedType = await VendorTypeRepository.update(vendorTypeId, {
         type,
         status: status === "Active" ? true : false,
+        image,
+        imageUrl
       });
       return updatedType;
     } catch (error) {

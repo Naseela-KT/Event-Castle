@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { VENDOR } from "../../config/constants/constants";
@@ -28,10 +28,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const vendorData = useSelector(
     (state: VendorRootState) => state.vendor.vendordata
   );
+ 
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
 
   const [open, setOpen] = React.useState(0);
   const handleOpen = (value: number) => {
@@ -58,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className={`flex h-screen overflow-hidden`}>
       {/* Sidebar */}
-      <aside
+      {pathname!=="/vendor/chat" &&<aside
         className={`fixed bg-white text-black w-64 p-4 h-full transition-transform border-r border-gray-300 ${
           isSidebarOpen ? "translate-x-0 z-999" : "-translate-x-64 pt-20"
         } sm:translate-x-0`}
@@ -485,7 +487,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
                 >
-             <i className="fa-regular fa-message mt-2 mr-2"></i>
+                  <i className="fa-regular fa-message mt-2 mr-2"></i>
                 </ListItemPrefix>
                 Chat
               </ListItem>
@@ -531,7 +533,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Button>
           </List>
         </nav>
-      </aside>
+      </aside>}
+      
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -554,18 +557,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <NavLink to={VENDOR.CHAT}>
               <i className="fa-solid fa-message mt-2 mr-2"></i>
             </NavLink>
+            <NavLink to={VENDOR.DASHBOARD}>
             <Avatar
-              src={
-                vendorData?.logoUrl
-                  ? vendorData?.logoUrl
-                  : "/imgs/vendor/logo-default.jpeg"
-              }
+              src={vendorData?.logoUrl?vendorData?.logoUrl:"/imgs/vendor/logo-default.jpeg"}
               className="ml-2 text-sm"
               size="sm"
               placeholder={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             />
+            </NavLink>
           </div>
 
           <button onClick={toggleSidebar} className="sm:hidden">
@@ -574,7 +575,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto p-4 bg-white mt-16 sm:ml-64">
+        <main className={`${pathname === VENDOR.CHAT ? "" : "sm:ml-64"} flex-1 overflow-auto p-4 bg-white mt-16`}>
+
           {children}
         </main>
       </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -8,30 +8,27 @@ import {
   TabPanel,
   Typography,
   Button,
-} from '@material-tailwind/react';
-import VendorPosts from './VendorsPosts';
-import ReviewCard from './ReviewCard';
-import { Review } from '../../../types/commonTypes';
-import { axiosInstance } from '../../../config/api/axiosinstance';
+} from "@material-tailwind/react";
+import VendorPosts from "./VendorsPosts";
+import ReviewCard from "./ReviewCard";
+import { Review } from "../../../types/commonTypes";
+import { axiosInstance } from "../../../config/api/axiosinstance";
 
-
-
-
-
-const VendorTabs= () => {
-  const [activeTab, setActiveTab] = useState('images');
+const VendorTabs = () => {
+  const [activeTab, setActiveTab] = useState("images");
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id") || "";
   const [reviews, setReviews] = useState<Review[]>([]);
 
-  useEffect(()=>{
-   axiosInstance.get(`/getReviews?vendorId=${id}`, {
-      withCredentials: true,
-    }).then((response)=>{
-      setReviews(response.data.reviews);
-    });
-   
-  })
+  useEffect(() => {
+    axiosInstance
+      .get(`/getReviews?vendorId=${id}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setReviews(response.data.reviews);
+      });
+  });
 
   const handleTabChange = (value: SetStateAction<string>) => {
     setActiveTab(value);
@@ -39,15 +36,15 @@ const VendorTabs= () => {
 
   const data = [
     {
-      label: 'Images',
-      value: 'images',
+      label: "Images",
+      value: "images",
       desc: `It really matters and then like it really doesn't matter.
       What matters is the people who are sparked by it. And the people 
       who are like offended by it, it doesn't matter.`,
     },
     {
-      label: 'Reviews',
-      value: 'reviews',
+      label: "Reviews",
+      value: "reviews",
       desc: `Because it's about motivating the doers. Because I'm here
       to follow my dreams and inspire other people to follow their dreams, too.`,
     },
@@ -63,7 +60,7 @@ const VendorTabs= () => {
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
-        className='z-0'
+        className="z-0"
       >
         {data.map(({ label, value }) => (
           <Tab
@@ -84,35 +81,43 @@ const VendorTabs= () => {
       >
         {data.map(({ value }) => (
           <TabPanel key={value} value={value}>
-            {value === 'images' && <VendorPosts />}
-            {value === 'reviews' && (
+            {value === "images" && <VendorPosts />}
+            {value === "reviews" && (
               <>
-              {reviews?.length==0&&<Typography variant="h5" color="pink" className=" mt-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      No reviews added!
-    </Typography>}
-              <div className="grid  gap-4 sm:grid-cols-1 md:grid-cols-2">
-                {reviews?.map((review, index) => (
-                  <ReviewCard key={index} {...review} />
-                ))}
-                
-         
-              </div>
-              {reviews?.length!>0&&<div className="flex justify-center items-center mt-10">
-              <Button
-                variant="outlined"
-                placeholder={undefined}
-                color="pink"
-                size="lg"
-                className="mr-3 mt-5 text-center"
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-              >
-                View More Reviews
-              </Button>
-            </div>}
+                {reviews?.length == 0 && (
+                  <Typography
+                    variant="h5"
+                    color="pink"
+                    className=" mt-4"
+                    placeholder={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    No reviews added!
+                  </Typography>
+                )}
+                <div className="grid  gap-4 sm:grid-cols-1 md:grid-cols-2">
+                  {reviews?.map((review, index) => (
+                    <ReviewCard key={index} {...review} />
+                  ))}
+                </div>
+                {reviews?.length! > 0 && (
+                  <div className="flex justify-center items-center mt-10">
+                    <Button
+                      variant="outlined"
+                      placeholder={undefined}
+                      color="pink"
+                      size="lg"
+                      className="mr-3 mt-5 text-center"
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    >
+                      View More Reviews
+                    </Button>
+                  </div>
+                )}
               </>
             )}
-
           </TabPanel>
         ))}
       </TabsBody>

@@ -1,35 +1,27 @@
+// ChatProfile.tsx
+import React from 'react';
+import { VendorData } from '../../../../types/vendorTypes';
 
-const ChatProfile = () => {
-  
-  return (
-    <div className="h-full relative">
-    <div className="m-auto text-center mb-10">
-      <img
-        className="w-36 h-36 rounded-full m-auto"
-        src=""
-        alt=""
-      />
-      <h2 className="m-auto text-2xl mt-2">Naseela</h2>
-    </div>
-    <div className="mb-2">
-      <h4>Attachments</h4>
-    </div>
-    <div className="grid grid-cols-4 gap-2 m-2">
-      <div>
-        <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-      </div>
-      <div>
-        <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-      </div>
-      <div>
-        <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-      </div>
-      <div>
-        <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-      </div>
-    </div>
-  </div>
-  )
+interface ChatProfileProps {
+  vendor?: VendorData;
 }
 
-export default ChatProfile
+const ChatProfile: React.FC<ChatProfileProps> = ({ vendor }) => {
+  return (
+    <div className="h-full relative mt-10">
+      <div className="m-auto text-center mb-10">
+        <img
+          className="w-20 h-20 rounded-full m-auto"
+          src={vendor?.logoUrl?vendor?.logoUrl:"/imgs/vendor/logo-default.jpeg"}
+          alt={vendor?.name}
+        />
+        <h2 className="m-auto text-2xl mt-2">{vendor?.name}</h2>
+      </div>
+      <div className="mb-2 mx-2">
+        <p>{vendor?.about}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ChatProfile;

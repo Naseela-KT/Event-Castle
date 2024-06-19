@@ -13,7 +13,7 @@ const Contact = () => {
         <div className="absolute top-0 h-100 w-full bg-[url('/imgs/contact/banner.jpg')] bg-cover bg-center" />
         <div className="absolute top-0 h-100 w-full bg-black/60 bg-cover bg-center" />
 
-        <div className="mt-4 lg:ml-20 ml-10 lg:justify-start z-10">
+        <div className="mt-4 lg:ml-20 ml-10 lg:justify-start z-1">
           <Typography
             variant="h2"
             color="white"

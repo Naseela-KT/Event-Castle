@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import crypto from "crypto";
 import sharp from "sharp";
 
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 
 import { CustomError } from "../error/customError";
 import postService from "../services/postService";

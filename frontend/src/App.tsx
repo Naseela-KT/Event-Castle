@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "./layout/user/navbar";
+import NavbarComponent from "./layout/user/navbar";
 import UserLogin from "./pages/user/auth/Login";
 import UserSignup from "./pages/user/auth/Signup";
 import Home from "./pages/home/Home";
@@ -24,6 +24,7 @@ import { Toaster } from "react-hot-toast";
 import About from "./pages/home/About";
 import Contact from "./pages/home/Contact";
 import Loader from "./components/common/Loader";
+import ScrollToTopButton from "./components/home/ScrollToTopButton";
 
 
 const App: React.FC = () => {
@@ -49,8 +50,8 @@ const App: React.FC = () => {
         pathname.includes(USER.RESET_PWD)||
         pathname.includes(USER.PROFILE)
       ) && (
-        <div className="container fixed left-2/4 z-10 -translate-x-2/4 pt-4">
-          <Navbar />
+        <div className="fixed top-0 left-0 w-full z-10">
+          <NavbarComponent />
         </div>
       )}
      
@@ -79,6 +80,10 @@ const App: React.FC = () => {
           </Route>
          
         </Routes>
+        
+        
+    <ScrollToTopButton/>
+        
    
     </>
   );

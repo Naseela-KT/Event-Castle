@@ -48,6 +48,8 @@ export interface VendorType {
   _id: string;
   type: string;
   status: boolean;
+  image:string;
+  imageUrl:string;
 }
 
 export interface Chats {

@@ -120,7 +120,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden ">
+    <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <aside
         className={`fixed bg-white border border-gray-300  text-white w-64 p-4 h-full transition-transform ${
@@ -328,7 +328,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Navbar */}
-        <header className="fixed w-full bg-black text-white p-4 flex justify-between items-center z-10">
+        <header className="fixed w-full bg-black text-white p-3 flex justify-between items-center z-10">
           {/* Left-aligned logo/text */}
           <Link to={USER.HOME} className="flex items-center">
             {/* <img

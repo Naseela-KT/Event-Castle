@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Navbar as MTNavbar,
+  Navbar,
   MobileNav,
   Typography,
   Button,
@@ -31,7 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { USER } from "../../config/constants/constants";
 import NotificationIcon from "../../components/home/NotificationIcon";
 
-const Navbar = () => {
+const NavbarComponent = () => {
   const [open, setOpen] = React.useState(0);
   const handleOpen = (value: number) => {
     setOpen(open === value ? 0 : value);
@@ -44,30 +44,19 @@ const Navbar = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
 
+
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset;
-      if (scrollTop > 0 && location.pathname !== USER.PROFILE) {
+      if (window.scrollY > 0) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [path.pathname]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 960) {
-        setOpenNav(false);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -147,27 +136,23 @@ const Navbar = () => {
     </ul>
   );
 
+
   return (
-    <MTNavbar
-      style={{ borderRadius: "0" }}
-      color="transparent"
-      className={`${
-        path.pathname.includes("/profile") ||
-        path.pathname.includes("/live") ||
-        path.pathname.includes("/room/") ||
-        path.pathname.includes("/book-event") ||
-        path.pathname.includes("/chat") ||
-        path.pathname.includes("/payment-success")
-          ? "z-50 px-3 bg-black h-18 -mt-5 fixed"
-          : "z-50"
-      }`}
+    <Navbar
+    style={{ borderRadius: '0' }}
+    color="transparent"
+    className={`${path.pathname.includes('/profile') ||
+      path.pathname.includes('/live') ||
+      path.pathname.includes('/room/') ||
+      path.pathname.includes('/book-event') ||
+      path.pathname.includes('/chat') ||
+      path.pathname.includes('/payment-success') || isScrolled? 'bg-black ' : 'bg-transparent shadow-none'
+    } max-w-screen w-full z-0 px-4 py-3 lg:px-8 lg:py-3 rounded-none border-none shadow-none h-18`}
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
     >
-      <div
-        className={`navbar flex items-center justify-between ${isScrolled && (!location.pathname.includes(`/profile`) || !location.pathname.includes("/chat")) ? "bg-black -mt-5 rounded-lg py-4 px-2 shadow-lg text-white" : "m-0"}`}
-      >
+      <div className="container mx-auto flex items-center justify-between pt-2 pb-1 bg-transparent">
         <Link to={USER.HOME}>
           <Typography
             className="ml-4 mr-2 cursor-pointer py-1 font-bold"
@@ -443,11 +428,11 @@ const Navbar = () => {
           </Button>
         </div>
       </MobileNav>
-    </MTNavbar>
+    </Navbar>
   );
 };
 
-Navbar.defaultProps = {
+NavbarComponent.defaultProps = {
   brandName: "Event Castle",
   action: (
     <a
@@ -457,4 +442,4 @@ Navbar.defaultProps = {
   ),
 };
 
-export default Navbar;
+export default NavbarComponent;

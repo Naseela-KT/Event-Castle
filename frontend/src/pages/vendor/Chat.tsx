@@ -12,7 +12,7 @@ import {
 import Message from "../../components/chat/vendor/messages/Message";
 
 import VendorRootState from "../../redux/rootstate/VendorState";
-import { Textarea, IconButton } from "@material-tailwind/react";
+import { Textarea, IconButton, Typography } from "@material-tailwind/react";
 import {
   S3Client,
   PutObjectCommand,
@@ -24,6 +24,7 @@ import { Chats, Messages } from "../../types/commonTypes";
 import { UserData } from "../../types/userTypes";
 import MessageSkeleton from "../../components/chat/skeletons/MessageSkeleton";
 import Layout from "../../layout/vendor/Layout";
+import ChatProfile from "../../components/chat/vendor/profile/ChatProfile";
 
 interface FileDetails {
   filename: string;
@@ -299,30 +300,36 @@ const Chat = () => {
 
   return (
     <>
-     <Layout>
-    {conversation?.length==0?<MessageSkeleton/>: <div>
-     
-    <div>
-      <div className="relative min-h-screen flex flex-col bg-gray-50">
-       
-        {/* chat layout starts here */}
-        <div className="flex-grow w-full max-w-7xl mx-auto lg:flex ">
-          <div className="flex-1 min-w-0 bg-white xl:flex">
-            <div className="border-b border-black xl:border-b-0 xl:flex-shrink-0 xl:w-64 xl:border-r xl:border-gray-400 bg-gray-50">
-              <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-white">
-                <div className="h-full relative ml-2">
-                  <div className="relative border-b px-2 py-3 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
-                    <div className="flex-1 min-w-0">
-                      <Link to="" className="focus:outline-none">
-                        <span className="absolute inset-0" />
-                        <p className="text-lg font-bold text-gray-900 pb-1">
-                          Chats
-                        </p>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {conversation.map((c) => (
+   
+   <Layout>
+    {conversation.length==0?<MessageSkeleton/>: <div>
+        <div>
+            {/* chat layout starts here */}
+          <div className="fixed max-h-200 flex flex-col bg-white w-full -mt-5">
+            <div className="flex-grow w-full px-5 lg:flex">
+              <div className="flex-1 min-w-0 bg-white xl:flex ">
+                <div className="xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-400 bg-gray-50">
+                  <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-white">
+                    <div className="h-full relative ml-2">
+                      <div className="relative px-2 border-b py-3 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
+                        {/* <div className="flex-shrink-0">
+                        <img
+                          className="h-12 w-12 rounded-full"
+                          src={user?.imageUrl}
+                          alt=""
+                        />
+                      </div> */}
+                        <div className="flex-1 min-w-0">
+                          <Link to="" className="focus:outline-none">
+                            <span className="absolute inset-0" />
+                            <p className="text-lg font-bold text-gray-900 pb-1">
+                              Chats
+                            </p>
+                          </Link>
+                        </div>
+                      </div>
+                      {/* <SearchInput /> */}
+                      {conversation.map((c) => (
                     <div
                     onClick={() => {
                       handleConversationSelect(c);
@@ -338,56 +345,87 @@ const Chat = () => {
                       />
                     </div>
                   ))}
+                    </div>
+                  </div>{" "}
                 </div>
-              </div>{" "}
-            </div>
-            {/* 
-            middle content start */}
-              <div className="flex-1 p-2 sm:pb-6 justify-between h-screen flex-col  hidden xl:flex mx-2">
-                {!filemodal ? (
-                  <>
-                    <div className="flex sm:items-center  justify-between py-3 border-b border-gray-200 p-3">
-                      <div className="flex items-center space-x-4">
+                {/* 
+              middle content start */}
+              {/* hidden */}
+              {!currentchat?
+              <div className="mx-auto mt-20 pb-20">
+                <img src="/imgs/select.svg" alt="" className="w-80 h-80"/>
+                <Typography
+            variant="lead"
+            color="pink"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            className="ml-10 -mt-10"
+          >
+            Select a conversation
+          </Typography>
+              </div>: <><div className="xl:border-r xl:border-gray-400 flex-1 h-[33rem] p-2 sm:pb-6 justify-between flex-col xl:flex mx-2">
+                  {!filemodal ? (
+                    <>
+                      <div className="flex sm:items-center  justify-between py-3  border-b border-gray-200 p-3">
+                        <div className="flex items-center space-x-4">
                         <img
                           src={user ? user?.imageUrl : ""}
                           alt=""
                           className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer"
                         />
-                        <div className="flex flex-col leading-tight">
-                          <div className="text-1xl mt-1 flex items-center">
-                            <span className="text-gray-700 mr-3">
-                              {user ? user?.name : ""}
-                            </span>
-                            {activeUsers.some(
-                              (u) => u.userId === receiverId && u.active
-                            ) ? (
-                              <span className="text-green-500">
-                                <svg width={10} height={10}>
-                                  <circle
-                                    cx={5}
-                                    cy={5}
-                                    r={5}
-                                    fill="currentColor"
-                                  ></circle>
-                                </svg>
+                          <div className="flex flex-col leading-tight">
+                            <div className="text-1xl mt-1 flex items-center">
+                              <span className="text-gray-700 mr-3">
+                                {user ? user?.name : ""}
                               </span>
-                            ) : (
-                              ""
-                            )}
+                              {activeUsers.some(
+                                (u) => u.userId === receiverId && u.active
+                              ) ? (
+                                <span className="text-green-500">
+                                  <svg width={10} height={10}>
+                                    <circle
+                                      cx={5}
+                                      cy={5}
+                                      r={5}
+                                      fill="currentColor"
+                                    ></circle>
+                                  </svg>
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           </div>
                         </div>
+
+                        {/* <div className="flex items-center space-x-2">
+                    <button className="inline-flex items-center justify-center rounded-full h-1@ w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-500">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="h-6 w-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </button>
+                  </div> */}
                       </div>
 
-                    
-                    </div>
-
-                    {/* message */}
-                    {currentchat ? (
-                      <>
-                        <div
-                          className="message-container"
-                          style={{ maxHeight: "500px", overflowY: "auto" }}
-                        >
+                      {/* message */}
+                      {currentchat ? (
+                        <>
+                          <div
+                            className="message-container"
+                            style={{ maxHeight: "500px", overflowY: "auto" }}
+                          >
                           {messages.map((m) => (
                             <div ref={scrollRef}>
                               <Message
@@ -397,162 +435,160 @@ const Chat = () => {
                               />
                             </div>
                           ))}
-                        </div>
+                          </div>
 
-                        <div className="relative flex">
-                          <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-1">
-                            <div className="flex">
-                              {/* Hidden file input that triggers the file selection dialog */}
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                style={{ display: "none" }}
-                                onChange={(event)=>handleFileChange(event)}
+                          <div className="flex">
+                            <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-1">
+                              <div className="flex">
+                                {/* Hidden file input that triggers the file selection dialog */}
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  style={{ display: "none" }}
+                                  onChange={(event)=>handleFileChange(event)}
+                                />
+
+                                {/* IconButton that triggers the hidden file input */}
+                                <IconButton
+                                  onClick={handleButtonClick}
+                                  variant="text"
+                                  className="rounded-full"
+                                  placeholder={undefined}
+                                  onPointerEnterCapture={undefined}
+                                  onPointerLeaveCapture={undefined}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                    stroke="currentColor"
+                                    className="h-5 w-5"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                                    />
+                                  </svg>
+                                </IconButton>
+                              </div>
+
+                              <Textarea
+                                rows={1}
+                                resize={true}
+                                placeholder="Your Message"
+                                className="min-h-full !border-0 focus:border-transparent"
+                                containerProps={{
+                                  className: "grid h-full",
+                                }}
+                                labelProps={{
+                                  className:
+                                    "before:content-none after:content-none",
+                                }}
+                                value={newMessage}
+                                onChange={handleInputChange}
+                                onPointerEnterCapture={undefined}
+                                onPointerLeaveCapture={undefined}
                               />
-
-                              {/* IconButton that triggers the hidden file input */}
-                              <IconButton
-                                onClick={handleButtonClick}
-                                variant="text"
-                                className="rounded-full"
-                                placeholder={undefined}
-                                onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth={2}
-                                  stroke="currentColor"
-                                  className="h-5 w-5"
+                              <div>
+                                <IconButton
+                                  variant="text"
+                                  className="rounded-full"
+                                  placeholder={undefined}
+                                  onPointerEnterCapture={undefined}
+                                  onPointerLeaveCapture={undefined}
+                                  onClick={handleSubmit}
                                 >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                                  />
-                                </svg>
-                              </IconButton>
-                            </div>
-
-                            <Textarea
-                              rows={1}
-                              resize={true}
-                              placeholder="Your Message"
-                              className="min-h-full !border-0 focus:border-transparent"
-                              containerProps={{
-                                className: "grid h-full",
-                              }}
-                              labelProps={{
-                                className:
-                                  "before:content-none after:content-none",
-                              }}
-                              value={newMessage}
-                              onChange={handleInputChange}
-                              onPointerEnterCapture={undefined}
-                              onPointerLeaveCapture={undefined}
-                            />
-                            <div>
-                              <IconButton
-                                variant="text"
-                                className="rounded-full"
-                                placeholder={undefined}
-                                onPointerEnterCapture={undefined}
-                                onPointerLeaveCapture={undefined}
-                                onClick={handleSubmit}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth={2}
-                                  className="h-5 w-5"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                                  />
-                                </svg>
-                              </IconButton>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    className="h-5 w-5"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                                    />
+                                  </svg>
+                                </IconButton>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <p className="text-center">Select a conversation</p>
-                        <div className="border-t-2 border-gray-200 px-4 pt-4">
-                          {/* <MessageInput onChange={handleInputChange}
-                      value={newMessage}
-                      onBlur={handleStopTyping} onClick={handleSubmit}/> */}
-                        </div>
-                      </>
-                    )}
-
-                    {/*message ends here*/}
-                  </>
-                ) : (
-                  <>
-                    <div className="relative bg-gray-100 h-screen flex flex-col  justify-center items-center">
-                      {/* Container for all elements, 'relative' allows for absolute positioning within it */}
-
-                      {/* Close icon positioned at the top left corner */}
-
-                      <button
-                        onClick={handleRemoveFile}
-                        className="absolute top-2 left-2 pt-20"
-                      >
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
-
-                      {/* Centered image */}
-                      {file && (
-                        <img
-                          src={file?.filename}
-                          alt="Selected"
-                          className="w-80 h-80 rounded object-cover" // Adjusted size, 'object-cover' ensures proper image scaling
-                        />
+                        </>
+                      ) : (
+                        <>
+                        
+                          
+                        </>
                       )}
 
-                      {/* Send icon positioned at the bottom right corner */}
+                      {/*message ends here*/}
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative bg-gray-100 h-screen flex flex-col  justify-center items-center">
+                        {/* Container for all elements, 'relative' allows for absolute positioning within it */}
 
-                      <button
-                        type="button"
-                        className="rounded-full p-2 absolute bottom-4 right-4 cursor-pointer hover:bg-blue-gray-200"
-                        onClick={(e) => handleSend(e)}
-                        disabled={!file}
-                     
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          className="h-10 w-10"
+                        {/* Close icon positioned at the top left corner */}
+
+                        <button
+                          onClick={handleRemoveFile}
+                          className="absolute top-2 left-2 pt-20"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                          <i className="fa-solid fa-xmark"></i>
+                        </button>
+
+                        {/* Centered image */}
+                        {file && (
+                          <img
+                            src={file?.filename}
+                            alt="Selected"
+                            className="w-80 h-80 rounded object-cover" // Adjusted size, 'object-cover' ensures proper image scaling
                           />
-                        </svg>
-                      </button>
-                    </div>
-                  </>
-                )}
+                        )}
+
+                        {/* Send icon positioned at the bottom right corner */}
+
+                        <button
+                          type="button"
+                          className="rounded-full p-2 absolute bottom-4 right-4 cursor-pointer hover:bg-blue-gray-200"
+                          onClick={(e) => handleSend(e)}
+                          disabled={!file}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            className="h-10 w-10"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="p-2 sm:pb-6 w-60 justify-between flex-col xl:flex mx-2">
+                <ChatProfile user={user}/>
+                </div></>}
+             
               </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-   
-  </div>}
-  </Layout>
-  </>
+      </div>}
+      </Layout>
+    </>
   );
 };
 

@@ -13,7 +13,7 @@ import {
   axiosInstanceMsg,
 } from "../../../config/api/axiosinstance";
 import Message from "../../../components/chat/user/messages/Message";
-import { Textarea, IconButton } from "@material-tailwind/react";
+import { Textarea, IconButton, Typography } from "@material-tailwind/react";
 import {
   S3Client,
   PutObjectCommand,
@@ -23,7 +23,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Chats, Messages } from "../../../types/commonTypes";
 import { VendorData } from "../../../types/vendorTypes";
 import MessageSkeleton from "../../../components/chat/skeletons/MessageSkeleton";
-import Layout from "../../../layout/user/Layout";
+import ChatProfile from "../../../components/chat/user/profile/ChatProfile";
 
 interface FileDetails {
   filename: string;
@@ -307,16 +307,15 @@ const Chat = () => {
 
   return (
     <>
-    <Layout>
+   
    
     {conversation.length==0?<MessageSkeleton/>: <div>
         <div>
             {/* chat layout starts here */}
-          <div className="relative min-h-400 flex flex-col bg-gray-50">
-          
-            <div className="flex-grow w-full max-w-5xl mx-auto lg:flex">
+          <div className="fixed max-h-200 flex flex-col bg-white w-full mt-16">
+            <div className="flex-grow w-full px-5 lg:flex">
               <div className="flex-1 min-w-0 bg-white xl:flex ">
-                <div className="border-b border-black xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-400 bg-gray-50">
+                <div className="xl:border-b-0 xl:flex-shrink-0 xl:w-70 xl:border-r xl:border-gray-400 bg-gray-50">
                   <div className="h-full pl-4 pr-2 py-6 sm:pl-6 lg:pl-8 xl:pl-0 bg-white">
                     <div className="h-full relative ml-2">
                       <div className="relative px-2 border-b py-3 flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 mb-4">
@@ -360,14 +359,27 @@ const Chat = () => {
                 {/* 
               middle content start */}
               {/* hidden */}
-                <div className="flex-1 p-2 sm:pb-6 justify-between h-screen flex-col xl:flex mx-2">
+              {!currentchat?
+              <div className="mx-auto mt-20 pb-20">
+                <img src="/imgs/select.svg" alt="" className="w-80 h-80"/>
+                <Typography
+            variant="lead"
+            color="pink"
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+            className="ml-10 -mt-10"
+          >
+            Select a conversation
+          </Typography>
+              </div>: <><div className="xl:border-r xl:border-gray-400 flex-1 h-[33rem] p-2 sm:pb-6 justify-between flex-col xl:flex mx-2">
                   {!filemodal ? (
                     <>
-                      <div className="flex sm:items-center  justify-between py-3 border-b border-gray-200 p-3">
+                      <div className="flex sm:items-center  justify-between py-3  border-b border-gray-200 p-3">
                         <div className="flex items-center space-x-4">
                           <img
-                            src={vendor ? vendor?.logoUrl : ""}
-                            alt=""
+                            src={vendor?.logoUrl?vendor?.logoUrl:"/imgs/vendor/logo-default.jpeg"}
+                            alt={vendor?.name}
                             className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer"
                           />
                           <div className="flex flex-col leading-tight">
@@ -433,7 +445,7 @@ const Chat = () => {
                             ))}
                           </div>
 
-                          <div className="relative flex">
+                          <div className="flex">
                             <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-1">
                               <div className="flex">
                                 {/* Hidden file input that triggers the file selection dialog */}
@@ -517,12 +529,8 @@ const Chat = () => {
                         </>
                       ) : (
                         <>
-                          <p className="text-center">Select a conversation</p>
-                          <div className="border-t-2 border-gray-200 px-4 pt-4">
-                            {/* <MessageInput onChange={handleInputChange}
-                        value={newMessage}
-                        onBlur={handleStopTyping} onClick={handleSubmit}/> */}
-                          </div>
+                        
+                          
                         </>
                       )}
 
@@ -578,12 +586,16 @@ const Chat = () => {
                     </>
                   )}
                 </div>
+                <div className="p-2 sm:pb-6 w-60 justify-between flex-col xl:flex mx-2">
+                <ChatProfile vendor={vendor}/>
+                </div></>}
+             
               </div>
             </div>
           </div>
         </div>
       </div>}
-      </Layout>
+    
     </>
   );
 };
