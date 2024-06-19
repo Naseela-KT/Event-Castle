@@ -27,6 +27,8 @@ const mongoose_1 = __importStar(require("mongoose"));
 const VendorTypeSchema = new mongoose_1.Schema({
     type: { type: String, required: true },
     status: { type: Boolean, required: true, default: true },
+    image: { type: String, required: true, default: "" },
+    imageUrl: { type: String, default: "" },
     isEditing: { type: Boolean, default: false }
 }, { timestamps: true });
 exports.default = mongoose_1.default.model('vendortype', VendorTypeSchema);

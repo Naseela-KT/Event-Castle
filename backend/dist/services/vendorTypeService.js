@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const customError_1 = require("../error/customError");
 const vendorTypeRepository_1 = __importDefault(require("../repositories/vendorTypeRepository"));
 class VendorTypeService {
-    addType(type, status) {
+    addType(type, status, image, imageUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const existingType = yield vendorTypeRepository_1.default.findByType(type);
@@ -25,6 +25,8 @@ class VendorTypeService {
                 const new_type = yield vendorTypeRepository_1.default.create({
                     type,
                     status: status === "Active",
+                    image,
+                    imageUrl
                 });
                 return { message: "New Type added...", new_type };
             }
@@ -72,12 +74,14 @@ class VendorTypeService {
             }
         });
     }
-    updateVendorType(vendorTypeId, type, status) {
+    updateVendorType(vendorTypeId, type, status, image, imageUrl) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedType = yield vendorTypeRepository_1.default.update(vendorTypeId, {
                     type,
                     status: status === "Active" ? true : false,
+                    image,
+                    imageUrl
                 });
                 return updatedType;
             }

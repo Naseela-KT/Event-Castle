@@ -12,6 +12,9 @@ const paymentController_1 = __importDefault(require("../controllers/paymentContr
 const adminAuthMiddleware_1 = __importDefault(require("../middlewares/adminAuthMiddleware"));
 const notificationController_1 = __importDefault(require("../controllers/notificationController"));
 const adminController_2 = __importDefault(require("../controllers/adminController"));
+const multer_1 = __importDefault(require("multer"));
+const storage = multer_1.default.memoryStorage();
+const upload = (0, multer_1.default)({ storage: storage });
 const router = express_1.default.Router();
 //Auth
 router.post('/login', adminController_1.default.Adminlogin);
@@ -26,11 +29,11 @@ router.get('/getvendor', adminAuthMiddleware_1.default, vendorController_1.defau
 router.get('/getvendors', adminAuthMiddleware_1.default, vendorController_1.default.getAllVendors);
 router.put('/update-verify-status', vendorController_1.default.updateVerifyStatus);
 //vendorType
-router.post('/add-type', vendorTypeController_1.default.addVendorType);
+router.post('/add-type', upload.single("image"), vendorTypeController_1.default.addVendorType);
 router.get('/vendor-types', adminAuthMiddleware_1.default, vendorTypeController_1.default.getVendorTypes);
 router.delete('/delete-vendortype', vendorTypeController_1.default.deleteVendorType);
 router.get("/single-type", adminAuthMiddleware_1.default, vendorTypeController_1.default.LoadSingleType);
-router.put("/update-type", vendorTypeController_1.default.updateType);
+router.put("/update-type", upload.single("image"), vendorTypeController_1.default.updateType);
 //Payment
 router.get('/load-admin-data', adminController_1.default.getAdminData);
 // router.get('/all-payment-details',adminAuth,PaymentController.getAllPayments);
