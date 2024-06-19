@@ -25,7 +25,6 @@ export const app=express()
 dotenv.config();
 connectDB();
 const server = createServer(app)
-const SERVER = process.env.SERVER;
 
 
 const corsOptions = {
@@ -82,16 +81,12 @@ server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });
 
-cron.schedule("*/2 * * * *", () => {
-  axios
-    .get(SERVER!)
-    .then((response) => {
-      console.log(`Request sent successfully at ${new Date()}`);
-    })
-    .catch((error) => {
-      console.error(`Error sending request: ${error.message}`);
-    });
+cron.schedule('*/2 * * * *', () => {
+  console.log('Server will exit to trigger restart');
+  process.exit(0);
 });
+
+
 
 
 
