@@ -28,7 +28,7 @@ const server = createServer(app)
 // ,"https://eventcastle.online"
 
 app.use(cors({
-  origin:["http://localhost:5000"],
+  origin:["https://event-castle-hyj7.vercel.app/"],
   credentials:true
 }));
 
@@ -46,10 +46,6 @@ const sessionMiddleware: RequestHandler = session({
     sameSite:"lax"
   }
 });
-
-
-
-
 
 
 app.use(sessionMiddleware)
@@ -82,3 +78,6 @@ const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });
+
+
+
