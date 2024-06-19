@@ -25,7 +25,7 @@ exports.app = (0, express_1.default)();
 dotenv_1.default.config();
 (0, connectToMongoDB_1.connectDB)();
 const server = (0, http_1.createServer)(exports.app);
-const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
+const SERVER = process.env.SERVER;
 const corsOptions = {
     origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
     credentials: true, // Allow credentials

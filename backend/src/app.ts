@@ -25,7 +25,7 @@ export const app=express()
 dotenv.config();
 connectDB();
 const server = createServer(app)
-const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
+const SERVER = process.env.SERVER;
 
 
 const corsOptions = {
@@ -84,7 +84,7 @@ server.listen(PORT, () => {
 
 cron.schedule("*/2 * * * *", () => {
   axios
-    .get(SERVER)
+    .get(SERVER!)
     .then((response) => {
       console.log(`Request sent successfully at ${new Date()}`);
     })
