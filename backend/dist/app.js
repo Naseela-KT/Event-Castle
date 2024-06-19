@@ -10,6 +10,7 @@ const connectToMongoDB_1 = require("./db/connectToMongoDB");
 const adminRoutes_1 = __importDefault(require("./routes/adminRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const vendorRoutes_1 = __importDefault(require("./routes/vendorRoutes"));
+const cors_1 = __importDefault(require("cors"));
 const express_session_1 = __importDefault(require("express-session"));
 const otpExpirationMiddleware_1 = require("./middlewares/otpExpirationMiddleware");
 const cookieParser = require("cookie-parser");
@@ -22,16 +23,11 @@ exports.app = (0, express_1.default)();
 dotenv_1.default.config();
 (0, connectToMongoDB_1.connectDB)();
 const server = (0, http_1.createServer)(exports.app);
-// app.use(cors({
-//   origin:["https://event-castle-hyj7.vercel.app/"],
-//   credentials:true
-// }));
-exports.app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://event-castle-hyj7.vercel.app');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+const corsOptions = {
+    origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
+    credentials: true, // Allow credentials
+};
+exports.app.use((0, cors_1.default)(corsOptions));
 exports.app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
 exports.app.use(express_1.default.static(path_1.default.join(__dirname, '../../frontend/dist')));
 const sessionMiddleware = (0, express_session_1.default)({

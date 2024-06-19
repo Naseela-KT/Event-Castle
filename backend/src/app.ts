@@ -25,17 +25,12 @@ connectDB();
 const server = createServer(app)
 
 
-// app.use(cors({
-//   origin:["https://event-castle-hyj7.vercel.app/"],
-//   credentials:true
-// }));
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://event-castle-hyj7.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+const corsOptions = {
+  origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
+  credentials: true, // Allow credentials
+};
 
+app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname,'../../frontend/dist')))
