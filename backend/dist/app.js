@@ -17,12 +17,15 @@ const cookieParser = require("cookie-parser");
 const messageRoutes_1 = __importDefault(require("./routes/messageRoutes"));
 const conversationRoutes_1 = __importDefault(require("./routes/conversationRoutes"));
 const path_1 = __importDefault(require("path"));
+const node_cron_1 = __importDefault(require("node-cron"));
+const axios_1 = __importDefault(require("axios"));
 const socket_1 = __importDefault(require("./socket"));
 const http_1 = require("http");
 exports.app = (0, express_1.default)();
 dotenv_1.default.config();
 (0, connectToMongoDB_1.connectDB)();
 const server = (0, http_1.createServer)(exports.app);
+const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 const corsOptions = {
     origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
     credentials: true, // Allow credentials
@@ -64,4 +67,14 @@ exports.app.get('*', (req, res) => {
 const PORT = process.env.PORT;
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}...`);
+});
+node_cron_1.default.schedule("*/2 * * * *", () => {
+    axios_1.default
+        .get(SERVER)
+        .then((response) => {
+        console.log(`Request sent successfully at ${new Date()}`);
+    })
+        .catch((error) => {
+        console.error(`Error sending request: ${error.message}`);
+    });
 });

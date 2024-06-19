@@ -13,6 +13,8 @@ import messageRoutes from './routes/messageRoutes';
 import chatRoute from './routes/conversationRoutes'
 import path from 'path'
 import { Request,Response,NextFunction } from 'express';
+import cron from "node-cron";
+import axios from "axios";
 
 import initializeSocket from './socket';
 import {createServer} from 'http';
@@ -23,6 +25,7 @@ export const app=express()
 dotenv.config();
 connectDB();
 const server = createServer(app)
+const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 
 
 const corsOptions = {
@@ -77,6 +80,17 @@ app.get('*',(req:Request,res:Response) =>{
 const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
+});
+
+cron.schedule("*/2 * * * *", () => {
+  axios
+    .get(SERVER)
+    .then((response) => {
+      console.log(`Request sent successfully at ${new Date()}`);
+    })
+    .catch((error) => {
+      console.error(`Error sending request: ${error.message}`);
+    });
 });
 
 
