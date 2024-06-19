@@ -23,7 +23,6 @@ exports.app = (0, express_1.default)();
 dotenv_1.default.config();
 (0, connectToMongoDB_1.connectDB)();
 const server = (0, http_1.createServer)(exports.app);
-// ,"https://eventcastle.online"
 exports.app.use((0, cors_1.default)({
     origin: ["https://event-castle-hyj7.vercel.app/"],
     credentials: true

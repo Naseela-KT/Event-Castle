@@ -22,10 +22,8 @@ export const app=express()
 
 dotenv.config();
 connectDB();
-
 const server = createServer(app)
 
-// ,"https://eventcastle.online"
 
 app.use(cors({
   origin:["https://event-castle-hyj7.vercel.app/"],
