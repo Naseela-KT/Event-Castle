@@ -81,9 +81,12 @@ server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });
 
-cron.schedule('*/2 * * * *', () => {
+
+cron.schedule('0 * * * *', () => {
   console.log('Server will exit to trigger restart');
-  process.exit(0);
+  server.close(() => {
+    process.exit(0);
+  });
 });
 
 

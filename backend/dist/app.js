@@ -66,7 +66,9 @@ const PORT = process.env.PORT;
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}...`);
 });
-node_cron_1.default.schedule('*/2 * * * *', () => {
+node_cron_1.default.schedule('0 * * * *', () => {
     console.log('Server will exit to trigger restart');
-    process.exit(0);
+    server.close(() => {
+        process.exit(0);
+    });
 });
