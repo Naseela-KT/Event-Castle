@@ -170,7 +170,7 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,us
             minDate={new Date()}
             excludeDates={bookedDates?.map(date => new Date(date))}
             dayClassName={(date) => {const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-              return bookedDates?.includes(utcDate.toISOString().split('T')[0]) ? 'bg-red-500' : 'bg-green-400';}}
+              return bookedDates?.includes(utcDate.toISOString().split('T')[0]) ? 'bg-red-500' : '';}}
           />
         </DialogBody>
       </Dialog>
