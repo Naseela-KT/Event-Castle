@@ -77,9 +77,9 @@ app.get('*',(req:Request,res:Response) =>{
 })
 
 const PORT = process.env.PORT;
-server.listen(PORT, () => {
-  console.log(`Server running on ${PORT}...`);
-});
+// server.listen(PORT, () => {
+//   console.log(`Server running on ${PORT}...`);
+// });
 
 const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 
