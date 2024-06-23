@@ -23,7 +23,7 @@ export const app=express()
 
 
 dotenv.config();
-connectDB();
+// connectDB();
 const server = createServer(app)
 
 
@@ -81,13 +81,34 @@ server.listen(PORT, () => {
   console.log(`Server running on ${PORT}...`);
 });
 
+const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 
-cron.schedule('0 * * * *', () => {
-  console.log('Server will exit to trigger restart');
-  server.close(() => {
-    process.exit(0);
+const start = () => {
+  server.listen(PORT, () => {
+    console.log(`Server running on ${PORT}...`);
+    connectDB();
   });
-});
+
+  // Cron job to send request every 2 minutes
+  cron.schedule("*/2 * * * *", () => {
+    axios
+      .get(SERVER)
+      .then((response) => {
+        console.log(`Request sent successfully at ${new Date()}`);
+      })
+      .catch((error) => {
+        console.error(`Error sending request: ${error.message}`);
+      });
+  });
+};
+
+start();
+// cron.schedule('0 * * * *', () => {
+//   console.log('Server will exit to trigger restart');
+//   server.close(() => {
+//     process.exit(0);
+//   });
+// });
 
 
 
