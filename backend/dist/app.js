@@ -69,26 +69,16 @@ const PORT = process.env.PORT;
 // });
 const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 const start = () => {
+    node_cron_1.default.schedule('* * * * *', () => {
+        console.log('Running a task every minute');
+        // Replace the URL below with a request to your own server
+        axios_1.default.get('https://event-castle.onrender.com/')
+            .then(response => console.log('Health check successful'))
+            .catch(error => console.error('Health check failed:', error));
+    });
     server.listen(PORT, () => {
         console.log(`Server running on ${PORT}...`);
         (0, connectToMongoDB_1.connectDB)();
     });
-    // Cron job to send request every 2 minutes
-    node_cron_1.default.schedule("*/2 * * * *", () => {
-        axios_1.default
-            .get(SERVER)
-            .then((response) => {
-            console.log(`Request sent successfully at ${new Date()}`);
-        })
-            .catch((error) => {
-            console.error(`Error sending request: ${error.message}`);
-        });
-    });
 };
 start();
-// cron.schedule('0 * * * *', () => {
-//   console.log('Server will exit to trigger restart');
-//   server.close(() => {
-//     process.exit(0);
-//   });
-// });
