@@ -67,7 +67,7 @@ const UserSignup= () => {
         .then((response) => {
           console.log(response);
           if (response.data.email) {
-            toast.warn(response.data.message);
+            toast.success(response.data.message);
             navigate(`${USER.VERIFY}`);
           }
         })

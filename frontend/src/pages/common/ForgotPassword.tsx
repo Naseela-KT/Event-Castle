@@ -39,7 +39,7 @@ const ForgotPassword = () => {
   const [otpButtonClicked, setOtpButtonClicked] = useState(false);
 
   const startOtpTimer = () => {
-    setOtpTimer(60);
+    setOtpTimer(120);
 
     const countdown = setInterval(() => {
       setOtpTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
     setTimeout(() => {
       clearInterval(countdown);
       setOtpTimer(0);
-    }, 60000);
+    }, 120000);
   };
 
   const formik = useFormik({

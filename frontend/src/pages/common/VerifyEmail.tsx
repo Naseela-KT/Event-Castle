@@ -27,7 +27,7 @@ const initialValues: FormValues = {
 
 const VerifyEmail = () => {
   const location = useLocation();
-  const [timer, setTimer] = useState(60); 
+  const [timer, setTimer] = useState(120); 
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const VerifyEmail = () => {
   }, []);
 
   const startTimer = () => {
-    setTimer(60);
+    setTimer(120);
     setIsTimerActive(true);
   };
 

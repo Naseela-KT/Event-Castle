@@ -31,8 +31,11 @@ const VendorsListing = () => {
     if (searchParam) {
       setSearch(searchParam); // Update search state if a search parameter is found
     }
-    window.scrollTo(0, 0);
   }, [search]);
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
 
   useEffect(() => {
     fetchVendors();
