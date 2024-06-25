@@ -13,8 +13,6 @@ import messageRoutes from './routes/messageRoutes';
 import chatRoute from './routes/conversationRoutes'
 import path from 'path'
 import { Request,Response,NextFunction } from 'express';
-import cron from "node-cron";
-import axios from "axios";
 
 import initializeSocket from './socket';
 import {createServer} from 'http';

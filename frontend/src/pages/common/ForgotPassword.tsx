@@ -125,7 +125,7 @@ const ForgotPassword = () => {
               .then((response) => {
                 startOtpTimer();
                 console.log(response);
-                toast.warn(response.data.message);
+                toast.success(response.data.message);
                 
               })
               .catch((error) => {
@@ -137,7 +137,7 @@ const ForgotPassword = () => {
               .then((response) => {
                 startOtpTimer();
                 console.log(response);
-                toast.warn(response.data.message);
+                toast.success(response.data.message);
               })
               .catch((error) => {
                 toast.error(error.response.data.message);

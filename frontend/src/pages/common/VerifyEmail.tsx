@@ -96,7 +96,7 @@ const VerifyEmail = () => {
                 startTimer();
                 console.log(response);
                 
-                toast.warn(response.data.message);
+                toast.success(response.data.message);
                 
               })
               .catch((error) => {
@@ -108,7 +108,7 @@ const VerifyEmail = () => {
               .then((response) => {
                 startTimer();
                 console.log(response);
-                toast.warn(response.data.message);
+                toast.success(response.data.message);
               })
               .catch((error) => {
                 toast.error(error.response.data.error);
