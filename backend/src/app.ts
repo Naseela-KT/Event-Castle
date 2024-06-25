@@ -28,7 +28,7 @@ const server = createServer(app)
 
 
 const corsOptions = {
-  origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
+  origin: ['http://localhost:5000' ,"https://eventcastle.online"], // Allow only this origin
   credentials: true, // Allow credentials
 };
 
@@ -77,20 +77,9 @@ app.get('*',(req:Request,res:Response) =>{
 })
 
 const PORT = process.env.PORT;
-// server.listen(PORT, () => {
-//   console.log(`Server running on ${PORT}...`);
-// });
 
-const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 
 const start = () => {
-  cron.schedule('* * * * *', () => {
-    console.log('Running a task every minute');
-    // Replace the URL below with a request to your own server
-    axios.get('https://event-castle.onrender.com/')
-     .then(response => console.log('Health check successful'))
-     .catch(error => console.error('Health check failed:', error));
-  });
 
   server.listen(PORT, () => {
     console.log(`Server running on ${PORT}...`);

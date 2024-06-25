@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5000,
     proxy: {
       '/api': {
-        target: 'https://event-castle.onrender.com',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
     },

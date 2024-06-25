@@ -17,8 +17,6 @@ const cookieParser = require("cookie-parser");
 const messageRoutes_1 = __importDefault(require("./routes/messageRoutes"));
 const conversationRoutes_1 = __importDefault(require("./routes/conversationRoutes"));
 const path_1 = __importDefault(require("path"));
-const node_cron_1 = __importDefault(require("node-cron"));
-const axios_1 = __importDefault(require("axios"));
 const socket_1 = __importDefault(require("./socket"));
 const http_1 = require("http");
 exports.app = (0, express_1.default)();
@@ -26,7 +24,7 @@ dotenv_1.default.config();
 // connectDB();
 const server = (0, http_1.createServer)(exports.app);
 const corsOptions = {
-    origin: 'https://event-castle-hyj7.vercel.app', // Allow only this origin
+    origin: ['http://localhost:5000', "https://eventcastle.online"], // Allow only this origin
     credentials: true, // Allow credentials
 };
 exports.app.use((0, cors_1.default)(corsOptions));
@@ -64,18 +62,7 @@ exports.app.get('*', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, '../../frontend/dist/index.html'));
 });
 const PORT = process.env.PORT;
-// server.listen(PORT, () => {
-//   console.log(`Server running on ${PORT}...`);
-// });
-const SERVER = process.env.SERVER || `http://localhost:${process.env.PORT}`;
 const start = () => {
-    node_cron_1.default.schedule('* * * * *', () => {
-        console.log('Running a task every minute');
-        // Replace the URL below with a request to your own server
-        axios_1.default.get('https://event-castle.onrender.com/')
-            .then(response => console.log('Health check successful'))
-            .catch(error => console.error('Health check failed:', error));
-    });
     server.listen(PORT, () => {
         console.log(`Server running on ${PORT}...`);
         (0, connectToMongoDB_1.connectDB)();
